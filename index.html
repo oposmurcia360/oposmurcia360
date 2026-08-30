@@ -3,73 +3,261 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0756B5">
+<meta name="theme-color" content="#0758B8">
+<meta name="description" content="OposMurcia 360 · Tests de preparación para Auxiliares Administrativos del Ayuntamiento de Murcia">
 <title>OposMurcia 360</title>
-<link rel="manifest" href="manifest.webmanifest?v=4">
-<link rel="apple-touch-icon" href="icon-192.png?v=4">
+<link rel="manifest" href="manifest.webmanifest?v=9">
+<link rel="icon" href="icon-192.png?v=9">
+<link rel="apple-touch-icon" href="icon-192.png?v=9">
 <style>
-:root{--blue:#0756B5;--blue2:#0A3F84;--ink:#102033;--muted:#6B7887;--paper:#F4F2ED;--card:#fff;--line:#DCE2E8;--gold:#D7AE5B;--goldsoft:#F6ECD4;--ok:#238866;--bad:#C45555;--blank:#9AA6B2;--shadow:0 18px 48px rgba(16,32,51,.10)}
-*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:linear-gradient(180deg,#F8F7F3,#F1F4F7);color:var(--ink)}
-button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}.app{max-width:980px;margin:auto;padding:0 14px 90px;min-height:100vh}
-.hero{margin:0 -14px 20px;padding:22px 18px 26px;background:linear-gradient(135deg,var(--blue2),var(--blue));color:#fff;border-radius:0 0 30px 30px;box-shadow:0 18px 44px rgba(7,86,181,.22)}
-.brand{display:flex;align-items:center;gap:13px}.brand img{width:58px;height:58px;object-fit:contain}.brand h1{margin:0;font-size:25px;letter-spacing:-.03em}.brand p{margin:3px 0 0;color:#DCEBFA;font-size:13px}
-.heroRow{display:flex;justify-content:space-between;align-items:end;gap:14px;margin-top:24px}.heroRow strong{font-size:31px;letter-spacing:-.04em}.heroRow small{display:block;color:#DCEBFA}.install{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.12);color:#fff;border-radius:14px;padding:11px 14px;font-weight:800}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 22px}.stat{background:#fff;border:1px solid var(--line);border-radius:17px;padding:13px 8px;text-align:center;box-shadow:0 7px 22px rgba(16,32,51,.06)}.stat strong{display:block;font-size:22px}.stat span{font-size:11px;color:var(--muted)}
-.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:#876B30;font-weight:900}h2.section{margin:5px 0 13px;font-size:21px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
-.card{background:#fff;border:1px solid var(--line);border-radius:21px;padding:19px;box-shadow:var(--shadow);position:relative;overflow:hidden}.card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(var(--gold),#B98B35)}
-.tag{display:inline-block;background:var(--goldsoft);color:#71581E;border-radius:999px;padding:6px 9px;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.card h3{margin:11px 0 7px;font-size:20px}.desc{color:var(--muted);font-size:13px;line-height:1.5}.meta{display:flex;gap:7px;flex-wrap:wrap;margin:15px 0}.chip{font-size:11px;padding:6px 8px;border-radius:999px;border:1px solid var(--line);background:#F7F8FA}
-.primary,.secondary{min-height:48px;border-radius:14px;padding:11px 14px;font-weight:850}.primary{width:100%;border:0;background:linear-gradient(135deg,var(--blue2),var(--blue));color:#fff}.secondary{border:1px solid var(--line);background:#fff;color:var(--blue2)}
-.settings,.questionCard,.resultCard{background:#fff;border:1px solid var(--line);border-radius:21px;padding:18px;box-shadow:var(--shadow)}.quizTop{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:6px 0 12px}.back{border:0;background:transparent;color:var(--blue2);font-weight:850;padding:8px 0}.timer{font-weight:900;color:var(--blue2)}
-.progressWrap{height:8px;background:#E5EAF0;border-radius:99px;overflow:hidden;margin:0 0 15px}.progress{height:100%;background:linear-gradient(90deg,var(--gold),#F0D28B);width:0}
-.settings h2{margin-top:0}.settings label{display:flex;align-items:center;gap:9px;margin:12px 0;color:#334356}.settings input[type=number]{width:86px;border:1px solid var(--line);border-radius:10px;padding:9px}
-.qnum{font-size:12px;color:var(--muted);font-weight:850}.question{font-size:18px;line-height:1.5;font-weight:800;margin:9px 0 17px}.options{display:grid;gap:10px}.option{width:100%;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:15px;padding:14px;min-height:56px;color:#1E3045}.option.selected{border-color:var(--blue);background:#F1F7FD}
-.nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.finish{grid-column:1/-1;background:#FFF7E5;border-color:#E4CB8F;color:#6C531D}
-.score{font-size:50px;font-weight:950;color:var(--blue2);text-align:center}.resultGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:16px 0}.rbox{text-align:center;background:#F7F9FB;border:1px solid #E8EDF2;border-radius:14px;padding:11px}.rbox strong{display:block;font-size:21px}
-.reviewItem{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px;margin:9px 0;font-size:13px;line-height:1.45}.correct{border-left:4px solid var(--ok)}.wrong{border-left:4px solid var(--bad)}.blank{border-left:4px solid var(--blank)}
-.note{background:#EEF6FF;border:1px solid #CDE2FA;color:#224568;border-radius:14px;padding:12px;font-size:13px;line-height:1.45;margin:12px 0}.footer{text-align:center;color:var(--muted);font-size:11px;margin:28px 0}
-@media(max-width:700px){.grid{grid-template-columns:1fr}.card{padding:16px}.brand img{width:52px;height:52px}.brand h1{font-size:22px}.heroRow strong{font-size:27px}}
-@media(max-width:380px){.nav{grid-template-columns:1fr}.finish{grid-column:auto}.resultGrid{grid-template-columns:1fr 1fr}}
+:root{
+ --blue:#0758B8;--blue-dark:#063E82;--blue-soft:#EAF3FF;
+ --bg:#F6F8FB;--card:#FFFFFF;--text:#122033;--muted:#637083;
+ --line:#DDE5EF;--ok:#207A54;--bad:#B94141;--blank:#7D8896;
+ --shadow:0 10px 30px rgba(18,32,51,.08);
+ --radius:20px;
+}
+*{box-sizing:border-box} html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important}
+.shell{max-width:920px;margin:0 auto;padding:0 14px 88px;min-height:100vh}
+.top{
+ margin:0 -14px 18px;padding:18px 18px 22px;
+ background:var(--blue);color:#fff;border-radius:0 0 28px 28px;
+ box-shadow:0 10px 26px rgba(7,88,184,.20)
+}
+.brand{display:flex;align-items:center;gap:12px}.brand img{width:86px;height:86px;object-fit:contain;background:#fff;border:4px solid #fff;border-radius:50%;padding:3px;box-shadow:0 4px 14px rgba(0,0,0,.14)}
+.brand h1{font-size:25px;line-height:1.05;margin:0;font-weight:900;letter-spacing:-.035em}
+.brand p{margin:5px 0 0;color:#E8F2FF;font-size:12px;line-height:1.4}
+.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:22px}
+.hero small{display:block;color:#DCEBFF;font-size:12px}.hero strong{display:block;font-size:28px;line-height:1.05;margin-top:3px}
+.install{border:1px solid rgba(255,255,255,.55);background:#fff;color:var(--blue-dark);border-radius:13px;padding:10px 13px;font-weight:850}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:22px}
+.metric{background:#fff;border:1px solid var(--line);border-radius:17px;padding:13px 7px;text-align:center;box-shadow:0 5px 18px rgba(18,32,51,.05)}
+.metric b{display:block;font-size:21px;color:var(--blue-dark)}.metric span{font-size:11px;color:var(--muted)}
+.section-kicker{font-size:11px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;color:var(--blue)}
+.section-title{font-size:21px;margin:5px 0 13px;letter-spacing:-.02em}
+.test-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.test-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:17px;box-shadow:var(--shadow)}
+.test-head{display:flex;align-items:flex-start;gap:12px}.test-logo{width:62px;height:62px;flex:0 0 62px;background:#fff;border-radius:50%;padding:2px}
+.test-card h3{font-size:18px;line-height:1.25;margin:1px 0 5px}.muted{color:var(--muted);font-size:13px;line-height:1.45}
+.pills{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0}
+.pill{border:1px solid #CFE0F6;background:#F7FBFF;color:var(--blue-dark);padding:6px 8px;border-radius:999px;font-size:11px;font-weight:750}
+.primary,.secondary,.option{border-radius:14px;min-height:48px;font-weight:800}
+.primary{border:0;background:var(--blue);color:#fff;width:100%;padding:11px 14px}
+.primary:active{background:var(--blue-dark)}
+.secondary{border:1px solid #BED3ED;background:#fff;color:var(--blue-dark);padding:10px 13px}
+.view-top{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0 12px}
+.back{border:0;background:transparent;color:var(--blue-dark);font-weight:850;padding:8px 2px}
+.timer{font-weight:900;color:var(--blue-dark);font-variant-numeric:tabular-nums}
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.panel h2{margin:4px 0 8px;font-size:22px}.panel label{display:flex;align-items:center;gap:9px;margin:13px 0;color:#344256}
+.panel input[type=number]{width:86px;border:1px solid var(--line);border-radius:11px;padding:9px;background:#fff;color:var(--text)}
+.info{background:var(--blue-soft);border:1px solid #C9E0FA;border-radius:14px;padding:12px;color:#23486E;font-size:13px;line-height:1.45;margin:14px 0}
+.progress-track{height:8px;background:#E1E8F1;border-radius:999px;overflow:hidden;margin:0 0 14px}
+.progress{height:100%;width:0;background:var(--blue)}
+.qindex{font-size:12px;color:var(--muted);font-weight:850}.question{font-size:18px;font-weight:800;line-height:1.48;margin:9px 0 16px}
+.options{display:grid;gap:10px}.option{text-align:left;width:100%;border:1.5px solid var(--line);background:#fff;color:var(--text);padding:14px;line-height:1.4}
+.option.selected{border-color:var(--blue);background:var(--blue-soft);box-shadow:inset 0 0 0 1px rgba(7,88,184,.08)}
+.nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.finish{grid-column:1/-1}
+.score{font-size:48px;font-weight:950;letter-spacing:-.045em;color:var(--blue-dark);text-align:center;margin:12px 0}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0}
+.result-box{text-align:center;border:1px solid var(--line);border-radius:14px;background:#F9FBFD;padding:11px 7px}.result-box b{display:block;font-size:21px}
+.review-item{border:1px solid var(--line);border-radius:14px;padding:13px;margin:9px 0;font-size:13px;line-height:1.5;background:#fff}
+.review-item.ok{border-left:4px solid var(--ok)}.review-item.bad{border-left:4px solid var(--bad)}.review-item.blank{border-left:4px solid var(--blank)}
+.modal-wrap{position:fixed;inset:0;background:rgba(12,27,45,.48);display:grid;place-items:center;padding:18px;z-index:30}
+.modal{max-width:560px;width:100%;max-height:86vh;overflow:auto;background:#fff;border-radius:20px;padding:19px;box-shadow:0 24px 70px rgba(0,0,0,.24)}
+.modal h2{margin:0 0 9px}.modal p,.modal li{font-size:13px;line-height:1.55;color:#344256}
+.help-link{border:0;background:transparent;color:#fff;font-weight:800;padding:6px 0;text-decoration:underline;text-underline-offset:3px}
+.foot{text-align:center;color:var(--muted);font-size:11px;margin-top:27px}
+@media(max-width:700px){
+ .test-grid{grid-template-columns:1fr}.brand img{width:76px;height:76px}.brand h1{font-size:22px}
+ .hero strong{font-size:25px}.test-card{padding:15px}.panel{padding:16px}
+}
+@media(max-width:390px){
+ .shell{padding-left:11px;padding-right:11px}.top{margin-left:-11px;margin-right:-11px}
+ .summary{gap:6px}.metric{padding:11px 4px}.metric b{font-size:19px}
+ .nav{grid-template-columns:1fr}.finish{grid-column:auto}.result-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:340px){.brand p{display:none}.test-logo{width:48px;height:48px;flex-basis:48px}}
 </style>
 </head>
 <body>
-<div class="app">
+<div class="shell">
 <section id="home">
-<header class="hero"><div class="brand"><img src="icon-192.png?v=4" alt="OposMurcia 360"><div><h1>OposMurcia 360</h1><p>Academia Premium · Auxiliares Administrativos</p></div></div><div class="heroRow"><div><small>Biblioteca disponible</small><strong id="heroCount">3 tests</strong></div><button id="installBtn" class="install hidden">Instalar app</button></div></header>
-<div class="stats"><div class="stat"><strong id="qCount">80</strong><span>preguntas</span></div><div class="stat"><strong id="doneCount">0</strong><span>completados</span></div><div class="stat"><strong id="bestScore">—</strong><span>mejor nota</span></div></div>
-<div class="eyebrow">Biblioteca de práctica</div><h2 class="section">Cuestionarios</h2><div id="testGrid" class="grid"></div><div class="footer">OposMurcia 360 · Preparación práctica para tu oposición · v4</div>
+ <header class="top">
+  <div class="brand">
+   <img src="logo-oposmurcia360.png?v=9" alt="OposMurcia 360">
+   <div><h1>OposMurcia 360</h1><p>Cuestionarios de preparación para Auxiliares Administrativos del Ayuntamiento de Murcia</p></div>
+  </div>
+  <div class="hero">
+   <div><small>Biblioteca disponible</small><strong id="heroCount">3 tests</strong><button class="help-link" onclick="openHelp()">Cómo funciona</button></div>
+   <button id="installBtn" class="install hidden">Instalar app</button>
+  </div>
+ </header>
+ <div class="summary">
+  <div class="metric"><b id="qCount">80</b><span>preguntas</span></div>
+  <div class="metric"><b id="doneCount">0</b><span>completados</span></div>
+  <div class="metric"><b id="bestScore">—</b><span>mejor nota</span></div>
+ </div>
+ <div class="section-kicker">OposMurcia 360</div>
+ <h2 class="section-title">Selecciona un test</h2>
+ <div id="testGrid" class="test-grid"></div>
+ <div class="foot">OposMurcia 360 · Preparación práctica y gratuita</div>
 </section>
-<section id="setup" class="hidden"><div class="quizTop"><button class="back" onclick="goHome()">← Volver</button></div><div class="settings"><span class="tag">Configurar test</span><h2 id="setupTitle"></h2><p id="setupDesc" class="desc"></p><label><input type="radio" name="timeMode" value="none" checked> Sin tiempo</label><label><input type="radio" name="timeMode" value="timed"> Con tiempo</label><label>Minutos <input id="minutes" type="number" min="1" max="180" value="30"></label><label><input id="penalty" type="checkbox"> Penalización de 1/3 por respuesta incorrecta</label><div class="note">Puedes finalizar el test en cualquier momento. Las preguntas no contestadas cuentan como <strong>en blanco</strong>.</div><button class="primary" onclick="startQuiz()">Comenzar test</button></div></section>
-<section id="quiz" class="hidden"><div class="quizTop"><button class="back" onclick="confirmExit()">← Salir</button><div id="timer" class="timer">00:00</div></div><div class="progressWrap"><div id="progress" class="progress"></div></div><div class="questionCard"><div id="qnum" class="qnum"></div><div id="question" class="question"></div><div id="options" class="options"></div><div class="nav"><button class="secondary" onclick="prevQ()">Anterior</button><button class="secondary" onclick="nextQ()">Siguiente</button><button class="secondary finish" onclick="finishQuiz(false)">Finalizar y ver resultados</button></div></div></section>
-<section id="results" class="hidden"><div class="quizTop"><button class="back" onclick="goHome()">← Biblioteca</button></div><div class="resultCard"><span class="tag">Resultado</span><h2 id="resultTitle"></h2><div id="score" class="score">0,00/10</div><div class="resultGrid"><div class="rbox"><strong id="ok">0</strong><span>Aciertos</span></div><div class="rbox"><strong id="bad">0</strong><span>Errores</span></div><div class="rbox"><strong id="blank">0</strong><span>Blanco</span></div></div><p id="resultInfo" class="desc"></p><button class="primary" onclick="toggleReview()">Revisar respuestas</button><div id="review" class="hidden" style="text-align:left;margin-top:14px"></div><div class="nav"><button class="secondary" onclick="repeatQuiz()">Repetir test</button><button class="secondary" onclick="shareResult()">Compartir resultado</button></div></div></section>
+
+<section id="setup" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Volver</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
+ <div class="panel">
+  <img src="logo-oposmurcia360.png?v=9" alt="" style="width:72px;height:72px;float:right;margin-left:10px;background:#fff;border-radius:50%;padding:3px">
+  <div class="section-kicker">Configurar test</div>
+  <h2 id="setupTitle"></h2><p id="setupDesc" class="muted"></p>
+  <label><input type="radio" name="timeMode" value="none" checked> Sin tiempo · cronómetro de tiempo empleado</label>
+  <label><input type="radio" name="timeMode" value="timed"> Con tiempo · cuenta atrás</label>
+  <label>Minutos <input id="minutes" type="number" min="1" max="180" value="30"></label>
+  <label><input id="penalty" type="checkbox"> Aplicar penalización de 1/3 por respuesta incorrecta</label>
+  <div class="info">Puedes pulsar <strong>Finalizar y ver resultados</strong> en cualquier momento. Las preguntas no contestadas quedan en blanco y no cuentan como error.</div>
+  <button class="primary" onclick="startQuiz()">Comenzar test</button>
+ </div>
+</section>
+
+<section id="quiz" class="hidden">
+ <div class="view-top"><button class="back" onclick="confirmExit()">← Salir</button><div id="timer" class="timer">00:00</div></div>
+ <div class="progress-track"><div id="progress" class="progress"></div></div>
+ <div class="panel">
+  <div id="qnum" class="qindex"></div>
+  <div id="question" class="question"></div>
+  <div id="options" class="options"></div>
+  <div class="nav">
+   <button class="secondary" onclick="prevQ()">Anterior</button>
+   <button class="secondary" onclick="nextQ()">Siguiente</button>
+   <button class="primary finish" onclick="finishQuiz(false)">Finalizar y ver resultados</button>
+  </div>
+ </div>
+</section>
+
+<section id="results" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Biblioteca</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
+ <div class="panel">
+  <div class="section-kicker">Resultado</div><h2 id="resultTitle"></h2>
+  <div id="score" class="score">0,00/10</div>
+  <div class="result-grid">
+   <div class="result-box"><b id="ok">0</b><span>Aciertos</span></div>
+   <div class="result-box"><b id="bad">0</b><span>Errores</span></div>
+   <div class="result-box"><b id="blank">0</b><span>En blanco</span></div>
+  </div>
+  <p id="resultInfo" class="muted"></p>
+  <button class="primary" onclick="toggleReview()">Revisar respuestas</button>
+  <div id="review" class="hidden" style="margin-top:13px"></div>
+  <div class="nav">
+   <button class="secondary" onclick="repeatQuiz()">Repetir test</button>
+   <button class="secondary" onclick="shareTest()">Compartir test por WhatsApp</button>
+   <button class="primary finish" onclick="shareResult()">Compartir resultado por WhatsApp</button>
+  </div>
+ </div>
+</section>
 </div>
+
+<div id="help" class="modal-wrap hidden" onclick="backdropClose(event)">
+ <div class="modal">
+  <h2>Cómo funciona</h2>
+  <p><strong>Sin tiempo:</strong> verás un cronómetro con el tiempo empleado. <strong>Con tiempo:</strong> verás una cuenta atrás y el test terminará automáticamente al llegar a 00:00.</p>
+  <p>La penalización de <strong>1/3</strong> es opcional. Si la activas, cada error descuenta un tercio de un acierto. Las respuestas en blanco no penalizan.</p>
+  <p>Puedes avanzar y retroceder entre preguntas. No hay mapa de preguntas ni marcadores de revisión.</p>
+  <p><strong>Finalizar y ver resultados</strong> está disponible durante todo el test. Al terminar verás nota sobre 10, aciertos, errores, blancos, tiempo y revisión completa.</p>
+  <button class="primary" onclick="closeHelp()">Entendido</button>
+ </div>
+</div>
+
 <script>
 const EMBEDDED_TESTS=[{"id":"constitucion-tema-1","title":"Constitución Española · Tema 1","subtitle":"Auxiliares 2026","description":"Concepto, estructura y reformas constitucionales","questions":[["La Constitución puede definirse, desde un punto de vista general, como:",["La norma fundamental, escrita o no, de un Estado soberano","Un conjunto de normas políticas sin valor jurídico","Una ley ordinaria aprobada por las Cortes Generales"],0],["Desde el punto de vista material, la Constitución se define como:",["El texto aprobado mediante un procedimiento especial","El conjunto de reglas fundamentales aplicables al ejercicio del poder estatal","La norma aprobada por referéndum popular"],1],["Desde el punto de vista formal, la Constitución se caracteriza principalmente por:",["Su origen histórico","Su supremacía sobre cualquier otra norma del ordenamiento jurídico","Su contenido ideológico"],1],["¿Cuál de las siguientes NO aparece como nota característica de la concepción moderna de la Constitución?",["Es una norma jurídica","Es una norma fundante","Es una norma reglamentaria"],2],["La Constitución Española fue aprobada en referéndum el día:",["6 de diciembre de 1978","27 de diciembre de 1978","29 de diciembre de 1978"],0],["La Constitución Española fue publicada en el BOE el:",["6 de diciembre de 1978","27 de diciembre de 1978","29 de diciembre de 1978"],2],["El término “Constitución” procede etimológicamente del latín:",["Lex y ordo","Cum y statuere","Res y publica"],1],["Una de las funciones esenciales de la Constitución es:",["Fijar los límites y relaciones entre los poderes del Estado","Regular exclusivamente los derechos económicos","Establecer únicamente la organización territorial"],0],["La Constitución garantiza al pueblo:",["Únicamente deberes cívicos","Derechos y libertades","Solo derechos políticos"],1],["Desde el punto de vista material, la Constitución se refiere principalmente a:",["Su procedimiento de aprobación","Su rango normativo","El ejercicio del poder estatal"],2],["El sentido formal de la Constitución se caracteriza por atender a:",["Su contenido ideológico","Los órganos y procedimientos de adopción","Los valores superiores del ordenamiento"],1],["La supremacía de la Constitución sobre el resto del ordenamiento deriva:",["De su carácter histórico","De su sentido formal","De su contenido económico"],1],["Entre los elementos que regula la Constitución se encuentran:",["La organización de los poderes públicos y sus competencias","Solo los derechos fundamentales","Únicamente la economía del Estado"],0],["Una de las notas de la concepción moderna de la Constitución es que:",["Es una norma reglamentaria","Es una norma fundante del orden político y jurídico","Es una norma subordinada a la ley"],1],["Según la concepción moderna recogida en el tema, la Constitución:",["Se limita a declarar principios políticos","Carece de fuerza jurídica directa","Regula los órganos y procedimientos de producción normativa"],2],["¿Cuántas reformas constitucionales se han aprobado hasta el momento?",["Tres","Dos","Cuatro"],0],["La reforma constitucional de 1992 afectó al artículo:",["49","135","13.2"],2],["La reforma del artículo 135 de la Constitución se produjo en el año:",["1992","2011","2024"],1],["La reforma constitucional de 2024 se refiere al:",["Principio de estabilidad presupuestaria","Derecho de sufragio","Lenguaje y protección de las personas con discapacidad"],2],["Formalmente, la Constitución Española consta de:",["168 artículos","169 artículos","170 artículos"],1],["¿Cuántas disposiciones transitorias contiene la Constitución?",["Cuatro","Nueve","Diez"],1],["El Preámbulo de la Constitución se caracteriza por:",["Su extensión detallada","Su carácter normativo directo","Su brevedad y contenido ideológico"],2],["El Título Preliminar de la Constitución contiene:",["Principios generales","Derechos fundamentales","Normas económicas"],0],["¿Cuántos artículos integran el Título I de la Constitución?",["46","45","47"],0],["El Capítulo tercero del Título I se refiere a:",["Los principios rectores de la política social y económica","La nacionalidad","La suspensión de derechos"],0]]},{"id":"repaso-general-2","title":"Repaso Parte General 2","subtitle":"Auxiliares · Agosto 2026","description":"Constitución, padrón y régimen local","questions":[["Una ley ordinaria pretende desarrollar el contenido esencial de un derecho comprendido entre los artículos 15 y 29 CE. Atendiendo exclusivamente al sistema de garantías, ¿qué objeción es correcta?",["Ninguna, porque basta el rango de ley siempre que no se vulnere el derecho.","El desarrollo de sus aspectos esenciales exige ley orgánica, además del respeto al contenido esencial.","Sólo sería necesaria ley orgánica si el derecho estuviera además incluido en el artículo 14 CE."],1],["Se pretende invocar directamente ante un órgano administrativo un principio rector del Capítulo III del Título I sin que exista ley que lo desarrolle. Según el régimen de garantías, ¿qué afirmación es correcta?",["Los principios del Capítulo III informan la legislación, la práctica judicial y la actuación de los poderes públicos, y sólo pueden alegarse ante la jurisdicción conforme a las leyes que los desarrollen.","Todos los principios rectores tienen la misma aplicación directa que los derechos del Capítulo II.","Sólo los principios de los artículos 39 a 44 carecen de aplicación directa; los restantes sí la tienen y pueden hacerse valer directamente ante cualquier órgano público aun sin desarrollo legal específico."],0],["Durante un estado de excepción se acuerda suspender el derecho del detenido a ser informado de sus derechos y a la asistencia letrada. Conforme a la precisión sobre el artículo 55.1 CE, ¿qué valoración procede?",["Es admisible, porque todo el artículo 17 CE puede suspenderse en estado de excepción incluyendo en todo caso la información de derechos y la asistencia letrada desde el inicio de la detención.","Es admisible únicamente si lo autoriza el Congreso por mayoría absoluta.","No se ajusta al régimen expuesto, pues el artículo 17.3 queda exceptuado de suspensión en el estado de excepción."],2],["Una reforma constitucional afecta sólo al artículo 135 CE. Sin entrar en la oportunidad política de la reforma, ¿qué procedimiento resulta del esquema?",["El del artículo 168 CE porque toda reforma posterior a 2011 debe seguir el procedimiento agravado.","El del artículo 168 CE por afectar al principio de estabilidad presupuestaria.","El del artículo 167 CE, salvo que simultáneamente se reforme alguna materia reservada al artículo 168."],2],["¿Cuál de las siguientes combinaciones refleja correctamente la distribución sistemática del Título I?",["Artículo 14 dentro de la Sección 1.ª; artículos 15 a 29 fuera de secciones; artículos 30 a 38 en el Capítulo III y los principios rectores de los artículos 39 a 52 quedan integrados en la misma Sección 2.ª.","Artículo 14 como precepto inicial del Capítulo II; artículos 15 a 29 en la Sección 1.ª y artículos 30 a 38 en la Sección 2.ª.","Artículos 14 a 29 en la Sección 1.ª y artículos 30 a 52 en la Sección 2.ª."],1],["Una Administración acuerda el secuestro preventivo de una publicación mediante resolución administrativa motivada, sin intervención judicial. ¿Qué precepto determina directamente la invalidez constitucional de esa medida?",["El artículo 18.3 CE, porque todo secuestro constituye interceptación de comunicaciones siempre que la resolución administrativa sea motivada y se notifique antes de ejecutarse la medida.","El artículo 21.2 CE, porque equivale a prohibir una manifestación.","El artículo 20 CE, que reserva el secuestro de publicaciones, grabaciones y otros medios a resolución judicial."],2],["Una asociación está válidamente constituida e inscrita, pero posteriormente utiliza medios tipificados como delito. Según el artículo 22 CE, señale la respuesta más precisa:",["La asociación es ilegal por los medios empleados; su disolución o suspensión exige resolución judicial motivada.","La inscripción impide apreciar ilegalidad mientras no sea cancelada administrativamente.","La Administración puede suspenderla de inmediato, aunque sólo un juez puede disolverla definitivamente hasta que el registro administrativo competente acuerde formalmente la pérdida de personalidad jurídica."],0],["Un tribunal pretende obligar a una persona a confesarse culpable para poder beneficiarse de una determinada garantía procesal. ¿Qué conjunto de derechos del artículo 24.2 CE resulta directamente afectado?",["Exclusivamente el derecho al juez ordinario predeterminado por la ley y a obtener una resolución sobre el fondo aunque no concurran los presupuestos procesales establecidos por la ley.","Los derechos a no declarar contra sí mismo y a no confesarse culpable.","Sólo el derecho a utilizar los medios de prueba pertinentes."],1],["Una sanción administrativa se impone por una conducta que, cuando se realizó, no constituía infracción administrativa. ¿Qué regla resuelve el supuesto de forma inmediata?",["El artículo 25.1 CE impide sancionar acciones u omisiones que no fueran infracción según la legislación vigente al producirse.","El artículo 24.1 CE sólo exige que exista audiencia antes de sancionar.","El artículo 26 CE permite la sanción si no interviene un tribunal de honor siempre que la norma sancionadora posterior sea más favorable y la Administración motive suficientemente su aplicación."],0],["Respecto del derecho de sindicación del artículo 28 CE, ¿cuál de las siguientes opciones reproduce con mayor exactitud el régimen aplicable?",["La Constitución excluye directamente a todos los funcionarios públicos del derecho de sindicación.","La ley puede limitar o exceptuar su ejercicio para Fuerzas o Institutos armados y cuerpos sometidos a disciplina militar, y regular peculiaridades para funcionarios públicos.","La ley sólo puede limitar el derecho respecto de miembros de las Fuerzas Armadas, nunca respecto de otros cuerpos sometidos a disciplina militar mediante una prohibición general aplicable a todo el personal funcionario y estatutario de las Administraciones públicas."],1],["Un miembro de un cuerpo sometido a disciplina militar formula una petición colectiva por escrito junto con otros miembros del cuerpo. Según el artículo 29 CE:",["Es posible si la petición no tiene contenido político cuando la petición se tramite por escrito, identifique a todos los firmantes y respete la cadena jerárquica del cuerpo.","Es posible si se presenta por conducto reglamentario.","No se ajusta al régimen constitucional, pues sólo pueden ejercer ese derecho individualmente y conforme a su legislación específica."],2],["Una ley reconoce una prestación patrimonial pública cuya cuantía puede ser fijada íntegramente por una ordenanza sin cobertura legal adicional. Atendiendo al artículo 31.3 CE, la afirmación correcta es:",["Las prestaciones personales o patrimoniales de carácter público sólo pueden establecerse con arreglo a la ley.","La reserva de ley sólo alcanza a los tributos estatales, no a prestaciones locales cuando la cuantía sea inferior al límite que determine anualmente la correspondiente ley de presupuestos.","La Constitución permite su establecimiento reglamentario cuando no tengan naturaleza tributaria."],0],["Una fundación se constituye para un fin estrictamente particular, sin finalidad de interés general. ¿Qué precisión del artículo 34 CE resulta relevante?",["El derecho de fundación se reconoce sin limitación alguna en cuanto a los fines siempre que la escritura fundacional delimite con precisión beneficiarios, patrimonio y órganos de gobierno.","El derecho de fundación se reconoce para fines de interés general, con arreglo a la ley.","La Constitución sólo reconoce fundaciones creadas por Administraciones públicas."],1],["En materia de negociación colectiva laboral, el artículo 37 CE garantiza expresamente:",["La prohibición absoluta de medidas de conflicto colectivo en servicios esenciales.","La aprobación administrativa previa de todo convenio colectivo.","La fuerza vinculante de los convenios."],2],["Una persona vive habitualmente en un municipio pero carece de domicilio físico estable. Antes de inscribirla en el Padrón, ¿qué actuación exige el artículo 54 RPDT?",["Un informe vinculante del Consejo de Empadronamiento emitido antes de la inscripción y con carácter vinculante para el Ayuntamiento sobre la realidad de la residencia.","Una autorización de la Diputación provincial.","Poner el hecho en conocimiento de los servicios sociales competentes en el ámbito donde resida."],2],["Un vecino solicita que se ceda a otra Administración su número de teléfono aportado voluntariamente al Padrón. Conforme al artículo 16 LRBRL, ¿qué respuesta es correcta?",["Puede cederse si el domicilio es relevante para la competencia de la Administración solicitante.","Los datos de aportación voluntaria no son susceptibles de cesión en ningún caso.","Puede cederse siempre con autorización del Alcalde, aunque el interesado no consienta."],1],["El Ayuntamiento remite al INE su revisión padronal anual y existe discrepancia sobre la cifra resultante. Conforme a los artículos 81 y 82 RPDT, ¿qué secuencia es correcta?",["El INE formula reparos; si persiste el desacuerdo, somete la discrepancia al Consejo de Empadronamiento y la Presidencia del INE eleva al Gobierno la propuesta de cifras oficiales con informe favorable del Consejo.","El Ayuntamiento fija definitivamente la cifra; el INE sólo puede formular observaciones no vinculantes.","La discrepancia se resuelve mediante recurso de alzada ante el Ministerio competente y la cifra se aprueba por orden ministerial siendo la propuesta del Ayuntamiento vinculante para el Gobierno si fue aprobada por mayoría absoluta del Pleno."],0],["Un ciudadano pide al INE una certificación de empadronamiento utilizando los datos de la base padronal estatal. Según el artículo 83 RPDT:",["El INE puede expedirla si coincide con la última revisión anual siempre que la persona interesada autorice expresamente al INE y no exista oposición del Ayuntamiento de residencia.","El INE sólo puede expedirla cuando exista autorización municipal previa.","Los datos en poder del INE no pueden servir de base para expedir certificaciones o volantes, aunque sí para determinados sistemas de intermediación y Carpeta Ciudadana."],2],["¿Quién expide ordinariamente las certificaciones padronales conforme al artículo 61 RPDT ?",["La persona que ocupe la Secretaría del Ayuntamiento o el funcionario con habilitación nacional que la sustituya, sin perjuicio de la actuación administrativa automatizada.","El Alcalde o cualquier concejal delegado en materia de población.","El Presidente del INE, previa comprobación con la base padronal estatal pudiendo delegarse ordinariamente esta función en cualquier funcionario municipal mediante resolución del Alcalde."],0],["Un municipio se fusiona con otro y, como consecuencia del aumento de población, debería asumir nuevos servicios mínimos del artículo 26 LRBRL. Según los efectos de la fusión:",["Debe implantarlos en el primer ejercicio presupuestario posterior a la fusión.","Queda dispensado de prestar los nuevos servicios mínimos que le correspondan por razón del aumento poblacional.","Sólo queda dispensado durante los dos primeros años desde el convenio de fusión durante un máximo de cinco años, transcurridos los cuales deberá asumirlos aunque persista la situación derivada de la fusión."],1],["En una fusión municipal, uno de los municipios estaba en déficit. Según el régimen aplicable, el fondo sin personalidad jurídica y contabilidad separada que puede constituirse para determinados elementos liquidables debe liquidarse:",["En los cinco años siguientes desde la adopción del convenio de fusión.","En diez años, coincidiendo con la prohibición de segregación del nuevo municipio.","Antes de aprobar el primer presupuesto del municipio resultante."],0],["En un municipio de gran población, un tercio de los miembros del Pleno solicita con antelación suficiente asesoramiento legal sobre un asunto a tratar en sesión. Conforme al artículo 122.5 LRBRL:",["El asesoramiento es potestativo salvo que el asunto exija mayoría especial.","El asesoramiento legal del Secretario General del Pleno es preceptivo en ese supuesto.","Sólo es preceptivo si lo solicita la cuarta parte de los concejales y se trata de función de control."],1],["El Pleno de un municipio de gran población pretende delegar en una comisión plenaria la determinación de las formas de gestión de los servicios municipales. ¿Es posible según el artículo 123 LRBRL?",["Sí, porque la letra k) figura entre las competencias delegables en las comisiones del artículo 122.4.","No, porque ninguna competencia plenaria puede delegarse en comisiones.","Sólo sería posible delegarla en la Junta de Gobierno Local, nunca en una comisión."],0],["El Alcalde de un municipio de gran población desea delegar la competencia para establecer la organización y estructura de la Administración municipal ejecutiva. Según el artículo 124.5 LRBRL:",["No puede delegarse en ningún órgano.","Puede delegarse en cualquier concejal delegado.","Sólo puede delegarse en la Junta de Gobierno Local."],2],["El Alcalde pretende designar Teniente de Alcalde a un concejal que no forma parte de la Junta de Gobierno Local. Conforme al artículo 125 LRBRL:",["Es válido si lo ratifica el Pleno por mayoría simple.","No es posible: los Tenientes de Alcalde se nombran entre los concejales que formen parte de la Junta de Gobierno Local.","Es posible en caso de ausencia temporal de todos los miembros de la Junta de Gobierno Local."],1],["En una Junta de Gobierno Local de gran población, el Alcalde nombra varios miembros no concejales. ¿Qué límite adicional a su número exige el artículo 126 LRBRL, además del límite global de miembros de la Junta?",["Los no concejales no pueden superar un tercio de los miembros de la Junta, excluido el Alcalde.","Los no concejales no pueden superar la mitad del número legal de miembros del Pleno.","Sólo puede existir un miembro no concejal, cualquiera que sea el tamaño de la Junta."],0],["La Junta de Gobierno Local pretende delegar la aprobación de la relación de puestos de trabajo en un director general. Según el artículo 127.2 LRBRL:",["Puede delegarla, pues todas las funciones de personal son delegables.","Puede delegarla únicamente en un Teniente de Alcalde.","No puede delegarla: la aprobación de la RPT está expresamente exceptuada de la delegación prevista para la letra h)."],2],["El Pleno crea distritos en un municipio de gran población. ¿Qué extremo debe determinar en una norma de carácter orgánico conforme al artículo 128 LRBRL?",["El porcentaje mínimo de recursos presupuestarios de la Corporación que gestionarán los distritos en su conjunto.","La identidad nominal de todos los empleados públicos adscritos a cada distrito.","La cuantía máxima de los tributos municipales que puede recaudar cada distrito."],0],["El Pleno de un municipio de gran población crea el órgano de gestión tributaria del artículo 135 LRBRL. ¿Qué efecto específico produce sobre la función de recaudación?",["La recaudación sigue necesariamente en el órgano económico-financiero del artículo 134.","La función de recaudación y su titular quedan adscritos al órgano de gestión tributaria, quedando sin efecto el artículo 134.1 en ese extremo.","La recaudación pasa automáticamente a la Diputación provincial."],1],["Un municipio de 19.500 habitantes pretende que la Diputación coordine uno de los servicios del artículo 26.2 LRBRL. ¿Cuál de los siguientes sí figura entre los servicios sujetos a esa coordinación para municipios de menos de 20.000 habitantes?",["Biblioteca pública.","Instalaciones deportivas de uso público.","Alumbrado público."],2]]},{"id":"test-2-constitucion-espanola-tema-1-auxiliares-2026","title":"Test 2 – Constitución Española (Tema 1)","subtitle":"Auxiliares 2026","description":"Cuestionario de preparación sobre la Constitución Española. Incluye 20 preguntas ordinarias y 5 de reserva.","questions":[["El principio introducido en el art. 135 es:",["Legalidad","Estabilidad presupuestaria","Autonomía local"],1],["La parte dogmática comprende:",["Títulos I a X","Título Preliminar y Título I","Solo el Título I"],1],["El Gobierno y la Administración se regulan en el:",["Título IV","Título V","Título VI"],0],["El Poder Judicial aparece en:",["Título VI","Título VII","Título IX"],0],["Dos principios amplios que informan la Constitución son:",["Legalidad y jerarquía","Democrático y territorial","Social y económico"],1],["Los valores superiores del ordenamiento jurídico son:",["Seguridad y responsabilidad","Mérito y capacidad","Libertad, justicia, igualdad y pluralismo político"],2],["El principio de jerarquía normativa aparece en:",["Art. 1.1","Art. 9.3","Art. 103"],1],["Los principios rectores de política social y económica se recogen en:",["Artículos 39 a 52","Artículos 10 a 20","Artículos 66 a 96"],0],["La Constitución se apoya en cuatro pilares fundamentales entre los que se encuentra:",["Estado federal","República presidencial","Estado social y democrático de Derecho"],2],["El Congreso es:",["Cámara territorial","Cámara de segunda reflexión","Cámara de representación directa"],2],["El Senado se concibe como:",["Cámara ejecutiva","Cámara de representación territorial","Cámara judicial"],1],["El modelo territorial español es:",["Federal","Centralizado","Unitario descentralizado"],2],["El derecho a la autonomía se reconoce junto con:",["Autodeterminación","Solidaridad territorial","Soberanía compartida"],1],["El carácter “social” del Estado implica que:",["El mercado actúa sin intervención","El Estado no participa en economía","El Estado interviene para garantizar bienestar colectivo"],2],["La sumisión de los poderes públicos a la ley es propia de:",["Estado de Derecho","Estado social","Estado territorial"],0],["La autonomía reconocida a las CCAA es:",["Administrativa exclusivamente","Judicial","Política con órganos legislativos propios"],2],["La descentralización española es “derivada” porque:",["Nace de la autodeterminación","Proviene de la unidad nacional y la Constitución","Se impone por tratados"],1],["Cuando el tema distingue parte dogmática y orgánica, se refiere a:",["Normas antiguas y modernas","Derechos frente a organización del poder","Leyes y reglamentos"],1],["Los principios rectores de la política social y económica se caracterizan por:",["Ser inmediatamente exigibles","No depender de leyes","Requerir desarrollo legal para su efectividad"],2],["El pluralismo político se vincula directamente con:",["La soberanía popular","La Monarquía","El Poder Judicial"],0],["[Reserva] Que el Rey sea “árbitro y moderador” significa que:",["Gobierna directamente","Dirige las Cortes","No ejerce funciones ejecutivas"],2],["[Reserva] El mayor protagonismo político lo tiene:",["El Congreso","El Senado","El Tribunal Constitucional"],0],["[Reserva] Que la Constitución sea “norma jurídica” significa que:",["Es solo política","Produce efectos jurídicos obligatorios","Es orientativa"],1],["[Reserva] El uso de valores superiores en la Constitución busca:",["Servir como fundamento del sistema jurídico","Sustituir leyes","Limitar derechos"],0],["[Reserva] El sistema autonómico español se diferencia del federal porque:",["No hay parlamentos autonómicos","La soberanía es compartida","La autonomía deriva de la Constitución y no es originaria"],2]]}];
 let TESTS=EMBEDDED_TESTS.slice();
+const PUBLIC_URL="https://oposmurcia360.github.io/oposmurcia360/";
 const $=s=>document.querySelector(s);
 let currentTest=null,answers=[],current=0,penalty=false,timed=false,timeLimit=0,elapsed=0,interval=null,startedAt=0,deferredPrompt=null;
+
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function storage(){try{return JSON.parse(localStorage.getItem("opos360_stats_v4")||'{"done":0,"best":null}')}catch(e){return {done:0,best:null}}}
-function saveStats(s){try{localStorage.setItem("opos360_stats_v4",JSON.stringify(s))}catch(e){}}
-function updateStats(){const s=storage();$("#doneCount").textContent=s.done||0;$("#bestScore").textContent=s.best==null?"—":Number(s.best).toFixed(2)}
-function updateCounts(){$("#heroCount").textContent=TESTS.length+" "+(TESTS.length===1?"test":"tests");$("#qCount").textContent=TESTS.reduce((n,t)=>n+t.questions.length,0)}
-function renderHome(){updateCounts();updateStats();$("#testGrid").innerHTML=TESTS.map((t,i)=>`<article class="card"><span class="tag">Test ${i+1}</span><h3>${esc(t.title)}</h3><div class="desc">${esc(t.description||t.subtitle||"Cuestionario de preparación")}</div><div class="meta"><span class="chip">${t.questions.length} preguntas</span><span class="chip">Corrección automática</span></div><button class="primary" onclick="openSetup('${esc(t.id)}')">Realizar test</button></article>`).join("")}
-async function loadExternalTests(){try{const r=await fetch("tests.json?v=4",{cache:"no-store"});if(!r.ok)throw new Error("HTTP "+r.status);const data=await r.json();if(Array.isArray(data)&&data.length)TESTS=data}catch(e){console.warn("Usando copia interna",e)}renderHome()}
-function show(id){["home","setup","quiz","results"].forEach(x=>$("#"+x).classList.toggle("hidden",x!==id));window.scrollTo(0,0)}
-function goHome(){clearInterval(interval);interval=null;show("home");renderHome()}
+function stats(){try{return JSON.parse(localStorage.getItem("opos360_stats_v9")||'{"done":0,"best":null}')}catch(e){return {done:0,best:null}}}
+function saveStats(s){try{localStorage.setItem("opos360_stats_v9",JSON.stringify(s))}catch(e){}}
+function renderStats(){const s=stats();$("#doneCount").textContent=s.done||0;$("#bestScore").textContent=s.best==null?"—":Number(s.best).toFixed(2).replace(".",",")}
+function renderHome(){
+ $("#heroCount").textContent=TESTS.length+" "+(TESTS.length===1?"test":"tests");
+ $("#qCount").textContent=TESTS.reduce((n,t)=>n+t.questions.length,0);
+ renderStats();
+ $("#testGrid").innerHTML=TESTS.map((t,i)=>`
+  <article class="test-card">
+   <div class="test-head">
+    <img class="test-logo" src="logo-oposmurcia360.png?v=9" alt="">
+    <div><h3>${esc(t.title)}</h3><div class="muted">${esc(t.description||t.subtitle||"Cuestionario de preparación")}</div></div>
+   </div>
+   <div class="pills"><span class="pill">${t.questions.length} preguntas</span><span class="pill">Corrección automática</span></div>
+   <button class="primary" onclick="openSetup('${esc(t.id)}')">Realizar test</button>
+  </article>`).join("");
+}
+async function loadTests(){
+ try{
+  const r=await fetch("tests.json?v=9",{cache:"no-store"});
+  if(!r.ok)throw new Error("HTTP "+r.status);
+  const d=await r.json();
+  if(Array.isArray(d)&&d.length)TESTS=d;
+ }catch(e){console.warn("Se utiliza la copia interna de los tests.",e)}
+ renderHome();
+}
+function show(id){["home","setup","quiz","results"].forEach(x=>$("#"+x).classList.toggle("hidden",x!==id));window.scrollTo({top:0,behavior:"smooth"})}
 function openSetup(id){currentTest=TESTS.find(t=>t.id===id);if(!currentTest)return;$("#setupTitle").textContent=currentTest.title;$("#setupDesc").textContent=currentTest.description||currentTest.subtitle||"";show("setup")}
-function startQuiz(){answers=Array(currentTest.questions.length).fill(null);current=0;penalty=$("#penalty").checked;timed=document.querySelector('input[name="timeMode"]:checked').value==="timed";timeLimit=Math.max(1,parseInt($("#minutes").value||30,10))*60;elapsed=0;startedAt=Date.now();show("quiz");renderQuestion();tick();clearInterval(interval);interval=setInterval(()=>{elapsed=Math.floor((Date.now()-startedAt)/1000);tick();if(timed&&elapsed>=timeLimit)finishQuiz(true)},1000)}
-function fmt(sec){sec=Math.max(0,Math.floor(sec));return String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0")}
+function goHome(){clearInterval(interval);interval=null;show("home");renderHome()}
+function startQuiz(){
+ answers=Array(currentTest.questions.length).fill(null);current=0;penalty=$("#penalty").checked;
+ timed=document.querySelector('input[name="timeMode"]:checked').value==="timed";
+ timeLimit=Math.max(1,parseInt($("#minutes").value||30,10))*60;elapsed=0;startedAt=Date.now();
+ show("quiz");renderQuestion();tick();clearInterval(interval);
+ interval=setInterval(()=>{elapsed=Math.floor((Date.now()-startedAt)/1000);tick();if(timed&&elapsed>=timeLimit)finishQuiz(true)},1000)
+}
+function fmt(s){s=Math.max(0,Math.floor(s));return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
 function tick(){$("#timer").textContent=timed?fmt(Math.max(0,timeLimit-elapsed)):fmt(elapsed)}
-function renderQuestion(){const q=currentTest.questions[current];$("#qnum").textContent=`Pregunta ${current+1} de ${currentTest.questions.length}`;$("#question").textContent=q[0];$("#progress").style.width=((current+1)/currentTest.questions.length*100)+"%";$("#options").innerHTML=q[1].map((o,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="choose(${i})"><strong>${String.fromCharCode(65+i)})</strong> ${esc(o)}</button>`).join("")}
-function choose(i){answers[current]=i;renderQuestion()}function prevQ(){if(current>0){current--;renderQuestion()}}function nextQ(){if(current<currentTest.questions.length-1){current++;renderQuestion()}}
+function renderQuestion(){
+ const q=currentTest.questions[current];
+ $("#qnum").textContent=`Pregunta ${current+1} de ${currentTest.questions.length}`;
+ $("#question").textContent=q[0];
+ $("#progress").style.width=((current+1)/currentTest.questions.length*100)+"%";
+ $("#options").innerHTML=q[1].map((o,i)=>`<button class="option ${answers[current]===i?"selected":""}" onclick="choose(${i})"><strong>${String.fromCharCode(65+i)})</strong> ${esc(o)}</button>`).join("")
+}
+function choose(i){answers[current]=i;renderQuestion()}
+function prevQ(){if(current>0){current--;renderQuestion()}}
+function nextQ(){if(current<currentTest.questions.length-1){current++;renderQuestion()}}
 function confirmExit(){if(confirm("¿Salir del test? Se perderán las respuestas de este intento."))goHome()}
-function finishQuiz(auto){clearInterval(interval);interval=null;elapsed=Math.floor((Date.now()-startedAt)/1000);let ok=0,bad=0,blank=0;currentTest.questions.forEach((q,i)=>{if(answers[i]===null)blank++;else if(answers[i]===q[2])ok++;else bad++});const raw=ok-(penalty?bad/3:0),score=Math.max(0,raw/currentTest.questions.length*10);$("#resultTitle").textContent=currentTest.title;$("#score").textContent=score.toFixed(2).replace(".",",")+"/10";$("#ok").textContent=ok;$("#bad").textContent=bad;$("#blank").textContent=blank;$("#resultInfo").textContent=(auto?"Tiempo agotado. · ":"")+"Tiempo: "+fmt(timed?Math.min(elapsed,timeLimit):elapsed)+" · "+(penalty?"Penalización 1/3 aplicada.":"Sin penalización.");$("#review").classList.add("hidden");$("#review").innerHTML="";const s=storage();s.done=(s.done||0)+1;s.best=s.best==null?score:Math.max(Number(s.best),score);saveStats(s);show("results")}
-function toggleReview(){const box=$("#review");if(!box.innerHTML){box.innerHTML=currentTest.questions.map((q,i)=>{const a=answers[i],cls=a===null?"blank":(a===q[2]?"correct":"wrong"),yours=a===null?"Sin contestar":String.fromCharCode(65+a)+") "+q[1][a],good=String.fromCharCode(65+q[2])+") "+q[1][q[2]];return `<div class="reviewItem ${cls}"><strong>${i+1}. ${esc(q[0])}</strong><br>Tu respuesta: ${esc(yours)}<br>Correcta: ${esc(good)}</div>`}).join("")}box.classList.toggle("hidden")}
+function finishQuiz(auto=false){
+ clearInterval(interval);interval=null;elapsed=Math.floor((Date.now()-startedAt)/1000);
+ let ok=0,bad=0,blank=0;
+ currentTest.questions.forEach((q,i)=>{if(answers[i]===null)blank++;else if(answers[i]===q[2])ok++;else bad++});
+ const raw=ok-(penalty?bad/3:0),score=Math.max(0,(raw/currentTest.questions.length)*10);
+ $("#resultTitle").textContent=currentTest.title;$("#score").textContent=score.toFixed(2).replace(".",",")+"/10";
+ $("#ok").textContent=ok;$("#bad").textContent=bad;$("#blank").textContent=blank;
+ const used=timed?Math.min(elapsed,timeLimit):elapsed;
+ $("#resultInfo").textContent=(auto?"Tiempo agotado. · ":"")+"Tiempo empleado: "+fmt(used)+" · "+(penalty?"Penalización 1/3 aplicada.":"Sin penalización.");
+ $("#review").classList.add("hidden");$("#review").innerHTML="";
+ const s=stats();s.done=(s.done||0)+1;s.best=s.best==null?score:Math.max(Number(s.best),score);saveStats(s);show("results")
+}
+function toggleReview(){
+ const box=$("#review");
+ if(!box.innerHTML){
+  box.innerHTML=currentTest.questions.map((q,i)=>{
+   const a=answers[i],state=a===null?"blank":(a===q[2]?"ok":"bad");
+   const yours=a===null?"Sin contestar":String.fromCharCode(65+a)+") "+q[1][a];
+   const right=String.fromCharCode(65+q[2])+") "+q[1][q[2]];
+   return `<div class="review-item ${state}"><strong>${i+1}. ${esc(q[0])}</strong><br>Tu respuesta: ${esc(yours)}<br>Correcta: ${esc(right)}</div>`
+  }).join("")
+ }
+ box.classList.toggle("hidden")
+}
 function repeatQuiz(){openSetup(currentTest.id)}
-async function shareResult(){const text=`OposMurcia 360 · ${currentTest.title} · Resultado: ${$("#score").textContent} · https://oposmurcia360.github.io/oposmurcia360/`;if(navigator.share){try{await navigator.share({title:"OposMurcia 360",text});return}catch(e){}}location.href="https://wa.me/?text="+encodeURIComponent(text)}
+function shareTest(){location.href="https://wa.me/?text="+encodeURIComponent("OposMurcia 360 · "+currentTest.title+" · "+PUBLIC_URL)}
+function shareResult(){location.href="https://wa.me/?text="+encodeURIComponent("OposMurcia 360 · "+currentTest.title+" · Resultado: "+$("#score").textContent+" · "+PUBLIC_URL)}
+function openHelp(){$("#help").classList.remove("hidden")} function closeHelp(){$("#help").classList.add("hidden")}
+function backdropClose(e){if(e.target.id==="help")closeHelp()}
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;$("#installBtn").classList.remove("hidden")});
 $("#installBtn").addEventListener("click",async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;$("#installBtn").classList.add("hidden")});
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js?v=4").catch(console.error))}
-loadExternalTests();
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js?v=9").catch(console.error));
+loadTests();
 </script>
 </body></html>
