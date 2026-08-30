@@ -1,5 +1,5 @@
-const CACHE='oposmurcia360-v12';
-const CORE=['./index.html?v=12','./manifest.webmanifest?v=12','./logo-oposmurcia360.png?v=12','./icon-192.png?v=12','./icon-512.png?v=12'];
+const CACHE='oposmurcia360-v13';
+const CORE=['./index.html?v=13','./manifest.webmanifest?v=13','./logo-oposmurcia360.png?v=13','./icon-192.png?v=13','./icon-512.png?v=13'];
 
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).catch(()=>{}));
@@ -23,10 +23,10 @@ self.addEventListener('fetch',event=>{
       fetch(event.request,{cache:'no-store'})
         .then(response=>{
           const copy=response.clone();
-          caches.open(CACHE).then(c=>c.put('./index.html?v=12',copy));
+          caches.open(CACHE).then(c=>c.put('./index.html?v=13',copy));
           return response;
         })
-        .catch(()=>caches.match('./index.html?v=12'))
+        .catch(()=>caches.match('./index.html?v=13'))
     );
     return;
   }

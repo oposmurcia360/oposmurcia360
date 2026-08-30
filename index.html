@@ -6,9 +6,9 @@
 <meta name="theme-color" content="#0758B8">
 <meta name="description" content="OposMurcia 360 · Tests de preparación para Auxiliares Administrativos del Ayuntamiento de Murcia">
 <title>OposMurcia 360</title>
-<link rel="manifest" href="manifest.webmanifest?v=12">
-<link rel="icon" href="icon-192.png?v=12">
-<link rel="apple-touch-icon" href="icon-192.png?v=12">
+<link rel="manifest" href="manifest.webmanifest?v=13">
+<link rel="icon" href="icon-192.png?v=13">
+<link rel="apple-touch-icon" href="icon-192.png?v=13">
 <style>
 :root{
  --blue:#0758B8;--blue-dark:#063E82;--blue-soft:#EAF3FF;
@@ -92,14 +92,14 @@ button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important
 </style>
 </head>
 <body>
-<section id="loginScreen" class="login-shell hidden"><div class="login-wrap"><div class="login-brand"><div class="login-logo"><img src="logo-oposmurcia360.png?v=12" alt="OposMurcia 360"></div><h1>OposMurcia 360</h1><p>Preparación para Auxiliares Administrativos</p></div><div class="login-card"><h2>Acceso a OposMurcia 360</h2>
+<section id="loginScreen" class="login-shell hidden"><div class="login-wrap"><div class="login-brand"><div class="login-logo"><img src="logo-oposmurcia360.png?v=13" alt="OposMurcia 360"></div><h1>OposMurcia 360</h1><p>Preparación para Auxiliares Administrativos</p></div><div class="login-card"><h2>Acceso a OposMurcia 360</h2>
 <div class="login-description"><strong>Plataforma privada de preparación para Auxiliares Administrativos del Ayuntamiento de Murcia.</strong><br>
 Accede a tus cuestionarios, realiza simulacros con o sin tiempo, aplica penalización opcional y revisa tus resultados al finalizar.</div>
 <p>Introduce las credenciales facilitadas por el administrador.</p><div id="authMsg" class="hidden"></div><form id="loginForm"><div class="field"><label for="email">Correo electrónico</label><input id="email" type="email" autocomplete="username" required></div><div class="field"><label for="password">Contraseña</label><input id="password" type="password" autocomplete="current-password" required></div><button id="loginBtn" class="primary" style="width:100%" type="submit">Iniciar sesión</button></form><button id="resetBtn" class="secondary" style="width:100%;margin-top:10px" type="button">¿Has olvidado tu contraseña?</button><div class="login-note">Acceso exclusivo para usuarios autorizados · Sin registro público</div></div></div></section><section id="loadingScreen" class="loading-screen"><div><div class="spinner"></div><p class="muted">Comprobando acceso…</p></div></section><div id="appShell" class="shell hidden">
 <section id="home">
  <header class="top">
   <div class="brand">
-   <img src="logo-oposmurcia360.png?v=12" alt="OposMurcia 360">
+   <img src="logo-oposmurcia360.png?v=13" alt="OposMurcia 360">
    <div><h1>OposMurcia 360</h1><p>Cuestionarios de preparación para Auxiliares Administrativos del Ayuntamiento de Murcia</p></div>
   </div><div class="userbar"><small id="userEmail"></small><button id="logoutBtn" class="logout">Cerrar sesión</button></div>
   <div class="hero">
@@ -125,7 +125,7 @@ Accede a tus cuestionarios, realiza simulacros con o sin tiempo, aplica penaliza
 <section id="setup" class="hidden">
  <div class="view-top"><button class="back" onclick="goHome()">← Volver</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
  <div class="panel">
-  <img src="logo-oposmurcia360.png?v=12" alt="" style="width:72px;height:72px;float:right;margin-left:10px;background:#fff;border-radius:50%;padding:3px">
+  <img src="logo-oposmurcia360.png?v=13" alt="" style="width:72px;height:72px;float:right;margin-left:10px;background:#fff;border-radius:50%;padding:3px">
   <div class="section-kicker">Configurar test</div>
   <h2 id="setupTitle"></h2><p id="setupDesc" class="muted"></p>
   <label><input type="radio" name="timeMode" value="none" checked> Sin tiempo · cronómetro de tiempo empleado</label>
@@ -226,9 +226,9 @@ async function loadTests(){
   }
   renderHome();
 }
-function stats(){try{return JSON.parse(localStorage.getItem('opos360_stats_v12')||'{"done":0,"best":null}')}catch(e){return {done:0,best:null}}} function saveStats(s){localStorage.setItem('opos360_stats_v12',JSON.stringify(s))}
+function stats(){try{return JSON.parse(localStorage.getItem('opos360_stats_v13')||'{"done":0,"best":null}')}catch(e){return {done:0,best:null}}} function saveStats(s){localStorage.setItem('opos360_stats_v13',JSON.stringify(s))}
 function renderStats(){const s=stats();$('#doneCount').textContent=s.done||0;$('#bestScore').textContent=s.best==null?'—':Number(s.best).toFixed(2).replace('.',',')}
-function renderHome(){document.querySelector('#heroCount').textContent=TESTS.length+' '+(TESTS.length===1?'test':'tests');$('#qCount').textContent=TESTS.reduce((n,t)=>n+(t.questions?.length||0),0);renderStats();$('#testGrid').innerHTML=TESTS.length?TESTS.map(t=>`<article class="test-card"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=12" alt=""><div><h3>${esc(t.title)}</h3><div class="muted">${esc(t.description||t.subtitle||'Cuestionario de preparación')}</div></div></div><div class="pills"><span class="pill">${t.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-test="${esc(t.id)}">Realizar test</button></article>`).join(''):'<div class="empty">No hay tests disponibles todavía en Firestore.</div>';document.querySelectorAll('[data-test]').forEach(b=>b.onclick=()=>openSetup(b.dataset.test))}
+function renderHome(){document.querySelector('#heroCount').textContent=TESTS.length+' '+(TESTS.length===1?'test':'tests');$('#qCount').textContent=TESTS.reduce((n,t)=>n+(t.questions?.length||0),0);renderStats();$('#testGrid').innerHTML=TESTS.length?TESTS.map(t=>`<article class="test-card"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=13" alt=""><div><h3>${esc(t.title)}</h3><div class="muted">${esc(t.description||t.subtitle||'Cuestionario de preparación')}</div></div></div><div class="pills"><span class="pill">${t.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-test="${esc(t.id)}">Realizar test</button></article>`).join(''):'<div class="empty">No hay tests disponibles todavía en Firestore.</div>';document.querySelectorAll('[data-test]').forEach(b=>b.onclick=()=>openSetup(b.dataset.test))}
 function show(id){['home','setup','quiz','results'].forEach(x=>$('#'+x).classList.toggle('hidden',x!==id));window.scrollTo({top:0,behavior:'smooth'})}
 window.goHome=()=>{clearInterval(interval);interval=null;show('home');renderHome()};function openSetup(id){currentTest=TESTS.find(t=>t.id===id);if(!currentTest)return;$('#setupTitle').textContent=currentTest.title;$('#setupDesc').textContent=currentTest.description||currentTest.subtitle||'';show('setup')}
 window.startQuiz=()=>{if(!currentTest||!Array.isArray(currentTest.questions)||!currentTest.questions.length){alert('Este test no contiene preguntas válidas.');return;}answers=Array(currentTest.questions.length).fill(null);current=0;penalty=$('#penalty').checked;timed=document.querySelector('input[name="timeMode"]:checked').value==='timed';timeLimit=Math.max(1,parseInt($('#minutes').value||30))*60;elapsed=0;startedAt=Date.now();show('quiz');renderQuestion();tick();clearInterval(interval);interval=setInterval(()=>{elapsed=Math.floor((Date.now()-startedAt)/1000);tick();if(timed&&elapsed>=timeLimit)finishQuiz(true)},1000)};
@@ -240,7 +240,7 @@ window.toggleReview=()=>{const box=$('#review');if(!box.innerHTML)box.innerHTML=
 window.openHelp=()=>$('#help').classList.remove('hidden');window.closeHelp=()=>$('#help').classList.add('hidden');window.backdropClose=e=>{if(e.target.id==='help')closeHelp()};
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;const b=$('#installBtn');if(b)b.classList.remove('hidden')}); const ib=$('#installBtn');if(ib)ib.onclick=async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;ib.classList.add('hidden')};
 onAuthStateChanged(auth,async user=>{$('#loadingScreen').classList.add('hidden');if(!user){TESTS=[];$('#appShell').classList.add('hidden');$('#loginScreen').classList.remove('hidden');return}$('#loginScreen').classList.add('hidden');$('#appShell').classList.remove('hidden');$('#userEmail').textContent=user.email||'Usuario';try{await loadTests()}catch(e){console.error(e);$('#testGrid').innerHTML='<div class="data-error"><strong>No se han podido cargar las preguntas.</strong><br>La sesión funciona, pero los datos de Firestore no tienen el formato esperado o el navegador conserva una versión antigua. Recarga esta versión de la app.</div>'}});
-if('caches' in window){caches.keys().then(keys=>Promise.all(keys.filter(k=>k!=='oposmurcia360-v12').map(k=>caches.delete(k)))).catch(()=>{})}
-if('serviceWorker' in navigator)window.addEventListener('load',async()=>{try{const r=await navigator.serviceWorker.register('sw.js?v=12',{updateViaCache:'none'});await r.update()}catch(e){console.error(e)}});
+if('caches' in window){caches.keys().then(keys=>Promise.all(keys.filter(k=>k!=='oposmurcia360-v13').map(k=>caches.delete(k)))).catch(()=>{})}
+if('serviceWorker' in navigator)window.addEventListener('load',async()=>{try{const r=await navigator.serviceWorker.register('sw.js?v=13',{updateViaCache:'none'});await r.update()}catch(e){console.error(e)}});
 </script>
 </body></html>
