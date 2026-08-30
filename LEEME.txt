@@ -1,0 +1,12 @@
+OPOSMURCIA 360 - VERSIÓN 4 REHECHA
+Archivos a subir a GitHub:
+index.html
+tests.json
+manifest.webmanifest
+sw.js
+icon-192.png
+icon-512.png
+
+La app contiene 3 tests / 80 preguntas.
+También incluye una copia interna de los tests, por lo que la biblioteca no queda vacía si tests.json falla.
+No subas el ZIP a GitHub: descomprímelo y sube los 6 archivos.
