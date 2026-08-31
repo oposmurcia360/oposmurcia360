@@ -95,6 +95,7 @@ button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important
 .topic-heading h2{margin:0;color:var(--blue-dark);font-size:20px;line-height:1.25}
 .topic-count{white-space:nowrap;font-size:12px;font-weight:800;color:var(--blue-dark);background:#fff;border:1px solid #D7E8F7;border-radius:999px;padding:5px 9px}
 .topic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.copyright{margin:18px 0 4px;padding:18px 12px 4px;border-top:1px solid #D8E7F7;text-align:center;color:var(--muted);font-size:12px;line-height:1.5;font-weight:600}
 @media(max-width:699px){.topic-heading{align-items:flex-start}.topic-heading h2{font-size:18px}.topic-grid{grid-template-columns:1fr}}
 
 
@@ -145,14 +146,14 @@ button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important
 </style>
 </head>
 <body>
-<section id="loginScreen" class="login-shell hidden"><div class="login-wrap"><div class="login-brand"><div class="login-logo"><img src="logo-oposmurcia360.png?v=20" alt="OposMurcia 360"></div><h1>OposMurcia 360</h1><p>Tests y supuestos prácticos · Auxiliares Administrativos</p></div><div class="login-card"><h2>Acceso a OposMurcia 360</h2>
+<section id="loginScreen" class="login-shell hidden"><div class="login-wrap"><div class="login-brand"><div class="login-logo"><img src="logo-oposmurcia360.png?v=21" alt="OposMurcia 360"></div><h1>OposMurcia 360</h1><p>Tests y supuestos prácticos · Auxiliares Administrativos</p></div><div class="login-card"><h2>Acceso a OposMurcia 360</h2>
 <div class="login-description"><strong>Plataforma privada de preparación para Auxiliares Administrativos del Ayuntamiento de Murcia.</strong><br>
 Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, aplica penalización opcional y revisa tus resultados al finalizar.</div>
 <p>Introduce las credenciales facilitadas por el administrador.</p><div id="authMsg" class="hidden"></div><form id="loginForm"><div class="field"><label for="email">Correo electrónico</label><input id="email" type="email" autocomplete="username" required></div><div class="field"><label for="password">Contraseña</label><input id="password" type="password" autocomplete="current-password" required></div><button id="loginBtn" class="primary" style="width:100%" type="submit">Iniciar sesión</button></form><button id="resetBtn" class="secondary" style="width:100%;margin-top:10px" type="button">¿Has olvidado tu contraseña?</button><div class="login-note">Acceso exclusivo para usuarios autorizados · Sin registro público</div></div></div></section><section id="loadingScreen" class="loading-screen"><div><div class="spinner"></div><p class="muted">Comprobando acceso…</p></div></section><div id="appShell" class="shell hidden">
 <section id="home">
  <header class="top">
   <div class="brand">
-   <img src="logo-oposmurcia360.png?v=20" alt="OposMurcia 360">
+   <img src="logo-oposmurcia360.png?v=21" alt="OposMurcia 360">
    <div><h1>OposMurcia 360</h1><p>Tests y supuestos prácticos para Auxiliares Administrativos del Ayuntamiento de Murcia</p></div>
   </div><div class="userbar"><small id="userEmail"></small><button id="logoutBtn" class="logout">Cerrar sesión</button></div>
   <div class="hero">
@@ -193,13 +194,14 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
   </div>
   <div id="practicalGrid"></div>
  </div>
- <div class="foot">OposMurcia 360 · Preparación práctica y gratuita</div>
+ <div class="foot">OposMurcia 360 · Preparación práctica</div>
+ <footer class="copyright">© 2026 OposMurcia 360 · Todos los derechos reservados.</footer>
 </section>
 
 <section id="setup" class="hidden">
  <div class="view-top"><button class="back" onclick="goHome()">← Volver</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
  <div class="panel">
-  <img src="logo-oposmurcia360.png?v=20" alt="" style="width:72px;height:72px;float:right;margin-left:10px;background:#fff;border-radius:50%;padding:3px">
+  <img src="logo-oposmurcia360.png?v=21" alt="" style="width:72px;height:72px;float:right;margin-left:10px;background:#fff;border-radius:50%;padding:3px">
   <div class="section-kicker">Configurar test</div>
   <h2 id="setupTitle"></h2><p id="setupDesc" class="muted"></p>
   <label><input type="radio" name="timeMode" value="none" checked> Sin tiempo · cronómetro de tiempo empleado</label>
@@ -230,7 +232,7 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
 <section id="practicalSetup" class="hidden">
  <div class="view-top"><button class="back" onclick="goHome()">← Volver</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
  <div class="panel">
-  <img src="logo-oposmurcia360.png?v=20" alt="" style="width:72px;height:72px;float:right;margin-left:10px;background:#fff;border-radius:50%;padding:3px">
+  <img src="logo-oposmurcia360.png?v=21" alt="" style="width:72px;height:72px;float:right;margin-left:10px;background:#fff;border-radius:50%;padding:3px">
   <div class="section-kicker">Configurar supuesto práctico</div>
   <h2 id="practicalSetupTitle"></h2><p id="practicalSetupDesc" class="muted"></p>
   <label><input type="radio" name="practicalTimeMode" value="none" checked> Sin tiempo · cronómetro de tiempo empleado</label>
@@ -419,10 +421,10 @@ function topicInfo(t){
   return {key:'otros',label:'Otros tests',order:999};
 }
 function renderTestCard(t){
-  return `<article class="test-card"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=20" alt=""><div><h3>${esc(t.title)}</h3><div class="muted">${esc(t.description||t.subtitle||'Cuestionario de preparación')}</div></div></div><div class="pills"><span class="pill">${t.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-test="${esc(t.id)}">Realizar test</button></article>`;
+  return `<article class="test-card"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=21" alt=""><div><h3>${esc(t.title)}</h3><div class="muted">${esc(t.description||t.subtitle||'Cuestionario de preparación')}</div></div></div><div class="pills"><span class="pill">${t.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-test="${esc(t.id)}">Realizar test</button></article>`;
 }
 function renderPracticalCard(p){
-  return `<article class="practical-card"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=20" alt=""><div><h3>${esc(p.title)}</h3><div class="muted">${esc(p.description||p.subtitle||'Supuesto práctico para Auxiliares Administrativos')}</div></div></div><span class="practical-tag">📖 Enunciado + cuestionario</span><div class="pills"><span class="pill">${p.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-practical="${esc(p.id)}">Realizar supuesto práctico</button></article>`;
+  return `<article class="practical-card"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=21" alt=""><div><h3>${esc(p.title)}</h3><div class="muted">${esc(p.description||p.subtitle||'Supuesto práctico para Auxiliares Administrativos')}</div></div></div><span class="practical-tag">📖 Enunciado + cuestionario</span><div class="pills"><span class="pill">${p.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-practical="${esc(p.id)}">Realizar supuesto práctico</button></article>`;
 }
 function renderHome(){
   const totalQuestions=TESTS.reduce((n,t)=>n+(t.questions?.length||0),0)+PRACTICALS.reduce((n,p)=>n+(p.questions?.length||0),0);
@@ -601,7 +603,7 @@ window.openHelp=()=>$('#help').classList.remove('hidden');window.closeHelp=()=>$
 
 
 onAuthStateChanged(auth,async user=>{$('#loadingScreen').classList.add('hidden');if(!user){TESTS=[];$('#appShell').classList.add('hidden');$('#loginScreen').classList.remove('hidden');return}$('#loginScreen').classList.add('hidden');$('#appShell').classList.remove('hidden');$('#userEmail').textContent=user.email||'Usuario';try{await Promise.all([loadTests(),loadPracticals()]);renderHome()}catch(e){console.error(e);$('#testGrid').innerHTML='<div class="data-error"><strong>No se han podido cargar las preguntas.</strong><br>La sesión funciona, pero los datos de Firestore no tienen el formato esperado o el navegador conserva una versión antigua. Recarga esta versión de la app.</div>'}});
-if('caches' in window){caches.keys().then(keys=>Promise.all(keys.filter(k=>k!=='oposmurcia360-v20').map(k=>caches.delete(k)))).catch(()=>{})}
-if('serviceWorker' in navigator)window.addEventListener('load',async()=>{try{const r=await navigator.serviceWorker.register('sw.js?v=20',{updateViaCache:'none'});await r.update()}catch(e){console.error(e)}});
+if('caches' in window){caches.keys().then(keys=>Promise.all(keys.filter(k=>k!=='oposmurcia360-v21').map(k=>caches.delete(k)))).catch(()=>{})}
+if('serviceWorker' in navigator)window.addEventListener('load',async()=>{try{const r=await navigator.serviceWorker.register('sw.js?v=21',{updateViaCache:'none'});await r.update()}catch(e){console.error(e)}});
 </script>
 </body></html>
