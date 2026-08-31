@@ -4,9 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0758B8">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="OposMurcia 360">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="OposMurcia 360">
 <meta name="description" content="OposMurcia 360 · Tests y supuestos prácticos para Auxiliares Administrativos del Ayuntamiento de Murcia">
 <title>OposMurcia 360</title>
-<link rel="manifest" href="manifest.webmanifest?v=20">
+<link rel="manifest" href="manifest.webmanifest?v=22-sec">
 <link rel="icon" href="icon-192.png?v=20">
 <link rel="apple-touch-icon" href="icon-192.png?v=20">
 <style>
@@ -81,7 +86,14 @@ button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important
 }
 @media(max-width:340px){.brand p{display:none}.test-logo{width:48px;height:48px;flex-basis:48px}}
 
-.login-shell{min-height:100vh;background:linear-gradient(180deg,var(--blue) 0 36%,var(--bg) 36%);display:grid;place-items:center;padding:40px 20px}.login-wrap{width:min(100%,520px)}.login-brand{text-align:center;color:#fff;margin-bottom:18px}.login-logo{width:112px;height:112px;border-radius:50%;background:#fff;padding:6px;margin:0 auto 12px;display:grid;place-items:center;box-shadow:0 10px 24px rgba(0,0,0,.15)}.login-logo img{width:100%;height:100%;object-fit:contain}.login-brand h1{margin:0;font-size:28px}.login-brand p{margin:6px 0 0;color:#E8F2FF;font-size:13px}.login-card{background:#fff;border-radius:24px;padding:28px;box-shadow:0 20px 60px rgba(10,32,60,.18)}.login-card h2{margin:0 0 5px}.login-card>p{margin:0 0 18px;color:var(--muted);font-size:13px}.field{margin:13px 0}.field label{display:block;font-size:12px;font-weight:850;margin-bottom:6px}.field input{width:100%;height:50px;border:1.5px solid var(--line);border-radius:14px;padding:0 13px;outline:none}.field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(7,88,184,.10)}.authmsg{border-radius:12px;padding:10px 12px;font-size:12px;margin:10px 0}.authmsg.error{background:#FFF2F2;border:1px solid #F2C9C9;color:#8D2C2C}.authmsg.success{background:#EFFAF5;border:1px solid #CDE9DA;color:#276347}.login-note{text-align:center;color:var(--muted);font-size:11px;margin-top:13px}.loading-screen{min-height:100vh;display:grid;place-items:center;text-align:center}.spinner{width:42px;height:42px;border:4px solid #DDE8F7;border-top-color:var(--blue);border-radius:50%;animation:spin .85s linear infinite;margin:auto}@keyframes spin{to{transform:rotate(360deg)}}.userbar{display:flex;align-items:center;gap:8px;margin-left:auto}.userbar small{max-width:170px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.logout{border:1px solid rgba(255,255,255,.55);background:#fff;color:var(--blue-dark);border-radius:11px;padding:8px 10px;font-weight:850}.empty{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;color:var(--muted)}
+.login-shell{min-height:100vh;background:linear-gradient(180deg,var(--blue) 0 36%,var(--bg) 36%);display:grid;place-items:center;padding:40px 20px}.login-wrap{width:min(100%,520px)}.login-brand{text-align:center;color:#fff;margin-bottom:18px}.login-logo{width:112px;height:112px;border-radius:50%;background:#fff;padding:6px;margin:0 auto 12px;display:grid;place-items:center;box-shadow:0 10px 24px rgba(0,0,0,.15)}.login-logo img{width:100%;height:100%;object-fit:contain}.login-brand h1{margin:0;font-size:28px}.login-brand p{margin:6px 0 0;color:#E8F2FF;font-size:13px}.login-card{background:#fff;border-radius:24px;padding:28px;box-shadow:0 20px 60px rgba(10,32,60,.18)}.login-card h2{margin:0 0 5px}.login-card>p{margin:0 0 18px;color:var(--muted);font-size:13px}.field{margin:13px 0}.field label{display:block;font-size:12px;font-weight:850;margin-bottom:6px}.field input{width:100%;height:50px;border:1.5px solid var(--line);border-radius:14px;padding:0 13px;outline:none}.field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(7,88,184,.10)}.authmsg{border-radius:12px;padding:10px 12px;font-size:12px;margin:10px 0}.authmsg.error{background:#FFF2F2;border:1px solid #F2C9C9;color:#8D2C2C}.authmsg.success{background:#EFFAF5;border:1px solid #CDE9DA;color:#276347}.auth-separator{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--muted);font-size:12px}.auth-separator:before,.auth-separator:after{content:"";height:1px;background:#D8E7F7;flex:1}.google-login{width:100%;min-height:46px;border:1.5px solid #D8E1EC;background:#fff;color:#263238;border-radius:14px;padding:12px 14px;font-weight:850;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px}.google-login:active{background:#F5F7FA}.google-g{font-size:18px;font-weight:900;color:#1a73e8}
+.login-install{width:100%;margin-top:12px;border:1.5px solid var(--blue);background:#F4F9FF;color:var(--blue-dark);border-radius:14px;padding:13px 14px;font-weight:850;cursor:pointer}
+.login-install:active{background:#EAF4FF}
+.install-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.install-status{font-size:11px;color:#DCEBFF;line-height:1.35}
+.install-steps{margin:10px 0 0;padding-left:20px}.install-steps li{margin:8px 0}
+.install-badge{display:inline-block;background:#EAF4FF;color:var(--blue-dark);font-weight:850;border-radius:999px;padding:5px 9px;font-size:12px;margin-bottom:8px}
+.login-note{text-align:center;color:var(--muted);font-size:11px;margin-top:13px}.loading-screen{min-height:100vh;display:grid;place-items:center;text-align:center}.spinner{width:42px;height:42px;border:4px solid #DDE8F7;border-top-color:var(--blue);border-radius:50%;animation:spin .85s linear infinite;margin:auto}@keyframes spin{to{transform:rotate(360deg)}}.userbar{display:flex;align-items:center;gap:8px;margin-left:auto}.userbar small{max-width:170px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.logout{border:1px solid rgba(255,255,255,.55);background:#fff;color:var(--blue-dark);border-radius:11px;padding:8px 10px;font-weight:850}.empty{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;color:var(--muted)}
 
 .login-description{margin:14px 0 20px;padding:14px 15px;border:1px solid #CFE0F6;background:#F7FBFF;border-radius:14px;color:#294B70;font-size:13px;line-height:1.55;text-align:left}
 .home-intro{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 18px;margin:0 0 20px;box-shadow:0 5px 18px rgba(18,32,51,.05)}
@@ -146,19 +158,19 @@ button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important
 </style>
 </head>
 <body>
-<section id="loginScreen" class="login-shell hidden"><div class="login-wrap"><div class="login-brand"><div class="login-logo"><img src="logo-oposmurcia360.png?v=21" alt="OposMurcia 360"></div><h1>OposMurcia 360</h1><p>Tests y supuestos prácticos · Auxiliares Administrativos</p></div><div class="login-card"><h2>Acceso a OposMurcia 360</h2>
+<section id="loginScreen" class="login-shell hidden"><div class="login-wrap"><div class="login-brand"><div class="login-logo"><img src="logo-oposmurcia360.png?v=22-sec" alt="OposMurcia 360"></div><h1>OposMurcia 360</h1><p>Tests y supuestos prácticos · Auxiliares Administrativos</p></div><div class="login-card"><h2>Acceso a OposMurcia 360</h2>
 <div class="login-description"><strong>Plataforma privada de preparación para Auxiliares Administrativos del Ayuntamiento de Murcia.</strong><br>
 Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, aplica penalización opcional y revisa tus resultados al finalizar.</div>
-<p>Introduce las credenciales facilitadas por el administrador.</p><div id="authMsg" class="hidden"></div><form id="loginForm"><div class="field"><label for="email">Correo electrónico</label><input id="email" type="email" autocomplete="username" required></div><div class="field"><label for="password">Contraseña</label><input id="password" type="password" autocomplete="current-password" required></div><button id="loginBtn" class="primary" style="width:100%" type="submit">Iniciar sesión</button></form><button id="resetBtn" class="secondary" style="width:100%;margin-top:10px" type="button">¿Has olvidado tu contraseña?</button><div class="login-note">Acceso exclusivo para usuarios autorizados · Sin registro público</div></div></div></section><section id="loadingScreen" class="loading-screen"><div><div class="spinner"></div><p class="muted">Comprobando acceso…</p></div></section><div id="appShell" class="shell hidden">
+<p>Introduce las credenciales facilitadas por el administrador.</p><div id="authMsg" class="hidden"></div><form id="loginForm"><div class="field"><label for="email">Correo electrónico</label><input id="email" type="email" autocomplete="username" required></div><div class="field"><label for="password">Contraseña</label><input id="password" type="password" autocomplete="current-password" required></div><button id="loginBtn" class="primary" style="width:100%" type="submit">Iniciar sesión</button></form><div class="auth-separator"><span>o</span></div><button id="googleLoginBtn" class="google-login" type="button"><span class="google-g">G</span><span>Continuar con Google</span></button><button id="resetBtn" class="secondary" style="width:100%;margin-top:10px" type="button">¿Has olvidado tu contraseña?</button><button id="loginInstallBtn" class="login-install" type="button">📲 Instalar OposMurcia 360 en Android</button><div class="login-note">Acceso exclusivo para usuarios autorizados · Sin registro público</div></div></div></section><section id="loadingScreen" class="loading-screen"><div><div class="spinner"></div><p class="muted">Comprobando acceso…</p></div></section><div id="appShell" class="shell hidden">
 <section id="home">
  <header class="top">
   <div class="brand">
-   <img src="logo-oposmurcia360.png?v=21" alt="OposMurcia 360">
+   <img src="logo-oposmurcia360.png?v=22-sec" alt="OposMurcia 360">
    <div><h1>OposMurcia 360</h1><p>Tests y supuestos prácticos para Auxiliares Administrativos del Ayuntamiento de Murcia</p></div>
   </div><div class="userbar"><small id="userEmail"></small><button id="logoutBtn" class="logout">Cerrar sesión</button></div>
   <div class="hero">
    <div><small>Biblioteca disponible</small><strong id="heroCount">Tests + supuestos</strong><button class="help-link" onclick="openHelp()">Cómo funciona</button></div>
-   
+   <div class="install-row"><button id="installBtn" class="install" type="button">📲 Instalar app</button><span id="installStatus" class="install-status"></span></div>
   </div>
  </header>
  <div class="home-intro">
@@ -201,7 +213,7 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
 <section id="setup" class="hidden">
  <div class="view-top"><button class="back" onclick="goHome()">← Volver</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
  <div class="panel">
-  <img src="logo-oposmurcia360.png?v=21" alt="" style="width:72px;height:72px;float:right;margin-left:10px;background:#fff;border-radius:50%;padding:3px">
+  <img src="logo-oposmurcia360.png?v=22-sec" alt="" style="width:72px;height:72px;float:right;margin-left:10px;background:#fff;border-radius:50%;padding:3px">
   <div class="section-kicker">Configurar test</div>
   <h2 id="setupTitle"></h2><p id="setupDesc" class="muted"></p>
   <label><input type="radio" name="timeMode" value="none" checked> Sin tiempo · cronómetro de tiempo empleado</label>
@@ -232,7 +244,7 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
 <section id="practicalSetup" class="hidden">
  <div class="view-top"><button class="back" onclick="goHome()">← Volver</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
  <div class="panel">
-  <img src="logo-oposmurcia360.png?v=21" alt="" style="width:72px;height:72px;float:right;margin-left:10px;background:#fff;border-radius:50%;padding:3px">
+  <img src="logo-oposmurcia360.png?v=22-sec" alt="" style="width:72px;height:72px;float:right;margin-left:10px;background:#fff;border-radius:50%;padding:3px">
   <div class="section-kicker">Configurar supuesto práctico</div>
   <h2 id="practicalSetupTitle"></h2><p id="practicalSetupDesc" class="muted"></p>
   <label><input type="radio" name="practicalTimeMode" value="none" checked> Sin tiempo · cronómetro de tiempo empleado</label>
@@ -328,6 +340,15 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
 
 
 
+<div id="installHelp" class="modal-wrap hidden" onclick="installBackdropClose(event)">
+ <div class="modal">
+  <span class="install-badge">Instalación en Android</span>
+  <h2>Instalar OposMurcia 360</h2>
+  <div id="installHelpContent"></div>
+  <button class="primary" style="width:100%;margin-top:12px" type="button" onclick="closeInstallHelp()">Entendido</button>
+ </div>
+</div>
+
 <div id="help" class="modal-wrap hidden" onclick="backdropClose(event)">
  <div class="modal">
   <h2>Cómo funciona</h2>
@@ -341,7 +362,7 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-import { getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut,sendPasswordResetEmail,setPersistence,browserLocalPersistence } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+import { getAuth,onAuthStateChanged,signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider,signOut,sendPasswordResetEmail,setPersistence,browserLocalPersistence } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 import { getFirestore,collection,getDocs } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 const firebaseConfig={"apiKey":"AIzaSyDA_79FRQq90gVJgD17dRr_pUHKe4S8XBg","authDomain":"oposmurcia360-5a389.firebaseapp.com","projectId":"oposmurcia360-5a389","storageBucket":"oposmurcia360-5a389.firebasestorage.app","messagingSenderId":"730198455785","appId":"1:730198455785:web:1f3e3d4f8edf8774780778","measurementId":"G-T8QHKNDX5T"};
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app); await setPersistence(auth,browserLocalPersistence);
@@ -352,6 +373,26 @@ function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&l
 function msg(t,type='error'){const e=$('#authMsg');e.textContent=t;e.className='authmsg '+type} function clearMsg(){const e=$('#authMsg');e.textContent='';e.className='hidden'}
 function ferr(c){return ({'auth/invalid-credential':'Correo o contraseña incorrectos.','auth/user-disabled':'Esta cuenta está desactivada.','auth/too-many-requests':'Demasiados intentos. Inténtalo más tarde.','auth/invalid-email':'El correo electrónico no es válido.','auth/network-request-failed':'No se ha podido conectar. Comprueba tu conexión.'}[c]||'No se ha podido iniciar sesión.')}
 $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();clearMsg();const b=$('#loginBtn');b.disabled=true;b.textContent='Accediendo…';try{await signInWithEmailAndPassword(auth,$('#email').value.trim(),$('#password').value)}catch(x){msg(ferr(x.code))}finally{b.disabled=false;b.textContent='Iniciar sesión'}});
+const googleProvider=new GoogleAuthProvider();
+googleProvider.setCustomParameters({prompt:'select_account'});
+const googleLoginBtn=$('#googleLoginBtn');
+if(googleLoginBtn)googleLoginBtn.addEventListener('click',async()=>{
+  clearMsg();
+  googleLoginBtn.disabled=true;
+  const oldText=googleLoginBtn.innerHTML;
+  googleLoginBtn.textContent='Conectando con Google…';
+  try{
+    await signInWithPopup(auth,googleProvider);
+  }catch(x){
+    if(x?.code!=='auth/popup-closed-by-user' && x?.code!=='auth/cancelled-popup-request'){
+      msg(ferr(x?.code)||'No se ha podido iniciar sesión con Google.');
+    }
+  }finally{
+    googleLoginBtn.disabled=false;
+    googleLoginBtn.innerHTML=oldText;
+  }
+});
+
 $('#resetBtn').addEventListener('click',async()=>{clearMsg();const email=$('#email').value.trim();if(!email)return msg('Escribe primero tu correo electrónico.');try{await sendPasswordResetEmail(auth,email);msg('Correo de recuperación enviado.','success')}catch(x){msg(ferr(x.code))}}); $('#logoutBtn').addEventListener('click',()=>signOut(auth));
 async function loadTests(){
   const s=await getDocs(collection(db,'tests'));
@@ -421,10 +462,10 @@ function topicInfo(t){
   return {key:'otros',label:'Otros tests',order:999};
 }
 function renderTestCard(t){
-  return `<article class="test-card"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=21" alt=""><div><h3>${esc(t.title)}</h3><div class="muted">${esc(t.description||t.subtitle||'Cuestionario de preparación')}</div></div></div><div class="pills"><span class="pill">${t.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-test="${esc(t.id)}">Realizar test</button></article>`;
+  return `<article class="test-card"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=22-sec" alt=""><div><h3>${esc(t.title)}</h3><div class="muted">${esc(t.description||t.subtitle||'Cuestionario de preparación')}</div></div></div><div class="pills"><span class="pill">${t.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-test="${esc(t.id)}">Realizar test</button></article>`;
 }
 function renderPracticalCard(p){
-  return `<article class="practical-card"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=21" alt=""><div><h3>${esc(p.title)}</h3><div class="muted">${esc(p.description||p.subtitle||'Supuesto práctico para Auxiliares Administrativos')}</div></div></div><span class="practical-tag">📖 Enunciado + cuestionario</span><div class="pills"><span class="pill">${p.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-practical="${esc(p.id)}">Realizar supuesto práctico</button></article>`;
+  return `<article class="practical-card"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=22-sec" alt=""><div><h3>${esc(p.title)}</h3><div class="muted">${esc(p.description||p.subtitle||'Supuesto práctico para Auxiliares Administrativos')}</div></div></div><span class="practical-tag">📖 Enunciado + cuestionario</span><div class="pills"><span class="pill">${p.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-practical="${esc(p.id)}">Realizar supuesto práctico</button></article>`;
 }
 function renderHome(){
   const totalQuestions=TESTS.reduce((n,t)=>n+(t.questions?.length||0),0)+PRACTICALS.reduce((n,p)=>n+(p.questions?.length||0),0);
@@ -602,8 +643,97 @@ window.openHelp=()=>$('#help').classList.remove('hidden');window.closeHelp=()=>$
 
 
 
-onAuthStateChanged(auth,async user=>{$('#loadingScreen').classList.add('hidden');if(!user){TESTS=[];$('#appShell').classList.add('hidden');$('#loginScreen').classList.remove('hidden');return}$('#loginScreen').classList.add('hidden');$('#appShell').classList.remove('hidden');$('#userEmail').textContent=user.email||'Usuario';try{await Promise.all([loadTests(),loadPracticals()]);renderHome()}catch(e){console.error(e);$('#testGrid').innerHTML='<div class="data-error"><strong>No se han podido cargar las preguntas.</strong><br>La sesión funciona, pero los datos de Firestore no tienen el formato esperado o el navegador conserva una versión antigua. Recarga esta versión de la app.</div>'}});
-if('caches' in window){caches.keys().then(keys=>Promise.all(keys.filter(k=>k!=='oposmurcia360-v21').map(k=>caches.delete(k)))).catch(()=>{})}
-if('serviceWorker' in navigator)window.addEventListener('load',async()=>{try{const r=await navigator.serviceWorker.register('sw.js?v=21',{updateViaCache:'none'});await r.update()}catch(e){console.error(e)}});
+
+let deferredInstallPrompt=null;
+function isStandalone(){
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true;
+}
+function updateInstallUI(){
+  const installed=isStandalone();
+  const buttons=[$('#installBtn'),$('#loginInstallBtn')].filter(Boolean);
+  buttons.forEach(btn=>{
+    if(installed){
+      btn.textContent='✓ App instalada';
+      btn.disabled=true;
+      btn.style.opacity='.82';
+      btn.style.cursor='default';
+    }
+  });
+  const status=$('#installStatus');
+  if(status)status.textContent=installed?'Abierta como aplicación':'';
+}
+function showInstallInfo(){
+  const c=$('#installHelpContent');
+  if(!c)return;
+  if(isStandalone()){
+    c.innerHTML='<p><strong>OposMurcia 360 ya está instalada</strong> en este dispositivo. Puedes abrirla desde su icono como cualquier otra aplicación.</p>';
+  }else if(/android/i.test(navigator.userAgent)){
+    c.innerHTML='<p>Para instalarla en <strong>Android</strong>, abre OposMurcia 360 en <strong>Google Chrome</strong>.</p><ol class="install-steps"><li>Si has llegado desde WhatsApp u otro navegador interno, usa su menú para <strong>abrir en Chrome</strong>.</li><li>En Chrome, pulsa el menú <strong>⋮</strong>.</li><li>Selecciona <strong>“Instalar aplicación”</strong> o <strong>“Añadir a pantalla de inicio”</strong>.</li><li>Confirma <strong>Instalar</strong>.</li></ol><p>Después aparecerá el icono de OposMurcia 360 entre tus aplicaciones.</p>';
+  }else{
+    c.innerHTML='<p>Este botón está preparado principalmente para <strong>Android con Google Chrome</strong>. En otros dispositivos, utiliza la opción de instalación o “Añadir a pantalla de inicio” del navegador.</p>';
+  }
+  $('#installHelp').classList.remove('hidden');
+}
+window.closeInstallHelp=()=>$('#installHelp').classList.add('hidden');
+window.installBackdropClose=e=>{if(e.target.id==='installHelp')closeInstallHelp()};
+async function requestInstall(){
+  if(isStandalone()){showInstallInfo();return}
+  if(deferredInstallPrompt){
+    const promptEvent=deferredInstallPrompt;
+    deferredInstallPrompt=null;
+    promptEvent.prompt();
+    try{
+      const choice=await promptEvent.userChoice;
+      if(!choice || choice.outcome!=='accepted')showInstallInfo();
+    }catch(e){
+      showInstallInfo();
+    }
+    return;
+  }
+  showInstallInfo();
+}
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  deferredInstallPrompt=e;
+  updateInstallUI();
+});
+window.addEventListener('appinstalled',()=>{
+  deferredInstallPrompt=null;
+  updateInstallUI();
+});
+const installButton=$('#installBtn');
+const loginInstallButton=$('#loginInstallBtn');
+if(installButton)installButton.addEventListener('click',requestInstall);
+if(loginInstallButton)loginInstallButton.addEventListener('click',requestInstall);
+updateInstallUI();
+
+onAuthStateChanged(auth,async user=>{
+  $('#loadingScreen').classList.add('hidden');
+  if(!user){
+    TESTS=[];
+    $('#appShell').classList.add('hidden');
+    $('#loginScreen').classList.remove('hidden');
+    return;
+  }
+  $('#loginScreen').classList.add('hidden');
+  $('#appShell').classList.remove('hidden');
+  $('#userEmail').textContent=user.email||'Usuario';
+  try{
+    await Promise.all([loadTests(),loadPracticals()]);
+    renderHome();
+  }catch(e){
+    console.error(e);
+    if(e?.code==='permission-denied' || e?.code==='firestore/permission-denied'){
+      await signOut(auth);
+      $('#appShell').classList.add('hidden');
+      $('#loginScreen').classList.remove('hidden');
+      msg('Usuario no autorizado. Solicita acceso al administrador antes de entrar en OposMurcia 360.');
+      return;
+    }
+    $('#testGrid').innerHTML='<div class="data-error"><strong>No se han podido cargar las preguntas.</strong><br>La sesión funciona, pero los datos de Firestore no tienen el formato esperado o el navegador conserva una versión antigua. Recarga esta versión de la app.</div>';
+  }
+});
+if('caches' in window){caches.keys().then(keys=>Promise.all(keys.filter(k=>k!=='oposmurcia360-v22-sec').map(k=>caches.delete(k)))).catch(()=>{})}
+if('serviceWorker' in navigator)window.addEventListener('load',async()=>{try{const r=await navigator.serviceWorker.register('sw.js?v=22-sec-sec',{updateViaCache:'none'});await r.update()}catch(e){console.error(e)}});
 </script>
 </body></html>
