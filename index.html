@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0758B8">
-<meta name="description" content="OposMurcia 360 · Tests de preparación para Auxiliares Administrativos del Ayuntamiento de Murcia">
+<meta name="description" content="OposMurcia 360 · Tests y supuestos prácticos para Auxiliares Administrativos del Ayuntamiento de Murcia">
 <title>OposMurcia 360</title>
-<link rel="manifest" href="manifest.webmanifest?v=18">
-<link rel="icon" href="icon-192.png?v=18">
-<link rel="apple-touch-icon" href="icon-192.png?v=18">
+<link rel="manifest" href="manifest.webmanifest?v=19">
+<link rel="icon" href="icon-192.png?v=19">
+<link rel="apple-touch-icon" href="icon-192.png?v=19">
 <style>
 :root{
  --blue:#0758B8;--blue-dark:#063E82;--blue-soft:#EAF3FF;
@@ -97,43 +97,82 @@ button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important
 .topic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 @media(max-width:699px){.topic-heading{align-items:flex-start}.topic-heading h2{font-size:18px}.topic-grid{grid-template-columns:1fr}}
 
+
+.content-block{margin:26px 0 34px}
+.content-type-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:0 0 15px}
+.content-type-head h2{margin:3px 0 0;font-size:24px;letter-spacing:-.025em;color:var(--blue-dark)}
+.content-type-head p{margin:3px 0 0;color:var(--muted);font-size:13px;line-height:1.5}
+.type-badge{white-space:nowrap;border:1px solid #CFE0F6;background:#F7FBFF;color:var(--blue-dark);padding:7px 10px;border-radius:999px;font-size:12px;font-weight:850}
+.practical-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:17px;box-shadow:var(--shadow)}
+.practical-card h3{font-size:18px;line-height:1.25;margin:1px 0 5px}
+.practical-tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:850;color:var(--blue-dark);background:var(--blue-soft);border:1px solid #CFE0F6;border-radius:999px;padding:6px 9px;margin-top:10px}
+.practical-tabs{display:flex;gap:8px;position:sticky;top:8px;z-index:8;margin-bottom:12px;background:rgba(246,248,251,.94);backdrop-filter:blur(8px);padding:7px;border-radius:15px}
+.practical-tabs button{flex:1}
+.statement{white-space:pre-line;text-align:justify;text-justify:inter-word;hyphens:auto;line-height:1.75;font-size:15px;max-width:78ch;margin:0 auto;color:#26384C}
+.statement-title{font-size:19px;line-height:1.35;margin:0 0 15px;color:var(--blue-dark)}
+.statement-actions{margin-top:20px}
+.practical-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.practical-nav .finish{grid-column:1/-1}
+.practical-review-head{display:flex;justify-content:flex-end;margin:0 0 12px}
+@media(max-width:699px){
+ .content-type-head{align-items:flex-start;flex-direction:column}
+ .content-type-head h2{font-size:22px}
+ .practical-tabs{top:4px}
+}
+@media(max-width:390px){
+ .practical-nav{grid-template-columns:1fr}
+ .practical-nav .finish{grid-column:auto}
+ .statement{font-size:14px;line-height:1.68}
+}
+
 </style>
 </head>
 <body>
-<section id="loginScreen" class="login-shell hidden"><div class="login-wrap"><div class="login-brand"><div class="login-logo"><img src="logo-oposmurcia360.png?v=18" alt="OposMurcia 360"></div><h1>OposMurcia 360</h1><p>Preparación para Auxiliares Administrativos</p></div><div class="login-card"><h2>Acceso a OposMurcia 360</h2>
+<section id="loginScreen" class="login-shell hidden"><div class="login-wrap"><div class="login-brand"><div class="login-logo"><img src="logo-oposmurcia360.png?v=19" alt="OposMurcia 360"></div><h1>OposMurcia 360</h1><p>Tests y supuestos prácticos · Auxiliares Administrativos</p></div><div class="login-card"><h2>Acceso a OposMurcia 360</h2>
 <div class="login-description"><strong>Plataforma privada de preparación para Auxiliares Administrativos del Ayuntamiento de Murcia.</strong><br>
-Accede a tus cuestionarios, realiza simulacros con o sin tiempo, aplica penalización opcional y revisa tus resultados al finalizar.</div>
+Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, aplica penalización opcional y revisa tus resultados al finalizar.</div>
 <p>Introduce las credenciales facilitadas por el administrador.</p><div id="authMsg" class="hidden"></div><form id="loginForm"><div class="field"><label for="email">Correo electrónico</label><input id="email" type="email" autocomplete="username" required></div><div class="field"><label for="password">Contraseña</label><input id="password" type="password" autocomplete="current-password" required></div><button id="loginBtn" class="primary" style="width:100%" type="submit">Iniciar sesión</button></form><button id="resetBtn" class="secondary" style="width:100%;margin-top:10px" type="button">¿Has olvidado tu contraseña?</button><div class="login-note">Acceso exclusivo para usuarios autorizados · Sin registro público</div></div></div></section><section id="loadingScreen" class="loading-screen"><div><div class="spinner"></div><p class="muted">Comprobando acceso…</p></div></section><div id="appShell" class="shell hidden">
 <section id="home">
  <header class="top">
   <div class="brand">
-   <img src="logo-oposmurcia360.png?v=18" alt="OposMurcia 360">
-   <div><h1>OposMurcia 360</h1><p>Cuestionarios de preparación para Auxiliares Administrativos del Ayuntamiento de Murcia</p></div>
+   <img src="logo-oposmurcia360.png?v=19" alt="OposMurcia 360">
+   <div><h1>OposMurcia 360</h1><p>Tests y supuestos prácticos para Auxiliares Administrativos del Ayuntamiento de Murcia</p></div>
   </div><div class="userbar"><small id="userEmail"></small><button id="logoutBtn" class="logout">Cerrar sesión</button></div>
   <div class="hero">
-   <div><small>Biblioteca disponible</small><strong id="heroCount">3 tests</strong><button class="help-link" onclick="openHelp()">Cómo funciona</button></div>
+   <div><small>Biblioteca disponible</small><strong id="heroCount">Tests + supuestos</strong><button class="help-link" onclick="openHelp()">Cómo funciona</button></div>
    
   </div>
  </header>
  <div class="home-intro">
   <h2>Tu espacio privado de preparación</h2>
-  <p>Practica con los cuestionarios disponibles, controla tu tiempo, revisa tus respuestas y consulta tu evolución. El contenido de los tests se carga de forma protegida después de iniciar sesión.</p>
+  <p>Practica con tests y supuestos prácticos, controla tu tiempo y revisa tus respuestas. En los supuestos podrás consultar el enunciado durante todo el ejercicio sin perder la pregunta ni tus respuestas.</p>
  </div>
  <div class="summary">
   <div class="metric"><b id="qCount">80</b><span>preguntas</span></div>
   <div class="metric"><b id="doneCount">0</b><span>completados</span></div>
   <div class="metric"><b id="bestScore">—</b><span>mejor nota</span></div>
  </div>
- <div class="section-kicker">OposMurcia 360</div>
- <h2 class="section-title">Selecciona un test</h2>
- <div id="testGrid" class="test-grid"></div>
+ <div class="content-block">
+  <div class="content-type-head">
+   <div><div class="section-kicker">Tests</div><h2>Tests por temas</h2><p>Cuestionarios de preparación organizados por materias.</p></div>
+   <span id="testCountBadge" class="type-badge">0 tests</span>
+  </div>
+  <div id="testGrid"></div>
+ </div>
+ <div class="content-block">
+  <div class="content-type-head">
+   <div><div class="section-kicker">Supuestos prácticos</div><h2>Supuestos prácticos por temas</h2><p>Lee el enunciado y resuelve el cuestionario pudiendo consultarlo durante todo el ejercicio.</p></div>
+   <span id="practicalCountBadge" class="type-badge">0 supuestos</span>
+  </div>
+  <div id="practicalGrid"></div>
+ </div>
  <div class="foot">OposMurcia 360 · Preparación práctica y gratuita</div>
 </section>
 
 <section id="setup" class="hidden">
  <div class="view-top"><button class="back" onclick="goHome()">← Volver</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
  <div class="panel">
-  <img src="logo-oposmurcia360.png?v=18" alt="" style="width:72px;height:72px;float:right;margin-left:10px;background:#fff;border-radius:50%;padding:3px">
+  <img src="logo-oposmurcia360.png?v=19" alt="" style="width:72px;height:72px;float:right;margin-left:10px;background:#fff;border-radius:50%;padding:3px">
   <div class="section-kicker">Configurar test</div>
   <h2 id="setupTitle"></h2><p id="setupDesc" class="muted"></p>
   <label><input type="radio" name="timeMode" value="none" checked> Sin tiempo · cronómetro de tiempo empleado</label>
@@ -157,6 +196,81 @@ Accede a tus cuestionarios, realiza simulacros con o sin tiempo, aplica penaliza
    <button class="secondary" onclick="nextQ()">Siguiente</button>
    <button class="primary finish" onclick="finishQuiz(false)">Finalizar y ver resultados</button>
   </div>
+ </div>
+</section>
+
+
+<section id="practicalSetup" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Volver</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
+ <div class="panel">
+  <img src="logo-oposmurcia360.png?v=19" alt="" style="width:72px;height:72px;float:right;margin-left:10px;background:#fff;border-radius:50%;padding:3px">
+  <div class="section-kicker">Configurar supuesto práctico</div>
+  <h2 id="practicalSetupTitle"></h2><p id="practicalSetupDesc" class="muted"></p>
+  <label><input type="radio" name="practicalTimeMode" value="none" checked> Sin tiempo · cronómetro de tiempo empleado</label>
+  <label><input type="radio" name="practicalTimeMode" value="timed"> Con tiempo · cuenta atrás</label>
+  <label>Minutos <input id="practicalMinutes" type="number" min="1" max="240" value="30"></label>
+  <label><input id="practicalPenalty" type="checkbox"> Aplicar penalización de 1/3 por respuesta incorrecta</label>
+  <div class="info">Al comenzar accederás primero al <strong>enunciado completo</strong>. El cuestionario solo se habilitará cuando pulses el botón situado al final del enunciado.</div>
+  <button class="primary" onclick="startPractical()">Comenzar supuesto práctico</button>
+ </div>
+</section>
+
+<section id="practicalWork" class="hidden">
+ <div class="view-top"><button class="back" onclick="confirmPracticalExit()">← Salir</button><div id="practicalTimer" class="timer">00:00</div></div>
+ <div class="practical-tabs">
+  <button id="practicalStatementTab" class="primary" onclick="showPracticalStatement()">📖 Supuesto práctico</button>
+  <button id="practicalQuizTab" class="secondary hidden" onclick="showPracticalQuiz()">✅ Cuestionario</button>
+ </div>
+ <div id="practicalStatementView" class="panel">
+  <h2 id="practicalStatementTitle" class="statement-title"></h2>
+  <div id="practicalStatement" class="statement"></div>
+  <div class="statement-actions"><button id="statementQuizButton" class="primary" onclick="showPracticalQuiz()">Comenzar supuesto práctico →</button></div>
+ </div>
+ <div id="practicalQuizView" class="hidden">
+  <div class="progress-track"><div id="practicalProgress" class="progress"></div></div>
+  <div class="panel">
+   <div id="practicalQnum" class="qindex"></div>
+   <div id="practicalQuestion" class="question"></div>
+   <div id="practicalOptions" class="options"></div>
+   <div class="practical-nav">
+    <button class="secondary" onclick="prevPracticalQ()">Anterior</button>
+    <button class="secondary" onclick="nextPracticalQ()">Siguiente</button>
+    <button class="secondary finish" onclick="showPracticalStatement()">📖 Consultar enunciado</button>
+    <button class="primary finish" onclick="finishPractical(false)">Finalizar y ver resultados</button>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="practicalResults" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Biblioteca</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
+ <div class="panel">
+  <div class="section-kicker">Resultado · supuesto práctico</div><h2 id="practicalResultTitle"></h2>
+  <div id="practicalScore" class="score">0,00/10</div>
+  <div class="result-grid">
+   <div class="result-box"><b id="practicalOk">0</b><span>Aciertos</span></div>
+   <div class="result-box"><b id="practicalBad">0</b><span>Errores</span></div>
+   <div class="result-box"><b id="practicalBlank">0</b><span>En blanco</span></div>
+  </div>
+  <p id="practicalResultInfo" class="muted"></p>
+  <div class="nav">
+   <button class="secondary" onclick="showPracticalStatementFromResults()">📖 Consultar enunciado</button>
+   <button class="primary" onclick="togglePracticalReview()">Revisar respuestas</button>
+  </div>
+  <div id="practicalReview" class="hidden" style="margin-top:13px"></div>
+  <div class="nav">
+   <button class="secondary" onclick="repeatPractical()">Repetir supuesto</button>
+   <button class="primary finish" onclick="sharePracticalResult()">Compartir resultado por WhatsApp</button>
+  </div>
+ </div>
+</section>
+
+<section id="practicalResultStatement" class="hidden">
+ <div class="view-top"><button class="back" onclick="returnPracticalResults()">← Volver a resultados</button><div class="timer">Enunciado</div></div>
+ <div class="panel">
+  <h2 id="practicalResultStatementTitle" class="statement-title"></h2>
+  <div id="practicalResultStatementText" class="statement"></div>
+  <div class="statement-actions"><button class="primary" onclick="returnPracticalResults()">Volver a resultados →</button></div>
  </div>
 </section>
 
@@ -190,7 +304,7 @@ Accede a tus cuestionarios, realiza simulacros con o sin tiempo, aplica penaliza
   <h2>Cómo funciona</h2>
   <p><strong>Sin tiempo:</strong> verás un cronómetro con el tiempo empleado. <strong>Con tiempo:</strong> verás una cuenta atrás y el test terminará automáticamente al llegar a 00:00.</p>
   <p>La penalización de <strong>1/3</strong> es opcional. Si la activas, cada error descuenta un tercio de un acierto. Las respuestas en blanco no penalizan.</p>
-  <p>Puedes avanzar y retroceder entre preguntas. No hay mapa de preguntas ni marcadores de revisión.</p>
+  <p>Puedes avanzar y retroceder entre preguntas. No hay mapa de preguntas ni marcadores de revisión.</p><p>En los <strong>supuestos prácticos</strong> accederás primero al enunciado. Antes de comenzar el cuestionario no aparece el acceso superior «Cuestionario». Una vez iniciado, podrás alternar entre <strong>Supuesto práctico</strong> y <strong>Cuestionario</strong> sin perder la pregunta ni las respuestas.</p>
   <p><strong>Finalizar y ver resultados</strong> está disponible durante todo el test. Al terminar verás nota sobre 10, aciertos, errores, blancos, tiempo y revisión completa.</p>
   <button class="primary" onclick="closeHelp()">Entendido</button>
  </div>
@@ -203,7 +317,8 @@ import { getFirestore,collection,getDocs } from "https://www.gstatic.com/firebas
 const firebaseConfig={"apiKey":"AIzaSyDA_79FRQq90gVJgD17dRr_pUHKe4S8XBg","authDomain":"oposmurcia360-5a389.firebaseapp.com","projectId":"oposmurcia360-5a389","storageBucket":"oposmurcia360-5a389.firebasestorage.app","messagingSenderId":"730198455785","appId":"1:730198455785:web:1f3e3d4f8edf8774780778","measurementId":"G-T8QHKNDX5T"};
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app); await setPersistence(auth,browserLocalPersistence);
 const $=s=>document.querySelector(s),PUBLIC_URL="https://oposmurcia360.github.io/oposmurcia360/";
-let TESTS=[],currentTest=null,answers=[],current=0,penalty=false,timed=false,timeLimit=0,elapsed=0,interval=null,startedAt=0,deferredPrompt=null;
+let TESTS=[],PRACTICALS=[],currentTest=null,answers=[],current=0,penalty=false,timed=false,timeLimit=0,elapsed=0,interval=null,startedAt=0,deferredPrompt=null;
+let currentPractical=null,practicalAnswers=[],practicalCurrent=0,practicalPenalty=false,practicalTimed=false,practicalTimeLimit=0,practicalElapsed=0,practicalInterval=null,practicalStartedAt=0,practicalQuizStarted=false,practicalStatementY=0;
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function msg(t,type='error'){const e=$('#authMsg');e.textContent=t;e.className='authmsg '+type} function clearMsg(){const e=$('#authMsg');e.textContent='';e.className='hidden'}
 function ferr(c){return ({'auth/invalid-credential':'Correo o contraseña incorrectos.','auth/user-disabled':'Esta cuenta está desactivada.','auth/too-many-requests':'Demasiados intentos. Inténtalo más tarde.','auth/invalid-email':'El correo electrónico no es válido.','auth/network-request-failed':'No se ha podido conectar. Comprueba tu conexión.'}[c]||'No se ha podido iniciar sesión.')}
@@ -235,7 +350,33 @@ async function loadTests(){
     console.error('Tests sin preguntas válidas:',invalid);
     throw new Error('Hay tests en Firestore cuyo formato de preguntas no es válido.');
   }
-  renderHome();
+}
+async function loadPracticals(){
+  try{
+    const s=await getDocs(collection(db,'supuestos'));
+    PRACTICALS=s.docs.map(d=>{
+      const data=d.data();
+      const raw=data.questions;
+      let questions=[];
+      if(Array.isArray(raw)){
+        questions=raw.map(q=>{
+          if(Array.isArray(q)) return q;
+          if(q && typeof q==='object') return [q.text??q.question??'', q.options??q.answers??[], Number(q.correct??q.correctIndex??0)];
+          return null;
+        }).filter(Boolean);
+      }else if(raw && typeof raw==='object'){
+        questions=Object.values(raw)
+          .sort((a,b)=>(Number(a?.order)||999)-(Number(b?.order)||999))
+          .map(q=>[q?.text??q?.question??'', Array.isArray(q?.options)?q.options:(q?.answers??[]), Number(q?.correct??q?.correctIndex??0)]);
+      }
+      questions=questions.filter(q=>Array.isArray(q) && typeof q[0]==='string' && Array.isArray(q[1]) && q[1].length>=2 && Number.isInteger(q[2]));
+      return {id:d.id,...data,statement:String(data.statement??data.enunciado??''),questions};
+    }).filter(p=>p.statement && p.questions.length)
+      .sort((a,b)=>(a.order??999)-(b.order??999));
+  }catch(e){
+    console.error('No se pudieron cargar los supuestos prácticos:',e);
+    PRACTICALS=[];
+  }
 }
 function stats(){try{return JSON.parse(localStorage.getItem('opos360_stats_v14')||'{"done":0,"best":null}')}catch(e){return {done:0,best:null}}} function saveStats(s){localStorage.setItem('opos360_stats_v14',JSON.stringify(s))}
 function renderStats(){const s=stats();$('#doneCount').textContent=s.done||0;$('#bestScore').textContent=s.best==null?'—':Number(s.best).toFixed(2).replace('.',',')}
@@ -251,12 +392,19 @@ function topicInfo(t){
   return {key:'otros',label:'Otros tests',order:999};
 }
 function renderTestCard(t){
-  return `<article class="test-card"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=18" alt=""><div><h3>${esc(t.title)}</h3><div class="muted">${esc(t.description||t.subtitle||'Cuestionario de preparación')}</div></div></div><div class="pills"><span class="pill">${t.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-test="${esc(t.id)}">Realizar test</button></article>`;
+  return `<article class="test-card"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=19" alt=""><div><h3>${esc(t.title)}</h3><div class="muted">${esc(t.description||t.subtitle||'Cuestionario de preparación')}</div></div></div><div class="pills"><span class="pill">${t.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-test="${esc(t.id)}">Realizar test</button></article>`;
+}
+function renderPracticalCard(p){
+  return `<article class="practical-card"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=19" alt=""><div><h3>${esc(p.title)}</h3><div class="muted">${esc(p.description||p.subtitle||'Supuesto práctico para Auxiliares Administrativos')}</div></div></div><span class="practical-tag">📖 Enunciado + cuestionario</span><div class="pills"><span class="pill">${p.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-practical="${esc(p.id)}">Realizar supuesto práctico</button></article>`;
 }
 function renderHome(){
-  document.querySelector('#heroCount').textContent=TESTS.length+' '+(TESTS.length===1?'test':'tests');
-  $('#qCount').textContent=TESTS.reduce((n,t)=>n+(t.questions?.length||0),0);
+  const totalQuestions=TESTS.reduce((n,t)=>n+(t.questions?.length||0),0)+PRACTICALS.reduce((n,p)=>n+(p.questions?.length||0),0);
+  $('#heroCount').textContent=`${TESTS.length} ${TESTS.length===1?'test':'tests'} · ${PRACTICALS.length} ${PRACTICALS.length===1?'supuesto':'supuestos'}`;
+  $('#qCount').textContent=totalQuestions;
+  $('#testCountBadge').textContent=`${TESTS.length} ${TESTS.length===1?'test':'tests'}`;
+  $('#practicalCountBadge').textContent=`${PRACTICALS.length} ${PRACTICALS.length===1?'supuesto':'supuestos'}`;
   renderStats();
+
   const grid=$('#testGrid');
   if(!TESTS.length){
     grid.innerHTML='<div class="empty">No hay tests disponibles todavía en Firestore.</div>';
@@ -277,22 +425,150 @@ function renderHome(){
         <div class="topic-grid">${g.tests.map(renderTestCard).join('')}</div>
       </section>`).join('');
   }
+
+  const pgrid=$('#practicalGrid');
+  if(!PRACTICALS.length){
+    pgrid.innerHTML='<div class="empty">No hay supuestos prácticos disponibles todavía.</div>';
+  }else{
+    const groups=new Map();
+    PRACTICALS.forEach(p=>{
+      const label=(p.topic||p.tema||p.subject||'Otros supuestos').toString().trim()||'Otros supuestos';
+      const key=label.toLowerCase();
+      if(!groups.has(key)) groups.set(key,{label,items:[]});
+      groups.get(key).items.push(p);
+    });
+    const ordered=[...groups.values()].sort((a,b)=>a.label.localeCompare(b.label,'es'));
+    pgrid.innerHTML=ordered.map(g=>`
+      <section class="topic-section">
+        <div class="topic-heading">
+          <h2>${esc(g.label)}</h2>
+          <span class="topic-count">${g.items.length} ${g.items.length===1?'supuesto':'supuestos'}</span>
+        </div>
+        <div class="topic-grid">${g.items.map(renderPracticalCard).join('')}</div>
+      </section>`).join('');
+  }
+
   document.querySelectorAll('[data-test]').forEach(b=>b.onclick=()=>openSetup(b.dataset.test));
+  document.querySelectorAll('[data-practical]').forEach(b=>b.onclick=()=>openPracticalSetup(b.dataset.practical));
 }
-function show(id){['home','setup','quiz','results'].forEach(x=>$('#'+x).classList.toggle('hidden',x!==id));window.scrollTo({top:0,behavior:'smooth'})}
-window.goHome=()=>{clearInterval(interval);interval=null;show('home');renderHome()};function openSetup(id){currentTest=TESTS.find(t=>t.id===id);if(!currentTest)return;$('#setupTitle').textContent=currentTest.title;$('#setupDesc').textContent=currentTest.description||currentTest.subtitle||'';show('setup')}
+function show(id){['home','setup','quiz','results','practicalSetup','practicalWork','practicalResults','practicalResultStatement'].forEach(x=>$('#'+x).classList.toggle('hidden',x!==id));window.scrollTo({top:0,behavior:'smooth'})}
+window.goHome=()=>{clearInterval(interval);interval=null;clearInterval(practicalInterval);practicalInterval=null;show('home');renderHome()};function openSetup(id){currentTest=TESTS.find(t=>t.id===id);if(!currentTest)return;$('#setupTitle').textContent=currentTest.title;$('#setupDesc').textContent=currentTest.description||currentTest.subtitle||'';show('setup')}
 window.startQuiz=()=>{if(!currentTest||!Array.isArray(currentTest.questions)||!currentTest.questions.length){alert('Este test no contiene preguntas válidas.');return;}answers=Array(currentTest.questions.length).fill(null);current=0;penalty=$('#penalty').checked;timed=document.querySelector('input[name="timeMode"]:checked').value==='timed';timeLimit=Math.max(1,parseInt($('#minutes').value||30))*60;elapsed=0;startedAt=Date.now();show('quiz');renderQuestion();tick();clearInterval(interval);interval=setInterval(()=>{elapsed=Math.floor((Date.now()-startedAt)/1000);tick();if(timed&&elapsed>=timeLimit)finishQuiz(true)},1000)};
 function fmt(s){s=Math.max(0,Math.floor(s));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}function tick(){$('#timer').textContent=timed?fmt(Math.max(0,timeLimit-elapsed)):fmt(elapsed)}
 function renderQuestion(){const q=currentTest.questions[current];$('#qnum').textContent=`Pregunta ${current+1} de ${currentTest.questions.length}`;$('#question').textContent=q[0];$('#progress').style.width=((current+1)/currentTest.questions.length*100)+'%';$('#options').innerHTML=q[1].map((o,i)=>`<button class="option ${answers[current]===i?'selected':''}" data-choice="${i}"><strong>${String.fromCharCode(65+i)})</strong> ${esc(o)}</button>`).join('');document.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>{answers[current]=Number(b.dataset.choice);renderQuestion()})}
 window.prevQ=()=>{if(current>0){current--;renderQuestion()}};window.nextQ=()=>{if(current<currentTest.questions.length-1){current++;renderQuestion()}};window.confirmExit=()=>{if(confirm('¿Salir del test? Se perderán las respuestas de este intento.'))goHome()};
 window.finishQuiz=(auto=false)=>{clearInterval(interval);interval=null;elapsed=Math.floor((Date.now()-startedAt)/1000);let ok=0,bad=0,blank=0;currentTest.questions.forEach((q,i)=>{if(answers[i]===null)blank++;else if(answers[i]===q[2])ok++;else bad++});const raw=ok-(penalty?bad/3:0),score=Math.max(0,(raw/currentTest.questions.length)*10);$('#resultTitle').textContent=currentTest.title;$('#score').textContent=score.toFixed(2).replace('.',',')+'/10';$('#ok').textContent=ok;$('#bad').textContent=bad;$('#blank').textContent=blank;$('#resultInfo').textContent=(auto?'Tiempo agotado. · ':'')+'Tiempo empleado: '+fmt(timed?Math.min(elapsed,timeLimit):elapsed)+' · '+(penalty?'Penalización 1/3 aplicada.':'Sin penalización.');$('#review').classList.add('hidden');$('#review').innerHTML='';const s=stats();s.done=(s.done||0)+1;s.best=s.best==null?score:Math.max(Number(s.best),score);saveStats(s);show('results')};
 window.toggleReview=()=>{const box=$('#review');if(!box.innerHTML)box.innerHTML=currentTest.questions.map((q,i)=>{const a=answers[i],state=a===null?'blank':(a===q[2]?'ok':'bad'),y=a===null?'Sin contestar':String.fromCharCode(65+a)+') '+q[1][a],r=String.fromCharCode(65+q[2])+') '+q[1][q[2]];return `<div class="review-item ${state}"><strong>${i+1}. ${esc(q[0])}</strong><br>Tu respuesta: ${esc(y)}<br>Correcta: ${esc(r)}</div>`}).join('');box.classList.toggle('hidden')};window.repeatQuiz=()=>openSetup(currentTest.id);window.shareResult=()=>location.href='https://wa.me/?text='+encodeURIComponent('OposMurcia 360 · '+currentTest.title+' · Resultado: '+$('#score').textContent+' · '+PUBLIC_URL);
+
+function openPracticalSetup(id){
+  currentPractical=PRACTICALS.find(p=>p.id===id);
+  if(!currentPractical)return;
+  $('#practicalSetupTitle').textContent=currentPractical.title;
+  $('#practicalSetupDesc').textContent=currentPractical.description||currentPractical.subtitle||'Lee el enunciado completo antes de iniciar el cuestionario.';
+  show('practicalSetup');
+}
+window.startPractical=()=>{
+  if(!currentPractical||!currentPractical.questions.length||!currentPractical.statement){alert('Este supuesto práctico no contiene todos los datos necesarios.');return}
+  practicalAnswers=Array(currentPractical.questions.length).fill(null);
+  practicalCurrent=0;
+  practicalPenalty=$('#practicalPenalty').checked;
+  practicalTimed=document.querySelector('input[name="practicalTimeMode"]:checked').value==='timed';
+  practicalTimeLimit=Math.max(1,parseInt($('#practicalMinutes').value||30))*60;
+  practicalElapsed=0; practicalStartedAt=Date.now(); practicalQuizStarted=false; practicalStatementY=0;
+  $('#practicalStatementTitle').textContent=currentPractical.title;
+  $('#practicalStatement').textContent=currentPractical.statement;
+  $('#statementQuizButton').textContent='Comenzar supuesto práctico →';
+  $('#practicalQuizTab').className='secondary hidden';
+  show('practicalWork');
+  showPracticalStatement(true);
+  practicalTick();
+  clearInterval(practicalInterval);
+  practicalInterval=setInterval(()=>{
+    practicalElapsed=Math.floor((Date.now()-practicalStartedAt)/1000);
+    practicalTick();
+    if(practicalTimed&&practicalElapsed>=practicalTimeLimit)finishPractical(true);
+  },1000);
+};
+function practicalTick(){
+  $('#practicalTimer').textContent=practicalTimed?fmt(Math.max(0,practicalTimeLimit-practicalElapsed)):fmt(practicalElapsed);
+}
+window.showPracticalStatement=(initial=false)=>{
+  if(!currentPractical)return;
+  if(!initial && !$('#practicalStatementView').classList.contains('hidden')) practicalStatementY=window.scrollY;
+  $('#practicalQuizView').classList.add('hidden');
+  $('#practicalStatementView').classList.remove('hidden');
+  $('#practicalStatementTab').className='primary';
+  if(practicalQuizStarted){
+    $('#practicalQuizTab').className='secondary';
+    $('#statementQuizButton').textContent='Volver al cuestionario →';
+  }else{
+    $('#practicalQuizTab').className='secondary hidden';
+    $('#statementQuizButton').textContent='Comenzar supuesto práctico →';
+  }
+  setTimeout(()=>window.scrollTo(0,practicalStatementY||0),0);
+};
+window.showPracticalQuiz=()=>{
+  if(!currentPractical)return;
+  practicalStatementY=window.scrollY;
+  practicalQuizStarted=true;
+  $('#practicalQuizTab').className='primary';
+  $('#practicalStatementTab').className='secondary';
+  $('#statementQuizButton').textContent='Volver al cuestionario →';
+  $('#practicalStatementView').classList.add('hidden');
+  $('#practicalQuizView').classList.remove('hidden');
+  renderPracticalQuestion();
+  setTimeout(()=>$('#practicalQuizView').scrollIntoView({block:'start'}),0);
+};
+function renderPracticalQuestion(){
+  const q=currentPractical.questions[practicalCurrent];
+  $('#practicalQnum').textContent=`Pregunta ${practicalCurrent+1} de ${currentPractical.questions.length}`;
+  $('#practicalQuestion').textContent=q[0];
+  $('#practicalProgress').style.width=((practicalCurrent+1)/currentPractical.questions.length*100)+'%';
+  $('#practicalOptions').innerHTML=q[1].map((o,i)=>`<button class="option ${practicalAnswers[practicalCurrent]===i?'selected':''}" data-pchoice="${i}"><strong>${String.fromCharCode(65+i)})</strong> ${esc(o)}</button>`).join('');
+  document.querySelectorAll('[data-pchoice]').forEach(b=>b.onclick=()=>{practicalAnswers[practicalCurrent]=Number(b.dataset.pchoice);renderPracticalQuestion()});
+}
+window.prevPracticalQ=()=>{if(practicalCurrent>0){practicalCurrent--;renderPracticalQuestion()}};
+window.nextPracticalQ=()=>{if(practicalCurrent<currentPractical.questions.length-1){practicalCurrent++;renderPracticalQuestion()}};
+window.confirmPracticalExit=()=>{if(confirm('¿Salir del supuesto práctico? Se perderán las respuestas de este intento.'))goHome()};
+window.finishPractical=(auto=false)=>{
+  clearInterval(practicalInterval); practicalInterval=null;
+  practicalElapsed=Math.floor((Date.now()-practicalStartedAt)/1000);
+  let ok=0,bad=0,blank=0;
+  currentPractical.questions.forEach((q,i)=>{if(practicalAnswers[i]===null)blank++;else if(practicalAnswers[i]===q[2])ok++;else bad++});
+  const raw=ok-(practicalPenalty?bad/3:0),score=Math.max(0,(raw/currentPractical.questions.length)*10);
+  $('#practicalResultTitle').textContent=currentPractical.title;
+  $('#practicalScore').textContent=score.toFixed(2).replace('.',',')+'/10';
+  $('#practicalOk').textContent=ok; $('#practicalBad').textContent=bad; $('#practicalBlank').textContent=blank;
+  $('#practicalResultInfo').textContent=(auto?'Tiempo agotado. · ':'')+'Tiempo empleado: '+fmt(practicalTimed?Math.min(practicalElapsed,practicalTimeLimit):practicalElapsed)+' · '+(practicalPenalty?'Penalización 1/3 aplicada.':'Sin penalización.');
+  $('#practicalReview').classList.add('hidden'); $('#practicalReview').innerHTML='';
+  const s=stats(); s.done=(s.done||0)+1; s.best=s.best==null?score:Math.max(Number(s.best),score); saveStats(s);
+  show('practicalResults');
+};
+window.togglePracticalReview=()=>{
+  const box=$('#practicalReview');
+  if(!box.innerHTML)box.innerHTML=currentPractical.questions.map((q,i)=>{
+    const a=practicalAnswers[i],state=a===null?'blank':(a===q[2]?'ok':'bad');
+    const y=a===null?'Sin contestar':String.fromCharCode(65+a)+') '+q[1][a];
+    const r=String.fromCharCode(65+q[2])+') '+q[1][q[2]];
+    return `<div class="review-item ${state}"><strong>${i+1}. ${esc(q[0])}</strong><br>Tu respuesta: ${esc(y)}<br>Correcta: ${esc(r)}</div>`;
+  }).join('');
+  box.classList.toggle('hidden');
+};
+window.showPracticalStatementFromResults=()=>{
+  $('#practicalResultStatementTitle').textContent=currentPractical.title;
+  $('#practicalResultStatementText').textContent=currentPractical.statement;
+  show('practicalResultStatement');
+};
+window.returnPracticalResults=()=>show('practicalResults');
+window.repeatPractical=()=>openPracticalSetup(currentPractical.id);
+window.sharePracticalResult=()=>location.href='https://wa.me/?text='+encodeURIComponent('OposMurcia 360 · Supuesto práctico · '+currentPractical.title+' · Resultado: '+$('#practicalScore').textContent+' · '+PUBLIC_URL);
+
 window.openHelp=()=>$('#help').classList.remove('hidden');window.closeHelp=()=>$('#help').classList.add('hidden');window.backdropClose=e=>{if(e.target.id==='help')closeHelp()};
 
 
 
-onAuthStateChanged(auth,async user=>{$('#loadingScreen').classList.add('hidden');if(!user){TESTS=[];$('#appShell').classList.add('hidden');$('#loginScreen').classList.remove('hidden');return}$('#loginScreen').classList.add('hidden');$('#appShell').classList.remove('hidden');$('#userEmail').textContent=user.email||'Usuario';try{await loadTests()}catch(e){console.error(e);$('#testGrid').innerHTML='<div class="data-error"><strong>No se han podido cargar las preguntas.</strong><br>La sesión funciona, pero los datos de Firestore no tienen el formato esperado o el navegador conserva una versión antigua. Recarga esta versión de la app.</div>'}});
-if('caches' in window){caches.keys().then(keys=>Promise.all(keys.filter(k=>k!=='oposmurcia360-v13').map(k=>caches.delete(k)))).catch(()=>{})}
-if('serviceWorker' in navigator)window.addEventListener('load',async()=>{try{const r=await navigator.serviceWorker.register('sw.js?v=18',{updateViaCache:'none'});await r.update()}catch(e){console.error(e)}});
+onAuthStateChanged(auth,async user=>{$('#loadingScreen').classList.add('hidden');if(!user){TESTS=[];$('#appShell').classList.add('hidden');$('#loginScreen').classList.remove('hidden');return}$('#loginScreen').classList.add('hidden');$('#appShell').classList.remove('hidden');$('#userEmail').textContent=user.email||'Usuario';try{await Promise.all([loadTests(),loadPracticals()]);renderHome()}catch(e){console.error(e);$('#testGrid').innerHTML='<div class="data-error"><strong>No se han podido cargar las preguntas.</strong><br>La sesión funciona, pero los datos de Firestore no tienen el formato esperado o el navegador conserva una versión antigua. Recarga esta versión de la app.</div>'}});
+if('caches' in window){caches.keys().then(keys=>Promise.all(keys.filter(k=>k!=='oposmurcia360-v19').map(k=>caches.delete(k)))).catch(()=>{})}
+if('serviceWorker' in navigator)window.addEventListener('load',async()=>{try{const r=await navigator.serviceWorker.register('sw.js?v=19',{updateViaCache:'none'});await r.update()}catch(e){console.error(e)}});
 </script>
 </body></html>

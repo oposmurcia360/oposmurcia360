@@ -1,43 +1,5 @@
-const CACHE='oposmurcia360-v18';
-const CORE=['./index.html?v=18','./manifest.webmanifest?v=18','./logo-oposmurcia360.png?v=18','./icon-192.png?v=18','./icon-512.png?v=18'];
-
-self.addEventListener('install',event=>{
-  event.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).catch(()=>{}));
-  self.skipWaiting();
-});
-
-self.addEventListener('activate',event=>{
-  event.waitUntil(
-    caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))
-      .then(()=>self.clients.claim())
-  );
-});
-
-self.addEventListener('fetch',event=>{
-  if(event.request.method!=='GET') return;
-  const url=new URL(event.request.url);
-  if(url.origin!==self.location.origin) return;
-
-  if(event.request.mode==='navigate'){
-    event.respondWith(
-      fetch(event.request,{cache:'no-store'})
-        .then(response=>{
-          const copy=response.clone();
-          caches.open(CACHE).then(c=>c.put('./index.html?v=18',copy));
-          return response;
-        })
-        .catch(()=>caches.match('./index.html?v=18'))
-    );
-    return;
-  }
-
-  event.respondWith(
-    fetch(event.request,{cache:'no-store'})
-      .then(response=>{
-        const copy=response.clone();
-        caches.open(CACHE).then(c=>c.put(event.request,copy));
-        return response;
-      })
-      .catch(()=>caches.match(event.request))
-  );
-});
+const CACHE='oposmurcia360-v19';
+const ASSETS=['./','./index.html','./manifest.webmanifest','./logo-oposmurcia360.png','./icon-192.png','./icon-512.png'];
+self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())));
+self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
+self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(fetch(e.request).then(r=>{const copy=r.clone();caches.open(CACHE).then(c=>c.put(e.request,copy)).catch(()=>{});return r}).catch(()=>caches.match(e.request)))});
