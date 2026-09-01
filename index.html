@@ -364,7 +364,7 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app-check.js";
 import { getAuth,onAuthStateChanged,signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider,signOut,sendPasswordResetEmail,setPersistence,browserLocalPersistence } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-import { getFirestore,collection,getDocs } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+import { getFirestore,collection,getDocs,doc,getDoc,setDoc,updateDoc,serverTimestamp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 const firebaseConfig={"apiKey":"AIzaSyDA_79FRQq90gVJgD17dRr_pUHKe4S8XBg","authDomain":"oposmurcia360-5a389.firebaseapp.com","projectId":"oposmurcia360-5a389","storageBucket":"oposmurcia360-5a389.firebasestorage.app","messagingSenderId":"730198455785","appId":"1:730198455785:web:1f3e3d4f8edf8774780778","measurementId":"G-T8QHKNDX5T"};
 const app=initializeApp(firebaseConfig);
 const appCheck=initializeAppCheck(app,{
@@ -714,6 +714,66 @@ if(installButton)installButton.addEventListener('click',requestInstall);
 if(loginInstallButton)loginInstallButton.addEventListener('click',requestInstall);
 updateInstallUI();
 
+
+const ADMIN_EMAIL='oposmurcia360@gmail.com';
+
+function deviceStorageKey(uid){
+  return `opos360_device_secret_${uid}`;
+}
+function bytesToHex(bytes){
+  return Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');
+}
+function getOrCreateDeviceSecret(uid){
+  const key=deviceStorageKey(uid);
+  let secret=localStorage.getItem(key);
+  if(secret)return secret;
+  const bytes=new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  secret=bytesToHex(bytes);
+  localStorage.setItem(key,secret);
+  return secret;
+}
+async function sha256Hex(value){
+  const data=new TextEncoder().encode(value);
+  const digest=await crypto.subtle.digest('SHA-256',data);
+  return bytesToHex(new Uint8Array(digest));
+}
+async function comprobarDispositivo(user){
+  // El administrador queda exento para poder trabajar desde varios equipos.
+  if((user.email||'').toLowerCase()===ADMIN_EMAIL)return true;
+
+  const ref=doc(db,'dispositivos',user.uid);
+  const snap=await getDoc(ref);
+
+  // Si ya existe un dispositivo registrado y este navegador no conserva
+  // la clave local, no generamos una nueva: se considera otro dispositivo.
+  const storageKey=deviceStorageKey(user.uid);
+  const localSecret=localStorage.getItem(storageKey);
+
+  if(snap.exists()){
+    if(!localSecret)return false;
+    const hash=await sha256Hex(localSecret);
+    const data=snap.data();
+    if(data.activo!==true || data.huellaHash!==hash)return false;
+    await updateDoc(ref,{ultimoAcceso:serverTimestamp()});
+    return true;
+  }
+
+  // Primer acceso: se crea una clave aleatoria local y se registra solo su hash.
+  const secret=getOrCreateDeviceSecret(user.uid);
+  const hash=await sha256Hex(secret);
+  await setDoc(ref,{
+    uid:user.uid,
+    email:user.email||'',
+    huellaHash:hash,
+    activo:true,
+    creadoEn:serverTimestamp(),
+    ultimoAcceso:serverTimestamp(),
+    version:1
+  });
+  return true;
+}
+
 onAuthStateChanged(auth,async user=>{
   $('#loadingScreen').classList.add('hidden');
   if(!user){
@@ -726,6 +786,14 @@ onAuthStateChanged(auth,async user=>{
   $('#appShell').classList.remove('hidden');
   $('#userEmail').textContent=user.email||'Usuario';
   try{
+    const dispositivoPermitido=await comprobarDispositivo(user);
+    if(!dispositivoPermitido){
+      await signOut(auth);
+      $('#appShell').classList.add('hidden');
+      $('#loginScreen').classList.remove('hidden');
+      msg('Dispositivo no autorizado. Esta cuenta ya está vinculada a otro dispositivo. Contacta con el administrador.');
+      return;
+    }
     await Promise.all([loadTests(),loadPracticals()]);
     renderHome();
   }catch(e){
