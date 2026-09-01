@@ -44,23 +44,6 @@ button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important
 .section-title{font-size:21px;margin:5px 0 13px;letter-spacing:-.02em}
 .test-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .test-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:17px;box-shadow:var(--shadow)}
-/* Solo las tarjetas de TEST/SUPUESTO DE REPASO cambian de color.
-   El resto de la interfaz y el logo permanecen intactos. */
-.repaso-card{
-  background:linear-gradient(180deg,#FFF9F5 0%,#FFFFFF 100%);
-  border:1.5px solid #F0B48E;
-  box-shadow:0 7px 22px rgba(199,92,32,.10);
-}
-.repaso-card h3{color:#A94712}
-.repaso-card .pill,
-.repaso-card .practical-tag{
-  color:#A94712;
-  background:#FFF2E8;
-  border-color:#F3C4A6;
-}
-.repaso-card .primary{background:#D65A12}
-.repaso-card .primary:active{background:#B8490D}
-
 .test-head{display:flex;align-items:flex-start;gap:12px}.test-logo{width:62px;height:62px;flex:0 0 62px;background:#fff;border-radius:50%;padding:2px}
 .test-card h3{font-size:18px;line-height:1.25;margin:1px 0 5px}.muted{color:var(--muted);font-size:13px;line-height:1.45}
 .pills{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0}
@@ -381,7 +364,7 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app-check.js";
 import { getAuth,onAuthStateChanged,signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider,signOut,sendPasswordResetEmail,setPersistence,browserLocalPersistence } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-import { getFirestore,collection,getDocs,doc,getDoc,setDoc,updateDoc,serverTimestamp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+import { getFirestore,collection,getDocs } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 const firebaseConfig={"apiKey":"AIzaSyDA_79FRQq90gVJgD17dRr_pUHKe4S8XBg","authDomain":"oposmurcia360-5a389.firebaseapp.com","projectId":"oposmurcia360-5a389","storageBucket":"oposmurcia360-5a389.firebasestorage.app","messagingSenderId":"730198455785","appId":"1:730198455785:web:1f3e3d4f8edf8774780778","measurementId":"G-T8QHKNDX5T"};
 const app=initializeApp(firebaseConfig);
 const appCheck=initializeAppCheck(app,{
@@ -464,7 +447,9 @@ async function loadPracticals(){
           .map(q=>[q?.text??q?.question??'', Array.isArray(q?.options)?q.options:(q?.answers??[]), Number(q?.correct??q?.correctIndex??0)]);
       }
       questions=questions.filter(q=>Array.isArray(q) && typeof q[0]==='string' && Array.isArray(q[1]) && q[1].length>=2 && Number.isInteger(q[2]));
-      return {id:d.id,...data,statement:String(data.statement??data.enunciado??''),questions};
+      const statementRaw=String(data.statement??data.enunciado??'');
+      const statement=statementRaw.split(/\bCUESTIONARIO\s*:/i)[0].trim();
+      return {id:d.id,...data,statement,questions};
     }).filter(p=>p.statement && p.questions.length)
       .sort((a,b)=>(a.order??999)-(b.order??999));
   }catch(e){
@@ -475,37 +460,21 @@ async function loadPracticals(){
 function stats(){try{return JSON.parse(localStorage.getItem('opos360_stats_v14')||'{"done":0,"best":null}')}catch(e){return {done:0,best:null}}} function saveStats(s){localStorage.setItem('opos360_stats_v14',JSON.stringify(s))}
 function renderStats(){const s=stats();$('#doneCount').textContent=s.done||0;$('#bestScore').textContent=s.best==null?'—':Number(s.best).toFixed(2).replace('.',',')}
 function topicInfo(t){
-  const hay=((t.title||'')+' '+(t.description||'')+' '+(t.id||'')).toLowerCase();
-
-  // Los tests de repaso se agrupan siempre aparte, aunque en Firestore
-  // tengan asignado un tema concreto como "Constitución Española".
-  if(hay.includes('repaso') || hay.includes('resumen parte general')){
-    return {key:'repaso-tests',label:'Repaso de tests',order:800};
-  }
-
   const explicit=(t.topic||t.tema||t.subject||'').toString().trim();
   if(explicit){
     const n=(explicit.match(/(\d+)/)||[])[1];
     return {key:'explicit-'+explicit.toLowerCase(),label:explicit,order:n?Number(n):900};
   }
-
+  const hay=((t.title||'')+' '+(t.description||'')+' '+(t.id||'')).toLowerCase();
   if(hay.includes('constituci')) return {key:'tema-1-constitucion',label:'Tema 1 · Constitución Española',order:1};
+  if(hay.includes('repaso') && hay.includes('general')) return {key:'repaso-general',label:'Repaso general',order:800};
   return {key:'otros',label:'Otros tests',order:999};
 }
-function repasoOrdinal(t){
-  const titulo=(t.title||'').toString();
-  const nums=titulo.match(/\d+/g);
-  return nums&&nums.length ? Number(nums[nums.length-1]) : 0;
-}
 function renderTestCard(t){
-  const hay=((t.title||'')+' '+(t.description||'')+' '+(t.id||'')).toLowerCase();
-  const esRepaso=hay.includes('repaso') || hay.includes('resumen parte general');
-  return `<article class="test-card ${esRepaso?'repaso-card':''}"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=22-appcheck" alt=""><div><h3>${esc(t.title)}</h3><div class="muted">${esc(t.description||t.subtitle||'Cuestionario de preparación')}</div></div></div><div class="pills"><span class="pill">${t.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-test="${esc(t.id)}">Realizar test</button></article>`;
+  return `<article class="test-card"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=22-appcheck" alt=""><div><h3>${esc(t.title)}</h3><div class="muted">${esc(t.description||t.subtitle||'Cuestionario de preparación')}</div></div></div><div class="pills"><span class="pill">${t.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-test="${esc(t.id)}">Realizar test</button></article>`;
 }
 function renderPracticalCard(p){
-  const hay=((p.title||'')+' '+(p.description||'')+' '+(p.id||'')).toLowerCase();
-  const esRepaso=hay.includes('repaso');
-  return `<article class="practical-card ${esRepaso?'repaso-card':''}"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=22-appcheck" alt=""><div><h3>${esc(p.title)}</h3><div class="muted">${esc(p.description||p.subtitle||'Supuesto práctico para Auxiliares Administrativos')}</div></div></div><span class="practical-tag">📖 Enunciado + cuestionario</span><div class="pills"><span class="pill">${p.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-practical="${esc(p.id)}">Realizar supuesto práctico</button></article>`;
+  return `<article class="practical-card"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=22-appcheck" alt=""><div><h3>${esc(p.title)}</h3><div class="muted">${esc(p.description||p.subtitle||'Supuesto práctico para Auxiliares Administrativos')}</div></div></div><span class="practical-tag">📖 Enunciado + cuestionario</span><div class="pills"><span class="pill">${p.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-practical="${esc(p.id)}">Realizar supuesto práctico</button></article>`;
 }
 function renderHome(){
   const totalQuestions=TESTS.reduce((n,t)=>n+(t.questions?.length||0),0)+PRACTICALS.reduce((n,p)=>n+(p.questions?.length||0),0);
@@ -527,24 +496,15 @@ function renderHome(){
       if(!groups.has(info.key)) groups.set(info.key,{...info,tests:[]});
       groups.get(info.key).tests.push(t);
     });
-    const ordered=[...groups.values()].sort((a,b)=>{
-      if(a.key==='repaso-tests' && b.key!=='repaso-tests') return 1;
-      if(b.key==='repaso-tests' && a.key!=='repaso-tests') return -1;
-      return a.order-b.order||a.label.localeCompare(b.label,'es');
-    });
-    grid.innerHTML=ordered.map(g=>{
-      if(g.key==='repaso-tests'){
-        g.tests.sort((a,b)=>repasoOrdinal(a)-repasoOrdinal(b) || (a.title||'').localeCompare(b.title||'','es'));
-      }
-      return `
+    const ordered=[...groups.values()].sort((a,b)=>a.order-b.order||a.label.localeCompare(b.label,'es'));
+    grid.innerHTML=ordered.map(g=>`
       <section class="topic-section">
         <div class="topic-heading">
           <h2>${esc(g.label)}</h2>
           <span class="topic-count">${g.tests.length} ${g.tests.length===1?'test':'tests'}</span>
         </div>
         <div class="topic-grid">${g.tests.map(renderTestCard).join('')}</div>
-      </section>`;
-    }).join('');
+      </section>`).join('');
   }
 
   const pgrid=$('#practicalGrid');
@@ -756,66 +716,6 @@ if(installButton)installButton.addEventListener('click',requestInstall);
 if(loginInstallButton)loginInstallButton.addEventListener('click',requestInstall);
 updateInstallUI();
 
-
-const ADMIN_EMAIL='oposmurcia360@gmail.com';
-
-function deviceStorageKey(uid){
-  return `opos360_device_secret_${uid}`;
-}
-function bytesToHex(bytes){
-  return Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');
-}
-function getOrCreateDeviceSecret(uid){
-  const key=deviceStorageKey(uid);
-  let secret=localStorage.getItem(key);
-  if(secret)return secret;
-  const bytes=new Uint8Array(32);
-  crypto.getRandomValues(bytes);
-  secret=bytesToHex(bytes);
-  localStorage.setItem(key,secret);
-  return secret;
-}
-async function sha256Hex(value){
-  const data=new TextEncoder().encode(value);
-  const digest=await crypto.subtle.digest('SHA-256',data);
-  return bytesToHex(new Uint8Array(digest));
-}
-async function comprobarDispositivo(user){
-  // El administrador queda exento para poder trabajar desde varios equipos.
-  if((user.email||'').toLowerCase()===ADMIN_EMAIL)return true;
-
-  const ref=doc(db,'dispositivos',user.uid);
-  const snap=await getDoc(ref);
-
-  // Si ya existe un dispositivo registrado y este navegador no conserva
-  // la clave local, no generamos una nueva: se considera otro dispositivo.
-  const storageKey=deviceStorageKey(user.uid);
-  const localSecret=localStorage.getItem(storageKey);
-
-  if(snap.exists()){
-    if(!localSecret)return false;
-    const hash=await sha256Hex(localSecret);
-    const data=snap.data();
-    if(data.activo!==true || data.huellaHash!==hash)return false;
-    await updateDoc(ref,{ultimoAcceso:serverTimestamp()});
-    return true;
-  }
-
-  // Primer acceso: se crea una clave aleatoria local y se registra solo su hash.
-  const secret=getOrCreateDeviceSecret(user.uid);
-  const hash=await sha256Hex(secret);
-  await setDoc(ref,{
-    uid:user.uid,
-    email:user.email||'',
-    huellaHash:hash,
-    activo:true,
-    creadoEn:serverTimestamp(),
-    ultimoAcceso:serverTimestamp(),
-    version:1
-  });
-  return true;
-}
-
 onAuthStateChanged(auth,async user=>{
   $('#loadingScreen').classList.add('hidden');
   if(!user){
@@ -828,14 +728,6 @@ onAuthStateChanged(auth,async user=>{
   $('#appShell').classList.remove('hidden');
   $('#userEmail').textContent=user.email||'Usuario';
   try{
-    const dispositivoPermitido=await comprobarDispositivo(user);
-    if(!dispositivoPermitido){
-      await signOut(auth);
-      $('#appShell').classList.add('hidden');
-      $('#loginScreen').classList.remove('hidden');
-      msg('Dispositivo no autorizado. Esta cuenta ya está vinculada a otro dispositivo. Contacta con el administrador.');
-      return;
-    }
     await Promise.all([loadTests(),loadPracticals()]);
     renderHome();
   }catch(e){
