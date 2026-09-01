@@ -1,4 +1,4 @@
-const CACHE_NAME='oposmurcia360-v22-sec';
+const CACHE_NAME='oposmurcia360-v22-appcheck';
 const APP_SHELL=[
   './',
   './index.html',
