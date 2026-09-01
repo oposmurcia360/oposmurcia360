@@ -780,30 +780,20 @@ async function sha256Hex(value){
   const digest=await crypto.subtle.digest('SHA-256',data);
   return bytesToHex(new Uint8Array(digest));
 }
-async function comprobarDispositivo(user){
-  // El administrador queda exento para poder trabajar desde varios equipos.
-  if((user.email||'').toLowerCase()===ADMIN_EMAIL)return true;
-
-  const ref=doc(db,'dispositivos',user.uid);
+async function obtenerMaxDispositivos(user){
+  // El límite se configura por alumno en /autorizados/{email}.
+  // Si el campo no existe, se mantiene el comportamiento histórico: 1 dispositivo.
+  const email=(user.email||'').toLowerCase();
+  if(email===ADMIN_EMAIL)return 99;
+  const ref=doc(db,'autorizados',email);
   const snap=await getDoc(ref);
+  if(!snap.exists() || snap.data().activo!==true)throw Object.assign(new Error('Usuario no autorizado'),{code:'permission-denied'});
+  const n=Number(snap.data().maxDispositivos||1);
+  return Math.max(1,Math.min(2,Number.isFinite(n)?Math.trunc(n):1));
+}
 
-  // Si ya existe un dispositivo registrado y este navegador no conserva
-  // la clave local, no generamos una nueva: se considera otro dispositivo.
-  const storageKey=deviceStorageKey(user.uid);
-  const localSecret=localStorage.getItem(storageKey);
-
-  if(snap.exists()){
-    if(!localSecret)return false;
-    const hash=await sha256Hex(localSecret);
-    const data=snap.data();
-    if(data.activo!==true || data.huellaHash!==hash)return false;
-    await updateDoc(ref,{ultimoAcceso:serverTimestamp()});
-    return true;
-  }
-
-  // Primer acceso: se crea una clave aleatoria local y se registra solo su hash.
-  const secret=getOrCreateDeviceSecret(user.uid);
-  const hash=await sha256Hex(secret);
+async function registrarSlotDispositivo(user,slot,hash){
+  const ref=doc(db,'dispositivos',user.uid,'equipos',slot);
   await setDoc(ref,{
     uid:user.uid,
     email:user.email||'',
@@ -811,8 +801,62 @@ async function comprobarDispositivo(user){
     activo:true,
     creadoEn:serverTimestamp(),
     ultimoAcceso:serverTimestamp(),
-    version:1
+    version:2
   });
+}
+
+async function comprobarDispositivo(user){
+  // El administrador continúa exento para trabajar desde varios equipos.
+  if((user.email||'').toLowerCase()===ADMIN_EMAIL)return true;
+
+  const maxDispositivos=await obtenerMaxDispositivos(user);
+  const storageKey=deviceStorageKey(user.uid);
+  let localSecret=localStorage.getItem(storageKey);
+  let hash=localSecret ? await sha256Hex(localSecret) : null;
+
+  // V23: cada alumno dispone de uno o dos slots según maxDispositivos.
+  const slots=[];
+  for(let i=1;i<=maxDispositivos;i++){
+    const slot=`slot${i}`;
+    const ref=doc(db,'dispositivos',user.uid,'equipos',slot);
+    const snap=await getDoc(ref);
+    slots.push({slot,ref,snap});
+  }
+
+  // Si este navegador ya está registrado en uno de sus slots, acceso permitido.
+  if(hash){
+    for(const item of slots){
+      if(item.snap.exists()){
+        const data=item.snap.data();
+        if(data.activo===true && data.huellaHash===hash){
+          await updateDoc(item.ref,{ultimoAcceso:serverTimestamp()});
+          return true;
+        }
+      }
+    }
+  }
+
+  // Migración transparente desde V22: si este era el dispositivo ya autorizado,
+  // lo trasladamos a slot1 sin invalidar la copia estable anterior.
+  const legacyRef=doc(db,'dispositivos',user.uid);
+  const legacySnap=await getDoc(legacyRef);
+  if(legacySnap.exists() && hash){
+    const legacy=legacySnap.data();
+    if(legacy.activo===true && legacy.huellaHash===hash && !slots[0].snap.exists()){
+      await registrarSlotDispositivo(user,'slot1',hash);
+      return true;
+    }
+  }
+
+  // Nuevo dispositivo: solo se registra si queda un slot libre.
+  const libre=slots.find(item=>!item.snap.exists());
+  if(!libre)return false;
+
+  if(!localSecret){
+    localSecret=getOrCreateDeviceSecret(user.uid);
+    hash=await sha256Hex(localSecret);
+  }
+  await registrarSlotDispositivo(user,libre.slot,hash);
   return true;
 }
 
