@@ -44,6 +44,38 @@ button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important
 .section-title{font-size:21px;margin:5px 0 13px;letter-spacing:-.02em}
 .test-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .test-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:17px;box-shadow:var(--shadow)}
+/* REPASO: variante visual dentro de la misma identidad azul */
+.repaso-card{
+  background:linear-gradient(180deg,#F7FAFE 0%,#FFFFFF 100%);
+  border:1.5px solid #9DBBDD;
+  box-shadow:0 7px 22px rgba(18,59,109,.10);
+}
+.repaso-card h3{color:#123B6D}
+.repaso-card .pill,
+.repaso-card .practical-tag{
+  color:#123B6D;
+  background:#EDF4FB;
+  border-color:#B9CEE6;
+}
+.repaso-card .primary{
+  background:#123B6D;
+}
+.repaso-card .primary:active{
+  background:#0B2B52;
+}
+.topic-section.repaso-section .topic-heading{
+  border-left-color:#123B6D;
+  background:#F1F6FB;
+}
+.topic-section.repaso-section .topic-heading h2{
+  color:#123B6D;
+}
+.topic-section.repaso-section .topic-count{
+  color:#123B6D;
+  border-color:#B9CEE6;
+  background:#F7FAFE;
+}
+
 .test-head{display:flex;align-items:flex-start;gap:12px}.test-logo{width:62px;height:62px;flex:0 0 62px;background:#fff;border-radius:50%;padding:2px}
 .test-card h3{font-size:18px;line-height:1.25;margin:1px 0 5px}.muted{color:var(--muted);font-size:13px;line-height:1.45}
 .pills{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0}
@@ -458,21 +490,32 @@ async function loadPracticals(){
 function stats(){try{return JSON.parse(localStorage.getItem('opos360_stats_v14')||'{"done":0,"best":null}')}catch(e){return {done:0,best:null}}} function saveStats(s){localStorage.setItem('opos360_stats_v14',JSON.stringify(s))}
 function renderStats(){const s=stats();$('#doneCount').textContent=s.done||0;$('#bestScore').textContent=s.best==null?'—':Number(s.best).toFixed(2).replace('.',',')}
 function topicInfo(t){
+  const hay=((t.title||'')+' '+(t.description||'')+' '+(t.id||'')).toLowerCase();
+
+  // Los tests de repaso se agrupan siempre aparte, aunque en Firestore
+  // tengan asignado un tema concreto como "Constitución Española".
+  if(hay.includes('repaso')){
+    return {key:'repaso-tests',label:'Repaso de tests',order:800};
+  }
+
   const explicit=(t.topic||t.tema||t.subject||'').toString().trim();
   if(explicit){
     const n=(explicit.match(/(\d+)/)||[])[1];
     return {key:'explicit-'+explicit.toLowerCase(),label:explicit,order:n?Number(n):900};
   }
-  const hay=((t.title||'')+' '+(t.description||'')+' '+(t.id||'')).toLowerCase();
+
   if(hay.includes('constituci')) return {key:'tema-1-constitucion',label:'Tema 1 · Constitución Española',order:1};
-  if(hay.includes('repaso') && hay.includes('general')) return {key:'repaso-general',label:'Repaso general',order:800};
   return {key:'otros',label:'Otros tests',order:999};
 }
 function renderTestCard(t){
-  return `<article class="test-card"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=22-appcheck" alt=""><div><h3>${esc(t.title)}</h3><div class="muted">${esc(t.description||t.subtitle||'Cuestionario de preparación')}</div></div></div><div class="pills"><span class="pill">${t.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-test="${esc(t.id)}">Realizar test</button></article>`;
+  const hay=((t.title||'')+' '+(t.description||'')+' '+(t.id||'')).toLowerCase();
+  const esRepaso=hay.includes('repaso');
+  return `<article class="test-card ${esRepaso?'repaso-card':''}"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=22-appcheck" alt=""><div><h3>${esc(t.title)}</h3><div class="muted">${esc(t.description||t.subtitle||'Cuestionario de preparación')}</div></div></div><div class="pills"><span class="pill">${t.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-test="${esc(t.id)}">Realizar test</button></article>`;
 }
 function renderPracticalCard(p){
-  return `<article class="practical-card"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=22-appcheck" alt=""><div><h3>${esc(p.title)}</h3><div class="muted">${esc(p.description||p.subtitle||'Supuesto práctico para Auxiliares Administrativos')}</div></div></div><span class="practical-tag">📖 Enunciado + cuestionario</span><div class="pills"><span class="pill">${p.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-practical="${esc(p.id)}">Realizar supuesto práctico</button></article>`;
+  const hay=((p.title||'')+' '+(p.description||'')+' '+(p.id||'')).toLowerCase();
+  const esRepaso=hay.includes('repaso');
+  return `<article class="practical-card ${esRepaso?'repaso-card':''}"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=22-appcheck" alt=""><div><h3>${esc(p.title)}</h3><div class="muted">${esc(p.description||p.subtitle||'Supuesto práctico para Auxiliares Administrativos')}</div></div></div><span class="practical-tag">📖 Enunciado + cuestionario</span><div class="pills"><span class="pill">${p.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-practical="${esc(p.id)}">Realizar supuesto práctico</button></article>`;
 }
 function renderHome(){
   const totalQuestions=TESTS.reduce((n,t)=>n+(t.questions?.length||0),0)+PRACTICALS.reduce((n,p)=>n+(p.questions?.length||0),0);
@@ -496,7 +539,7 @@ function renderHome(){
     });
     const ordered=[...groups.values()].sort((a,b)=>a.order-b.order||a.label.localeCompare(b.label,'es'));
     grid.innerHTML=ordered.map(g=>`
-      <section class="topic-section">
+      <section class="topic-section ${g.key==='repaso-tests'?'repaso-section':''}">
         <div class="topic-heading">
           <h2>${esc(g.label)}</h2>
           <span class="topic-count">${g.tests.length} ${g.tests.length===1?'test':'tests'}</span>
@@ -511,14 +554,18 @@ function renderHome(){
   }else{
     const groups=new Map();
     PRACTICALS.forEach(p=>{
-      const label=(p.topic||p.tema||p.subject||'Otros supuestos').toString().trim()||'Otros supuestos';
-      const key=label.toLowerCase();
-      if(!groups.has(key)) groups.set(key,{label,items:[]});
+      const hay=((p.title||'')+' '+(p.description||'')+' '+(p.id||'')).toLowerCase();
+      const esRepaso=hay.includes('repaso');
+      const label=esRepaso
+        ? 'Repaso de supuestos'
+        : ((p.topic||p.tema||p.subject||'Otros supuestos').toString().trim()||'Otros supuestos');
+      const key=esRepaso?'repaso-supuestos':label.toLowerCase();
+      if(!groups.has(key)) groups.set(key,{key,label,items:[]});
       groups.get(key).items.push(p);
     });
     const ordered=[...groups.values()].sort((a,b)=>a.label.localeCompare(b.label,'es'));
     pgrid.innerHTML=ordered.map(g=>`
-      <section class="topic-section">
+      <section class="topic-section ${g.key==='repaso-supuestos'?'repaso-section':''}">
         <div class="topic-heading">
           <h2>${esc(g.label)}</h2>
           <span class="topic-count">${g.items.length} ${g.items.length===1?'supuesto':'supuestos'}</span>
