@@ -479,7 +479,7 @@ function topicInfo(t){
 
   // Los tests de repaso se agrupan siempre aparte, aunque en Firestore
   // tengan asignado un tema concreto como "Constitución Española".
-  if(hay.includes('repaso')){
+  if(hay.includes('repaso') || hay.includes('resumen parte general')){
     return {key:'repaso-tests',label:'Repaso de tests',order:800};
   }
 
@@ -492,9 +492,14 @@ function topicInfo(t){
   if(hay.includes('constituci')) return {key:'tema-1-constitucion',label:'Tema 1 · Constitución Española',order:1};
   return {key:'otros',label:'Otros tests',order:999};
 }
+function repasoOrdinal(t){
+  const titulo=(t.title||'').toString();
+  const nums=titulo.match(/\d+/g);
+  return nums&&nums.length ? Number(nums[nums.length-1]) : 0;
+}
 function renderTestCard(t){
   const hay=((t.title||'')+' '+(t.description||'')+' '+(t.id||'')).toLowerCase();
-  const esRepaso=hay.includes('repaso');
+  const esRepaso=hay.includes('repaso') || hay.includes('resumen parte general');
   return `<article class="test-card ${esRepaso?'repaso-card':''}"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=22-appcheck" alt=""><div><h3>${esc(t.title)}</h3><div class="muted">${esc(t.description||t.subtitle||'Cuestionario de preparación')}</div></div></div><div class="pills"><span class="pill">${t.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-test="${esc(t.id)}">Realizar test</button></article>`;
 }
 function renderPracticalCard(p){
@@ -522,15 +527,24 @@ function renderHome(){
       if(!groups.has(info.key)) groups.set(info.key,{...info,tests:[]});
       groups.get(info.key).tests.push(t);
     });
-    const ordered=[...groups.values()].sort((a,b)=>a.order-b.order||a.label.localeCompare(b.label,'es'));
-    grid.innerHTML=ordered.map(g=>`
+    const ordered=[...groups.values()].sort((a,b)=>{
+      if(a.key==='repaso-tests' && b.key!=='repaso-tests') return 1;
+      if(b.key==='repaso-tests' && a.key!=='repaso-tests') return -1;
+      return a.order-b.order||a.label.localeCompare(b.label,'es');
+    });
+    grid.innerHTML=ordered.map(g=>{
+      if(g.key==='repaso-tests'){
+        g.tests.sort((a,b)=>repasoOrdinal(a)-repasoOrdinal(b) || (a.title||'').localeCompare(b.title||'','es'));
+      }
+      return `
       <section class="topic-section">
         <div class="topic-heading">
           <h2>${esc(g.label)}</h2>
           <span class="topic-count">${g.tests.length} ${g.tests.length===1?'test':'tests'}</span>
         </div>
         <div class="topic-grid">${g.tests.map(renderTestCard).join('')}</div>
-      </section>`).join('');
+      </section>`;
+    }).join('');
   }
 
   const pgrid=$('#practicalGrid');
