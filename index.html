@@ -44,37 +44,22 @@ button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important
 .section-title{font-size:21px;margin:5px 0 13px;letter-spacing:-.02em}
 .test-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .test-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:17px;box-shadow:var(--shadow)}
-/* REPASO: variante visual dentro de la misma identidad azul */
+/* Solo las tarjetas de TEST/SUPUESTO DE REPASO cambian de color.
+   El resto de la interfaz y el logo permanecen intactos. */
 .repaso-card{
-  background:linear-gradient(180deg,#F7FAFE 0%,#FFFFFF 100%);
-  border:1.5px solid #9DBBDD;
-  box-shadow:0 7px 22px rgba(18,59,109,.10);
+  background:linear-gradient(180deg,#FFF9F5 0%,#FFFFFF 100%);
+  border:1.5px solid #F0B48E;
+  box-shadow:0 7px 22px rgba(199,92,32,.10);
 }
-.repaso-card h3{color:#123B6D}
+.repaso-card h3{color:#A94712}
 .repaso-card .pill,
 .repaso-card .practical-tag{
-  color:#123B6D;
-  background:#EDF4FB;
-  border-color:#B9CEE6;
+  color:#A94712;
+  background:#FFF2E8;
+  border-color:#F3C4A6;
 }
-.repaso-card .primary{
-  background:#123B6D;
-}
-.repaso-card .primary:active{
-  background:#0B2B52;
-}
-.topic-section.repaso-section .topic-heading{
-  border-left-color:#123B6D;
-  background:#F1F6FB;
-}
-.topic-section.repaso-section .topic-heading h2{
-  color:#123B6D;
-}
-.topic-section.repaso-section .topic-count{
-  color:#123B6D;
-  border-color:#B9CEE6;
-  background:#F7FAFE;
-}
+.repaso-card .primary{background:#D65A12}
+.repaso-card .primary:active{background:#B8490D}
 
 .test-head{display:flex;align-items:flex-start;gap:12px}.test-logo{width:62px;height:62px;flex:0 0 62px;background:#fff;border-radius:50%;padding:2px}
 .test-card h3{font-size:18px;line-height:1.25;margin:1px 0 5px}.muted{color:var(--muted);font-size:13px;line-height:1.45}
@@ -539,7 +524,7 @@ function renderHome(){
     });
     const ordered=[...groups.values()].sort((a,b)=>a.order-b.order||a.label.localeCompare(b.label,'es'));
     grid.innerHTML=ordered.map(g=>`
-      <section class="topic-section ${g.key==='repaso-tests'?'repaso-section':''}">
+      <section class="topic-section">
         <div class="topic-heading">
           <h2>${esc(g.label)}</h2>
           <span class="topic-count">${g.tests.length} ${g.tests.length===1?'test':'tests'}</span>
@@ -554,18 +539,14 @@ function renderHome(){
   }else{
     const groups=new Map();
     PRACTICALS.forEach(p=>{
-      const hay=((p.title||'')+' '+(p.description||'')+' '+(p.id||'')).toLowerCase();
-      const esRepaso=hay.includes('repaso');
-      const label=esRepaso
-        ? 'Repaso de supuestos'
-        : ((p.topic||p.tema||p.subject||'Otros supuestos').toString().trim()||'Otros supuestos');
-      const key=esRepaso?'repaso-supuestos':label.toLowerCase();
-      if(!groups.has(key)) groups.set(key,{key,label,items:[]});
+      const label=(p.topic||p.tema||p.subject||'Otros supuestos').toString().trim()||'Otros supuestos';
+      const key=label.toLowerCase();
+      if(!groups.has(key)) groups.set(key,{label,items:[]});
       groups.get(key).items.push(p);
     });
     const ordered=[...groups.values()].sort((a,b)=>a.label.localeCompare(b.label,'es'));
     pgrid.innerHTML=ordered.map(g=>`
-      <section class="topic-section ${g.key==='repaso-supuestos'?'repaso-section':''}">
+      <section class="topic-section">
         <div class="topic-heading">
           <h2>${esc(g.label)}</h2>
           <span class="topic-count">${g.items.length} ${g.items.length===1?'supuesto':'supuestos'}</span>
