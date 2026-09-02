@@ -172,6 +172,40 @@ button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important
  .library-jump-btn .library-jump-icon{flex-basis:40px;width:40px;height:40px}
 }
 
+
+/* =========================
+   V23 · MI PROGRESO
+   ========================= */
+.progress-access{margin:18px 0 4px}
+.progress-access-btn{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;border:1.5px solid #BFD8F4;background:linear-gradient(180deg,#F7FBFF 0%,#FFFFFF 100%);padding:15px 16px;border-radius:16px;box-shadow:var(--shadow);cursor:pointer;text-align:left}
+.progress-access-btn:hover{border-color:var(--blue);transform:translateY(-1px)}
+.progress-access-btn strong{display:block;color:var(--blue-dark);font-size:16px}
+.progress-access-btn small{display:block;color:var(--muted);font-size:12px;font-weight:650;margin-top:3px}
+.progress-access-icon{display:grid;place-items:center;flex:0 0 44px;width:44px;height:44px;border-radius:13px;background:var(--blue-soft);color:var(--blue-dark);font-size:21px;font-weight:900}
+.progress-shell{max-width:980px;margin:0 auto}
+.progress-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px}
+.progress-head h2{margin:2px 0 4px;color:var(--blue-dark);font-size:26px}
+.progress-head p{margin:0;color:var(--muted);font-size:13px}
+.progress-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}
+.progress-metric{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow)}
+.progress-metric b{display:block;color:var(--blue-dark);font-size:24px;line-height:1.1}
+.progress-metric span{display:block;margin-top:6px;color:var(--muted);font-size:12px;font-weight:750}
+.progress-panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.progress-panel h3{margin:0 0 13px;color:var(--blue-dark);font-size:18px}
+.progress-list{display:grid;gap:10px}
+.progress-item{border:1px solid #DCE8F5;border-radius:14px;padding:13px 14px;background:#FBFDFF}
+.progress-item-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.progress-item-title{font-weight:850;color:var(--text);font-size:14px;line-height:1.35}
+.progress-score{white-space:nowrap;font-weight:900;color:var(--blue-dark);font-size:16px}
+.progress-meta{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:8px;color:var(--muted);font-size:12px;font-weight:650}
+.progress-empty{padding:24px 14px;text-align:center;color:var(--muted);border:1px dashed #C9D9EA;border-radius:14px;background:#FBFDFF}
+.progress-status{margin:12px 0;color:var(--muted);font-size:13px}
+@media(max-width:699px){
+ .progress-metrics{grid-template-columns:1fr 1fr}
+ .progress-head{flex-direction:column}
+ .progress-head h2{font-size:23px}
+}
+
 </style>
 </head>
 <body>
@@ -199,6 +233,13 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
   <div class="metric"><b id="doneCount">0</b><span>completados</span></div>
   <div class="metric"><b id="bestScore">—</b><span>mejor nota</span></div>
  </div>
+ <div class="progress-access">
+  <button class="progress-access-btn" type="button" onclick="openMyProgress()">
+   <span class="progress-access-icon">↗</span>
+   <span style="flex:1"><strong>Mi progreso</strong><small>Consulta tus intentos, nota media y actividad reciente.</small></span>
+   <span aria-hidden="true">›</span>
+  </button>
+ </div>
  <div class="library-jump" aria-label="Accesos rápidos a la biblioteca">
   <button class="library-jump-btn" onclick="goToLibrarySection('testsSection')">
    <span class="library-jump-icon">✓</span>
@@ -225,6 +266,27 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
  </div>
  <div class="foot">OposMurcia 360 · Preparación práctica</div>
  <footer class="copyright">© 2026 OposMurcia 360 · Todos los derechos reservados.</footer>
+</section>
+
+
+<section id="myProgress" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Biblioteca</button><button class="secondary" type="button" onclick="loadMyProgress()">Actualizar</button></div>
+ <div class="progress-shell">
+  <div class="progress-head">
+   <div><div class="section-kicker">V23 · Seguimiento personal</div><h2>Mi progreso</h2><p id="progressUserEmail"></p></div>
+  </div>
+  <div id="progressStatus" class="progress-status">Cargando progreso…</div>
+  <div class="progress-metrics">
+   <div class="progress-metric"><b id="progressAttempts">0</b><span>Ejercicios realizados</span></div>
+   <div class="progress-metric"><b id="progressAverage">—</b><span>Nota media</span></div>
+   <div class="progress-metric"><b id="progressBest">—</b><span>Mejor nota</span></div>
+   <div class="progress-metric"><b id="progressLast">—</b><span>Última actividad</span></div>
+  </div>
+  <div class="progress-panel">
+   <h3>Historial de intentos</h3>
+   <div id="progressList" class="progress-list"></div>
+  </div>
+ </div>
 </section>
 
 <section id="setup" class="hidden">
@@ -381,7 +443,7 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app-check.js";
 import { getAuth,onAuthStateChanged,signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider,signOut,sendPasswordResetEmail,setPersistence,browserLocalPersistence } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-import { getFirestore,collection,getDocs,doc,getDoc,setDoc,updateDoc,addDoc,serverTimestamp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+import { getFirestore,collection,getDocs,doc,getDoc,setDoc,updateDoc,addDoc,serverTimestamp,query,where } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 const firebaseConfig={"apiKey":"AIzaSyDA_79FRQq90gVJgD17dRr_pUHKe4S8XBg","authDomain":"oposmurcia360-5a389.firebaseapp.com","projectId":"oposmurcia360-5a389","storageBucket":"oposmurcia360-5a389.firebasestorage.app","messagingSenderId":"730198455785","appId":"1:730198455785:web:1f3e3d4f8edf8774780778","measurementId":"G-T8QHKNDX5T"};
 const app=initializeApp(firebaseConfig);
 const appCheck=initializeAppCheck(app,{
@@ -413,6 +475,83 @@ async function registrarProgreso({tipo,ejercicioId,titulo,totalPreguntas,acierto
     tiempoEmpleado:Math.max(0,Math.floor(Number(tiempoEmpleado)||0))
   });
 }
+
+function progressDateValue(fecha){
+  if(!fecha)return 0;
+  if(typeof fecha.toMillis==='function')return fecha.toMillis();
+  if(fecha.seconds!=null)return Number(fecha.seconds)*1000;
+  return 0;
+}
+function formatProgressDate(fecha,short=false){
+  const ms=progressDateValue(fecha);
+  if(!ms)return '—';
+  const d=new Date(ms);
+  return short
+    ? d.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'})
+    : d.toLocaleString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+function formatProgressTime(seconds){
+  const s=Math.max(0,Math.floor(Number(seconds)||0));
+  const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;
+  if(h)return `${h} h ${String(m).padStart(2,'0')} min`;
+  if(m)return `${m} min ${String(sec).padStart(2,'0')} s`;
+  return `${sec} s`;
+}
+async function loadMyProgress(){
+  const user=auth.currentUser;
+  if(!user)return;
+  $('#progressUserEmail').textContent=user.email||'';
+  $('#progressStatus').textContent='Cargando progreso…';
+  $('#progressList').innerHTML='';
+  try{
+    // La consulta incluye el UID para que las reglas de Firestore garanticen
+    // que un alumno solo puede recuperar sus propios documentos.
+    const q=query(collection(db,'progreso'),where('uid','==',user.uid));
+    const snap=await getDocs(q);
+    const items=snap.docs.map(d=>({id:d.id,...d.data()}))
+      .sort((a,b)=>progressDateValue(b.fecha)-progressDateValue(a.fecha));
+
+    $('#progressAttempts').textContent=items.length;
+    if(items.length){
+      const avg=items.reduce((sum,x)=>sum+(Number(x.nota)||0),0)/items.length;
+      const best=Math.max(...items.map(x=>Number(x.nota)||0));
+      $('#progressAverage').textContent=avg.toFixed(2).replace('.',',')+'/10';
+      $('#progressBest').textContent=best.toFixed(2).replace('.',',')+'/10';
+      $('#progressLast').textContent=formatProgressDate(items[0].fecha,true);
+      $('#progressList').innerHTML=items.map(x=>`
+        <div class="progress-item">
+          <div class="progress-item-top">
+            <div class="progress-item-title">${esc(x.titulo||'Ejercicio')}</div>
+            <div class="progress-score">${(Number(x.nota)||0).toFixed(2).replace('.',',')}/10</div>
+          </div>
+          <div class="progress-meta">
+            <span>${x.tipo==='supuesto'?'Supuesto práctico':'Test'}</span>
+            <span>${formatProgressDate(x.fecha)}</span>
+            <span>${Number(x.aciertos)||0} aciertos · ${Number(x.errores)||0} errores · ${Number(x.blancos)||0} blancos</span>
+            <span>${formatProgressTime(x.tiempoEmpleado)}</span>
+            <span>${x.penalizacion?'Penalización 1/3':'Sin penalización'}</span>
+          </div>
+        </div>`).join('');
+      $('#progressStatus').textContent=`${items.length} ${items.length===1?'intento registrado':'intentos registrados'}.`;
+    }else{
+      $('#progressAverage').textContent='—';
+      $('#progressBest').textContent='—';
+      $('#progressLast').textContent='—';
+      $('#progressList').innerHTML='<div class="progress-empty">Todavía no tienes ejercicios registrados. Finaliza un test o supuesto práctico y aparecerá aquí.</div>';
+      $('#progressStatus').textContent='Aún no hay actividad registrada.';
+    }
+  }catch(e){
+    console.error('No se pudo cargar Mi progreso:',e);
+    $('#progressStatus').textContent='No se ha podido cargar el progreso.';
+    $('#progressList').innerHTML='<div class="progress-empty">No se ha podido consultar tu historial. Comprueba la conexión y vuelve a intentarlo.</div>';
+  }
+}
+window.loadMyProgress=loadMyProgress;
+window.openMyProgress=async()=>{
+  show('myProgress');
+  await loadMyProgress();
+};
+
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function msg(t,type='error'){const e=$('#authMsg');e.textContent=t;e.className='authmsg '+type} function clearMsg(){const e=$('#authMsg');e.textContent='';e.className='hidden'}
 function ferr(c){return ({'auth/invalid-credential':'Correo o contraseña incorrectos.','auth/user-disabled':'Esta cuenta está desactivada.','auth/too-many-requests':'Demasiados intentos. Inténtalo más tarde.','auth/invalid-email':'El correo electrónico no es válido.','auth/network-request-failed':'No se ha podido conectar. Comprueba tu conexión.'}[c]||'No se ha podido iniciar sesión.')}
@@ -596,7 +735,7 @@ window.goToLibrarySection=(id)=>{
   const el=document.getElementById(id);
   if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
 };
-function show(id){['home','setup','quiz','results','practicalSetup','practicalWork','practicalResults','practicalResultStatement'].forEach(x=>$('#'+x).classList.toggle('hidden',x!==id));window.scrollTo({top:0,behavior:'smooth'})}
+function show(id){['home','myProgress','setup','quiz','results','practicalSetup','practicalWork','practicalResults','practicalResultStatement'].forEach(x=>$('#'+x).classList.toggle('hidden',x!==id));window.scrollTo({top:0,behavior:'smooth'})}
 window.goHome=()=>{clearInterval(interval);interval=null;clearInterval(practicalInterval);practicalInterval=null;show('home');renderHome()};function openSetup(id){currentTest=TESTS.find(t=>t.id===id);if(!currentTest)return;$('#setupTitle').textContent=currentTest.title;$('#setupDesc').textContent=currentTest.description||currentTest.subtitle||'';show('setup')}
 window.startQuiz=()=>{if(!currentTest||!Array.isArray(currentTest.questions)||!currentTest.questions.length){alert('Este test no contiene preguntas válidas.');return;}finishingQuiz=false;answers=Array(currentTest.questions.length).fill(null);current=0;penalty=$('#penalty').checked;timed=document.querySelector('input[name="timeMode"]:checked').value==='timed';timeLimit=Math.max(1,parseInt($('#minutes').value||30))*60;elapsed=0;startedAt=Date.now();show('quiz');renderQuestion();tick();clearInterval(interval);interval=setInterval(()=>{elapsed=Math.floor((Date.now()-startedAt)/1000);tick();if(timed&&elapsed>=timeLimit)finishQuiz(true)},1000)};
 function fmt(s){s=Math.max(0,Math.floor(s));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}function tick(){$('#timer').textContent=timed?fmt(Math.max(0,timeLimit-elapsed)):fmt(elapsed)}
