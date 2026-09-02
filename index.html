@@ -719,7 +719,11 @@ function topicInfo(t){
 
   // Los tests de repaso se agrupan siempre aparte, aunque en Firestore
   // tengan asignado un tema concreto como "Constitución Española".
-  if(hay.includes('repaso') || hay.includes('resumen parte general')){
+  if(
+    hay.includes('repaso') ||
+    hay.includes('resumen parte general') ||
+    hay.includes('resumen temas parte general')
+  ){
     return {key:'repaso-tests',label:'Repaso de tests',order:800};
   }
 
@@ -739,7 +743,7 @@ function repasoOrdinal(t){
 }
 function renderTestCard(t){
   const hay=((t.title||'')+' '+(t.description||'')+' '+(t.id||'')).toLowerCase();
-  const esRepaso=hay.includes('repaso') || hay.includes('resumen parte general');
+  const esRepaso=hay.includes('repaso') || hay.includes('resumen parte general') || hay.includes('resumen temas parte general');
   return `<article class="test-card ${esRepaso?'repaso-card':''}"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=22-appcheck" alt=""><div><h3>${esc(t.title)}</h3><div class="muted">${esc(t.description||t.subtitle||'Cuestionario de preparación')}</div></div></div><div class="pills"><span class="pill">${t.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-test="${esc(t.id)}">Realizar test</button></article>`;
 }
 function renderPracticalCard(p){
