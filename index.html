@@ -206,6 +206,18 @@ button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important
  .progress-head h2{font-size:23px}
 }
 
+
+/* =========================
+   V23 · RENDIMIENTO POR TEMAS
+   ========================= */
+.progress-topics{margin-top:16px}
+.progress-topic-list{display:grid;gap:10px}
+.progress-topic-item{border:1px solid #DCE8F5;border-radius:14px;padding:13px 14px;background:#FBFDFF}
+.progress-topic-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.progress-topic-name{font-weight:850;color:var(--text);font-size:14px;line-height:1.35}
+.progress-topic-best{font-weight:900;color:var(--blue-dark);white-space:nowrap}
+.progress-topic-meta{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:7px;color:var(--muted);font-size:12px;font-weight:650}
+
 </style>
 </head>
 <body>
@@ -285,6 +297,11 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
   <div class="progress-panel">
    <h3>Historial de intentos</h3>
    <div id="progressList" class="progress-list"></div>
+  </div>
+
+  <div class="progress-panel progress-topics">
+   <h3>Rendimiento por materias / temas</h3>
+   <div id="progressTopicList" class="progress-topic-list"></div>
   </div>
  </div>
 </section>
@@ -497,6 +514,60 @@ function formatProgressTime(seconds){
   if(m)return `${m} min ${String(sec).padStart(2,'0')} s`;
   return `${sec} s`;
 }
+
+function progressTopicKey(item){
+  const raw=(item.titulo||'').toString().trim();
+
+  // Primero intenta extraer expresamente "Tema N".
+  const temaMatch=raw.match(/^(.*?)(?:\s*[·\-–—:]*\s*)(Tema\s*\d+)\b/i);
+  if(temaMatch){
+    const materia=temaMatch[1].replace(/\s*[·\-–—:]+\s*$/,'').trim();
+    const tema=temaMatch[2].replace(/\s+/g,' ').trim();
+    return (materia ? `${materia} · ${tema}` : tema);
+  }
+
+  // Si el título incluye "Test X –", usa el resto como materia/tema.
+  const sinTest=raw.replace(/^Test\s*\d+\s*[·\-–—:]\s*/i,'').trim();
+  return sinTest || 'Sin clasificar';
+}
+
+function renderProgressTopics(items){
+  const box=$('#progressTopicList');
+  if(!items.length){
+    box.innerHTML='<div class="progress-empty">Todavía no hay datos suficientes para calcular el rendimiento por temas.</div>';
+    return;
+  }
+
+  const groups=new Map();
+  for(const item of items){
+    const key=progressTopicKey(item);
+    if(!groups.has(key)) groups.set(key,[]);
+    groups.get(key).push(item);
+  }
+
+  const rows=[...groups.entries()].map(([tema,arr])=>{
+    const notas=arr.map(x=>Number(x.nota)||0);
+    const avg=notas.reduce((a,b)=>a+b,0)/notas.length;
+    const best=Math.max(...notas);
+    const last=[...arr].sort((a,b)=>progressDateValue(b.fecha)-progressDateValue(a.fecha))[0];
+    return {tema,intentos:arr.length,avg,best,last};
+  }).sort((a,b)=>a.tema.localeCompare(b.tema,'es'));
+
+  box.innerHTML=rows.map(r=>`
+    <div class="progress-topic-item">
+      <div class="progress-topic-head">
+        <div class="progress-topic-name">${esc(r.tema)}</div>
+        <div class="progress-topic-best">${r.best.toFixed(2).replace('.',',')}/10</div>
+      </div>
+      <div class="progress-topic-meta">
+        <span>${r.intentos} ${r.intentos===1?'intento':'intentos'}</span>
+        <span>Nota media: ${r.avg.toFixed(2).replace('.',',')}/10</span>
+        <span>Mejor nota: ${r.best.toFixed(2).replace('.',',')}/10</span>
+        <span>Último: ${formatProgressDate(r.last.fecha,true)}</span>
+      </div>
+    </div>`).join('');
+}
+
 async function loadMyProgress(){
   const user=auth.currentUser;
   if(!user)return;
@@ -532,18 +603,21 @@ async function loadMyProgress(){
             <span>${x.penalizacion?'Penalización 1/3':'Sin penalización'}</span>
           </div>
         </div>`).join('');
+      renderProgressTopics(items);
       $('#progressStatus').textContent=`${items.length} ${items.length===1?'intento registrado':'intentos registrados'}.`;
     }else{
       $('#progressAverage').textContent='—';
       $('#progressBest').textContent='—';
       $('#progressLast').textContent='—';
       $('#progressList').innerHTML='<div class="progress-empty">Todavía no tienes ejercicios registrados. Finaliza un test o supuesto práctico y aparecerá aquí.</div>';
+      $('#progressTopicList').innerHTML='<div class="progress-empty">Todavía no hay datos suficientes para calcular el rendimiento por temas.</div>';
       $('#progressStatus').textContent='Aún no hay actividad registrada.';
     }
   }catch(e){
     console.error('No se pudo cargar Mi progreso:',e);
     $('#progressStatus').textContent='No se ha podido cargar el progreso.';
     $('#progressList').innerHTML='<div class="progress-empty">No se ha podido consultar tu historial. Comprueba la conexión y vuelve a intentarlo.</div>';
+    $('#progressTopicList').innerHTML='<div class="progress-empty">No se ha podido calcular el rendimiento por temas.</div>';
   }
 }
 window.loadMyProgress=loadMyProgress;
