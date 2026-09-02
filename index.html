@@ -381,7 +381,7 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app-check.js";
 import { getAuth,onAuthStateChanged,signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider,signOut,sendPasswordResetEmail,setPersistence,browserLocalPersistence } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-import { getFirestore,collection,getDocs,doc,getDoc,setDoc,updateDoc,serverTimestamp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+import { getFirestore,collection,getDocs,doc,getDoc,setDoc,updateDoc,addDoc,serverTimestamp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 const firebaseConfig={"apiKey":"AIzaSyDA_79FRQq90gVJgD17dRr_pUHKe4S8XBg","authDomain":"oposmurcia360-5a389.firebaseapp.com","projectId":"oposmurcia360-5a389","storageBucket":"oposmurcia360-5a389.firebasestorage.app","messagingSenderId":"730198455785","appId":"1:730198455785:web:1f3e3d4f8edf8774780778","measurementId":"G-T8QHKNDX5T"};
 const app=initializeApp(firebaseConfig);
 const appCheck=initializeAppCheck(app,{
@@ -393,6 +393,26 @@ await setPersistence(auth,browserLocalPersistence);
 const $=s=>document.querySelector(s),PUBLIC_URL="https://oposmurcia360.github.io/oposmurcia360/";
 let TESTS=[],PRACTICALS=[],currentTest=null,answers=[],current=0,penalty=false,timed=false,timeLimit=0,elapsed=0,interval=null,startedAt=0,deferredPrompt=null;
 let currentPractical=null,practicalAnswers=[],practicalCurrent=0,practicalPenalty=false,practicalTimed=false,practicalTimeLimit=0,practicalElapsed=0,practicalInterval=null,practicalStartedAt=0,practicalQuizStarted=false,practicalStatementY=0;
+let finishingQuiz=false,finishingPractical=false;
+async function registrarProgreso({tipo,ejercicioId,titulo,totalPreguntas,aciertos,errores,blancos,nota,penalizacion,tiempoEmpleado}){
+  const user=auth.currentUser;
+  if(!user) throw new Error('No hay un usuario autenticado.');
+  await addDoc(collection(db,'progreso'),{
+    uid:user.uid,
+    email:user.email||'',
+    tipo,
+    ejercicioId:String(ejercicioId||''),
+    titulo:String(titulo||''),
+    fecha:serverTimestamp(),
+    totalPreguntas:Number(totalPreguntas),
+    aciertos:Number(aciertos),
+    errores:Number(errores),
+    blancos:Number(blancos),
+    nota:Number(nota),
+    penalizacion:Boolean(penalizacion),
+    tiempoEmpleado:Math.max(0,Math.floor(Number(tiempoEmpleado)||0))
+  });
+}
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function msg(t,type='error'){const e=$('#authMsg');e.textContent=t;e.className='authmsg '+type} function clearMsg(){const e=$('#authMsg');e.textContent='';e.className='hidden'}
 function ferr(c){return ({'auth/invalid-credential':'Correo o contraseña incorrectos.','auth/user-disabled':'Esta cuenta está desactivada.','auth/too-many-requests':'Demasiados intentos. Inténtalo más tarde.','auth/invalid-email':'El correo electrónico no es válido.','auth/network-request-failed':'No se ha podido conectar. Comprueba tu conexión.'}[c]||'No se ha podido iniciar sesión.')}
@@ -578,11 +598,11 @@ window.goToLibrarySection=(id)=>{
 };
 function show(id){['home','setup','quiz','results','practicalSetup','practicalWork','practicalResults','practicalResultStatement'].forEach(x=>$('#'+x).classList.toggle('hidden',x!==id));window.scrollTo({top:0,behavior:'smooth'})}
 window.goHome=()=>{clearInterval(interval);interval=null;clearInterval(practicalInterval);practicalInterval=null;show('home');renderHome()};function openSetup(id){currentTest=TESTS.find(t=>t.id===id);if(!currentTest)return;$('#setupTitle').textContent=currentTest.title;$('#setupDesc').textContent=currentTest.description||currentTest.subtitle||'';show('setup')}
-window.startQuiz=()=>{if(!currentTest||!Array.isArray(currentTest.questions)||!currentTest.questions.length){alert('Este test no contiene preguntas válidas.');return;}answers=Array(currentTest.questions.length).fill(null);current=0;penalty=$('#penalty').checked;timed=document.querySelector('input[name="timeMode"]:checked').value==='timed';timeLimit=Math.max(1,parseInt($('#minutes').value||30))*60;elapsed=0;startedAt=Date.now();show('quiz');renderQuestion();tick();clearInterval(interval);interval=setInterval(()=>{elapsed=Math.floor((Date.now()-startedAt)/1000);tick();if(timed&&elapsed>=timeLimit)finishQuiz(true)},1000)};
+window.startQuiz=()=>{if(!currentTest||!Array.isArray(currentTest.questions)||!currentTest.questions.length){alert('Este test no contiene preguntas válidas.');return;}finishingQuiz=false;answers=Array(currentTest.questions.length).fill(null);current=0;penalty=$('#penalty').checked;timed=document.querySelector('input[name="timeMode"]:checked').value==='timed';timeLimit=Math.max(1,parseInt($('#minutes').value||30))*60;elapsed=0;startedAt=Date.now();show('quiz');renderQuestion();tick();clearInterval(interval);interval=setInterval(()=>{elapsed=Math.floor((Date.now()-startedAt)/1000);tick();if(timed&&elapsed>=timeLimit)finishQuiz(true)},1000)};
 function fmt(s){s=Math.max(0,Math.floor(s));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}function tick(){$('#timer').textContent=timed?fmt(Math.max(0,timeLimit-elapsed)):fmt(elapsed)}
 function renderQuestion(){const q=currentTest.questions[current];$('#qnum').textContent=`Pregunta ${current+1} de ${currentTest.questions.length}`;$('#question').textContent=q[0];$('#progress').style.width=((current+1)/currentTest.questions.length*100)+'%';$('#options').innerHTML=q[1].map((o,i)=>`<button class="option ${answers[current]===i?'selected':''}" data-choice="${i}"><strong>${String.fromCharCode(65+i)})</strong> ${esc(o)}</button>`).join('');document.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>{answers[current]=Number(b.dataset.choice);renderQuestion()})}
 window.prevQ=()=>{if(current>0){current--;renderQuestion()}};window.nextQ=()=>{if(current<currentTest.questions.length-1){current++;renderQuestion()}};window.confirmExit=()=>{if(confirm('¿Salir del test? Se perderán las respuestas de este intento.'))goHome()};
-window.finishQuiz=(auto=false)=>{clearInterval(interval);interval=null;elapsed=Math.floor((Date.now()-startedAt)/1000);let ok=0,bad=0,blank=0;currentTest.questions.forEach((q,i)=>{if(answers[i]===null)blank++;else if(answers[i]===q[2])ok++;else bad++});const raw=ok-(penalty?bad/3:0),score=Math.max(0,(raw/currentTest.questions.length)*10);$('#resultTitle').textContent=currentTest.title;$('#score').textContent=score.toFixed(2).replace('.',',')+'/10';$('#ok').textContent=ok;$('#bad').textContent=bad;$('#blank').textContent=blank;$('#resultInfo').textContent=(auto?'Tiempo agotado. · ':'')+'Tiempo empleado: '+fmt(timed?Math.min(elapsed,timeLimit):elapsed)+' · '+(penalty?'Penalización 1/3 aplicada.':'Sin penalización.');$('#review').classList.add('hidden');$('#review').innerHTML='';const s=stats();s.done=(s.done||0)+1;s.best=s.best==null?score:Math.max(Number(s.best),score);saveStats(s);show('results')};
+window.finishQuiz=async(auto=false)=>{if(finishingQuiz)return;finishingQuiz=true;clearInterval(interval);interval=null;elapsed=Math.floor((Date.now()-startedAt)/1000);let ok=0,bad=0,blank=0;currentTest.questions.forEach((q,i)=>{if(answers[i]===null)blank++;else if(answers[i]===q[2])ok++;else bad++});const raw=ok-(penalty?bad/3:0),score=Math.max(0,(raw/currentTest.questions.length)*10),usedTime=timed?Math.min(elapsed,timeLimit):elapsed;$('#resultTitle').textContent=currentTest.title;$('#score').textContent=score.toFixed(2).replace('.',',')+'/10';$('#ok').textContent=ok;$('#bad').textContent=bad;$('#blank').textContent=blank;$('#resultInfo').textContent=(auto?'Tiempo agotado. · ':'')+'Tiempo empleado: '+fmt(usedTime)+' · '+(penalty?'Penalización 1/3 aplicada.':'Sin penalización.');$('#review').classList.add('hidden');$('#review').innerHTML='';const s=stats();s.done=(s.done||0)+1;s.best=s.best==null?score:Math.max(Number(s.best),score);saveStats(s);show('results');try{await registrarProgreso({tipo:'test',ejercicioId:currentTest.id,titulo:currentTest.title,totalPreguntas:currentTest.questions.length,aciertos:ok,errores:bad,blancos:blank,nota:score,penalizacion:penalty,tiempoEmpleado:usedTime});}catch(e){console.error('No se pudo registrar el progreso del test:',e);alert('El resultado se muestra correctamente, pero no se ha podido guardar el progreso en tu historial. Comprueba la conexión e inténtalo de nuevo más tarde.');finishingQuiz=false;}};
 window.toggleReview=()=>{const box=$('#review');if(!box.innerHTML)box.innerHTML=currentTest.questions.map((q,i)=>{const a=answers[i],state=a===null?'blank':(a===q[2]?'ok':'bad'),y=a===null?'Sin contestar':String.fromCharCode(65+a)+') '+q[1][a],r=String.fromCharCode(65+q[2])+') '+q[1][q[2]];return `<div class="review-item ${state}"><strong>${i+1}. ${esc(q[0])}</strong><br>Tu respuesta: ${esc(y)}<br>Correcta: ${esc(r)}</div>`}).join('');box.classList.toggle('hidden')};window.repeatQuiz=()=>openSetup(currentTest.id);window.shareResult=()=>location.href='https://wa.me/?text='+encodeURIComponent('OposMurcia 360 · '+currentTest.title+' · Resultado: '+$('#score').textContent+' · '+PUBLIC_URL);
 
 function openPracticalSetup(id){
@@ -594,6 +614,7 @@ function openPracticalSetup(id){
 }
 window.startPractical=()=>{
   if(!currentPractical||!currentPractical.questions.length||!currentPractical.statement){alert('Este supuesto práctico no contiene todos los datos necesarios.');return}
+  finishingPractical=false;
   practicalAnswers=Array(currentPractical.questions.length).fill(null);
   practicalCurrent=0;
   practicalPenalty=$('#practicalPenalty').checked;
@@ -655,19 +676,28 @@ function renderPracticalQuestion(){
 window.prevPracticalQ=()=>{if(practicalCurrent>0){practicalCurrent--;renderPracticalQuestion()}};
 window.nextPracticalQ=()=>{if(practicalCurrent<currentPractical.questions.length-1){practicalCurrent++;renderPracticalQuestion()}};
 window.confirmPracticalExit=()=>{if(confirm('¿Salir del supuesto práctico? Se perderán las respuestas de este intento.'))goHome()};
-window.finishPractical=(auto=false)=>{
+window.finishPractical=async(auto=false)=>{
+  if(finishingPractical)return;
+  finishingPractical=true;
   clearInterval(practicalInterval); practicalInterval=null;
   practicalElapsed=Math.floor((Date.now()-practicalStartedAt)/1000);
   let ok=0,bad=0,blank=0;
   currentPractical.questions.forEach((q,i)=>{if(practicalAnswers[i]===null)blank++;else if(practicalAnswers[i]===q[2])ok++;else bad++});
-  const raw=ok-(practicalPenalty?bad/3:0),score=Math.max(0,(raw/currentPractical.questions.length)*10);
+  const raw=ok-(practicalPenalty?bad/3:0),score=Math.max(0,(raw/currentPractical.questions.length)*10),usedTime=practicalTimed?Math.min(practicalElapsed,practicalTimeLimit):practicalElapsed;
   $('#practicalResultTitle').textContent=currentPractical.title;
   $('#practicalScore').textContent=score.toFixed(2).replace('.',',')+'/10';
   $('#practicalOk').textContent=ok; $('#practicalBad').textContent=bad; $('#practicalBlank').textContent=blank;
-  $('#practicalResultInfo').textContent=(auto?'Tiempo agotado. · ':'')+'Tiempo empleado: '+fmt(practicalTimed?Math.min(practicalElapsed,practicalTimeLimit):practicalElapsed)+' · '+(practicalPenalty?'Penalización 1/3 aplicada.':'Sin penalización.');
+  $('#practicalResultInfo').textContent=(auto?'Tiempo agotado. · ':'')+'Tiempo empleado: '+fmt(usedTime)+' · '+(practicalPenalty?'Penalización 1/3 aplicada.':'Sin penalización.');
   $('#practicalReview').classList.add('hidden'); $('#practicalReview').innerHTML='';
   const s=stats(); s.done=(s.done||0)+1; s.best=s.best==null?score:Math.max(Number(s.best),score); saveStats(s);
   show('practicalResults');
+  try{
+    await registrarProgreso({tipo:'supuesto',ejercicioId:currentPractical.id,titulo:currentPractical.title,totalPreguntas:currentPractical.questions.length,aciertos:ok,errores:bad,blancos:blank,nota:score,penalizacion:practicalPenalty,tiempoEmpleado:usedTime});
+  }catch(e){
+    console.error('No se pudo registrar el progreso del supuesto:',e);
+    alert('El resultado se muestra correctamente, pero no se ha podido guardar el progreso en tu historial. Comprueba la conexión e inténtalo de nuevo más tarde.');
+    finishingPractical=false;
+  }
 };
 window.togglePracticalReview=()=>{
   const box=$('#practicalReview');
