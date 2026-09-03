@@ -1116,100 +1116,149 @@ async function comprobarDispositivo(user){
 
 
 // ============================================================
-// CORRECCIÓN AUTOMÁTICA TEMPORAL V4
-// Se ejecuta DESPUÉS de loadTests() y loadPracticals().
-// Trabaja sobre TESTS/PRACTICALS ya normalizados por la propia app.
+// CORRECCIÓN AUTOMÁTICA TEMPORAL V5
+// Guarda cada documento conservando EXACTAMENTE la estructura
+// original de questions en Firestore (sin crear arrays anidados).
 // ============================================================
-let _corrV4Ejecutada=false;
+let _corrV5Ejecutada=false;
 
-function _corrV4EsDocumentoObjetivo(item){
-  const todo=(item.questions||[]).map(q=>String(q?.[0]||'').toLowerCase()).join(' || ');
-  return todo.includes('un concejal no perteneciente a la junta de gobierno solicita asistir')
-      || todo.includes('el criterio de cinco años de prestación continuada')
-      || todo.includes('los comentarios reiterados de naturaleza sexual del superior')
-      || todo.includes('en la convocatoria interna para coordinador/a de atención ciudadana');
+function _v5TextKey(q){
+  if(!q || typeof q!=='object' || Array.isArray(q)) return null;
+  return ['text','question','enunciado','pregunta'].find(k=>typeof q[k]==='string') || null;
 }
+function _v5OptionsKey(q){
+  if(!q || typeof q!=='object' || Array.isArray(q)) return null;
+  return ['options','answers','respuestas','opciones'].find(k=>Array.isArray(q[k])) || null;
+}
+function _v5QuestionText(q){
+  if(q && typeof q==='object' && !Array.isArray(q)){
+    const k=_v5TextKey(q);
+    return k ? q[k] : '';
+  }
+  return '';
+}
+function _v5IsTargetCollectionQuestions(raw){
+  const items = Array.isArray(raw) ? raw :
+                (raw && typeof raw==='object' ? Object.values(raw) : []);
+  const all=items.map(q=>_v5QuestionText(q).toLowerCase()).join(' || ');
+  return all.includes('un concejal no perteneciente a la junta de gobierno solicita asistir')
+      || all.includes('el criterio de cinco años de prestación continuada')
+      || all.includes('los comentarios reiterados de naturaleza sexual del superior')
+      || all.includes('en la convocatoria interna para coordinador/a de atención ciudadana');
+}
+function _v5FixQuestionObject(orig){
+  if(!orig || typeof orig!=='object' || Array.isArray(orig)) return {value:orig,changed:false};
+  let q={...orig}, changed=false;
+  const tk=_v5TextKey(q);
 
-function _corrV4Pregunta(q){
-  const nueva=[q[0], Array.isArray(q[1])?[...q[1]]:q[1], q[2]];
-  let cambio=false;
-  let t=String(nueva[0]||'');
+  if(tk){
+    let t=q[tk];
 
-  // La interfaz ya añade 1., 2., 3...: quitamos la numeración incrustada.
-  let z=t.replace(/^\s*\d+\s*[.\-)]\s*/,'').trim();
-  if(z!==t){ t=z; cambio=true; }
+    // La app ya añade la numeración al revisar respuestas.
+    let z=t.replace(/^\s*\d+\s*[.\-)]\s*/,'').trim();
+    if(z!==t){ t=z; changed=true; }
 
-  // Dígito espurio "? 2" en la pregunta del concejal.
-  if(t.toLowerCase().includes('un concejal no perteneciente a la junta de gobierno solicita asistir')){
-    z=t.replace(/\?\s*2\s*$/,'?').trim();
-    if(z!==t){ t=z; cambio=true; }
+    // Incidencia "? 2" en la pregunta del concejal.
+    if(t.toLowerCase().includes('un concejal no perteneciente a la junta de gobierno solicita asistir')){
+      z=t.replace(/\?\s*2\s*$/,'?').trim();
+      if(z!==t){ t=z; changed=true; }
+    }
+
+    // Repaso 16 julio: "? 2" al final de la primera pregunta.
+    if(t.toLowerCase().includes('disponibilidad presencial diaria hasta las 20:00')){
+      z=t.replace(/\?\s*2\s*$/,'?').trim();
+      if(z!==t){ t=z; changed=true; }
+    }
+
+    q[tk]=t;
   }
 
-  // Dígito espurio "? 2" en la pregunta 1 del repaso de 16 julio.
-  if(t.toLowerCase().includes('disponibilidad presencial diaria hasta las 20:00')){
-    z=t.replace(/\?\s*2\s*$/,'?').trim();
-    if(z!==t){ t=z; cambio=true; }
-  }
-  nueva[0]=t;
-
-  // Dígito espurio "3" al final de la opción C indicada.
-  if(Array.isArray(nueva[1])){
-    nueva[1]=nueva[1].map(op=>{
-      if(typeof op!=='string') return op;
-      if(op.toLowerCase().includes('no existe derecho específico fuera de la negociación colectiva')){
-        const limpio=op.replace(/\s*3\s*$/,'').trim();
-        if(limpio!==op)cambio=true;
-        return limpio;
+  // Repaso 16 julio: "3" espurio al final de la opción C.
+  const ok=_v5OptionsKey(q);
+  if(ok){
+    const opts=q[ok].map(op=>{
+      if(typeof op==='string' &&
+         op.toLowerCase().includes('no existe derecho específico fuera de la negociación colectiva')){
+        const z=op.replace(/\s*3\s*$/,'').trim();
+        if(z!==op) changed=true;
+        return z;
       }
       return op;
     });
+    q[ok]=opts;
   }
 
-  return {q:nueva,cambio};
+  return {value:q,changed};
+}
+function _v5FixRawQuestions(raw){
+  if(Array.isArray(raw)){
+    let count=0;
+    const fixed=raw.map(q=>{
+      const r=_v5FixQuestionObject(q);
+      if(r.changed) count++;
+      return r.value;
+    });
+    return {value:fixed,count};
+  }
+
+  if(raw && typeof raw==='object'){
+    let count=0;
+    const fixed={};
+    for(const [key,q] of Object.entries(raw)){
+      const r=_v5FixQuestionObject(q);
+      if(r.changed) count++;
+      fixed[key]=r.value;
+    }
+    return {value:fixed,count};
+  }
+
+  return {value:raw,count:0};
 }
 
-async function ejecutarCorreccionV4(user){
-  if(_corrV4Ejecutada) return;
+async function ejecutarCorreccionV5(user){
+  if(_corrV5Ejecutada) return;
   if((user?.email||'').toLowerCase()!=='oposmurcia360@gmail.com') return;
-  _corrV4Ejecutada=true;
+  _corrV5Ejecutada=true;
 
-  let docs=0, preguntas=0;
+  let docs=0, preguntas=0, revisados=0;
   const detalle=[];
 
   try{
-    for(const [coleccion,items] of [['tests',TESTS],['supuestos',PRACTICALS]]){
-      for(const item of items){
-        if(!_corrV4EsDocumentoObjetivo(item)) continue;
+    for(const col of ['tests','supuestos']){
+      const snap=await getDocs(collection(db,col));
 
-        let cambiosDoc=0;
-        const nuevas=(item.questions||[]).map(q=>{
-          const r=_corrV4Pregunta(q);
-          if(r.cambio)cambiosDoc++;
-          return r.q;
-        });
+      for(const ds of snap.docs){
+        revisados++;
+        const data=ds.data();
+        const raw=data.questions;
 
-        if(!cambiosDoc) continue;
+        if(!_v5IsTargetCollectionQuestions(raw)) continue;
 
-        await updateDoc(doc(db,coleccion,item.id),{questions:nuevas});
-        item.questions=nuevas;
+        const r=_v5FixRawQuestions(raw);
+        if(!r.count) continue;
+
+        // Se guarda el MISMO formato que ya tenía Firestore.
+        await updateDoc(doc(db,col,ds.id),{questions:r.value});
+
         docs++;
-        preguntas+=cambiosDoc;
-        detalle.push(`${coleccion}/${item.id}: ${cambiosDoc}`);
+        preguntas+=r.count;
+        detalle.push(col+'/'+ds.id+' · '+r.count+' correcciones');
       }
     }
 
     alert(
-      'CORRECCIÓN AUTOMÁTICA V4 COMPLETADA\n\n'+
-      'Biblioteca cargada: '+TESTS.length+' tests · '+PRACTICALS.length+' supuestos\n'+
+      'CORRECCIÓN AUTOMÁTICA V5 COMPLETADA\n\n'+
+      'Documentos revisados: '+revisados+'\n'+
       'Documentos modificados: '+docs+'\n'+
       'Preguntas/entradas corregidas: '+preguntas+
       (detalle.length?'\n\n• '+detalle.join('\n• '):'')+
-      '\n\nLas respuestas correctas no se han modificado.'
+      '\n\nSe ha conservado el formato original de Firestore.\n'+
+      'Las respuestas correctas no se han modificado.'
     );
   }catch(e){
-    _corrV4Ejecutada=false;
-    console.error('Corrección V4:',e);
-    alert('ERROR EN CORRECCIÓN AUTOMÁTICA V4\n\n'+(e?.message||e));
+    _corrV5Ejecutada=false;
+    console.error('Corrección V5:',e);
+    alert('ERROR EN CORRECCIÓN AUTOMÁTICA V5\n\n'+(e?.message||e));
     throw e;
   }
 }
@@ -1235,7 +1284,7 @@ onAuthStateChanged(auth,async user=>{
       return;
     }
     await Promise.all([loadTests(),loadPracticals()]);
-    await ejecutarCorreccionV4(user);
+    await ejecutarCorreccionV5(user);
     renderHome();
   }catch(e){
     console.error(e);
