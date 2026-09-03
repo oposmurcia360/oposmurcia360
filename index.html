@@ -1114,85 +1114,6 @@ async function comprobarDispositivo(user){
   return true;
 }
 
-
-// ============================================================
-// CORRECTOR ESPECÍFICO · REPASO 1 · PREGUNTA 6 · OPCIÓN B
-// ÚNICO cambio: "inferior a un 3 cuarto" -> "inferior a un cuarto"
-// No modifica numeración, preguntas, respuesta correcta ni otros campos.
-// ============================================================
-let _rep1q6Ejecutado=false;
-
-async function ejecutarCorrectorRepaso1Q6(user){
-  if(_rep1q6Ejecutado) return;
-  if((user?.email||'').toLowerCase()!=='oposmurcia360@gmail.com') return;
-  _rep1q6Ejecutado=true;
-
-  const id='repaso-1-temas-1-5-parte-especifica-auxiliares-2026';
-
-  try{
-    const ref=doc(db,'supuestos',id);
-    const snap=await getDoc(ref);
-    if(!snap.exists()) throw new Error('No se encuentra el documento '+id);
-
-    const data=snap.data();
-    const raw=data.questions;
-
-    if(!raw || typeof raw!=='object' || Array.isArray(raw)){
-      throw new Error('El campo questions no tiene la estructura q001, q002... esperada.');
-    }
-
-    const nuevo={};
-    let cambios=0;
-
-    for(const [clave,valor] of Object.entries(raw)){
-      if(!valor || typeof valor!=='object' || Array.isArray(valor)){
-        nuevo[clave]=valor;
-        continue;
-      }
-
-      const q={...valor};
-
-      // Solo la pregunta 6.
-      if((clave==='q006' || q.order===6) && Array.isArray(q.options)){
-        q.options=q.options.map(op=>{
-          if(typeof op!=='string') return op;
-
-          // Solo la opción que contiene la frase exacta afectada.
-          if(op.toLowerCase().includes('mantendrá íntegramente sus retribuciones únicamente si la reducción es inferior a un 3 cuarto')){
-            const limpio=op.replace(/un\s+3\s+cuarto/gi,'un cuarto');
-            if(limpio!==op) cambios++;
-            return limpio;
-          }
-          return op;
-        });
-      }
-
-      nuevo[clave]=q;
-    }
-
-    if(cambios!==1){
-      throw new Error(
-        'Se esperaban exactamente 1 cambio en la pregunta 6, opción B, pero se detectaron '+cambios+
-        '. No se ha escrito nada.'
-      );
-    }
-
-    await updateDoc(ref,{questions:nuevo});
-
-    alert(
-      'REPASO 1 · PREGUNTA 6 CORREGIDA\n\n'+
-      'Cambio realizado: 1\n\n'+
-      '«inferior a un 3 cuarto» → «inferior a un cuarto»\n\n'+
-      'No se ha modificado ningún otro contenido.'
-    );
-  }catch(e){
-    _rep1q6Ejecutado=false;
-    console.error('Corrector Repaso 1 Q6:',e);
-    alert('ERROR EN CORRECTOR REPASO 1 · PREGUNTA 6\n\n'+(e?.message||e));
-    throw e;
-  }
-}
-
 onAuthStateChanged(auth,async user=>{
   $('#loadingScreen').classList.add('hidden');
   if(!user){
@@ -1214,7 +1135,6 @@ onAuthStateChanged(auth,async user=>{
       return;
     }
     await Promise.all([loadTests(),loadPracticals()]);
-    await ejecutarCorrectorRepaso1Q6(user);
     renderHome();
   }catch(e){
     console.error(e);
