@@ -303,6 +303,15 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
    <h3>Rendimiento por materias / temas</h3><div class="progress-status" style="margin-top:-5px">Agrupado según la misma clasificación de la biblioteca.</div>
    <div id="progressTopicList" class="progress-topic-list"></div>
   </div>
+
+  <div id="adminResetStatsPanel" class="progress-panel hidden">
+   <h3>Administración · Resetear estadísticas</h3>
+   <div class="progress-status" style="margin-top:-5px">
+    Solo el administrador puede borrar el historial estadístico de un usuario.
+    No se eliminan tests, supuestos, usuarios autorizados ni dispositivos.
+   </div>
+   <button class="secondary" type="button" onclick="resetStatsAsAdmin()">Resetear estadísticas de un usuario</button>
+  </div>
  </div>
 </section>
 
@@ -460,7 +469,7 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app-check.js";
 import { getAuth,onAuthStateChanged,signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider,signOut,sendPasswordResetEmail,setPersistence,browserLocalPersistence } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-import { getFirestore,collection,getDocs,doc,getDoc,setDoc,updateDoc,addDoc,serverTimestamp,query,where } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+import { getFirestore,collection,getDocs,doc,getDoc,setDoc,updateDoc,addDoc,deleteDoc,serverTimestamp,query,where } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 const firebaseConfig={"apiKey":"AIzaSyDA_79FRQq90gVJgD17dRr_pUHKe4S8XBg","authDomain":"oposmurcia360-5a389.firebaseapp.com","projectId":"oposmurcia360-5a389","storageBucket":"oposmurcia360-5a389.firebasestorage.app","messagingSenderId":"730198455785","appId":"1:730198455785:web:1f3e3d4f8edf8774780778","measurementId":"G-T8QHKNDX5T"};
 const app=initializeApp(firebaseConfig);
 const appCheck=initializeAppCheck(app,{
@@ -575,6 +584,58 @@ function progressTopicKey(item){
     </div>`).join('');
 }
 
+
+async function resetStatsAsAdmin(){
+  const user=auth.currentUser;
+  const emailAdmin=(user?.email||'').toLowerCase();
+
+  if(emailAdmin!==ADMIN_EMAIL){
+    alert('Esta función está reservada al administrador.');
+    return;
+  }
+
+  const objetivo=(prompt(
+    'Escribe el correo electrónico del usuario cuyas estadísticas quieres resetear:',
+    emailAdmin
+  )||'').trim().toLowerCase();
+
+  if(!objetivo)return;
+  if(!objetivo.includes('@')){
+    alert('Introduce un correo electrónico válido.');
+    return;
+  }
+
+  if(!confirm(
+    'Se borrará TODO el historial de progreso de:\n\n'+objetivo+
+    '\n\nTests realizados, nota media, mejor nota, actividad e historial quedarán a cero.'+
+    '\n\nNo se borrarán tests, supuestos, usuarios ni dispositivos.'+
+    '\n\n¿Quieres continuar?'
+  )) return;
+
+  try{
+    const q=query(collection(db,'progreso'),where('email','==',objetivo));
+    const snap=await getDocs(q);
+    await Promise.all(snap.docs.map(d=>deleteDoc(d.ref)));
+
+    if(objetivo===emailAdmin){
+      localStorage.removeItem('opos360_stats_v14');
+      await loadMyProgress();
+      await renderStats();
+    }
+
+    alert(
+      'Estadísticas reseteadas correctamente.\n\n'+
+      'Usuario: '+objetivo+'\n'+
+      'Intentos eliminados: '+snap.size
+    );
+  }catch(e){
+    console.error('No se pudieron resetear las estadísticas:',e);
+    alert('No se han podido resetear las estadísticas.\n\n'+(e?.message||e));
+  }
+}
+
+window.resetStatsAsAdmin=resetStatsAsAdmin;
+
 async function loadMyProgress(){
   const user=auth.currentUser;
   if(!user)return;
@@ -629,6 +690,9 @@ async function loadMyProgress(){
 }
 window.loadMyProgress=loadMyProgress;
 window.openMyProgress=async()=>{
+  const user=auth.currentUser;
+  const panel=$('#adminResetStatsPanel');
+  if(panel)panel.classList.toggle('hidden',((user?.email||'').toLowerCase()!==ADMIN_EMAIL));
   show('myProgress');
   await loadMyProgress();
 };
@@ -712,8 +776,33 @@ async function loadPracticals(){
     PRACTICALS=[];
   }
 }
-function stats(){try{return JSON.parse(localStorage.getItem('opos360_stats_v14')||'{"done":0,"best":null}')}catch(e){return {done:0,best:null}}} function saveStats(s){localStorage.setItem('opos360_stats_v14',JSON.stringify(s))}
-function renderStats(){const s=stats();$('#doneCount').textContent=s.done||0;$('#bestScore').textContent=s.best==null?'—':Number(s.best).toFixed(2).replace('.',',')}
+function stats(){try{return JSON.parse(localStorage.getItem('opos360_stats_v14')||'{"done":0,"best":null}')}catch(e){return {done:0,best:null}}}
+function saveStats(s){localStorage.setItem('opos360_stats_v14',JSON.stringify(s))}
+async function renderStats(){
+  const user=auth.currentUser;
+  if(!user){
+    $('#doneCount').textContent='0';
+    $('#bestScore').textContent='—';
+    return;
+  }
+  try{
+    const q=query(collection(db,'progreso'),where('uid','==',user.uid));
+    const snap=await getDocs(q);
+    const items=snap.docs.map(d=>d.data());
+    $('#doneCount').textContent=items.length;
+    if(items.length){
+      const best=Math.max(...items.map(x=>Number(x.nota)||0));
+      $('#bestScore').textContent=best.toFixed(2).replace('.',',');
+    }else{
+      $('#bestScore').textContent='—';
+    }
+  }catch(e){
+    console.error('No se pudieron sincronizar las estadísticas:',e);
+    const s=stats();
+    $('#doneCount').textContent=s.done||0;
+    $('#bestScore').textContent=s.best==null?'—':Number(s.best).toFixed(2).replace('.',',');
+  }
+}
 function topicInfo(t){
   const hay=((t.title||'')+' '+(t.description||'')+' '+(t.id||'')).toLowerCase();
 
