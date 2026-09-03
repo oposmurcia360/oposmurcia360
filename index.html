@@ -1116,37 +1116,39 @@ async function comprobarDispositivo(user){
 
 
 // ============================================================
-// MANTENIMIENTO AUTOMÁTICO TEMPORAL · SEPTIEMBRE 2026
-// Corrige únicamente los defectos de importación identificados.
-// Ejecutar solo con la cuenta administradora y retirar después.
+// MANTENIMIENTO AUTOMÁTICO TEMPORAL V2 · SEPTIEMBRE 2026
+// Detección por contenido real de preguntas, no por título.
 // ============================================================
-function _mantTextoKey(q){
+function _m2TextoKey(q){
   return ['text','question','enunciado','pregunta'].find(k=>typeof q?.[k]==='string') || null;
 }
-function _mantOpcionesKey(q){
+function _m2OpcionesKey(q){
   return ['options','answers','respuestas','opciones'].find(k=>Array.isArray(q?.[k])) || null;
 }
-function _mantBlob(d,id){
-  return ((d.title||'')+' '+(d.description||'')+' '+(d.topic||'')+' '+id).toLowerCase();
+function _m2Texto(q){
+  const k=_m2TextoKey(q);
+  return k ? q[k].toLowerCase() : '';
 }
-function _mantEsRepasoObjetivo(blob){
-  return blob.includes('repaso 1')
-      || blob.includes('repaso 2')
-      || (blob.includes('16 julio 2026') && blob.includes('repaso'));
+function _m2DocumentoObjetivo(qs){
+  const todo=qs.map(_m2Texto).join(' || ');
+  return todo.includes('un concejal no perteneciente a la junta de gobierno solicita asistir')
+      || todo.includes('el criterio de cinco años de prestación continuada')
+      || todo.includes('los comentarios reiterados de naturaleza sexual del superior')
+      || todo.includes('en la convocatoria interna para coordinador/a de atención ciudadana');
 }
-function _mantEsPreguntaConcejal(q){
-  const k=_mantTextoKey(q);
-  return !!k && q[k].toLowerCase().includes('un concejal no perteneciente a la junta de gobierno solicita asistir');
-}
-function _mantLimpiaOpcionTres(q){
-  const ok=_mantOpcionesKey(q);
+function _m2LimpiaOpciones(q){
+  const ok=_m2OpcionesKey(q);
   if(!ok)return q;
   let cambio=false;
   const arr=q[ok].map(op=>{
-    if(typeof op==='string' && op.toLowerCase().includes('no existe derecho específico fuera de la negociación colectiva')){
-      const z=op.replace(/\s*3\s*$/,'').trim();
-      if(z!==op)cambio=true;
-      return z;
+    if(typeof op==='string'){
+      const low=op.toLowerCase();
+      if(low.includes('no existe derecho específico fuera de la negociación colectiva')){
+        const z=op.replace(/\s*3\s*$/,'').trim();
+        if(z!==op)cambio=true;
+        return z;
+      }
+      return op;
     }
     if(op && typeof op==='object'){
       const tk=['text','label','texto','respuesta'].find(k=>typeof op[k]==='string');
@@ -1159,51 +1161,41 @@ function _mantLimpiaOpcionTres(q){
   });
   return cambio ? {...q,[ok]:arr} : q;
 }
-function _mantCorrigePreguntas(data,id){
+function _m2CorrigeDocumento(data){
   const qs=Array.isArray(data.questions)?data.questions:null;
-  if(!qs)return null;
-  const blob=_mantBlob(data,id);
-  const docRepaso=_mantEsRepasoObjetivo(blob);
-  const contieneConcejal=qs.some(_mantEsPreguntaConcejal);
-  if(!docRepaso && !contieneConcejal)return null;
+  if(!qs || !_m2DocumentoObjetivo(qs))return null;
 
   let hubo=false;
   const nuevas=qs.map(orig=>{
     let q={...orig};
     let cambio=false;
-    const k=_mantTextoKey(q);
+    const k=_m2TextoKey(q);
 
     if(k){
       let t=q[k];
 
-      // Quita el número que ya añade la propia app: "1. 1." -> "1."
-      if(docRepaso || contieneConcejal){
-        const limpio=t.replace(/^\s*\d+\s*[.\-)]\s*/,'').trim();
-        if(limpio!==t){t=limpio;cambio=true;}
-      }
+      // La app ya numera: elimina el número que viene incrustado en el enunciado.
+      const sinNumero=t.replace(/^\s*\d+\s*[.\-)]\s*/,'').trim();
+      if(sinNumero!==t){t=sinNumero;cambio=true;}
 
-      // Incidencia repetida en dos documentos: "...¿Qué respuesta es correcta? 2"
+      // "...¿Qué respuesta es correcta? 2"
       if(t.toLowerCase().includes('un concejal no perteneciente a la junta de gobierno solicita asistir')){
-        const limpio=t.replace(/\?\s*2\s*$/,'?').trim();
-        if(limpio!==t){t=limpio;cambio=true;}
+        const z=t.replace(/\?\s*2\s*$/,'?').trim();
+        if(z!==t){t=z;cambio=true;}
       }
 
-      // Repaso práctico 16-07-2026, pregunta 1: "...¿Cuál es el encaje correcto? 2"
-      if(docRepaso && blob.includes('16 julio 2026')
-         && t.toLowerCase().includes('disponibilidad presencial diaria hasta las 20:00')){
-        const limpio=t.replace(/\?\s*2\s*$/,'?').trim();
-        if(limpio!==t){t=limpio;cambio=true;}
+      // Repaso práctico 16-07-2026, pregunta 1.
+      if(t.toLowerCase().includes('disponibilidad presencial diaria hasta las 20:00')){
+        const z=t.replace(/\?\s*2\s*$/,'?').trim();
+        if(z!==t){t=z;cambio=true;}
       }
 
       q[k]=t;
     }
 
-    // Repaso práctico 16-07-2026, pregunta 4, opción C: "...negociación colectiva. 3"
-    if(docRepaso && blob.includes('16 julio 2026')){
-      const antes=JSON.stringify(q);
-      q=_mantLimpiaOpcionTres(q);
-      if(JSON.stringify(q)!==antes)cambio=true;
-    }
+    const antes=JSON.stringify(q);
+    q=_m2LimpiaOpciones(q);
+    if(JSON.stringify(q)!==antes)cambio=true;
 
     if(cambio)hubo=true;
     return q;
@@ -1211,47 +1203,47 @@ function _mantCorrigePreguntas(data,id){
   return hubo ? nuevas : null;
 }
 
-let _mantenimientoEjecutado=false;
-async function ejecutarMantenimientoAutomatico(user){
-  if(_mantenimientoEjecutado)return;
+let _m2Ejecutado=false;
+async function ejecutarMantenimientoAutomaticoV2(user){
+  if(_m2Ejecutado)return;
   if((user?.email||'').toLowerCase()!=='oposmurcia360@gmail.com')return;
-  _mantenimientoEjecutado=true;
+  _m2Ejecutado=true;
 
   const resultados=[];
-  let documentos=0, colecciones=0;
+  let documentos=0, preguntasCambiadas=0;
   try{
     for(const nombreColeccion of ['tests','supuestos']){
       const snap=await getDocs(collection(db,nombreColeccion));
-      let cambiosColeccion=0;
       for(const ds of snap.docs){
         const data=ds.data();
-        const nuevas=_mantCorrigePreguntas(data,ds.id);
+        const antes=Array.isArray(data.questions)?JSON.stringify(data.questions):'';
+        const nuevas=_m2CorrigeDocumento(data);
         if(!nuevas)continue;
+        const despues=JSON.stringify(nuevas);
+        if(antes===despues)continue;
+        // contabiliza preguntas distintas
+        const viejas=data.questions;
+        for(let i=0;i<nuevas.length;i++){
+          if(JSON.stringify(viejas[i])!==JSON.stringify(nuevas[i]))preguntasCambiadas++;
+        }
         await updateDoc(doc(db,nombreColeccion,ds.id),{questions:nuevas});
-        cambiosColeccion++;
         documentos++;
         resultados.push(nombreColeccion+'/'+ds.id);
       }
-      if(cambiosColeccion)colecciones++;
     }
 
-    const detalle=resultados.length ? '\n\nDocumentos:\n• '+resultados.join('\n• ') : '';
     alert(
-      'CORRECCIÓN AUTOMÁTICA COMPLETADA\n\n'+
+      'CORRECCIÓN AUTOMÁTICA V2 COMPLETADA\n\n'+
       'Documentos modificados: '+documentos+'\n'+
-      'Colecciones afectadas: '+colecciones+
-      detalle+
+      'Preguntas/entradas corregidas: '+preguntasCambiadas+
+      (resultados.length?'\n\n• '+resultados.join('\n• '):'')+
       '\n\nLas respuestas correctas no se han modificado.\n\n'+
       'Ahora restaura las reglas definitivas y el index normal.'
     );
   }catch(e){
-    console.error('Mantenimiento automático:',e);
-    _mantenimientoEjecutado=false;
-    alert(
-      'NO SE HA PODIDO COMPLETAR LA CORRECCIÓN AUTOMÁTICA.\n\n'+
-      (e?.message||e)+
-      '\n\nNo cambies las reglas todavía; informa del mensaje exacto.'
-    );
+    console.error('Mantenimiento automático V2:',e);
+    _m2Ejecutado=false;
+    alert('ERROR EN CORRECCIÓN AUTOMÁTICA V2\n\n'+(e?.message||e));
     throw e;
   }
 }
@@ -1276,7 +1268,7 @@ onAuthStateChanged(auth,async user=>{
       msg('Dispositivo no autorizado. Esta cuenta ya está vinculada a otro dispositivo. Contacta con el administrador.');
       return;
     }
-    await ejecutarMantenimientoAutomatico(user);
+    await ejecutarMantenimientoAutomaticoV2(user);
     await Promise.all([loadTests(),loadPracticals()]);
     renderHome();
   }catch(e){
