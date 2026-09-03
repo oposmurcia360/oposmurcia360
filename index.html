@@ -312,6 +312,15 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
    </div>
    <button class="secondary" type="button" onclick="resetStatsAsAdmin()">Resetear estadísticas de un usuario</button>
   </div>
+
+  <div id="adminAllProgressPanel" class="progress-panel hidden">
+   <h3>Administración · Seguimiento de alumnos</h3>
+   <div class="progress-status" style="margin-top:-5px">
+    Vista exclusiva del administrador. El preparador no tiene acceso al seguimiento de otros usuarios.
+   </div>
+   <button class="secondary" type="button" onclick="loadAllProgressAsAdmin()">Ver seguimiento de alumnos</button>
+   <div id="adminAllProgressList" style="margin-top:14px"></div>
+  </div>
  </div>
 </section>
 
@@ -636,6 +645,72 @@ async function resetStatsAsAdmin(){
 
 window.resetStatsAsAdmin=resetStatsAsAdmin;
 
+
+async function loadAllProgressAsAdmin(){
+  const user=auth.currentUser;
+  const email=(user?.email||'').toLowerCase();
+  if(email!==ADMIN_EMAIL){
+    alert('Esta función está reservada al administrador.');
+    return;
+  }
+
+  const box=$('#adminAllProgressList');
+  if(!box)return;
+  box.innerHTML='<div class="progress-status">Cargando seguimiento...</div>';
+
+  try{
+    const snap=await getDocs(collection(db,'progreso'));
+    const items=snap.docs.map(d=>({id:d.id,...d.data()}))
+      .filter(x=>((x.email||'').toLowerCase()!==ADMIN_EMAIL));
+
+    if(!items.length){
+      box.innerHTML='<div class="progress-empty">No hay progreso de alumnos registrado.</div>';
+      return;
+    }
+
+    const porAlumno={};
+    items.forEach(x=>{
+      const correo=(x.email||'Sin correo').toLowerCase();
+      (porAlumno[correo]??=[]).push(x);
+    });
+
+    box.innerHTML=Object.keys(porAlumno).sort().map(correo=>{
+      const intentos=porAlumno[correo].sort((a,b)=>progressDateValue(b.fecha)-progressDateValue(a.fecha));
+      const notas=intentos.map(x=>Number(x.nota)).filter(Number.isFinite);
+      const media=notas.length?notas.reduce((a,b)=>a+b,0)/notas.length:null;
+      const mejor=notas.length?Math.max(...notas):null;
+
+      const historial=intentos.map(x=>`
+        <div class="progress-item">
+          <div class="progress-item-top">
+            <div class="progress-item-title">${esc(x.titulo||'Ejercicio')}</div>
+            <div class="progress-score">${Number.isFinite(Number(x.nota))?Number(x.nota).toFixed(2).replace('.',','):'—'}/10</div>
+          </div>
+          <div class="progress-meta">
+            <span>${x.tipo==='supuesto'?'Supuesto práctico':'Test'}</span>
+            <span>${esc(x.categoria||'Sin categoría')}</span>
+            <span>${formatProgressDate(x.fecha)}</span>
+          </div>
+        </div>`).join('');
+
+      return `
+        <div class="progress-panel" style="margin-top:12px">
+          <h3>${esc(correo)}</h3>
+          <div class="progress-status" style="margin-top:-5px">
+            ${intentos.length} ${intentos.length===1?'intento':'intentos'} ·
+            Nota media: ${media===null?'—':media.toFixed(2).replace('.',',')}/10 ·
+            Mejor nota: ${mejor===null?'—':mejor.toFixed(2).replace('.',',')}/10
+          </div>
+          <div class="progress-list" style="margin-top:10px">${historial}</div>
+        </div>`;
+    }).join('');
+  }catch(e){
+    console.error('No se pudo cargar el seguimiento de alumnos:',e);
+    box.innerHTML='<div class="progress-empty">No se ha podido cargar el seguimiento de alumnos.</div>';
+  }
+}
+window.loadAllProgressAsAdmin=loadAllProgressAsAdmin;
+
 async function loadMyProgress(){
   const user=auth.currentUser;
   if(!user)return;
@@ -691,8 +766,11 @@ async function loadMyProgress(){
 window.loadMyProgress=loadMyProgress;
 window.openMyProgress=async()=>{
   const user=auth.currentUser;
-  const panel=$('#adminResetStatsPanel');
-  if(panel)panel.classList.toggle('hidden',((user?.email||'').toLowerCase()!==ADMIN_EMAIL));
+  const isAdmin=((user?.email||'').toLowerCase()===ADMIN_EMAIL);
+  const resetPanel=$('#adminResetStatsPanel');
+  const allProgressPanel=$('#adminAllProgressPanel');
+  if(resetPanel)resetPanel.classList.toggle('hidden',!isAdmin);
+  if(allProgressPanel)allProgressPanel.classList.toggle('hidden',!isAdmin);
   show('myProgress');
   await loadMyProgress();
 };
