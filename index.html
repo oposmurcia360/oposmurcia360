@@ -1116,129 +1116,106 @@ async function comprobarDispositivo(user){
 
 
 // ============================================================
-// CORRECCIÓN AUTOMÁTICA TEMPORAL V7
-// Limpieza robusta de dígitos espurios pegados o separados:
-// "?2", "? 2", ".3", ". 3", ")4", ") 4".
-// Solo actúa sobre los 4 documentos ya identificados.
+// CORRECTOR ESPECÍFICO · PROCEDIMIENTO ADMINISTRATIVO Nº 7
+// Documento: procedimiento-administrativo-7-auxiliares-2026
+// Solo modifica questions.qXXX.text y strings de options.
+// NO modifica correct, order ni otros campos.
 // ============================================================
-let _corrV7Ejecutada=false;
+let _proc7Ejecutado=false;
 
-function _v7TextKey(q){
-  if(!q || typeof q!=='object' || Array.isArray(q)) return null;
-  return ['text','question','enunciado','pregunta'].find(k=>typeof q[k]==='string') || null;
-}
-function _v7QuestionText(q){
-  if(q && typeof q==='object' && !Array.isArray(q)){
-    const k=_v7TextKey(q);
-    return k ? q[k] : '';
-  }
-  return '';
-}
-function _v7Items(raw){
-  return Array.isArray(raw) ? raw :
-         (raw && typeof raw==='object' ? Object.values(raw) : []);
-}
-function _v7IsTarget(raw){
-  const all=_v7Items(raw).map(q=>_v7QuestionText(q).toLowerCase()).join(' || ');
-  return all.includes('un concejal no perteneciente a la junta de gobierno solicita asistir')
-      || all.includes('el criterio de cinco años de prestación continuada')
-      || all.includes('los comentarios reiterados de naturaleza sexual del superior')
-      || all.includes('en la convocatoria interna para coordinador/a de atención ciudadana');
-}
-function _v7CleanString(s){
+function _proc7LimpiarTextoPregunta(s){
   if(typeof s!=='string') return s;
   let z=s.trim();
 
-  // La app ya añade la numeración de cada pregunta.
-  z=z.replace(/^\s*\d+\s*[.\-)]\s*/,'').trim();
+  // Elimina la numeración incrustada inicial: "1. ", "2. ", etc.
+  z=z.replace(/^\s*\d+\s*\.\s*/,'').trim();
 
-  // Elimina únicamente un número espurio al FINAL cuando está pegado
-  // a un signo de cierre de frase o paréntesis:
-  // "?2", "? 2", ".3", ". 3", "!4", ")4", etc.
+  // Elimina un dígito espurio al final tras cierre de frase:
+  // "? 2", "?2", ". 3", ".3", "! 4", etc.
+  z=z.replace(/([?.!])\s*\d{1,2}\s*$/,'$1').trim();
+
+  return z;
+}
+
+function _proc7LimpiarOpcion(s){
+  if(typeof s!=='string') return s;
+  let z=s.trim();
+
+  // Elimina únicamente número espurio al FINAL de la opción.
   z=z.replace(/([?.!)])\s*\d{1,2}\s*$/,'$1').trim();
 
   return z;
 }
-function _v7DeepClean(value){
-  if(typeof value==='string') return _v7CleanString(value);
 
-  if(Array.isArray(value)){
-    return value.map(v=>_v7DeepClean(v));
-  }
-
-  if(value && typeof value==='object'){
-    const out={};
-    for(const [k,v] of Object.entries(value)){
-      // Conserva sin tocar campos numéricos/lógicos; solo limpia strings.
-      out[k]=_v7DeepClean(v);
-    }
-    return out;
-  }
-
-  return value;
-}
-function _v7CountChanged(before,after){
-  if(typeof before==='string' && typeof after==='string'){
-    return before!==after ? 1 : 0;
-  }
-  if(Array.isArray(before) && Array.isArray(after)){
-    let n=0;
-    for(let i=0;i<Math.max(before.length,after.length);i++) n+=_v7CountChanged(before[i],after[i]);
-    return n;
-  }
-  if(before && after && typeof before==='object' && typeof after==='object'){
-    let n=0;
-    const keys=new Set([...Object.keys(before),...Object.keys(after)]);
-    for(const k of keys) n+=_v7CountChanged(before[k],after[k]);
-    return n;
-  }
-  return 0;
-}
-
-async function ejecutarCorreccionV7(user){
-  if(_corrV7Ejecutada) return;
+async function ejecutarCorrectorProc7(user){
+  if(_proc7Ejecutado) return;
   if((user?.email||'').toLowerCase()!=='oposmurcia360@gmail.com') return;
-  _corrV7Ejecutada=true;
+  _proc7Ejecutado=true;
 
-  let docs=0, cadenas=0, revisados=0;
-  const detalle=[];
+  const id='procedimiento-administrativo-7-auxiliares-2026';
 
   try{
-    for(const col of ['tests','supuestos']){
-      const snap=await getDocs(collection(db,col));
+    const ref=doc(db,'supuestos',id);
+    const snap=await getDoc(ref);
+    if(!snap.exists()) throw new Error('No se encuentra el documento '+id);
 
-      for(const ds of snap.docs){
-        revisados++;
-        const data=ds.data();
-        const raw=data.questions;
+    const data=snap.data();
+    const raw=data.questions;
 
-        if(!_v7IsTarget(raw)) continue;
-
-        const fixed=_v7DeepClean(raw);
-        const cambios=_v7CountChanged(raw,fixed);
-        if(!cambios) continue;
-
-        await updateDoc(doc(db,col,ds.id),{questions:fixed});
-
-        docs++;
-        cadenas+=cambios;
-        detalle.push(col+'/'+ds.id+' · '+cambios+' textos limpiados');
-      }
+    if(!raw || typeof raw!=='object' || Array.isArray(raw)){
+      throw new Error('El campo questions no tiene la estructura q001, q002... esperada.');
     }
 
+    const nuevo={};
+    let preguntas=0, opciones=0;
+
+    for(const [clave,valor] of Object.entries(raw)){
+      if(!valor || typeof valor!=='object' || Array.isArray(valor)){
+        nuevo[clave]=valor;
+        continue;
+      }
+
+      const q={...valor};
+
+      if(typeof q.text==='string'){
+        const limpio=_proc7LimpiarTextoPregunta(q.text);
+        if(limpio!==q.text) preguntas++;
+        q.text=limpio;
+      }
+
+      if(Array.isArray(q.options)){
+        q.options=q.options.map(op=>{
+          const limpio=_proc7LimpiarOpcion(op);
+          if(limpio!==op) opciones++;
+          return limpio;
+        });
+      }
+
+      nuevo[clave]=q;
+    }
+
+    if(preguntas===0 && opciones===0){
+      alert(
+        'PROCEDIMIENTO ADMINISTRATIVO Nº 7\n\n'+
+        'No se encontraron textos pendientes de corregir.\n\n'+
+        'No se ha realizado ninguna escritura.'
+      );
+      return;
+    }
+
+    await updateDoc(ref,{questions:nuevo});
+
     alert(
-      'CORRECCIÓN AUTOMÁTICA V7 COMPLETADA\n\n'+
-      'Documentos revisados: '+revisados+'\n'+
-      'Documentos modificados: '+docs+'\n'+
-      'Textos corregidos: '+cadenas+
-      (detalle.length?'\n\n• '+detalle.join('\n• '):'')+
-      '\n\nSe han eliminado variantes como ?2, ? 2, .3, . 3 y )4.\n'+
-      'No se han modificado índices de respuesta correcta.'
+      'PROCEDIMIENTO ADMINISTRATIVO Nº 7 CORREGIDO\n\n'+
+      'Preguntas limpiadas: '+preguntas+'\n'+
+      'Opciones limpiadas: '+opciones+'\n\n'+
+      'Se ha eliminado la numeración incrustada y los dígitos espurios finales.\n\n'+
+      'NO se han modificado correct, order ni otros campos.'
     );
   }catch(e){
-    _corrV7Ejecutada=false;
-    console.error('Corrección V7:',e);
-    alert('ERROR EN CORRECCIÓN AUTOMÁTICA V7\n\n'+(e?.message||e));
+    _proc7Ejecutado=false;
+    console.error('Corrector Procedimiento 7:',e);
+    alert('ERROR EN CORRECTOR PROCEDIMIENTO Nº 7\n\n'+(e?.message||e));
     throw e;
   }
 }
@@ -1264,7 +1241,7 @@ onAuthStateChanged(auth,async user=>{
       return;
     }
     await Promise.all([loadTests(),loadPracticals()]);
-    await ejecutarCorreccionV7(user);
+    await ejecutarCorrectorProc7(user);
     renderHome();
   }catch(e){
     console.error(e);
