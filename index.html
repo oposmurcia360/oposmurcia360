@@ -1114,6 +1114,148 @@ async function comprobarDispositivo(user){
   return true;
 }
 
+
+// ============================================================
+// MANTENIMIENTO AUTOMÁTICO TEMPORAL · SEPTIEMBRE 2026
+// Corrige únicamente los defectos de importación identificados.
+// Ejecutar solo con la cuenta administradora y retirar después.
+// ============================================================
+function _mantTextoKey(q){
+  return ['text','question','enunciado','pregunta'].find(k=>typeof q?.[k]==='string') || null;
+}
+function _mantOpcionesKey(q){
+  return ['options','answers','respuestas','opciones'].find(k=>Array.isArray(q?.[k])) || null;
+}
+function _mantBlob(d,id){
+  return ((d.title||'')+' '+(d.description||'')+' '+(d.topic||'')+' '+id).toLowerCase();
+}
+function _mantEsRepasoObjetivo(blob){
+  return blob.includes('repaso 1')
+      || blob.includes('repaso 2')
+      || (blob.includes('16 julio 2026') && blob.includes('repaso'));
+}
+function _mantEsPreguntaConcejal(q){
+  const k=_mantTextoKey(q);
+  return !!k && q[k].toLowerCase().includes('un concejal no perteneciente a la junta de gobierno solicita asistir');
+}
+function _mantLimpiaOpcionTres(q){
+  const ok=_mantOpcionesKey(q);
+  if(!ok)return q;
+  let cambio=false;
+  const arr=q[ok].map(op=>{
+    if(typeof op==='string' && op.toLowerCase().includes('no existe derecho específico fuera de la negociación colectiva')){
+      const z=op.replace(/\s*3\s*$/,'').trim();
+      if(z!==op)cambio=true;
+      return z;
+    }
+    if(op && typeof op==='object'){
+      const tk=['text','label','texto','respuesta'].find(k=>typeof op[k]==='string');
+      if(tk && op[tk].toLowerCase().includes('no existe derecho específico fuera de la negociación colectiva')){
+        const z=op[tk].replace(/\s*3\s*$/,'').trim();
+        if(z!==op[tk]){cambio=true; return {...op,[tk]:z};}
+      }
+    }
+    return op;
+  });
+  return cambio ? {...q,[ok]:arr} : q;
+}
+function _mantCorrigePreguntas(data,id){
+  const qs=Array.isArray(data.questions)?data.questions:null;
+  if(!qs)return null;
+  const blob=_mantBlob(data,id);
+  const docRepaso=_mantEsRepasoObjetivo(blob);
+  const contieneConcejal=qs.some(_mantEsPreguntaConcejal);
+  if(!docRepaso && !contieneConcejal)return null;
+
+  let hubo=false;
+  const nuevas=qs.map(orig=>{
+    let q={...orig};
+    let cambio=false;
+    const k=_mantTextoKey(q);
+
+    if(k){
+      let t=q[k];
+
+      // Quita el número que ya añade la propia app: "1. 1." -> "1."
+      if(docRepaso || contieneConcejal){
+        const limpio=t.replace(/^\s*\d+\s*[.\-)]\s*/,'').trim();
+        if(limpio!==t){t=limpio;cambio=true;}
+      }
+
+      // Incidencia repetida en dos documentos: "...¿Qué respuesta es correcta? 2"
+      if(t.toLowerCase().includes('un concejal no perteneciente a la junta de gobierno solicita asistir')){
+        const limpio=t.replace(/\?\s*2\s*$/,'?').trim();
+        if(limpio!==t){t=limpio;cambio=true;}
+      }
+
+      // Repaso práctico 16-07-2026, pregunta 1: "...¿Cuál es el encaje correcto? 2"
+      if(docRepaso && blob.includes('16 julio 2026')
+         && t.toLowerCase().includes('disponibilidad presencial diaria hasta las 20:00')){
+        const limpio=t.replace(/\?\s*2\s*$/,'?').trim();
+        if(limpio!==t){t=limpio;cambio=true;}
+      }
+
+      q[k]=t;
+    }
+
+    // Repaso práctico 16-07-2026, pregunta 4, opción C: "...negociación colectiva. 3"
+    if(docRepaso && blob.includes('16 julio 2026')){
+      const antes=JSON.stringify(q);
+      q=_mantLimpiaOpcionTres(q);
+      if(JSON.stringify(q)!==antes)cambio=true;
+    }
+
+    if(cambio)hubo=true;
+    return q;
+  });
+  return hubo ? nuevas : null;
+}
+
+let _mantenimientoEjecutado=false;
+async function ejecutarMantenimientoAutomatico(user){
+  if(_mantenimientoEjecutado)return;
+  if((user?.email||'').toLowerCase()!=='oposmurcia360@gmail.com')return;
+  _mantenimientoEjecutado=true;
+
+  const resultados=[];
+  let documentos=0, colecciones=0;
+  try{
+    for(const nombreColeccion of ['tests','supuestos']){
+      const snap=await getDocs(collection(db,nombreColeccion));
+      let cambiosColeccion=0;
+      for(const ds of snap.docs){
+        const data=ds.data();
+        const nuevas=_mantCorrigePreguntas(data,ds.id);
+        if(!nuevas)continue;
+        await updateDoc(doc(db,nombreColeccion,ds.id),{questions:nuevas});
+        cambiosColeccion++;
+        documentos++;
+        resultados.push(nombreColeccion+'/'+ds.id);
+      }
+      if(cambiosColeccion)colecciones++;
+    }
+
+    const detalle=resultados.length ? '\n\nDocumentos:\n• '+resultados.join('\n• ') : '';
+    alert(
+      'CORRECCIÓN AUTOMÁTICA COMPLETADA\n\n'+
+      'Documentos modificados: '+documentos+'\n'+
+      'Colecciones afectadas: '+colecciones+
+      detalle+
+      '\n\nLas respuestas correctas no se han modificado.\n\n'+
+      'Ahora restaura las reglas definitivas y el index normal.'
+    );
+  }catch(e){
+    console.error('Mantenimiento automático:',e);
+    _mantenimientoEjecutado=false;
+    alert(
+      'NO SE HA PODIDO COMPLETAR LA CORRECCIÓN AUTOMÁTICA.\n\n'+
+      (e?.message||e)+
+      '\n\nNo cambies las reglas todavía; informa del mensaje exacto.'
+    );
+    throw e;
+  }
+}
+
 onAuthStateChanged(auth,async user=>{
   $('#loadingScreen').classList.add('hidden');
   if(!user){
@@ -1134,6 +1276,7 @@ onAuthStateChanged(auth,async user=>{
       msg('Dispositivo no autorizado. Esta cuenta ya está vinculada a otro dispositivo. Contacta con el administrador.');
       return;
     }
+    await ejecutarMantenimientoAutomatico(user);
     await Promise.all([loadTests(),loadPracticals()]);
     renderHome();
   }catch(e){
