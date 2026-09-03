@@ -1116,43 +1116,18 @@ async function comprobarDispositivo(user){
 
 
 // ============================================================
-// CORRECTOR ESPECÍFICO · PROCEDIMIENTO ADMINISTRATIVO Nº 7
-// Documento: procedimiento-administrativo-7-auxiliares-2026
-// Solo modifica questions.qXXX.text y strings de options.
-// NO modifica correct, order ni otros campos.
+// CORRECTOR ESPECÍFICO · REPASO 1 · PREGUNTA 6 · OPCIÓN B
+// ÚNICO cambio: "inferior a un 3 cuarto" -> "inferior a un cuarto"
+// No modifica numeración, preguntas, respuesta correcta ni otros campos.
 // ============================================================
-let _proc7Ejecutado=false;
+let _rep1q6Ejecutado=false;
 
-function _proc7LimpiarTextoPregunta(s){
-  if(typeof s!=='string') return s;
-  let z=s.trim();
-
-  // Elimina la numeración incrustada inicial: "1. ", "2. ", etc.
-  z=z.replace(/^\s*\d+\s*\.\s*/,'').trim();
-
-  // Elimina un dígito espurio al final tras cierre de frase:
-  // "? 2", "?2", ". 3", ".3", "! 4", etc.
-  z=z.replace(/([?.!])\s*\d{1,2}\s*$/,'$1').trim();
-
-  return z;
-}
-
-function _proc7LimpiarOpcion(s){
-  if(typeof s!=='string') return s;
-  let z=s.trim();
-
-  // Elimina únicamente número espurio al FINAL de la opción.
-  z=z.replace(/([?.!)])\s*\d{1,2}\s*$/,'$1').trim();
-
-  return z;
-}
-
-async function ejecutarCorrectorProc7(user){
-  if(_proc7Ejecutado) return;
+async function ejecutarCorrectorRepaso1Q6(user){
+  if(_rep1q6Ejecutado) return;
   if((user?.email||'').toLowerCase()!=='oposmurcia360@gmail.com') return;
-  _proc7Ejecutado=true;
+  _rep1q6Ejecutado=true;
 
-  const id='procedimiento-administrativo-7-auxiliares-2026';
+  const id='repaso-1-temas-1-5-parte-especifica-auxiliares-2026';
 
   try{
     const ref=doc(db,'supuestos',id);
@@ -1167,7 +1142,7 @@ async function ejecutarCorrectorProc7(user){
     }
 
     const nuevo={};
-    let preguntas=0, opciones=0;
+    let cambios=0;
 
     for(const [clave,valor] of Object.entries(raw)){
       if(!valor || typeof valor!=='object' || Array.isArray(valor)){
@@ -1177,45 +1152,43 @@ async function ejecutarCorrectorProc7(user){
 
       const q={...valor};
 
-      if(typeof q.text==='string'){
-        const limpio=_proc7LimpiarTextoPregunta(q.text);
-        if(limpio!==q.text) preguntas++;
-        q.text=limpio;
-      }
-
-      if(Array.isArray(q.options)){
+      // Solo la pregunta 6.
+      if((clave==='q006' || q.order===6) && Array.isArray(q.options)){
         q.options=q.options.map(op=>{
-          const limpio=_proc7LimpiarOpcion(op);
-          if(limpio!==op) opciones++;
-          return limpio;
+          if(typeof op!=='string') return op;
+
+          // Solo la opción que contiene la frase exacta afectada.
+          if(op.toLowerCase().includes('mantendrá íntegramente sus retribuciones únicamente si la reducción es inferior a un 3 cuarto')){
+            const limpio=op.replace(/un\s+3\s+cuarto/gi,'un cuarto');
+            if(limpio!==op) cambios++;
+            return limpio;
+          }
+          return op;
         });
       }
 
       nuevo[clave]=q;
     }
 
-    if(preguntas===0 && opciones===0){
-      alert(
-        'PROCEDIMIENTO ADMINISTRATIVO Nº 7\n\n'+
-        'No se encontraron textos pendientes de corregir.\n\n'+
-        'No se ha realizado ninguna escritura.'
+    if(cambios!==1){
+      throw new Error(
+        'Se esperaban exactamente 1 cambio en la pregunta 6, opción B, pero se detectaron '+cambios+
+        '. No se ha escrito nada.'
       );
-      return;
     }
 
     await updateDoc(ref,{questions:nuevo});
 
     alert(
-      'PROCEDIMIENTO ADMINISTRATIVO Nº 7 CORREGIDO\n\n'+
-      'Preguntas limpiadas: '+preguntas+'\n'+
-      'Opciones limpiadas: '+opciones+'\n\n'+
-      'Se ha eliminado la numeración incrustada y los dígitos espurios finales.\n\n'+
-      'NO se han modificado correct, order ni otros campos.'
+      'REPASO 1 · PREGUNTA 6 CORREGIDA\n\n'+
+      'Cambio realizado: 1\n\n'+
+      '«inferior a un 3 cuarto» → «inferior a un cuarto»\n\n'+
+      'No se ha modificado ningún otro contenido.'
     );
   }catch(e){
-    _proc7Ejecutado=false;
-    console.error('Corrector Procedimiento 7:',e);
-    alert('ERROR EN CORRECTOR PROCEDIMIENTO Nº 7\n\n'+(e?.message||e));
+    _rep1q6Ejecutado=false;
+    console.error('Corrector Repaso 1 Q6:',e);
+    alert('ERROR EN CORRECTOR REPASO 1 · PREGUNTA 6\n\n'+(e?.message||e));
     throw e;
   }
 }
@@ -1241,7 +1214,7 @@ onAuthStateChanged(auth,async user=>{
       return;
     }
     await Promise.all([loadTests(),loadPracticals()]);
-    await ejecutarCorrectorProc7(user);
+    await ejecutarCorrectorRepaso1Q6(user);
     renderHome();
   }catch(e){
     console.error(e);
