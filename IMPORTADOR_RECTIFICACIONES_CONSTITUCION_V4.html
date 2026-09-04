@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OposMurcia 360 · Rectificaciones Constitución V4</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f7f9;margin:0;color:#17384f}main{max-width:920px;margin:35px auto;padding:20px}
+.card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 8px 28px #0001}button{padding:12px 18px;border:0;border-radius:10px;background:#00719c;color:#fff;font-weight:700;cursor:pointer;margin:6px 8px 6px 0}
+button.secondary{background:#36576f}button:disabled{opacity:.45;cursor:not-allowed}pre{white-space:pre-wrap;background:#f7f9fb;padding:14px;border-radius:10px;line-height:1.45}.ok{color:#167c3b}.err{color:#b42318}.warn{color:#9a5a00}
+</style></head><body><main><div class="card">
+<h1>Rectificaciones Constitución · V4</h1>
+<p>Adaptado a la estructura real de Firestore: <b>questions → q001/q002/... → text, options, correct, order</b>.</p>
+<button id="login">1. Entrar con Google</button><button id="scan" class="secondary" disabled>2. Localizar preguntas</button><button id="apply" disabled>3. Aplicar rectificaciones</button>
+<pre id="status">Esperando inicio de sesión…</pre>
+</div></main>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import {getAuth,GoogleAuthProvider,signInWithPopup} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+import {getFirestore,collection,getDocs,doc,updateDoc} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyDA_79FRQq90gVJgD17dRr_pUHKe4S8XBg",authDomain:"oposmurcia360-5a389.firebaseapp.com",projectId:"oposmurcia360-5a389",storageBucket:"oposmurcia360-5a389.firebasestorage.app",messagingSenderId:"730198455785",appId:"1:730198455785:web:1f3e3d4f8edf8774780778",measurementId:"G-T8QHKNDX5T"};
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),provider=new GoogleAuthProvider();provider.setCustomParameters({prompt:"select_account"});
+const $=s=>document.querySelector(s),status=$("#status"),scan=$("#scan"),apply=$("#apply");let planned=[];
+function norm(v){return String(v??"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[¿?¡!.,;:()“”"'«»]/g," ").replace(/\s+/g," ").trim()}
+function entries(data){
+ const q=data?.questions;if(!q||typeof q!=="object"||Array.isArray(q))return[];
+ return Object.entries(q).filter(([k,v])=>v&&typeof v==="object"&&typeof v.text==="string");
+}
+function isReform(t){const n=norm(t);return (n.includes("cuantas")||n.includes("numero"))&&(n.includes("reformas")||n.includes("modificaciones"))&&n.includes("constitucion")}
+function isAssoc(t){const n=norm(t);return n.includes("asociaciones")&&n.includes("fines")&&(n.includes("delictivos")||n.includes("delito"))}
+$("#login").onclick=async()=>{try{const r=await signInWithPopup(auth,provider);status.textContent="Sesión iniciada como "+r.user.email+"\nPulsa «Localizar preguntas».";status.className="ok";scan.disabled=false}catch(e){status.textContent="ERROR: "+(e.message||e);status.className="err"}};
+scan.onclick=async()=>{scan.disabled=true;apply.disabled=true;planned=[];status.textContent="Buscando en la estructura real de Firestore…";status.className="";
+try{const snap=await getDocs(collection(db,"tests")),hits=[];
+for(const d of snap.docs){const data=d.data();for(const [key,q] of entries(data)){if(isReform(q.text))hits.push({type:"reform",doc:d.id,title:data.title||"",key,q});if(isAssoc(q.text))hits.push({type:"assoc",doc:d.id,title:data.title||"",key,q})}}
+const reforms=hits.filter(h=>h.type==="reform"),assocs=hits.filter(h=>h.type==="assoc");
+let r=`LOCALIZACIÓN COMPLETADA\n\nReformas/modificaciones encontradas: ${reforms.length}\nAsociaciones encontradas: ${assocs.length}\n\n`;
+hits.forEach((h,i)=>{r+=`${i+1}) ${h.type==="reform"?"REFORMAS":"ASOCIACIONES"}\nDocumento: ${h.doc}\nTítulo: ${h.title}\nClave: ${h.key} · orden: ${h.q.order??"—"}\nEnunciado: ${h.q.text}\nOpciones: ${(h.q.options||[]).map((x,j)=>String.fromCharCode(97+j)+") "+x).join(" | ")}\nCorrecta actual (índice): ${h.q.correct}\n\n`});
+if(reforms.length===2&&assocs.length===1){planned=hits;r+="CONTROL SUPERADO. Las 3 preguntas coinciden. Ya se puede aplicar la rectificación.";status.className="ok";apply.disabled=false}else{r+="CONTROL NO SUPERADO. No se modifica nada.";status.className="warn"}
+status.textContent=r}catch(e){status.textContent="ERROR: "+(e.message||e);status.className="err";scan.disabled=false}};
+apply.onclick=async()=>{apply.disabled=true;try{
+if(planned.filter(h=>h.type==="reform").length!==2||planned.filter(h=>h.type==="assoc").length!==1)throw new Error("Control de seguridad no válido.");
+const snap=await getDocs(collection(db,"tests")),map=new Map(snap.docs.map(d=>[d.id,{ref:doc(db,"tests",d.id),data:d.data()}])),updates=new Map();
+for(const h of planned){const rec=map.get(h.doc),q=structuredClone(rec.data.questions[h.key]);
+if(norm(q.text)!==norm(h.q.text))throw new Error("La pregunta cambió desde la localización: "+h.doc+"/"+h.key);
+if(h.type==="reform"){const idx=(q.options||[]).findIndex(x=>norm(x)==="cuatro");if(idx<0)throw new Error("No existe opción Cuatro: "+h.doc+"/"+h.key);q.correct=idx}
+else{q.options=["Secretas","Ilegales","Constitucionales"];q.correct=1}
+if(!updates.has(h.doc))updates.set(h.doc,{ref:rec.ref,fields:{}});updates.get(h.doc).fields["questions."+h.key]=q}
+for(const u of updates.values())await updateDoc(u.ref,u.fields);
+status.textContent=`RECTIFICACIÓN COMPLETADA\n\n3 preguntas corregidas en ${updates.size} documentos.\n\nAhora restaura las reglas normales V24.`;status.className="ok"
+}catch(e){status.textContent="ERROR. No repitas sin revisar:\n"+(e.message||e);status.className="err"}};
+</script></body></html>
