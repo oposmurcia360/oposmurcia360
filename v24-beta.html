@@ -315,19 +315,6 @@ button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important
 }
 
 
-/* V24 · Supervivencia: la opción pulsada permanece claramente marcada */
-[data-schoice].survival-selected{
-  outline:3px solid #00719c !important;
-  outline-offset:2px;
-  box-shadow:0 0 0 4px rgba(0,113,156,.14) !important;
-  font-weight:800 !important;
-}
-[data-schoice].survival-selected::after{
-  content:"  ·  TU RESPUESTA";
-  font-size:.78em;
-  font-weight:900;
-  color:#00719c;
-}
 
 </style>
 </head>
@@ -1226,7 +1213,7 @@ function renderSurvival(){
 function answerSurvival(choice){
  if(survivalLocked)return;survivalLocked=true;
  const selectedBtn=document.querySelector(`[data-schoice="${choice}"]`);
- if(selectedBtn) selectedBtn.classList.add('survival-selected');
+ if(selectedBtn) selectedBtn.classList.add('selected');
  const q=survivalPool[survivalIndex].q,ok=choice===q[2],fb=$('#survivalFeedback');
  if(ok){survivalCorrect++;fb.textContent='✓ Correcto · sigues con 3 vidas'.replace('3',String(survivalLives));fb.className='survival-feedback ok'}
  else{survivalWrong++;survivalLives--;fb.textContent=`✕ Incorrecto · correcta: ${String.fromCharCode(65+q[2])}) ${q[1][q[2]]}`;fb.className='survival-feedback bad'}
