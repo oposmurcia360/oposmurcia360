@@ -321,6 +321,7 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
     <div class="help-inline">Para evitar acumular XP artificialmente, repetir el mismo test o supuesto no vuelve a sumar todo: cuenta tu mejor resultado.</div>
   </div>
 
+  <div id="quickHelpBox" class="help-panel hidden" style="margin-bottom:10px"></div>
   <div class="game-stats">
    <div class="game-stat"><b id="gameStreak">🔥 0</b><span>Racha actual <button class="help-icon" type="button" data-help="streak">i</button></span></div>
    <div class="game-stat"><b id="gameXP">⭐ 0</b><span>XP acumulada <button class="help-icon" type="button" data-help="xp">i</button></span></div>
@@ -1069,7 +1070,17 @@ function bindGameHelp(){
  if(b1) b1.onclick=()=>{p.classList.toggle('hidden');x.classList.add('hidden')};
  if(b2) b2.onclick=()=>{x.classList.toggle('hidden');p.classList.add('hidden')};
  document.querySelectorAll('[data-help]').forEach(btn=>{
-   btn.onclick=()=>alert(HELP_TEXT[btn.dataset.help]||'');
+   btn.setAttribute('title',HELP_TEXT[btn.dataset.help]||'');
+   btn.onclick=(ev)=>{
+     ev.preventDefault();
+     ev.stopPropagation();
+     const box=$('#quickHelpBox');
+     const key=btn.dataset.help;
+     const titles={streak:'🔥 Racha de estudio',xp:'⭐ XP acumulada',medals:'🏅 Logros',mastery:'📊 Dominio global'};
+     box.innerHTML=`<strong>${titles[key]||'Información'}</strong><br>${esc(HELP_TEXT[key]||'')}`;
+     box.classList.remove('hidden');
+     box.scrollIntoView({behavior:'smooth',block:'nearest'});
+   };
  });
 }
 
