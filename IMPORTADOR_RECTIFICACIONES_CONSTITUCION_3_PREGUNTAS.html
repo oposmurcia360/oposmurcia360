@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OposMurcia 360 · Rectificaciones Constitución</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f7f9;margin:0;color:#17384f}
+main{max-width:820px;margin:40px auto;padding:20px}.card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 8px 28px #0001}
+button{padding:12px 18px;border:0;border-radius:10px;background:#00719c;color:#fff;font-weight:700;cursor:pointer;margin-right:8px}
+button:disabled{opacity:.5}.ok{color:#167c3b}.err{color:#b42318}pre{white-space:pre-wrap;background:#f7f9fb;padding:14px;border-radius:10px}
+</style></head>
+<body><main><div class="card">
+<h1>Rectificaciones Constitución · 3 preguntas</h1>
+<p>Corrector específico y controlado. Solo actúa si encuentra exactamente <b>2</b> preguntas sobre el número de reformas y exactamente <b>1</b> pregunta duplicada sobre asociaciones.</p>
+<p><b>Cambios:</b><br>
+1) “¿Cuántas reformas constitucionales se han aprobado hasta el momento?” → correcta <b>c) Cuatro</b> (2 apariciones).<br>
+2) “Las asociaciones que persigan fines delictivos son” → <b>a) Secretas · b) Ilegales · c) Constitucionales</b>, correcta <b>b)</b>.</p>
+<button id="login">Entrar con Google</button><button id="run" disabled>Aplicar 3 rectificaciones</button>
+<pre id="status">Esperando inicio de sesión…</pre>
+</div></main>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+const firebaseConfig={apiKey:"AIzaSyDA_79FRQq90gVJgD17dRr_pUHKe4S8XBg",authDomain:"oposmurcia360-5a389.firebaseapp.com",projectId:"oposmurcia360-5a389",storageBucket:"oposmurcia360-5a389.firebasestorage.app",messagingSenderId:"730198455785",appId:"1:730198455785:web:1f3e3d4f8edf8774780778",measurementId:"G-T8QHKNDX5T"};
+const app=initializeApp(firebaseConfig), auth=getAuth(app), db=getFirestore(app);
+const provider=new GoogleAuthProvider(); provider.setCustomParameters({prompt:"select_account"});
+const $=s=>document.querySelector(s), status=$("#status"), run=$("#run");
+
+function norm(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[¿?.,;:]/g,"").replace(/\s+/g," ").trim()}
+const reformKey=norm("Cuántas reformas constitucionales se han aprobado hasta el momento");
+const assocKey=norm("Las asociaciones que persigan fines delictivos son");
+
+$("#login").onclick=async()=>{try{const r=await signInWithPopup(auth,provider);status.textContent="Sesión iniciada como "+r.user.email+"\nPulsa «Aplicar 3 rectificaciones».";status.className="ok";run.disabled=false}catch(e){status.textContent="Error: "+(e.message||e);status.className="err"}};
+
+run.onclick=async()=>{
+ run.disabled=true; status.className=""; status.textContent="Comprobando toda la colección tests antes de modificar…";
+ try{
+   const snap=await getDocs(collection(db,"tests"));
+   const edits=[]; let reformCount=0, assocCount=0;
+   for(const d of snap.docs){
+     const data=d.data(), qs=Array.isArray(data.questions)?structuredClone(data.questions):null;
+     if(!qs) continue;
+     let changed=false;
+     qs.forEach((q,i)=>{
+       const t=norm(q.text);
+       if(t===reformKey){
+         reformCount++;
+         if(!Array.isArray(q.options) || norm(q.options[2])!=="cuatro") throw new Error("La pregunta de reformas no tiene «Cuatro» como opción c) en "+d.id);
+         q.correct=2; changed=true;
+       }
+       if(t===assocKey){
+         assocCount++;
+         if(!Array.isArray(q.options) || q.options.length<3) throw new Error("Formato inesperado en asociaciones: "+d.id);
+         q.options=["Secretas","Ilegales","Constitucionales"];
+         q.correct=1; changed=true;
+       }
+     });
+     if(changed) edits.push({ref:doc(db,"tests",d.id),id:d.id,title:data.title||"",questions:qs});
+   }
+   if(reformCount!==2 || assocCount!==1) throw new Error(`CONTROL DE SEGURIDAD: encontradas ${reformCount} preguntas de reformas y ${assocCount} de asociaciones. Se esperaban 2 y 1. NO se ha modificado nada.`);
+   for(const e of edits) await updateDoc(e.ref,{questions:e.questions});
+   status.textContent="RECTIFICACIÓN COMPLETADA\n\nReformas constitucionales corregidas: "+reformCount+"\nAsociaciones corregidas: "+assocCount+"\nDocumentos modificados: "+edits.length+"\n\n"+edits.map(e=>"• "+e.id+" · "+e.title).join("\n");
+   status.className="ok";
+ }catch(e){console.error(e);status.textContent="NO SE HA MODIFICADO NADA / ERROR\n"+(e.message||e)+"\n\nSi indica permisos insuficientes, hay que activar temporalmente las reglas de corrección de administrador.";status.className="err";run.disabled=false}
+};
+</script></body></html>
