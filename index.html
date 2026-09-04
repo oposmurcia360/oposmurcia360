@@ -1,89 +1,1321 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>OposMurcia 360 · Importador agosto 2026</title>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0758B8">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="OposMurcia 360">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="OposMurcia 360">
+<meta name="description" content="OposMurcia 360 · Tests y supuestos prácticos para Auxiliares Administrativos del Ayuntamiento de Murcia">
+<title>OposMurcia 360</title>
+<link rel="manifest" href="manifest.webmanifest?v=22-appcheck">
+<link rel="icon" href="icon-192.png?v=20">
+<link rel="apple-touch-icon" href="icon-192.png?v=20">
 <style>
-body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f4f7fb;color:#17324d;margin:0}
-main{max-width:820px;margin:40px auto;padding:22px}.card{background:#fff;border:1px solid #d8e2ee;border-radius:18px;padding:24px;box-shadow:0 10px 30px #183b5b16}
-h1{color:#006f9c;margin-top:0}button{border:0;border-radius:12px;padding:13px 18px;font-weight:800;cursor:pointer;margin:4px}
-.primary{background:#006f9c;color:white}.secondary{background:#eef5fa;color:#005f92}button:disabled{opacity:.5}
-#status{margin-top:18px;padding:14px;border-radius:12px;background:#f6f8fb;white-space:pre-wrap}.ok{background:#eaf8ef!important;color:#176b38}.err{background:#fff0f0!important;color:#9c2020}
-li{margin:8px 0}small{color:#617386}
-</style></head><body><main><div class="card">
-<h1>Importador · Nuevos repasos · agosto 2026</h1>
-<p>Importa exclusivamente este lote validado:</p>
-<ul><li>2 tests de repaso · 30 preguntas cada uno</li><li>2 supuestos prácticos de repaso · 30 preguntas cada uno</li><li>Total: <b>120 preguntas</b></li></ul>
-<p><small>Las preguntas se conservan según los PDFs facilitados. El importador no sobrescribe documentos si alguno de los cuatro identificadores ya existe.</small></p>
-<button id="login" class="secondary">1. Entrar con Google</button>
-<button id="check" class="secondary" disabled>2. Comprobar lote</button>
-<button id="run" class="primary" disabled>3. Importar los 4 documentos</button>
-<div id="status">Esperando inicio de sesión del administrador…</div>
-</div></main>
-<script type="module">
-import {initializeApp} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-import {getAuth,GoogleAuthProvider,signInWithPopup} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-import {getFirestore,collection,getDocs,doc,getDoc,setDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
-const firebaseConfig={"apiKey": "AIzaSyDA_79FRQq90gVJgD17dRr_pUHKe4S8XBg", "authDomain": "oposmurcia360-5a389.firebaseapp.com", "projectId": "oposmurcia360-5a389", "storageBucket": "oposmurcia360-5a389.firebasestorage.app", "messagingSenderId": "730198455785", "appId": "1:730198455785:web:1f3e3d4f8edf8774780778", "measurementId": "G-T8QHKNDX5T"};
-const app=initializeApp(firebaseConfig), auth=getAuth(app), db=getFirestore(app);
-const ADMIN_EMAIL="oposmurcia360@gmail.com";
-const provider=new GoogleAuthProvider(); provider.setCustomParameters({prompt:"select_account"});
-const DOCS=[{"collection": "tests", "id": "repaso-parte-general-1-agosto-2026", "title": "TEST REPASO PARTE GENERAL 1 · agosto 2026", "description": "Repaso de la Parte General · Auxiliares Administrativos", "topic": "Repaso de tests", "questions": {"q001": {"order": 1, "text": "Se tramita una reforma constitucional por el procedimiento ordinario del artículo 167 CE. Congreso y Senado aprueban textos distintos y la Comisión paritaria tampoco logra un texto común. ¿Qué combinación permite todavía aprobar la reforma?", "options": ["Mayoría absoluta del Senado y tres quintos del Congreso, seguida siempre de referéndum.", "Mayoría de dos tercios del Congreso y mayoría absoluta del Senado; el referéndum sólo se celebra si lo solicita una décima parte de cualquiera de las Cámaras dentro de los quince días siguientes.", "Mayoría de dos tercios de ambas Cámaras y referéndum obligatorio."], "correct": 1}, "q002": {"order": 2, "text": "Una proposición pretende modificar exclusivamente un precepto del Título II de la Constitución. Según el régimen expuesto en la CE, ¿qué procedimiento resulta aplicable?", "options": ["Artículo 167 CE, porque la revisión agravada sólo se aplica al Título Preliminar y a los artículos 15 a 29.", "Artículo 167 CE, salvo que la reforma afecte simultáneamente al artículo 1 CE.", "Artículo 168 CE, con aprobación por dos tercios en ambas Cámaras en dos legislaturas consecutivas y referéndum obligatorio."], "correct": 2}, "q003": {"order": 3, "text": "¿Cuál de los siguientes sujetos queda excluido de la iniciativa de reforma constitucional del artículo 166 CE?", "options": ["La iniciativa legislativa popular.", "Las Asambleas Legislativas de las Comunidades Autónomas.", "El Senado."], "correct": 0}, "q004": {"order": 4, "text": "Conforme al artículo 135 CE, señale la opción íntegramente correcta:", "options": ["Las Entidades Locales pueden incurrir en déficit estructural dentro del margen que fije una ley orgánica.", "La superación de los límites de déficit y deuda se aprecia por mayoría simple del Congreso.", "Las Entidades Locales deberán presentar equilibrio presupuestario y las circunstancias excepcionales que permiten superar determinados límites han de ser apreciadas por mayoría absoluta del Congreso."], "correct": 2}, "q005": {"order": 5, "text": "Un ciudadano extranjero pretende ejercer en España derechos del artículo 23 CE en unas elecciones municipales. ¿Qué excepción contempla expresamente el artículo 13.2 CE?", "options": ["Sólo el sufragio activo, siempre mediante ley orgánica y sin exigencia de reciprocidad.", "El sufragio activo y pasivo, si así se establece por tratado o ley atendiendo a criterios de reciprocidad.", "El sufragio pasivo, exclusivamente cuando lo reconozca un tratado internacional."], "correct": 1}, "q006": {"order": 6, "text": "¿Cuál de las siguientes series reproduce únicamente principios garantizados por el artículo 9.3 CE?", "options": ["Legalidad, jerarquía normativa, publicidad de las normas, seguridad jurídica, responsabilidad e interdicción de la arbitrariedad.", "Eficacia, jerarquía, descentralización, desconcentración y coordinación.", "Mérito, capacidad, unidad jurisdiccional y estabilidad presupuestaria."], "correct": 0}, "q007": {"order": 7, "text": "Tras la reforma constitucional de 2024 del artículo 49 CE, ¿qué precisión reproduce la CE respecto de la actuación de los poderes públicos?", "options": ["La protección especial de las personas con discapacidad queda reservada exclusivamente a una ley orgánica.", "La Constitución menciona de forma singular a las personas mayores con discapacidad, pero no a los menores.", "Los poderes públicos impulsarán políticas de autonomía personal e inclusión social en entornos universalmente accesibles y atenderán particularmente las necesidades específicas de mujeres y menores con discapacidad."], "correct": 2}, "q008": {"order": 8, "text": "Una detención preventiva alcanza las 48 horas y ya han concluido todas las averiguaciones necesarias. ¿Qué solución se ajusta al artículo 17.2 CE?", "options": ["Debe ponerse fin a la detención, porque el límite de 72 horas es máximo y además rige el tiempo estrictamente necesario.", "Puede mantenerse necesariamente hasta las 72 horas, pues ese plazo opera como duración ordinaria mínima.", "Puede prolongarse sin control judicial cuando se trate de una infracción administrativa."], "correct": 0}, "q009": {"order": 9, "text": "Según la Ley Orgánica 6/1984, ¿cuál de estos supuestos puede integrar una detención ilegal a efectos de habeas corpus?", "options": ["Toda detención inferior a 72 horas, aunque se respeten las formalidades legales.", "La privación de libertad en la que no se respeten los derechos que la Constitución o las leyes procesales garantizan al detenido.", "Únicamente la detención acordada por una autoridad administrativa sin competencia sancionadora."], "correct": 1}, "q010": {"order": 10, "text": "Un Ayuntamiento pretende entrar en un domicilio para realizar una inspección. Conforme al artículo 18.2 CE ¿cuál de estas situaciones permitiría la entrada sin consentimiento del titular?", "options": ["La existencia de un informe técnico municipal que aprecie interés público.", "La autorización del Alcalde mediante decreto motivado.", "Una resolución judicial o un supuesto de flagrante delito."], "correct": 2}, "q011": {"order": 11, "text": "Respecto de una manifestación en lugar de tránsito público, señale la afirmación correcta conforme al artículo 21 CE y al desarrollo del mismo:", "options": ["No requiere autorización previa; exige comunicación previa y sólo puede prohibirse cuando existan razones fundadas de alteración del orden público con peligro para personas o bienes.", "Requiere autorización previa si afecta a vías públicas y puede prohibirse por cualquier razón de interés general.", "La comunicación previa sustituye a la autorización, pero debe hacerse siempre con treinta días de antelación."], "correct": 0}, "q012": {"order": 12, "text": "¿Qué régimen establece el artículo 22 CE para la inscripción y eventual disolución de asociaciones?", "options": ["La inscripción es constitutiva y la disolución puede acordarla la Administración mediante resolución motivada.", "La inscripción se exige a los solos efectos de publicidad y la disolución o suspensión requiere resolución judicial motivada.", "La inscripción es potestativa y la disolución sólo puede acordarla el Tribunal Constitucional."], "correct": 1}, "q013": {"order": 13, "text": "Una ordenanza municipal tipifica una infracción cuya sanción subsidiaria, por impago, consiste en privación de libertad. ¿Qué precepto constitucional impide esa consecuencia?", "options": ["El artículo 24.2 CE, por vulneración de la presunción de inocencia.", "El artículo 26 CE, por prohibición de tribunales de honor.", "El artículo 25.3 CE, porque la Administración civil no puede imponer sanciones que directa o subsidiariamente impliquen privación de libertad."], "correct": 2}, "q014": {"order": 14, "text": "Señale la opción correcta sobre el artículo 28 CE:", "options": ["La ley puede limitar o exceptuar el derecho de sindicación de Fuerzas o Institutos armados o cuerpos sometidos a disciplina militar, y debe garantizar los servicios esenciales al regular la huelga.", "El derecho de huelga se reconoce a todos los ciudadanos, incluidos quienes no sean trabajadores.", "Los funcionarios públicos quedan constitucionalmente privados del derecho de sindicación."], "correct": 0}, "q015": {"order": 15, "text": "¿Qué combinación corresponde al artículo 31 CE?", "options": ["Sistema tributario basado en proporcionalidad estricta y gasto público sujeto sólo a estabilidad presupuestaria.", "Contribución según capacidad económica mediante un sistema justo inspirado en igualdad y progresividad, sin alcance confiscatorio; el gasto público responderá a eficiencia y economía.", "Prestaciones personales o patrimoniales de carácter público establecidas por reglamento cuando exista urgencia."], "correct": 1}, "q016": {"order": 16, "text": "Una persona reside cinco meses al año en un municipio A y siete meses en un municipio B. Se inscribe en B el 3 de marzo. Conforme al artículo 15 LRBRL, ¿cuándo y dónde adquiere la condición de vecino?", "options": ["En ambos municipios desde que acredite residencia habitual, aunque sólo figure empadronado en uno.", "En B al finalizar el año natural, una vez comprobado que ha residido allí más tiempo.", "En B en el mismo momento de su inscripción en el Padrón, debiendo inscribirse únicamente en el municipio en el que habite más tiempo al año."], "correct": 2}, "q017": {"order": 17, "text": "Una Comunidad Autónoma pretende crear un nuevo municipio a partir de un núcleo territorialmente diferenciado de 3.950 habitantes, económicamente solvente y con recursos suficientes. ¿Qué resultado se desprende del artículo 13.2 LRBRL?", "options": ["No puede crearse, porque el núcleo debe alcanzar al menos 4.000 habitantes, además de cumplir los restantes requisitos legales.", "Puede crearse si el Consejo de Estado emite dictamen favorable, pues la sostenibilidad financiera sustituye al mínimo poblacional.", "Puede crearse si no disminuye la calidad de los servicios, aunque no alcance 4.000 habitantes."], "correct": 0}, "q018": {"order": 18, "text": "En una alteración de términos municipales, ¿qué conjunto de garantías exige en todo caso el artículo 13.1 LRBRL?", "options": ["Referéndum local vinculante, informe del INE y autorización del Ministerio de Hacienda.", "Audiencia de los municipios interesados, dictamen del Consejo de Estado u órgano consultivo autonómico superior si existe, e informe de la Administración que ejerza la tutela financiera; además se da conocimiento a la AGE al pedir el dictamen.", "Aprobación por mayoría de dos tercios de todos los municipios de la provincia y dictamen vinculante de la Diputación."], "correct": 1}, "q019": {"order": 19, "text": "Dos municipios colindantes de la misma provincia acuerdan fusionarse por convenio. Según el artículo 13 LRBRL ¿qué afirmación es correcta?", "options": ["El convenio exige mayoría absoluta de cada Pleno y el municipio resultante no puede segregarse durante cinco años.", "La fusión sólo es posible si cada municipio supera 4.000 habitantes.", "Pueden fusionarse con independencia de su población; el convenio se aprueba por mayoría simple de cada Pleno y el nuevo municipio no podrá segregarse hasta transcurridos diez años."], "correct": 2}, "q020": {"order": 20, "text": "Un extranjero no comunitario, sin autorización de residencia de larga duración y no incluido en regímenes asimilados, deja transcurrir dos años desde su inscripción padronal sin renovarla. Según el artículo 16 LRBRL:", "options": ["La inscripción puede declararse caducada sin necesidad de audiencia previa si no se ha producido la renovación periódica exigida.", "La inscripción permanece vigente hasta que el interesado solicite la baja.", "La caducidad sólo puede declararse después de audiencia y resolución judicial."], "correct": 0}, "q021": {"order": 21, "text": "¿Cuál de los siguientes datos tiene carácter voluntario en la inscripción padronal y, conforme a la LRBRL, no puede ser cedido en ningún caso?", "options": ["La nacionalidad.", "El número de teléfono de contacto.", "El domicilio habitual."], "correct": 1}, "q022": {"order": 22, "text": "Respecto del Consejo de Empadronamiento, ¿qué función aparece configurada en la LRBRL como vinculante?", "options": ["La aprobación definitiva de las cifras oficiales de población mediante resolución propia.", "La expedición de certificaciones padronales en caso de discrepancia municipal.", "Elevar una propuesta vinculante para resolver discrepancias en materia de empadronamiento e informar vinculantemente las propuestas sobre cifras oficiales de población."], "correct": 2}, "q023": {"order": 23, "text": "Un municipio que no venía funcionando tradicionalmente en Concejo Abierto pretende adoptar este régimen porque su localización geográfica hace aconsejable esa forma de gobierno. ¿Qué exige el artículo 29 LRBRL?", "options": ["Petición de la mayoría de los vecinos, decisión favorable por mayoría de dos tercios de los miembros del Ayuntamiento y aprobación de la Comunidad Autónoma.", "Acuerdo unánime del Pleno y ratificación por mayoría absoluta de los electores.", "Petición de un tercio de los vecinos y acuerdo por mayoría absoluta del Ayuntamiento, sin intervención autonómica."], "correct": 0}, "q024": {"order": 24, "text": "Un municipio capital de provincia tiene 160.000 habitantes. ¿Puede quedar sometido al régimen del Título X de la LRBRL conforme al artículo 121?", "options": ["No, porque toda capital de provincia debe superar 175.000 habitantes.", "Sí, por ser capital de provincia, siempre que así lo decida la Asamblea Legislativa autonómica a iniciativa del Ayuntamiento.", "Sí automáticamente, porque toda capital de provincia queda incluida sin decisión autonómica."], "correct": 1}, "q025": {"order": 25, "text": "En un municipio de gran población, el Pleno pretende delegar una de sus atribuciones en una comisión plenaria. ¿Cuál de las siguientes sí es delegable conforme al artículo 123.3 LRBRL?", "options": ["La aprobación inicial del planeamiento general.", "La determinación de los recursos propios de carácter tributario.", "La aprobación y modificación de las ordenanzas y reglamentos municipales."], "correct": 2}, "q026": {"order": 26, "text": "¿Cuál de las siguientes atribuciones del Alcalde de un municipio de gran población puede ser delegada, pero exclusivamente en la Junta de Gobierno Local?", "options": ["Establecer directrices generales de la acción de gobierno municipal.", "Nombrar y cesar a los Tenientes de Alcalde.", "Ejercer la Jefatura de la Policía Municipal."], "correct": 0}, "q027": {"order": 27, "text": "En una sesión de la Junta de Gobierno Local de un municipio de gran población están presentes cuatro miembros concejales y cuatro miembros no concejales, además del Alcalde. ¿Qué regla del artículo 126 LRBRL resulta decisiva para la válida constitución?", "options": ["Basta con que los no concejales no superen un tercio del número legal del Pleno.", "El número de miembros presentes que sean concejales debe ser superior al de miembros presentes que no sean concejales.", "La presencia del Alcalde compensa automáticamente cualquier proporción entre concejales y no concejales."], "correct": 1}, "q028": {"order": 28, "text": "Una Entidad Local pretende ejercer una competencia distinta de las propias y de las delegadas. Conforme al artículo 7.4 LRBRL, ¿qué condición es imprescindible?", "options": ["Que exista autorización previa del Pleno por mayoría absoluta, aunque haya duplicidad con otra Administración.", "Que la competencia se encuentre enumerada en el artículo 25.2 LRBRL.", "Que no se ponga en riesgo la sostenibilidad financiera ni exista ejecución simultánea del mismo servicio con otra Administración, siendo necesarios informes previos y vinculantes sobre inexistencia de duplicidades y sostenibilidad financiera."], "correct": 2}, "q029": {"order": 29, "text": "Un municipio tiene 18.000 habitantes. ¿Cuál de los siguientes servicios está obligado a prestar por el solo hecho de superar 5.000 habitantes, pero no por superar 20.000?", "options": ["Biblioteca pública.", "Prevención y extinción de incendios.", "Transporte colectivo urbano de viajeros."], "correct": 0}, "q030": {"order": 30, "text": "El Estado delega una competencia en un municipio por un período de cuatro años y dota financiación suficiente para cada ejercicio. ¿Qué valoración resulta del artículo 27 LRBRL?", "options": ["La delegación es válida porque la financiación suficiente elimina cualquier exigencia mínima de duración.", "La delegación no se ajusta al artículo 27.1, porque su duración no puede ser inferior a cinco años; además, la efectividad exige aceptación municipal y la financiación debe acompañar en todo caso a la delegación.", "La delegación sólo sería inválida si el municipio rechazara expresamente la financiación."], "correct": 1}}}, {"collection": "tests", "id": "repaso-parte-general-2-agosto-2026", "title": "TEST REPASO PARTE GENERAL 2 · agosto 2026", "description": "Repaso de la Parte General · Auxiliares Administrativos", "topic": "Repaso de tests", "questions": {"q001": {"order": 1, "text": "Una ley ordinaria pretende desarrollar el contenido esencial de un derecho comprendido entre los artículos 15 y 29 CE. Atendiendo exclusivamente al sistema de garantías, ¿qué objeción es correcta?", "options": ["Ninguna, porque basta el rango de ley siempre que no se vulnere el derecho.", "El desarrollo de sus aspectos esenciales exige ley orgánica, además del respeto al contenido esencial.", "Sólo sería necesaria ley orgánica si el derecho estuviera además incluido en el artículo 14 CE."], "correct": 1}, "q002": {"order": 2, "text": "Se pretende invocar directamente ante un órgano administrativo un principio rector del Capítulo III del Título I sin que exista ley que lo desarrolle. Según el régimen de garantías, ¿qué afirmación es correcta?", "options": ["Los principios del Capítulo III informan la legislación, la práctica judicial y la actuación de los poderes públicos, y sólo pueden alegarse ante la jurisdicción conforme a las leyes que los desarrollen.", "Todos los principios rectores tienen la misma aplicación directa que los derechos del Capítulo II.", "Sólo los principios de los artículos 39 a 44 carecen de aplicación directa; los restantes sí la tienen y pueden hacerse valer directamente ante cualquier órgano público aun sin desarrollo legal específico."], "correct": 0}, "q003": {"order": 3, "text": "Durante un estado de excepción se acuerda suspender el derecho del detenido a ser informado de sus derechos y a la asistencia letrada. Conforme a la precisión sobre el artículo 55.1 CE, ¿qué valoración procede?", "options": ["Es admisible, porque todo el artículo 17 CE puede suspenderse en estado de excepción incluyendo en todo caso la información de derechos y la asistencia letrada desde el inicio de la detención.", "Es admisible únicamente si lo autoriza el Congreso por mayoría absoluta.", "No se ajusta al régimen expuesto, pues el artículo 17.3 queda exceptuado de suspensión en el estado de excepción."], "correct": 2}, "q004": {"order": 4, "text": "Una reforma constitucional afecta sólo al artículo 135 CE. Sin entrar en la oportunidad política de la reforma, ¿qué procedimiento resulta del esquema?", "options": ["El del artículo 168 CE porque toda reforma posterior a 2011 debe seguir el procedimiento agravado.", "El del artículo 168 CE por afectar al principio de estabilidad presupuestaria.", "El del artículo 167 CE, salvo que simultáneamente se reforme alguna materia reservada al artículo 168."], "correct": 2}, "q005": {"order": 5, "text": "¿Cuál de las siguientes combinaciones refleja correctamente la distribución sistemática del Título I?", "options": ["Artículo 14 dentro de la Sección 1.ª; artículos 15 a 29 fuera de secciones; artículos 30 a 38 en el Capítulo III y los principios rectores de los artículos 39 a 52 quedan integrados en la misma Sección 2.ª.", "Artículo 14 como precepto inicial del Capítulo II; artículos 15 a 29 en la Sección 1.ª y artículos 30 a 38 en la Sección 2.ª.", "Artículos 14 a 29 en la Sección 1.ª y artículos 30 a 52 en la Sección 2.ª."], "correct": 1}, "q006": {"order": 6, "text": "Una Administración acuerda el secuestro preventivo de una publicación mediante resolución administrativa motivada, sin intervención judicial. ¿Qué precepto determina directamente la invalidez constitucional de esa medida?", "options": ["El artículo 18.3 CE, porque todo secuestro constituye interceptación de comunicaciones siempre que la resolución administrativa sea motivada y se notifique antes de ejecutarse la medida.", "El artículo 21.2 CE, porque equivale a prohibir una manifestación.", "El artículo 20 CE, que reserva el secuestro de publicaciones, grabaciones y otros medios a resolución judicial."], "correct": 2}, "q007": {"order": 7, "text": "Una asociación está válidamente constituida e inscrita, pero posteriormente utiliza medios tipificados como delito. Según el artículo 22 CE, señale la respuesta más precisa:", "options": ["La asociación es ilegal por los medios empleados; su disolución o suspensión exige resolución judicial motivada.", "La inscripción impide apreciar ilegalidad mientras no sea cancelada administrativamente.", "La Administración puede suspenderla de inmediato, aunque sólo un juez puede disolverla definitivamente hasta que el registro administrativo competente acuerde formalmente la pérdida de personalidad jurídica."], "correct": 0}, "q008": {"order": 8, "text": "Un tribunal pretende obligar a una persona a confesarse culpable para poder beneficiarse de una determinada garantía procesal. ¿Qué conjunto de derechos del artículo 24.2 CE resulta directamente afectado?", "options": ["Exclusivamente el derecho al juez ordinario predeterminado por la ley y a obtener una resolución sobre el fondo aunque no concurran los presupuestos procesales establecidos por la ley.", "Los derechos a no declarar contra sí mismo y a no confesarse culpable.", "Sólo el derecho a utilizar los medios de prueba pertinentes."], "correct": 1}, "q009": {"order": 9, "text": "Una sanción administrativa se impone por una conducta que, cuando se realizó, no constituía infracción administrativa. ¿Qué regla resuelve el supuesto de forma inmediata?", "options": ["El artículo 25.1 CE impide sancionar acciones u omisiones que no fueran infracción según la legislación vigente al producirse.", "El artículo 24.1 CE sólo exige que exista audiencia antes de sancionar.", "El artículo 26 CE permite la sanción si no interviene un tribunal de honor siempre que la norma sancionadora posterior sea más favorable y la Administración motive suficientemente su aplicación."], "correct": 0}, "q010": {"order": 10, "text": "Respecto del derecho de sindicación del artículo 28 CE, ¿cuál de las siguientes opciones reproduce con mayor exactitud el régimen aplicable?", "options": ["La Constitución excluye directamente a todos los funcionarios públicos del derecho de sindicación.", "La ley puede limitar o exceptuar su ejercicio para Fuerzas o Institutos armados y cuerpos sometidos a disciplina militar, y regular peculiaridades para funcionarios públicos.", "La ley sólo puede limitar el derecho respecto de miembros de las Fuerzas Armadas, nunca respecto de otros cuerpos sometidos a disciplina militar mediante una prohibición general aplicable a todo el personal funcionario y estatutario de las Administraciones públicas."], "correct": 1}, "q011": {"order": 11, "text": "Un miembro de un cuerpo sometido a disciplina militar formula una petición colectiva por escrito junto con otros miembros del cuerpo. Según el artículo 29 CE:", "options": ["Es posible si la petición no tiene contenido político cuando la petición se tramite por escrito, identifique a todos los firmantes y respete la cadena jerárquica del cuerpo.", "Es posible si se presenta por conducto reglamentario.", "No se ajusta al régimen constitucional, pues sólo pueden ejercer ese derecho individualmente y conforme a su legislación específica."], "correct": 2}, "q012": {"order": 12, "text": "Una ley reconoce una prestación patrimonial pública cuya cuantía puede ser fijada íntegramente por una ordenanza sin cobertura legal adicional. Atendiendo al artículo 31.3 CE, la afirmación correcta es:", "options": ["Las prestaciones personales o patrimoniales de carácter público sólo pueden establecerse con arreglo a la ley.", "La reserva de ley sólo alcanza a los tributos estatales, no a prestaciones locales cuando la cuantía sea inferior al límite que determine anualmente la correspondiente ley de presupuestos.", "La Constitución permite su establecimiento reglamentario cuando no tengan naturaleza tributaria."], "correct": 0}, "q013": {"order": 13, "text": "Una fundación se constituye para un fin estrictamente particular, sin finalidad de interés general. ¿Qué precisión del artículo 34 CE resulta relevante?", "options": ["El derecho de fundación se reconoce sin limitación alguna en cuanto a los fines siempre que la escritura fundacional delimite con precisión beneficiarios, patrimonio y órganos de gobierno.", "El derecho de fundación se reconoce para fines de interés general, con arreglo a la ley.", "La Constitución sólo reconoce fundaciones creadas por Administraciones públicas."], "correct": 1}, "q014": {"order": 14, "text": "En materia de negociación colectiva laboral, el artículo 37 CE garantiza expresamente:", "options": ["La prohibición absoluta de medidas de conflicto colectivo en servicios esenciales.", "La aprobación administrativa previa de todo convenio colectivo.", "La fuerza vinculante de los convenios."], "correct": 2}, "q015": {"order": 15, "text": "Una persona vive habitualmente en un municipio pero carece de domicilio físico estable. Antes de inscribirla en el Padrón, ¿qué actuación exige el artículo 54 RPDT?", "options": ["Un informe vinculante del Consejo de Empadronamiento emitido antes de la inscripción y con carácter vinculante para el Ayuntamiento sobre la realidad de la residencia.", "Una autorización de la Diputación provincial.", "Poner el hecho en conocimiento de los servicios sociales competentes en el ámbito donde resida."], "correct": 2}, "q016": {"order": 16, "text": "Un vecino solicita que se ceda a otra Administración su número de teléfono aportado voluntariamente al Padrón. Conforme al artículo 16 LRBRL, ¿qué respuesta es correcta?", "options": ["Puede cederse si el domicilio es relevante para la competencia de la Administración solicitante.", "Los datos de aportación voluntaria no son susceptibles de cesión en ningún caso.", "Puede cederse siempre con autorización del Alcalde, aunque el interesado no consienta."], "correct": 1}, "q017": {"order": 17, "text": "El Ayuntamiento remite al INE su revisión padronal anual y existe discrepancia sobre la cifra resultante. Conforme a los artículos 81 y 82 RPDT, ¿qué secuencia es correcta?", "options": ["El INE formula reparos; si persiste el desacuerdo, somete la discrepancia al Consejo de Empadronamiento y la Presidencia del INE eleva al Gobierno la propuesta de cifras oficiales con informe favorable del Consejo.", "El Ayuntamiento fija definitivamente la cifra; el INE sólo puede formular observaciones no vinculantes.", "La discrepancia se resuelve mediante recurso de alzada ante el Ministerio competente y la cifra se aprueba por orden ministerial siendo la propuesta del Ayuntamiento vinculante para el Gobierno si fue aprobada por mayoría absoluta del Pleno."], "correct": 0}, "q018": {"order": 18, "text": "Un ciudadano pide al INE una certificación de empadronamiento utilizando los datos de la base padronal estatal. Según el artículo 83 RPDT:", "options": ["El INE puede expedirla si coincide con la última revisión anual siempre que la persona interesada autorice expresamente al INE y no exista oposición del Ayuntamiento de residencia.", "El INE sólo puede expedirla cuando exista autorización municipal previa.", "Los datos en poder del INE no pueden servir de base para expedir certificaciones o volantes, aunque sí para determinados sistemas de intermediación y Carpeta Ciudadana."], "correct": 2}, "q019": {"order": 19, "text": "¿Quién expide ordinariamente las certificaciones padronales conforme al artículo 61 RPDT ?", "options": ["La persona que ocupe la Secretaría del Ayuntamiento o el funcionario con habilitación nacional que la sustituya, sin perjuicio de la actuación administrativa automatizada.", "El Alcalde o cualquier concejal delegado en materia de población.", "El Presidente del INE, previa comprobación con la base padronal estatal pudiendo delegarse ordinariamente esta función en cualquier funcionario municipal mediante resolución del Alcalde."], "correct": 0}, "q020": {"order": 20, "text": "Un municipio se fusiona con otro y, como consecuencia del aumento de población, debería asumir nuevos servicios mínimos del artículo 26 LRBRL. Según los efectos de la fusión:", "options": ["Debe implantarlos en el primer ejercicio presupuestario posterior a la fusión.", "Queda dispensado de prestar los nuevos servicios mínimos que le correspondan por razón del aumento poblacional.", "Sólo queda dispensado durante los dos primeros años desde el convenio de fusión durante un máximo de cinco años, transcurridos los cuales deberá asumirlos aunque persista la situación derivada de la fusión."], "correct": 1}, "q021": {"order": 21, "text": "En una fusión municipal, uno de los municipios estaba en déficit. Según el régimen aplicable, el fondo sin personalidad jurídica y contabilidad separada que puede constituirse para determinados elementos liquidables debe liquidarse:", "options": ["En los cinco años siguientes desde la adopción del convenio de fusión.", "En diez años, coincidiendo con la prohibición de segregación del nuevo municipio.", "Antes de aprobar el primer presupuesto del municipio resultante."], "correct": 0}, "q022": {"order": 22, "text": "En un municipio de gran población, un tercio de los miembros del Pleno solicita con antelación suficiente asesoramiento legal sobre un asunto a tratar en sesión. Conforme al artículo 122.5 LRBRL:", "options": ["El asesoramiento es potestativo salvo que el asunto exija mayoría especial.", "El asesoramiento legal del Secretario General del Pleno es preceptivo en ese supuesto.", "Sólo es preceptivo si lo solicita la cuarta parte de los concejales y se trata de función de control."], "correct": 1}, "q023": {"order": 23, "text": "El Pleno de un municipio de gran población pretende delegar en una comisión plenaria la determinación de las formas de gestión de los servicios municipales. ¿Es posible según el artículo 123 LRBRL?", "options": ["Sí, porque la letra k) figura entre las competencias delegables en las comisiones del artículo 122.4.", "No, porque ninguna competencia plenaria puede delegarse en comisiones.", "Sólo sería posible delegarla en la Junta de Gobierno Local, nunca en una comisión."], "correct": 0}, "q024": {"order": 24, "text": "El Alcalde de un municipio de gran población desea delegar la competencia para establecer la organización y estructura de la Administración municipal ejecutiva. Según el artículo 124.5 LRBRL:", "options": ["No puede delegarse en ningún órgano.", "Puede delegarse en cualquier concejal delegado.", "Sólo puede delegarse en la Junta de Gobierno Local."], "correct": 2}, "q025": {"order": 25, "text": "El Alcalde pretende designar Teniente de Alcalde a un concejal que no forma parte de la Junta de Gobierno Local. Conforme al artículo 125 LRBRL:", "options": ["Es válido si lo ratifica el Pleno por mayoría simple.", "No es posible: los Tenientes de Alcalde se nombran entre los concejales que formen parte de la Junta de Gobierno Local.", "Es posible en caso de ausencia temporal de todos los miembros de la Junta de Gobierno Local."], "correct": 1}, "q026": {"order": 26, "text": "En una Junta de Gobierno Local de gran población, el Alcalde nombra varios miembros no concejales. ¿Qué límite adicional a su número exige el artículo 126 LRBRL, además del límite global de miembros de la Junta?", "options": ["Los no concejales no pueden superar un tercio de los miembros de la Junta, excluido el Alcalde.", "Los no concejales no pueden superar la mitad del número legal de miembros del Pleno.", "Sólo puede existir un miembro no concejal, cualquiera que sea el tamaño de la Junta."], "correct": 0}, "q027": {"order": 27, "text": "La Junta de Gobierno Local pretende delegar la aprobación de la relación de puestos de trabajo en un director general. Según el artículo 127.2 LRBRL:", "options": ["Puede delegarla, pues todas las funciones de personal son delegables.", "Puede delegarla únicamente en un Teniente de Alcalde.", "No puede delegarla: la aprobación de la RPT está expresamente exceptuada de la delegación prevista para la letra h)."], "correct": 2}, "q028": {"order": 28, "text": "El Pleno crea distritos en un municipio de gran población. ¿Qué extremo debe determinar en una norma de carácter orgánico conforme al artículo 128 LRBRL?", "options": ["El porcentaje mínimo de recursos presupuestarios de la Corporación que gestionarán los distritos en su conjunto.", "La identidad nominal de todos los empleados públicos adscritos a cada distrito.", "La cuantía máxima de los tributos municipales que puede recaudar cada distrito."], "correct": 0}, "q029": {"order": 29, "text": "El Pleno de un municipio de gran población crea el órgano de gestión tributaria del artículo 135 LRBRL. ¿Qué efecto específico produce sobre la función de recaudación?", "options": ["La recaudación sigue necesariamente en el órgano económico-financiero del artículo 134.", "La función de recaudación y su titular quedan adscritos al órgano de gestión tributaria, quedando sin efecto el artículo 134.1 en ese extremo.", "La recaudación pasa automáticamente a la Diputación provincial."], "correct": 1}, "q030": {"order": 30, "text": "Un municipio de 19.500 habitantes pretende que la Diputación coordine uno de los servicios del artículo 26.2 LRBRL. ¿Cuál de los siguientes sí figura entre los servicios sujetos a esa coordinación para municipios de menos de 20.000 habitantes?", "options": ["Biblioteca pública.", "Instalaciones deportivas de uso público.", "Alumbrado público."], "correct": 2}}}, {"collection": "supuestos", "id": "supuesto-practico-repaso-1-temas-1-5-agosto-2026", "title": "SUPUESTO PRÁCTICO REPASO 1 · Temas 1-5 Parte Específica · agosto 2026", "description": "Repaso · Temas 1-5 de la Parte Específica · Auxiliares Administrativos", "topic": "Repaso · Parte Específica", "statement": "El Ayuntamiento de Murcia pone en marcha la Oficina Ciudadana Segura. La Alcaldesa firma un decreto que delega en la Concejala de Modernización la resolución de determinados expedientes y dispone expresamente su eficacia desde la fecha de la firma. La Junta de Gobierno Local celebra después una sesión extraordinaria urgente sin convocatoria previa, faltando uno de sus miembros; asiste, además, un director general que no había sido citado. Paralelamente se convoca un proceso selectivo municipal y un curso de promoción interna. En el primero se introduce un criterio aparentemente neutro que exige cinco años de prestación continuada sin interrupciones, lo que perjudica especialmente a quienes disfrutaron permisos vinculados a maternidad; una empleada reclama por discriminación y, días después, es excluida del curso. Otra funcionaria, víctima de violencia de género, solicita reordenación de jornada y movilidad aportando informe de servicios sociales. En la nueva oficina trabajan empleados municipales y personal de una contrata. Se instalan equipos nuevos sin formación preventiva específica ni coordinación previa con la contratista. Aparece cableado energizado accesible y un empleado abandona el puesto por considerar que existe riesgo grave e inminente. El Ayuntamiento ordena también un reconocimiento médico obligatorio general, sin justificar excepción alguna al principio de voluntariedad. En varios expedientes, una sociedad mercantil pide recibir notificaciones en papel; una notificación electrónica queda diez días naturales sin abrir; otra notificación domiciliaria se intenta a las 10:00 y se repite al día siguiente a las 12:00; y en un procedimiento selectivo las bases fijan la sede electrónica como lugar de publicaciones sucesivas, pero una lista se publica únicamente en el tablón físico. Finalmente, un director municipal dicta por incompetencia jerárquica un acto favorable; otro acto se dicta prescindiendo total y absolutamente del procedimiento; y la Administración pretende eliminar un acto favorable anulable, revisar de oficio un acto nulo y resolver diversos recursos administrativos.", "questions": {"q001": {"order": 1, "text": "El criterio de cinco años de prestación continuada sin interrupciones, si coloca especialmente en desventaja a quienes disfrutaron permisos vinculados a maternidad y no está objetivamente justificado por una finalidad legítima con medios necesarios y adecuados, constituye:", "options": ["Discriminación indirecta por razón de sexo.", "Discriminación directa en todo caso, aunque el criterio sea formalmente neutro.", "Una acción positiva lícita si se aplica por igual a mujeres y hombres."], "correct": 0}, "q002": {"order": 2, "text": "La exclusión del curso de la empleada pocos días después de formular una reclamación destinada a hacer efectivo el principio de igualdad, si responde a esa reclamación, debe calificarse como:", "options": ["Acoso por razón de sexo, necesariamente.", "Trato adverso constitutivo de discriminación por represalia.", "Medida organizativa válida salvo que exista sentencia previa."], "correct": 1}, "q003": {"order": 3, "text": "Respecto de la funcionaria víctima de violencia de género que solicita movilidad y reordenación del tiempo de trabajo aportando informe de servicios sociales competente, la respuesta correcta es:", "options": ["Solo una sentencia condenatoria firme acredita la situación.", "La movilidad exige orden de protección, aunque la reordenación puede acreditarse por informe social.", "El informe de servicios sociales puede ser título de acreditación en los términos del artículo 23 LO 1/2004."], "correct": 2}, "q004": {"order": 4, "text": "Si la Administración decide negociar un protocolo frente al acoso sexual y por razón de sexo, ¿qué afirmación se ajusta al contenido de la Ley?", "options": ["Debe negociarse con la representación legal del personal y contener, al menos, principios de prevención y no tolerancia, respeto a la dignidad e intimidad e igualdad de trato.", "Solo es exigible en la Administración General del Estado y nunca en una entidad local.", "Puede sustituirse íntegramente por una declaración unilateral de tolerancia cero sin negociación."], "correct": 0}, "q005": {"order": 5, "text": "La conducta municipal consistente en excluir a una trabajadora de una ventaja profesional por razón de embarazo tendría, conforme a la LO 3/2007, la consideración de:", "options": ["Discriminación indirecta si afecta también a algún hombre.", "Discriminación directa por razón de sexo.", "Trato neutro susceptible únicamente de impugnación por desviación de poder."], "correct": 1}, "q006": {"order": 6, "text": "En relación con la funcionaria víctima de violencia de género, si reduce su jornada en un tercio exactamente para hacer efectiva su protección, según el contenido del TREBEP:", "options": ["Debe soportar siempre reducción proporcional de retribuciones.", "Mantendrá íntegramente sus retribuciones únicamente si la reducción es inferior a un cuarto.", "Mantendrá sus retribuciones íntegras al reducir la jornada en un tercio o menos."], "correct": 2}, "q007": {"order": 7, "text": "Tras instalar equipos nuevos sin haber impartido formación preventiva específica, ¿cuál es la regla aplicable?", "options": ["La formación solo es obligatoria al inicio de la relación de servicio.", "Debe garantizarse formación suficiente y adecuada también cuando se introduzcan nuevas tecnologías o cambios en los equipos de trabajo.", "Basta con entregar el manual del fabricante, aunque no exista formación práctica."], "correct": 1}, "q008": {"order": 8, "text": "La coincidencia en el mismo centro de empleados municipales y trabajadores de una contrata determina, conforme a la LPRL:", "options": ["Un deber de cooperación y establecimiento de medios de coordinación preventiva entre las empresas concurrentes.", "La transferencia íntegra de la responsabilidad preventiva a la contratista.", "La desaparición del deber de información del titular del centro si la contrata tiene servicio de prevención propio."], "correct": 0}, "q009": {"order": 9, "text": "Ante el cableado energizado accesible, el empleado que considera razonablemente que existe un riesgo grave e inminente para su vida o salud:", "options": ["Solo puede abandonar el puesto si lo autoriza previamente el delegado de prevención.", "Puede interrumpir su actividad, pero nunca abandonar el lugar de trabajo.", "Tiene derecho a interrumpir su actividad y, si es necesario, abandonar el lugar de trabajo."], "correct": 2}, "q010": {"order": 10, "text": "El reconocimiento médico obligatorio general ordenado sin justificar ninguna excepción al consentimiento del trabajador es, como regla:", "options": ["Contrario al artículo 22 LPRL, pues la vigilancia de la salud es voluntaria salvo excepciones tasadas y previo informe de los representantes en los casos legalmente previstos.", "Correcto porque toda Administración puede imponer reconocimientos anuales a su personal.", "Correcto si el resultado se limita a declarar aptitud o no aptitud."], "correct": 0}, "q011": {"order": 11, "text": "Si la evaluación inicial revela una situación de riesgo y el Ayuntamiento se limita a anotarla sin fijar plazo, responsables ni recursos para corregirla:", "options": ["Cumple con el artículo 16 LPRL si el riesgo no ha producido todavía daño.", "Incumple la planificación preventiva exigida por el artículo 16 LPRL.", "Solo incumple si la Inspección de Trabajo formula requerimiento previo."], "correct": 1}, "q012": {"order": 12, "text": "Si tras un daño para la salud aparecen indicios de insuficiencia de las medidas preventivas, la LPRL exige:", "options": ["Repetir automáticamente el reconocimiento médico de toda la plantilla.", "Esperar a la revisión anual ordinaria del plan preventivo.", "Investigar las causas para detectar por qué se produjo el daño o resultaron insuficientes las medidas."], "correct": 2}, "q013": {"order": 13, "text": "El decreto de delegación de la Alcaldesa dispone expresamente que será eficaz desde la propia fecha de firma. Conforme al artículo 33 ROGAM:", "options": ["Es posible, porque la regla del día siguiente opera salvo que el propio decreto disponga otra cosa.", "Es nulo, ya que toda delegación solo puede surtir efectos desde el día siguiente.", "Solo sería eficaz tras su publicación en el BOE."], "correct": 0}, "q014": {"order": 14, "text": "La sesión extraordinaria urgente de la Junta de Gobierno Local se celebra sin convocatoria previa y falta uno de sus miembros. Conforme al ROGAM:", "options": ["Es válida si asiste la mayoría absoluta.", "No cumple la regla específica de constitución sin convocatoria previa, que exige decisión del Alcalde y presencia de todos sus miembros.", "Es válida si asisten al menos tres miembros, incluido el Presidente."], "correct": 1}, "q015": {"order": 15, "text": "El director general que no pertenece a la Junta de Gobierno Local asiste a la sesión sin haber sido citado. Según el artículo 6.6 ROGAM:", "options": ["Puede asistir siempre por su condición de órgano directivo.", "Puede asistir si lo autoriza verbalmente cualquier miembro de la Junta durante la sesión.", "Los titulares de órganos directivos pueden asistir cuando sean citados; la mera condición de directivo no basta según el precepto."], "correct": 2}, "q016": {"order": 16, "text": "Una resolución adoptada por la Concejala en ejercicio de competencia delegada por la Alcaldesa debe, según el régimen de delegaciones vigente:", "options": ["Hacer constar expresamente el ejercicio por delegación citando el decreto que la autoriza.", "Silenciar la delegación, porque el acto se reputa propio del órgano delegado.", "Ser refrendada por la Junta de Gobierno para producir efectos frente a terceros."], "correct": 0}, "q017": {"order": 17, "text": "Respecto de los concejales delegados, el ROGAM los define como:", "options": ["Órganos directivos profesionales necesariamente no electivos.", "Concejales a quienes el Alcalde o la Junta de Gobierno Local han delegado competencias o funciones, que dirigen e impulsan la organización bajo su responsabilidad.", "Miembros natos de la Junta de Gobierno Local por el solo hecho de recibir una delegación."], "correct": 1}, "q018": {"order": 18, "text": "Si en primera convocatoria de la Junta de Gobierno Local no existe quórum, la segunda convocatoria, una hora después, exige:", "options": ["La presencia de cualquiera de los tres miembros, sin más requisitos.", "La mitad simple de sus componentes y necesariamente todos concejales.", "Un tercio del número legal de miembros, nunca menos de tres, con Presidente y concejal-secretario o sustitutos y mayoría de concejales sobre no concejales presentes."], "correct": 2}, "q019": {"order": 19, "text": "La sociedad mercantil que pide recibir en papel las notificaciones de su expediente administrativo:", "options": ["Puede elegir libremente el papel por ser interesada en el procedimiento.", "Está obligada a relacionarse electrónicamente con la Administración por ser persona jurídica.", "Solo está obligada electrónicamente si tiene más de 50 trabajadores."], "correct": 1}, "q020": {"order": 20, "text": "La notificación electrónica obligatoria puesta a disposición y no abierta durante diez días naturales:", "options": ["Se entiende rechazada, continuándose el procedimiento.", "Debe mantenerse disponible veinte días hábiles antes de considerarla fallida.", "Se transforma automáticamente en notificación postal."], "correct": 0}, "q021": {"order": 21, "text": "En la notificación domiciliaria, primer intento a las 10:00 y segundo al día siguiente a las 12:00, ¿qué conclusión procede conforme al artículo 42.2 Ley 39/2015?", "options": ["Es correcta porque ambos intentos se realizan en días distintos.", "Es correcta si entre ambos median al menos 24 horas.", "No respeta la regla: si el primero fue antes de las 15:00, el segundo debe ser después de las 15:00 y con al menos tres horas de diferencia."], "correct": 2}, "q022": {"order": 22, "text": "En el proceso selectivo, las bases fijaron la sede electrónica para las publicaciones sucesivas, pero una lista se publicó únicamente en el tablón físico. Conforme al artículo 45 Ley 39/2015:", "options": ["La publicación es válida porque cualquier tablón oficial produce idénticos efectos.", "La publicación carece de validez si se realiza en lugar distinto del indicado en la convocatoria.", "La publicación solo sería inválida si afectara al resultado final del proceso."], "correct": 1}, "q023": {"order": 23, "text": "Una notificación contiene el texto íntegro de la resolución pero omite indicar los recursos procedentes. El interesado interpone después el recurso correcto, demostrando conocimiento del acto. ¿Qué efecto produce?", "options": ["La notificación surte efecto desde la actuación del interesado que revela conocimiento del contenido y alcance del acto o desde la interposición del recurso procedente.", "La omisión determina nulidad de pleno derecho de la resolución notificada.", "La notificación jamás puede producir efectos y debe repetirse necesariamente antes de recurrir."], "correct": 0}, "q024": {"order": 24, "text": "Un acto favorable pretende producir efectos desde una fecha anterior a la de su dictado. La retroactividad será posible, fuera del supuesto de sustitución de un acto anulado, si:", "options": ["Basta con que el interesado la solicite expresamente.", "El acto no afecta al presupuesto municipal.", "Los supuestos de hecho existían en la fecha retrotraída, el efecto es favorable y no se lesionan derechos o intereses legítimos de terceros."], "correct": 2}, "q025": {"order": 25, "text": "El director municipal dicta un acto favorable siendo incompetente únicamente por razón jerárquica, no por materia ni territorio. Según el régimen de invalidez de la Ley 39/2015:", "options": ["El acto es siempre nulo de pleno derecho.", "El vicio determina, en principio, anulabilidad y puede ser susceptible de convalidación por el órgano superior competente.", "El acto es inexistente y no puede producir efecto alguno ni ser convalidado."], "correct": 1}, "q026": {"order": 26, "text": "El acto dictado prescindiendo total y absolutamente del procedimiento legalmente establecido incurre en:", "options": ["Nulidad de pleno derecho.", "Anulabilidad solo si se acredita indefensión material.", "Irregularidad no invalidante si el contenido material es correcto."], "correct": 0}, "q027": {"order": 27, "text": "La Administración detecta que un acto favorable para un particular es anulable y pretende eliminarlo por razones de legalidad, una vez firme en vía administrativa. La vía ordinaria adecuada es:", "options": ["Revocarlo directamente al amparo del artículo 109.1.", "Revisarlo de oficio conforme al artículo 106 sin intervención judicial.", "Declararlo lesivo para el interés público y posteriormente impugnarlo ante la jurisdicción contencioso-administrativa, dentro de los límites temporales legales."], "correct": 2}, "q028": {"order": 28, "text": "Si se inicia de oficio la revisión de un acto nulo y transcurren seis meses sin resolución expresa:", "options": ["Se produce silencio positivo a favor del interesado.", "Se produce la caducidad del procedimiento.", "La revisión continúa indefinidamente porque la nulidad no está sujeta a plazo."], "correct": 1}, "q029": {"order": 29, "text": "Contra una resolución que pone fin a la vía administrativa, el interesado pretende interponer recurso administrativo ordinario. ¿Cuál procede, con carácter potestativo?", "options": ["Recurso de alzada ante el superior jerárquico.", "Recurso extraordinario de revisión, aunque el acto no sea firme.", "Recurso de reposición ante el mismo órgano que dictó el acto, o bien impugnación directa contencioso-administrativa."], "correct": 2}, "q030": {"order": 30, "text": "Un recurso administrativo plantea una cuestión de fondo no alegada por el recurrente y cuya resolución podría afectar a su posición jurídica. El órgano competente:", "options": ["Puede resolverla, pero deberá oír previamente a los interesados y no puede agravar la situación inicial del recurrente por efecto de su propio recurso.", "No puede examinar jamás cuestiones no alegadas, aunque resulten del expediente.", "Puede resolverla sin audiencia y agravar la situación si considera que así lo exige la legalidad."], "correct": 0}}}, {"collection": "supuestos", "id": "supuesto-practico-repaso-2-temas-1-5-agosto-2026", "title": "SUPUESTO PRÁCTICO REPASO 2 · Temas 1-5 Parte Específica · agosto 2026", "description": "Repaso · Temas 1-5 de la Parte Específica · Auxiliares Administrativos", "topic": "Repaso · Parte Específica", "statement": "El Ayuntamiento de Murcia reorganiza un edificio municipal para concentrar Atención Ciudadana, Igualdad y varios servicios internos. Por Decreto de Alcaldía se atribuye a una concejala delegada la dirección de determinados asuntos y, mediante acuerdo posterior, la Junta de Gobierno Local delega en un director general ciertas competencias de gestión. En una sesión ordinaria de la Junta, convocada con 20 horas de antelación, se pretende además tratar por urgencia un asunto no incluido en el orden del día. En el nuevo centro trabaja personal municipal junto con una empresa de mantenimiento. Una auxiliar embarazada comunica que manipula productos de limpieza y trabaja a turnos; otra empleada denuncia comentarios sexuales reiterados de un superior y, después de hacerlo, se le retira una función que daba acceso a formación. Una tercera funcionaria, víctima de violencia de género, solicita reducción de jornada y movilidad. Durante la apertura del edificio se detecta humo en un cuadro eléctrico, no existe personal designado para emergencias y varios empleados abandonan la zona. En paralelo se tramitan varios procedimientos: una asociación presenta electrónicamente una solicitud sin firma; un particular no obligado pide asistencia para firmar electrónicamente; una resolución desfavorable se dicta oralmente; otra se notifica en papel a una persona de 14 años hallada en el domicilio; una sociedad no accede a una notificación electrónica; y en otro expediente se desconoce el domicilio del interesado. Finalmente, el Ayuntamiento examina un acto favorable dictado con defecto formal, otro dictado por órgano manifiestamente incompetente por razón de la materia, un acto de gravamen que desea retirar por oportunidad, una resolución firme basada en documento posteriormente declarado falso y varios recursos administrativos.", "questions": {"q001": {"order": 1, "text": "Los comentarios reiterados de naturaleza sexual del superior, si producen un entorno intimidatorio u ofensivo, encajan jurídicamente en:", "options": ["Acoso por razón de sexo, aunque carezcan de contenido sexual.", "Acoso sexual.", "Discriminación indirecta exclusivamente."], "correct": 1}, "q002": {"order": 2, "text": "La retirada de una función que facilitaba el acceso a formación, inmediatamente después de presentar una denuncia por discriminación, será discriminatoria si responde a dicha denuncia por aplicación de:", "options": ["La garantía de indemnidad frente a represalias.", "La acción positiva destinada a corregir una situación patente de desigualdad de hecho mediante medidas razonables y proporcionadas.", "La presencia equilibrada en órganos y nombramientos públicos, considerada como regla específica de composición institucional."], "correct": 0}, "q003": {"order": 3, "text": "En relación con el principio general de igualdad en el empleo público, ¿qué obligación encaja directamente en el artículo 51 LO 3/2007?", "options": ["Reservar siempre el 50 % de las plazas de toda convocatoria a mujeres.", "Eliminar únicamente la discriminación retributiva directa.", "Promover la presencia equilibrada en órganos de selección y valoración."], "correct": 2}, "q004": {"order": 4, "text": "La funcionaria víctima de violencia de género que solicita reducción de jornada y movilidad:", "options": ["Solo tiene derecho a movilidad si previamente obtiene sentencia condenatoria firme y además acredita que no puede mantenerse en ningún puesto del centro actual.", "Tiene reconocidos ambos derechos en los términos de su legislación específica.", "Puede pedir reducción, pero no movilidad geográfica."], "correct": 1}, "q005": {"order": 5, "text": "Si la situación de violencia de género se acredita mediante informe de servicios sociales de la Administración competente:", "options": ["Puede ser medio válido de acreditación en los términos del artículo 23 LO 1/2004.", "Nunca es suficiente sin orden de protección o resolución judicial cautelar, aunque el informe proceda de servicios sociales públicos especializados.", "Solo sirve para justificar ausencias, no para movilidad."], "correct": 0}, "q006": {"order": 6, "text": "La organización municipal de servicios sociales destinados a víctimas de violencia de género debe responder, entre otros, a los principios de:", "options": ["Atención periódica, de carácter generalista, preferentemente jurídica y prestada únicamente cuando exista previa derivación judicial de la víctima.", "Gestión estatal centralizada.", "Atención permanente, actuación urgente, especialización y multidisciplinariedad."], "correct": 2}, "q007": {"order": 7, "text": "Respecto de la trabajadora embarazada que manipula productos y trabaja a turnos, si la evaluación revela riesgo para el embarazo, la primera medida legal es:", "options": ["Suspender de inmediato la relación de servicio, sin intentar previamente adaptar las condiciones, el horario o la organización temporal del trabajo.", "Adaptar las condiciones o el tiempo de trabajo.", "Trasladarla necesariamente a otro grupo profesional."], "correct": 1}, "q008": {"order": 8, "text": "Si la adaptación del puesto de la embarazada resulta imposible y existe certificación en los términos legales de que las condiciones pueden influir negativamente:", "options": ["Debe desempeñar un puesto o función diferente compatible con su estado.", "Debe permanecer en su puesto ordinario hasta que se produzca un daño objetivamente acreditado y solo entonces podrá valorarse un cambio funcional.", "Solo cabe reducir la jornada."], "correct": 0}, "q009": {"order": 9, "text": "Al concurrir en el edificio empleados municipales y trabajadores de la empresa de mantenimiento:", "options": ["Solo la empresa contratista asume deberes preventivos.", "La coordinación es voluntaria si las actividades son distintas.", "Deben cooperar y establecer medios de coordinación preventiva."], "correct": 2}, "q010": {"order": 10, "text": "Ante humo procedente del cuadro eléctrico y una situación de peligro grave, inminente e inevitable, el empresario debe:", "options": ["Ordenar que se continúe trabajando hasta la intervención de los servicios de emergencia, salvo que exista una orden expresa de paralización de la autoridad laboral.", "Permitir la interrupción de la actividad y, si es necesario, el abandono inmediato del lugar.", "Esperar a que lo soliciten por mayoría los delegados de prevención."], "correct": 1}, "q011": {"order": 11, "text": "La inexistencia de personal designado para primeros auxilios, lucha contra incendios y evacuación se enfrenta directamente al deber previsto en:", "options": ["El artículo 20 LPRL.", "El artículo 24 LPRL.", "El artículo 29 LPRL."], "correct": 0}, "q012": {"order": 12, "text": "Si un trabajador no puede contactar con su superior ante riesgo grave e inminente:", "options": ["No puede adoptar ninguna medida preventiva por iniciativa propia sin autorización previa del superior jerárquico o del servicio de prevención correspondiente.", "Solo puede abandonar el puesto, pero no actuar sobre el riesgo.", "Debe estar en condiciones de adoptar medidas necesarias según sus conocimientos y medios disponibles."], "correct": 2}, "q013": {"order": 13, "text": "La sesión ordinaria de la Junta de Gobierno Local convocada con 20 horas de antelación:", "options": ["Respeta el ROGAM porque en las sesiones ordinarias basta con doce horas de antelación siempre que el orden del día se remita por medios electrónicos.", "No respeta el mínimo de 24 horas previsto para la convocatoria.", "Es válida si todos los miembros leen la convocatoria."], "correct": 1}, "q014": {"order": 14, "text": "En esa sesión ordinaria puede tratarse un asunto no incluido inicialmente en el orden del día si:", "options": ["Por urgencia lo presenta el Alcalde o un miembro de la Junta y se acuerda examinarlo.", "Lo propone cualquier funcionario presente que tenga responsabilidad directiva sobre el expediente y el Presidente permita su intervención durante la sesión.", "Se aplaza automáticamente a la sesión siguiente."], "correct": 0}, "q015": {"order": 15, "text": "La Junta de Gobierno Local puede delegar competencias, según el ROGAM, en:", "options": ["Exclusivamente Tenientes de Alcalde.", "Únicamente concejales que sean miembros de la Junta.", "Miembros, concejales y determinados órganos directivos o similares."], "correct": 2}, "q016": {"order": 16, "text": "Las delegaciones de la Junta de Gobierno Local, según el artículo 34 ROGAM:", "options": ["Se formalizan mediante un régimen autónomo distinto del previsto para las delegaciones de Alcaldía y no requieren seguir sus mismas exigencias formales.", "Se realizan y formalizan de la misma forma que las delegaciones de Alcaldía.", "No necesitan darse cuenta al Pleno."], "correct": 1}, "q017": {"order": 17, "text": "El Director de la Oficina del Gobierno Municipal es, según el ROGAM:", "options": ["El órgano de apoyo a la Junta de Gobierno Local y al concejal-secretario.", "Un miembro electo de la Junta de Gobierno Local designado por el Alcalde para ejercer simultáneamente la secretaría política y la dirección técnica municipal.", "El Secretario General del Pleno."], "correct": 0}, "q018": {"order": 18, "text": "Entre las funciones de asistencia técnica del Director de la Oficina del Gobierno Municipal está:", "options": ["Resolver los recursos de reposición contra cualquier acto municipal que haya sido preparado por la Oficina del Gobierno y elevado previamente a la Junta de Gobierno Local.", "Aprobar por sí mismo el orden del día.", "Recibir expedientes elevados a la Junta y comprobar previamente que estén terminados conforme a Derecho."], "correct": 2}, "q019": {"order": 19, "text": "Una asociación presenta electrónicamente una solicitud sin firma. Conforme al artículo 11 Ley 39/2015:", "options": ["La firma nunca es obligatoria si el interesado se ha identificado electrónicamente mediante un sistema admitido, incluso cuando formule solicitudes o interponga recursos.", "Formular solicitudes es uno de los trámites para los que puede exigirse obligatoriamente firma.", "Solo los recursos exigen firma."], "correct": 1}, "q020": {"order": 20, "text": "Un particular no obligado a relacionarse electrónicamente carece de medios y solicita asistencia para firmar electrónicamente:", "options": ["Un funcionario habilitado puede realizar válidamente la identificación o firma si el interesado se identifica y presta consentimiento expreso.", "Debe acudir obligatoriamente a un notario o a un prestador privado de servicios de confianza para obtener un certificado antes de continuar el procedimiento.", "La Administración no puede asistirle en materia de firma."], "correct": 0}, "q021": {"order": 21, "text": "Una resolución desfavorable se dicta verbalmente por el órgano competente. Cuando sea necesaria su constancia escrita:", "options": ["Debe firmarla necesariamente el Alcalde.", "Se considera inexistente por no haberse producido inicialmente por escrito y no puede posteriormente documentarse ni incorporarse válidamente al expediente administrativo.", "La hará constar y firmará el titular del órgano inferior o funcionario que la reciba oralmente, indicando la autoridad de procedencia."], "correct": 2}, "q022": {"order": 22, "text": "Una notificación en papel realizada en el domicilio es recibida por una persona de exactamente 14 años que se encuentra allí e identifica:", "options": ["Es inválida porque la Ley exige ser mayor de 16 años.", "Puede hacerse cargo de la notificación.", "Solo es válida si es familiar hasta segundo grado."], "correct": 1}, "q023": {"order": 23, "text": "La sociedad obligada a relacionarse electrónicamente no accede a la notificación puesta a disposición. ¿Cuándo se entiende rechazada?", "options": ["A los diez días naturales sin acceso.", "A los diez días hábiles desde la puesta a disposición, excluyéndose del cómputo sábados, domingos y festivos por tratarse de un plazo administrativo.", "A los veinte días naturales."], "correct": 0}, "q024": {"order": 24, "text": "En un procedimiento se desconoce el lugar de notificación del interesado. La notificación infructuosa se practicará:", "options": ["Solo en el tablón municipal.", "Necesariamente en el boletín oficial de la provincia y en el tablón de anuncios del último domicilio, sin necesidad de publicación en el BOE.", "Mediante anuncio en el Boletín Oficial del Estado, sin perjuicio de medios complementarios facultativos."], "correct": 2}, "q025": {"order": 25, "text": "El acto favorable con un defecto de forma será anulable únicamente cuando:", "options": ["Cualquier defecto formal, aunque sea secundario y no produzca indefensión ni impida alcanzar la finalidad del acto, determina necesariamente su anulabilidad.", "Carezca de requisitos formales indispensables para alcanzar su fin o produzca indefensión.", "Nunca, porque los defectos formales son siempre irregularidades no invalidantes."], "correct": 1}, "q026": {"order": 26, "text": "El acto dictado por órgano manifiestamente incompetente por razón de la materia es:", "options": ["Nulo de pleno derecho.", "Anulable y siempre convalidable.", "Una mera irregularidad no invalidante."], "correct": 0}, "q027": {"order": 27, "text": "El Ayuntamiento quiere retirar por razones de oportunidad un acto de gravamen válido. La vía adecuada, dentro de sus límites, es:", "options": ["Declaración de lesividad.", "Revisión de oficio del artículo 106.", "Revocación del artículo 109.1."], "correct": 2}, "q028": {"order": 28, "text": "Si la Administración pretende revisar de oficio un acto nulo firme:", "options": ["Puede hacerlo en cualquier momento, previo dictamen favorable del Consejo de Estado u órgano consultivo equivalente.", "Solo dispone de cuatro años desde que se dictó el acto, incluso cuando concurra una causa de nulidad de pleno derecho del artículo 47.1.", "Necesita previamente declaración de lesividad."], "correct": 0}, "q029": {"order": 29, "text": "Frente a un acto firme en vía administrativa basado esencialmente en un documento que después ha sido declarado falso por sentencia judicial firme, puede proceder:", "options": ["Recurso potestativo de reposición ante el mismo órgano que dictó el acto firme, aunque ya haya transcurrido el plazo ordinario de impugnación.", "Recurso extraordinario de revisión por causa tasada.", "Recurso de alzada ordinario."], "correct": 1}, "q030": {"order": 30, "text": "Si al resolver un recurso administrativo aparece una cuestión no alegada por el recurrente:", "options": ["El órgano nunca puede examinarla.", "Puede examinarla y agravar libremente la situación inicial del recurrente si considera que la nueva cuestión afecta al interés público o a la legalidad objetiva.", "Puede decidirla, pero debe oír previamente a los interesados y respetar la prohibición de reformatio in peius."], "correct": 2}}}];
-const status=document.getElementById("status"), login=document.getElementById("login"), check=document.getElementById("check"), run=document.getElementById("run");
-let checked=false, orders={tests:[],supuestos:[]};
+:root{
+ --blue:#0758B8;--blue-dark:#063E82;--blue-soft:#EAF3FF;
+ --bg:#F6F8FB;--card:#FFFFFF;--text:#122033;--muted:#637083;
+ --line:#DDE5EF;--ok:#207A54;--bad:#B94141;--blank:#7D8896;
+ --shadow:0 10px 30px rgba(18,32,51,.08);
+ --radius:20px;
+}
+*{box-sizing:border-box} html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important}
+.shell{max-width:980px;margin:0 auto;padding:0 24px 96px;min-height:100vh}
+.top{
+ margin:0 -24px 24px;padding:22px 28px 26px;
+ background:var(--blue);color:#fff;border-radius:0 0 28px 28px;
+ box-shadow:0 10px 26px rgba(7,88,184,.20)
+}
+.brand{display:flex;align-items:center;gap:12px}.brand img{width:86px;height:86px;object-fit:contain;background:#fff;border:4px solid #fff;border-radius:50%;padding:3px;box-shadow:0 4px 14px rgba(0,0,0,.14)}
+.brand h1{font-size:25px;line-height:1.05;margin:0;font-weight:900;letter-spacing:-.035em}
+.brand p{margin:5px 0 0;color:#E8F2FF;font-size:12px;line-height:1.4}
+.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:22px}
+.hero small{display:block;color:#DCEBFF;font-size:12px}.hero strong{display:block;font-size:28px;line-height:1.05;margin-top:3px}
+.install{border:1px solid rgba(255,255,255,.55);background:#fff;color:var(--blue-dark);border-radius:13px;padding:10px 13px;font-weight:850}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:22px}
+.metric{background:#fff;border:1px solid var(--line);border-radius:17px;padding:13px 7px;text-align:center;box-shadow:0 5px 18px rgba(18,32,51,.05)}
+.metric b{display:block;font-size:21px;color:var(--blue-dark)}.metric span{font-size:11px;color:var(--muted)}
+.section-kicker{font-size:11px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;color:var(--blue)}
+.section-title{font-size:21px;margin:5px 0 13px;letter-spacing:-.02em}
+.test-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.test-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:17px;box-shadow:var(--shadow)}
+/* Solo las tarjetas de TEST/SUPUESTO DE REPASO cambian de color.
+   El resto de la interfaz y el logo permanecen intactos. */
+.repaso-card{
+  background:linear-gradient(180deg,#FFF9F5 0%,#FFFFFF 100%);
+  border:1.5px solid #F0B48E;
+  box-shadow:0 7px 22px rgba(199,92,32,.10);
+}
+.repaso-card h3{color:#A94712}
+.repaso-card .pill,
+.repaso-card .practical-tag{
+  color:#A94712;
+  background:#FFF2E8;
+  border-color:#F3C4A6;
+}
+.repaso-card .primary{background:#D65A12}
+.repaso-card .primary:active{background:#B8490D}
 
-function countQuestions(d){return Object.keys(d.questions||{}).length}
-function validateLocal(){
-  if(DOCS.length!==4) throw new Error("El lote no contiene exactamente 4 documentos.");
-  for(const d of DOCS){
-    if(countQuestions(d)!==30) throw new Error(d.title+" no contiene 30 preguntas.");
-    for(const q of Object.values(d.questions)){
-      if(!q.text || !Array.isArray(q.options) || q.options.length!==3 || ![0,1,2].includes(q.correct)) throw new Error("Formato inválido en "+d.title);
+.test-head{display:flex;align-items:flex-start;gap:12px}.test-logo{width:62px;height:62px;flex:0 0 62px;background:#fff;border-radius:50%;padding:2px}
+.test-card h3{font-size:18px;line-height:1.25;margin:1px 0 5px}.muted{color:var(--muted);font-size:13px;line-height:1.45}
+.pills{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0}
+.pill{border:1px solid #CFE0F6;background:#F7FBFF;color:var(--blue-dark);padding:6px 8px;border-radius:999px;font-size:11px;font-weight:750}
+.primary,.secondary,.option{border-radius:14px;min-height:48px;font-weight:800}
+.primary{border:0;background:var(--blue);color:#fff;width:100%;padding:11px 14px}
+.primary:active{background:var(--blue-dark)}
+.secondary{border:1px solid #BED3ED;background:#fff;color:var(--blue-dark);padding:10px 13px}
+.view-top{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0 12px}
+.back{border:0;background:transparent;color:var(--blue-dark);font-weight:850;padding:8px 2px}
+.timer{font-weight:900;color:var(--blue-dark);font-variant-numeric:tabular-nums}
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.panel h2{margin:4px 0 8px;font-size:22px}.panel label{display:flex;align-items:center;gap:9px;margin:13px 0;color:#344256}
+.panel input[type=number]{width:86px;border:1px solid var(--line);border-radius:11px;padding:9px;background:#fff;color:var(--text)}
+.info{background:var(--blue-soft);border:1px solid #C9E0FA;border-radius:14px;padding:12px;color:#23486E;font-size:13px;line-height:1.45;margin:14px 0}
+.progress-track{height:8px;background:#E1E8F1;border-radius:999px;overflow:hidden;margin:0 0 14px}
+.progress{height:100%;width:0;background:var(--blue)}
+.qindex{font-size:12px;color:var(--muted);font-weight:850}.question{font-size:18px;font-weight:800;line-height:1.48;margin:9px 0 16px}
+.options{display:grid;gap:10px}.option{text-align:left;width:100%;border:1.5px solid var(--line);background:#fff;color:var(--text);padding:14px;line-height:1.4}
+.option.selected{border-color:var(--blue);background:var(--blue-soft);box-shadow:inset 0 0 0 1px rgba(7,88,184,.08)}
+.nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.finish{grid-column:1/-1}
+.score{font-size:48px;font-weight:950;letter-spacing:-.045em;color:var(--blue-dark);text-align:center;margin:12px 0}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0}
+.result-box{text-align:center;border:1px solid var(--line);border-radius:14px;background:#F9FBFD;padding:11px 7px}.result-box b{display:block;font-size:21px}
+.review-item{border:1px solid var(--line);border-radius:14px;padding:13px;margin:9px 0;font-size:13px;line-height:1.5;background:#fff}
+.review-item.ok{border-left:4px solid var(--ok)}.review-item.bad{border-left:4px solid var(--bad)}.review-item.blank{border-left:4px solid var(--blank)}
+.modal-wrap{position:fixed;inset:0;background:rgba(12,27,45,.48);display:grid;place-items:center;padding:18px;z-index:30}
+.modal{max-width:560px;width:100%;max-height:86vh;overflow:auto;background:#fff;border-radius:20px;padding:19px;box-shadow:0 24px 70px rgba(0,0,0,.24)}
+.modal h2{margin:0 0 9px}.modal p,.modal li{font-size:13px;line-height:1.55;color:#344256}
+.help-link{border:0;background:transparent;color:#fff;font-weight:800;padding:6px 0;text-decoration:underline;text-underline-offset:3px}
+.foot{text-align:center;color:var(--muted);font-size:11px;margin-top:27px}
+@media(max-width:700px){
+ .test-grid{grid-template-columns:1fr}.brand img{width:76px;height:76px}.brand h1{font-size:22px}
+ .hero strong{font-size:25px}.test-card{padding:15px}.panel{padding:16px}
+}
+@media(max-width:390px){
+ .shell{padding-left:14px;padding-right:14px}.top{margin-left:-14px;margin-right:-14px;padding-left:18px;padding-right:18px}
+ .summary{gap:6px}.metric{padding:11px 4px}.metric b{font-size:19px}
+ .nav{grid-template-columns:1fr}.finish{grid-column:auto}.result-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:340px){.brand p{display:none}.test-logo{width:48px;height:48px;flex-basis:48px}}
+
+.login-shell{min-height:100vh;background:linear-gradient(180deg,var(--blue) 0 36%,var(--bg) 36%);display:grid;place-items:center;padding:40px 20px}.login-wrap{width:min(100%,520px)}.login-brand{text-align:center;color:#fff;margin-bottom:18px}.login-logo{width:112px;height:112px;border-radius:50%;background:#fff;padding:6px;margin:0 auto 12px;display:grid;place-items:center;box-shadow:0 10px 24px rgba(0,0,0,.15)}.login-logo img{width:100%;height:100%;object-fit:contain}.login-brand h1{margin:0;font-size:28px}.login-brand p{margin:6px 0 0;color:#E8F2FF;font-size:13px}.login-card{background:#fff;border-radius:24px;padding:28px;box-shadow:0 20px 60px rgba(10,32,60,.18)}.login-card h2{margin:0 0 5px}.login-card>p{margin:0 0 18px;color:var(--muted);font-size:13px}.field{margin:13px 0}.field label{display:block;font-size:12px;font-weight:850;margin-bottom:6px}.field input{width:100%;height:50px;border:1.5px solid var(--line);border-radius:14px;padding:0 13px;outline:none}.field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(7,88,184,.10)}.authmsg{border-radius:12px;padding:10px 12px;font-size:12px;margin:10px 0}.authmsg.error{background:#FFF2F2;border:1px solid #F2C9C9;color:#8D2C2C}.authmsg.success{background:#EFFAF5;border:1px solid #CDE9DA;color:#276347}.auth-separator{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--muted);font-size:12px}.auth-separator:before,.auth-separator:after{content:"";height:1px;background:#D8E7F7;flex:1}.google-login{width:100%;min-height:46px;border:1.5px solid #D8E1EC;background:#fff;color:#263238;border-radius:14px;padding:12px 14px;font-weight:850;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px}.google-login:active{background:#F5F7FA}.google-g{font-size:18px;font-weight:900;color:#1a73e8}
+.login-install{width:100%;margin-top:12px;border:1.5px solid var(--blue);background:#F4F9FF;color:var(--blue-dark);border-radius:14px;padding:13px 14px;font-weight:850;cursor:pointer}
+.login-install:active{background:#EAF4FF}
+.install-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.install-status{font-size:11px;color:#DCEBFF;line-height:1.35}
+.install-steps{margin:10px 0 0;padding-left:20px}.install-steps li{margin:8px 0}
+.install-badge{display:inline-block;background:#EAF4FF;color:var(--blue-dark);font-weight:850;border-radius:999px;padding:5px 9px;font-size:12px;margin-bottom:8px}
+.login-note{text-align:center;color:var(--muted);font-size:11px;margin-top:13px}.loading-screen{min-height:100vh;display:grid;place-items:center;text-align:center}.spinner{width:42px;height:42px;border:4px solid #DDE8F7;border-top-color:var(--blue);border-radius:50%;animation:spin .85s linear infinite;margin:auto}@keyframes spin{to{transform:rotate(360deg)}}.userbar{display:flex;align-items:center;gap:8px;margin-left:auto}.userbar small{max-width:170px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.logout{border:1px solid rgba(255,255,255,.55);background:#fff;color:var(--blue-dark);border-radius:11px;padding:8px 10px;font-weight:850}.empty{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;color:var(--muted)}
+
+.login-description{margin:14px 0 20px;padding:14px 15px;border:1px solid #CFE0F6;background:#F7FBFF;border-radius:14px;color:#294B70;font-size:13px;line-height:1.55;text-align:left}
+.home-intro{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 18px;margin:0 0 20px;box-shadow:0 5px 18px rgba(18,32,51,.05)}
+.home-intro h2{margin:0 0 6px;font-size:18px;color:var(--blue-dark)}
+.home-intro p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+.data-error{background:#FFF2F2;border:1px solid #F2C9C9;color:#8D2C2C;border-radius:16px;padding:14px 16px;line-height:1.5}
+
+
+.topic-section{margin:0 0 28px}
+.topic-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 14px;padding:12px 14px;border-left:4px solid var(--blue);background:#F4F9FF;border-radius:0 14px 14px 0}
+.topic-heading h2{margin:0;color:var(--blue-dark);font-size:20px;line-height:1.25}
+.topic-count{white-space:nowrap;font-size:12px;font-weight:800;color:var(--blue-dark);background:#fff;border:1px solid #D7E8F7;border-radius:999px;padding:5px 9px}
+.topic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.copyright{margin:18px 0 4px;padding:18px 12px 4px;border-top:1px solid #D8E7F7;text-align:center;color:var(--muted);font-size:12px;line-height:1.5;font-weight:600}
+@media(max-width:699px){.topic-heading{align-items:flex-start}.topic-heading h2{font-size:18px}.topic-grid{grid-template-columns:1fr}}
+
+
+.content-block{margin:26px 0 34px}
+.content-type-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:0 0 15px}
+.content-type-head h2{margin:3px 0 0;font-size:24px;letter-spacing:-.025em;color:var(--blue-dark)}
+.content-type-head p{margin:3px 0 0;color:var(--muted);font-size:13px;line-height:1.5}
+.type-badge{white-space:nowrap;border:1px solid #CFE0F6;background:#F7FBFF;color:var(--blue-dark);padding:7px 10px;border-radius:999px;font-size:12px;font-weight:850}
+.practical-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:17px;box-shadow:var(--shadow)}
+.practical-card h3{font-size:18px;line-height:1.25;margin:1px 0 5px}
+.practical-tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:850;color:var(--blue-dark);background:var(--blue-soft);border:1px solid #CFE0F6;border-radius:999px;padding:6px 9px;margin-top:10px}
+.practical-tabs{display:flex;gap:8px;position:sticky;top:8px;z-index:8;margin-bottom:12px;background:rgba(246,248,251,.94);backdrop-filter:blur(8px);padding:7px;border-radius:15px}
+.practical-tabs button{flex:1}
+.statement{white-space:pre-line;text-align:justify;text-justify:inter-word;hyphens:auto;line-height:1.75;font-size:15px;max-width:78ch;margin:0 auto;color:#26384C}
+.statement-title{font-size:19px;line-height:1.35;margin:0 0 15px;color:var(--blue-dark)}
+.statement-actions{margin-top:20px}
+.practical-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.practical-nav .finish{grid-column:1/-1}
+.practical-review-head{display:flex;justify-content:flex-end;margin:0 0 12px}
+@media(max-width:699px){
+ .content-type-head{align-items:flex-start;flex-direction:column}
+ .content-type-head h2{font-size:22px}
+ .practical-tabs{top:4px}
+}
+@media(max-width:390px){
+ .practical-nav{grid-template-columns:1fr}
+ .practical-nav .finish{grid-column:auto}
+ .statement{font-size:14px;line-height:1.68}
+}
+
+
+.library-jump{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0 28px}
+.library-jump-btn{display:flex;align-items:center;gap:12px;text-align:left;width:100%;border:1.5px solid #CFE0F6;background:#fff;color:var(--text);padding:15px 16px;border-radius:16px;box-shadow:var(--shadow);cursor:pointer}
+.library-jump-btn:hover{border-color:var(--blue);transform:translateY(-1px)}
+.library-jump-btn:focus-visible{outline:3px solid rgba(7,88,184,.18);outline-offset:2px}
+.library-jump-btn .library-jump-icon{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:13px;background:var(--blue-soft);color:var(--blue-dark);font-weight:900;font-size:18px}
+.library-jump-btn strong{display:block;color:var(--blue-dark);font-size:15px;line-height:1.2}
+.library-jump-btn small{display:block;margin-top:4px;color:var(--muted);font-size:12px;font-weight:650}
+.library-jump-btn.practical{border-color:#BFD8F4;background:#F9FCFF}
+.library-anchor{scroll-margin-top:18px}
+.practicals-home-block{border-top:2px solid #D8E7F7;padding-top:26px}
+@media(max-width:699px){
+ .library-jump{grid-template-columns:1fr;gap:9px;margin:14px 0 24px}
+ .library-jump-btn{min-height:68px;padding:12px 14px}
+ .library-jump-btn .library-jump-icon{flex-basis:40px;width:40px;height:40px}
+}
+
+
+/* =========================
+   V23 · MI PROGRESO
+   ========================= */
+.progress-access{margin:18px 0 4px}
+.progress-access-btn{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;border:1.5px solid #BFD8F4;background:linear-gradient(180deg,#F7FBFF 0%,#FFFFFF 100%);padding:15px 16px;border-radius:16px;box-shadow:var(--shadow);cursor:pointer;text-align:left}
+.progress-access-btn:hover{border-color:var(--blue);transform:translateY(-1px)}
+.progress-access-btn strong{display:block;color:var(--blue-dark);font-size:16px}
+.progress-access-btn small{display:block;color:var(--muted);font-size:12px;font-weight:650;margin-top:3px}
+.progress-access-icon{display:grid;place-items:center;flex:0 0 44px;width:44px;height:44px;border-radius:13px;background:var(--blue-soft);color:var(--blue-dark);font-size:21px;font-weight:900}
+.progress-shell{max-width:980px;margin:0 auto}
+.progress-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px}
+.progress-head h2{margin:2px 0 4px;color:var(--blue-dark);font-size:26px}
+.progress-head p{margin:0;color:var(--muted);font-size:13px}
+.progress-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}
+.progress-metric{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow)}
+.progress-metric b{display:block;color:var(--blue-dark);font-size:24px;line-height:1.1}
+.progress-metric span{display:block;margin-top:6px;color:var(--muted);font-size:12px;font-weight:750}
+.progress-panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.progress-panel h3{margin:0 0 13px;color:var(--blue-dark);font-size:18px}
+.progress-list{display:grid;gap:10px}
+.progress-item{border:1px solid #DCE8F5;border-radius:14px;padding:13px 14px;background:#FBFDFF}
+.progress-item-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.progress-item-title{font-weight:850;color:var(--text);font-size:14px;line-height:1.35}
+.progress-score{white-space:nowrap;font-weight:900;color:var(--blue-dark);font-size:16px}
+.progress-meta{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:8px;color:var(--muted);font-size:12px;font-weight:650}
+.progress-empty{padding:24px 14px;text-align:center;color:var(--muted);border:1px dashed #C9D9EA;border-radius:14px;background:#FBFDFF}
+.progress-status{margin:12px 0;color:var(--muted);font-size:13px}
+@media(max-width:699px){
+ .progress-metrics{grid-template-columns:1fr 1fr}
+ .progress-head{flex-direction:column}
+ .progress-head h2{font-size:23px}
+}
+
+
+/* =========================
+   V23 · RENDIMIENTO POR TEMAS
+   ========================= */
+.progress-topics{margin-top:16px}
+.progress-topic-list{display:grid;gap:10px}
+.progress-topic-item{border:1px solid #DCE8F5;border-radius:14px;padding:13px 14px;background:#FBFDFF}
+.progress-topic-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.progress-topic-name{font-weight:850;color:var(--text);font-size:14px;line-height:1.35}
+.progress-topic-best{font-weight:900;color:var(--blue-dark);white-space:nowrap}
+.progress-topic-meta{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:7px;color:var(--muted);font-size:12px;font-weight:650}
+
+</style>
+</head>
+<body>
+<section id="loginScreen" class="login-shell hidden"><div class="login-wrap"><div class="login-brand"><div class="login-logo"><img src="logo-oposmurcia360.png?v=22-appcheck" alt="OposMurcia 360"></div><h1>OposMurcia 360</h1><p>Tests y supuestos prácticos · Auxiliares Administrativos</p></div><div class="login-card"><h2>Acceso a OposMurcia 360</h2>
+<div class="login-description"><strong>Plataforma privada de preparación para Auxiliares Administrativos del Ayuntamiento de Murcia.</strong><br>
+Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, aplica penalización opcional y revisa tus resultados al finalizar.</div>
+<p>Introduce las credenciales facilitadas por el administrador.</p><div id="authMsg" class="hidden"></div><form id="loginForm"><div class="field"><label for="email">Correo electrónico</label><input id="email" type="email" autocomplete="username" required></div><div class="field"><label for="password">Contraseña</label><input id="password" type="password" autocomplete="current-password" required></div><button id="loginBtn" class="primary" style="width:100%" type="submit">Iniciar sesión</button></form><div class="auth-separator"><span>o</span></div><button id="googleLoginBtn" class="google-login" type="button"><span class="google-g">G</span><span>Continuar con Google</span></button><button id="resetBtn" class="secondary" style="width:100%;margin-top:10px" type="button">¿Has olvidado tu contraseña?</button><button id="loginInstallBtn" class="login-install" type="button">📲 Instalar OposMurcia 360 en Android</button><div class="login-note">Acceso exclusivo para usuarios autorizados · Sin registro público</div></div></div></section><section id="loadingScreen" class="loading-screen"><div><div class="spinner"></div><p class="muted">Comprobando acceso…</p></div></section><div id="appShell" class="shell hidden">
+<section id="home">
+ <header class="top">
+  <div class="brand">
+   <img src="logo-oposmurcia360.png?v=22-appcheck" alt="OposMurcia 360">
+   <div><h1>OposMurcia 360</h1><p>Tests y supuestos prácticos para Auxiliares Administrativos del Ayuntamiento de Murcia</p></div>
+  </div><div class="userbar"><small id="userEmail"></small><button id="logoutBtn" class="logout">Cerrar sesión</button></div>
+  <div class="hero">
+   <div><small>Biblioteca disponible</small><strong id="heroCount">Tests + supuestos</strong><button class="help-link" onclick="openHelp()">Cómo funciona</button></div>
+   <div class="install-row"><button id="installBtn" class="install" type="button">📲 Instalar app</button><span id="installStatus" class="install-status"></span></div>
+  </div>
+ </header>
+ <div class="home-intro">
+  <h2>Tu espacio privado de preparación</h2>
+  <p>Practica con tests y supuestos prácticos, controla tu tiempo y revisa tus respuestas. En los supuestos podrás consultar el enunciado durante todo el ejercicio sin perder la pregunta ni tus respuestas.</p>
+ </div>
+ <div class="summary">
+  <div class="metric"><b id="qCount">80</b><span>preguntas</span></div>
+  <div class="metric"><b id="doneCount">0</b><span>completados</span></div>
+  <div class="metric"><b id="bestScore">—</b><span>mejor nota</span></div>
+ </div>
+ <div class="progress-access">
+  <button class="progress-access-btn" type="button" onclick="openMyProgress()">
+   <span class="progress-access-icon">↗</span>
+   <span style="flex:1"><strong>Mi progreso</strong><small>Consulta tus intentos, nota media y actividad reciente.</small></span>
+   <span aria-hidden="true">›</span>
+  </button>
+ </div>
+ <div class="library-jump" aria-label="Accesos rápidos a la biblioteca">
+  <button class="library-jump-btn" onclick="goToLibrarySection('testsSection')">
+   <span class="library-jump-icon">✓</span>
+   <span><strong>Ir a Tests</strong><small id="quickTestsCount">Tests disponibles</small></span>
+  </button>
+  <button class="library-jump-btn practical" onclick="goToLibrarySection('practicalsSection')">
+   <span class="library-jump-icon">📖</span>
+   <span><strong>Ir a Supuestos prácticos</strong><small id="quickPracticalsCount">Supuestos disponibles</small></span>
+  </button>
+ </div>
+ <div id="testsSection" class="content-block library-anchor">
+  <div class="content-type-head">
+   <div><div class="section-kicker">Tests</div><h2>Tests por temas</h2><p>Cuestionarios de preparación organizados por materias.</p></div>
+   <span id="testCountBadge" class="type-badge">0 tests</span>
+  </div>
+  <div id="testGrid"></div>
+ </div>
+ <div id="practicalsSection" class="content-block library-anchor practicals-home-block">
+  <div class="content-type-head">
+   <div><div class="section-kicker">Supuestos prácticos</div><h2>Supuestos prácticos por temas</h2><p>Lee el enunciado y resuelve el cuestionario pudiendo consultarlo durante todo el ejercicio.</p></div>
+   <span id="practicalCountBadge" class="type-badge">0 supuestos</span>
+  </div>
+  <div id="practicalGrid"></div>
+ </div>
+ <div class="foot">OposMurcia 360 · Preparación práctica</div>
+ <footer class="copyright">© 2026 OposMurcia 360 · Todos los derechos reservados.</footer>
+</section>
+
+
+<section id="myProgress" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Biblioteca</button><button class="secondary" type="button" onclick="loadMyProgress()">Actualizar</button></div>
+ <div class="progress-shell">
+  <div class="progress-head">
+   <div><div class="section-kicker">V23 · Seguimiento personal</div><h2>Mi progreso</h2><p id="progressUserEmail"></p></div>
+  </div>
+  <div id="progressStatus" class="progress-status">Cargando progreso…</div>
+  <div class="progress-metrics">
+   <div class="progress-metric"><b id="progressAttempts">0</b><span>Ejercicios realizados</span></div>
+   <div class="progress-metric"><b id="progressAverage">—</b><span>Nota media</span></div>
+   <div class="progress-metric"><b id="progressBest">—</b><span>Mejor nota</span></div>
+   <div class="progress-metric"><b id="progressLast">—</b><span>Última actividad</span></div>
+  </div>
+  <div class="progress-panel">
+   <h3>Historial de intentos</h3>
+   <div id="progressList" class="progress-list"></div>
+  </div>
+
+  <div class="progress-panel progress-topics">
+   <h3>Rendimiento por materias / temas</h3><div class="progress-status" style="margin-top:-5px">Agrupado según la misma clasificación de la biblioteca.</div>
+   <div id="progressTopicList" class="progress-topic-list"></div>
+  </div>
+
+  <div id="adminResetStatsPanel" class="progress-panel hidden">
+   <h3>Administración · Resetear estadísticas</h3>
+   <div class="progress-status" style="margin-top:-5px">
+    Solo el administrador puede borrar el historial estadístico de un usuario.
+    No se eliminan tests, supuestos, usuarios autorizados ni dispositivos.
+   </div>
+   <button class="secondary" type="button" onclick="resetStatsAsAdmin()">Resetear estadísticas de un usuario</button>
+  </div>
+
+  <div id="adminAllProgressPanel" class="progress-panel hidden">
+   <h3>Administración · Seguimiento de alumnos</h3>
+   <div class="progress-status" style="margin-top:-5px">
+    Vista exclusiva del administrador. El preparador no tiene acceso al seguimiento de otros usuarios.
+   </div>
+   <button class="secondary" type="button" onclick="loadAllProgressAsAdmin()">Ver seguimiento de alumnos</button>
+   <div id="adminAllProgressList" style="margin-top:14px"></div>
+  </div>
+ </div>
+</section>
+
+<section id="setup" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Volver</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
+ <div class="panel">
+  <img src="logo-oposmurcia360.png?v=22-appcheck" alt="" style="width:72px;height:72px;float:right;margin-left:10px;background:#fff;border-radius:50%;padding:3px">
+  <div class="section-kicker">Configurar test</div>
+  <h2 id="setupTitle"></h2><p id="setupDesc" class="muted"></p>
+  <label><input type="radio" name="timeMode" value="none" checked> Sin tiempo · cronómetro de tiempo empleado</label>
+  <label><input type="radio" name="timeMode" value="timed"> Con tiempo · cuenta atrás</label>
+  <label>Minutos <input id="minutes" type="number" min="1" max="180" value="30"></label>
+  <label><input id="penalty" type="checkbox"> Aplicar penalización de 1/3 por respuesta incorrecta</label>
+  <div class="info">Puedes pulsar <strong>Finalizar y ver resultados</strong> en cualquier momento. Las preguntas no contestadas quedan en blanco y no cuentan como error.</div>
+  <button class="primary" onclick="startQuiz()">Comenzar test</button>
+ </div>
+</section>
+
+<section id="quiz" class="hidden">
+ <div class="view-top"><button class="back" onclick="confirmExit()">← Salir</button><div id="timer" class="timer">00:00</div></div>
+ <div class="progress-track"><div id="progress" class="progress"></div></div>
+ <div class="panel">
+  <div id="qnum" class="qindex"></div>
+  <div id="question" class="question"></div>
+  <div id="options" class="options"></div>
+  <div class="nav">
+   <button class="secondary" onclick="prevQ()">Anterior</button>
+   <button class="secondary" onclick="nextQ()">Siguiente</button>
+   <button class="primary finish" onclick="finishQuiz(false)">Finalizar y ver resultados</button>
+  </div>
+ </div>
+</section>
+
+
+<section id="practicalSetup" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Volver</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
+ <div class="panel">
+  <img src="logo-oposmurcia360.png?v=22-appcheck" alt="" style="width:72px;height:72px;float:right;margin-left:10px;background:#fff;border-radius:50%;padding:3px">
+  <div class="section-kicker">Configurar supuesto práctico</div>
+  <h2 id="practicalSetupTitle"></h2><p id="practicalSetupDesc" class="muted"></p>
+  <label><input type="radio" name="practicalTimeMode" value="none" checked> Sin tiempo · cronómetro de tiempo empleado</label>
+  <label><input type="radio" name="practicalTimeMode" value="timed"> Con tiempo · cuenta atrás</label>
+  <label>Minutos <input id="practicalMinutes" type="number" min="1" max="240" value="30"></label>
+  <label><input id="practicalPenalty" type="checkbox"> Aplicar penalización de 1/3 por respuesta incorrecta</label>
+  <div class="info">Al comenzar accederás primero al <strong>enunciado completo</strong>. El cuestionario solo se habilitará cuando pulses el botón situado al final del enunciado.</div>
+  <button class="primary" onclick="startPractical()">Comenzar supuesto práctico</button>
+ </div>
+</section>
+
+<section id="practicalWork" class="hidden">
+ <div class="view-top"><button class="back" onclick="confirmPracticalExit()">← Salir</button><div id="practicalTimer" class="timer">00:00</div></div>
+ <div class="practical-tabs">
+  <button id="practicalStatementTab" class="primary" onclick="showPracticalStatement()">📖 Supuesto práctico</button>
+  <button id="practicalQuizTab" class="secondary hidden" onclick="showPracticalQuiz()">✅ Cuestionario</button>
+ </div>
+ <div id="practicalStatementView" class="panel">
+  <h2 id="practicalStatementTitle" class="statement-title"></h2>
+  <div id="practicalStatement" class="statement"></div>
+  <div class="statement-actions"><button id="statementQuizButton" class="primary" onclick="showPracticalQuiz()">Comenzar supuesto práctico →</button></div>
+ </div>
+ <div id="practicalQuizView" class="hidden">
+  <div class="progress-track"><div id="practicalProgress" class="progress"></div></div>
+  <div class="panel">
+   <div id="practicalQnum" class="qindex"></div>
+   <div id="practicalQuestion" class="question"></div>
+   <div id="practicalOptions" class="options"></div>
+   <div class="practical-nav">
+    <button class="secondary" onclick="prevPracticalQ()">Anterior</button>
+    <button class="secondary" onclick="nextPracticalQ()">Siguiente</button>
+    <button class="secondary finish" onclick="showPracticalStatement()">📖 Consultar enunciado</button>
+    <button class="primary finish" onclick="finishPractical(false)">Finalizar y ver resultados</button>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="practicalResults" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Biblioteca</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
+ <div class="panel">
+  <div class="section-kicker">Resultado · supuesto práctico</div><h2 id="practicalResultTitle"></h2>
+  <div id="practicalScore" class="score">0,00/10</div>
+  <div class="result-grid">
+   <div class="result-box"><b id="practicalOk">0</b><span>Aciertos</span></div>
+   <div class="result-box"><b id="practicalBad">0</b><span>Errores</span></div>
+   <div class="result-box"><b id="practicalBlank">0</b><span>En blanco</span></div>
+  </div>
+  <p id="practicalResultInfo" class="muted"></p>
+  <div class="nav">
+   <button class="secondary" onclick="showPracticalStatementFromResults()">📖 Consultar enunciado</button>
+   <button class="primary" onclick="togglePracticalReview()">Revisar respuestas</button>
+  </div>
+  <div id="practicalReview" class="hidden" style="margin-top:13px"></div>
+  <div class="nav">
+   <button class="secondary" onclick="repeatPractical()">Repetir supuesto</button>
+   <button class="primary finish" onclick="sharePracticalResult()">Compartir resultado por WhatsApp</button>
+  </div>
+ </div>
+</section>
+
+<section id="practicalResultStatement" class="hidden">
+ <div class="view-top"><button class="back" onclick="returnPracticalResults()">← Volver a resultados</button><div class="timer">Enunciado</div></div>
+ <div class="panel">
+  <h2 id="practicalResultStatementTitle" class="statement-title"></h2>
+  <div id="practicalResultStatementText" class="statement"></div>
+  <div class="statement-actions"><button class="primary" onclick="returnPracticalResults()">Volver a resultados →</button></div>
+ </div>
+</section>
+
+<section id="results" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Biblioteca</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
+ <div class="panel">
+  <div class="section-kicker">Resultado</div><h2 id="resultTitle"></h2>
+  <div id="score" class="score">0,00/10</div>
+  <div class="result-grid">
+   <div class="result-box"><b id="ok">0</b><span>Aciertos</span></div>
+   <div class="result-box"><b id="bad">0</b><span>Errores</span></div>
+   <div class="result-box"><b id="blank">0</b><span>En blanco</span></div>
+  </div>
+  <p id="resultInfo" class="muted"></p>
+  <button class="primary" onclick="toggleReview()">Revisar respuestas</button>
+  <div id="review" class="hidden" style="margin-top:13px"></div>
+  <div class="nav">
+   <button class="secondary" onclick="repeatQuiz()">Repetir test</button>
+   
+   <button class="primary finish" onclick="shareResult()">Compartir resultado por WhatsApp</button>
+  </div>
+ </div>
+</section>
+</div>
+
+
+
+
+<div id="installHelp" class="modal-wrap hidden" onclick="installBackdropClose(event)">
+ <div class="modal">
+  <span class="install-badge">Instalación en Android</span>
+  <h2>Instalar OposMurcia 360</h2>
+  <div id="installHelpContent"></div>
+  <button class="primary" style="width:100%;margin-top:12px" type="button" onclick="closeInstallHelp()">Entendido</button>
+ </div>
+</div>
+
+<div id="help" class="modal-wrap hidden" onclick="backdropClose(event)">
+ <div class="modal">
+  <h2>Cómo funciona</h2>
+  <p><strong>Sin tiempo:</strong> verás un cronómetro con el tiempo empleado. <strong>Con tiempo:</strong> verás una cuenta atrás y el test terminará automáticamente al llegar a 00:00.</p>
+  <p>La penalización de <strong>1/3</strong> es opcional. Si la activas, cada error descuenta un tercio de un acierto. Las respuestas en blanco no penalizan.</p>
+  <p>Puedes avanzar y retroceder entre preguntas. No hay mapa de preguntas ni marcadores de revisión.</p><p>En los <strong>supuestos prácticos</strong> accederás primero al enunciado. Antes de comenzar el cuestionario no aparece el acceso superior «Cuestionario». Una vez iniciado, podrás alternar entre <strong>Supuesto práctico</strong> y <strong>Cuestionario</strong> sin perder la pregunta ni las respuestas.</p>
+  <p><strong>Finalizar y ver resultados</strong> está disponible durante todo el test. Al terminar verás nota sobre 10, aciertos, errores, blancos, tiempo y revisión completa.</p>
+  <button class="primary" onclick="closeHelp()">Entendido</button>
+ </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app-check.js";
+import { getAuth,onAuthStateChanged,signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider,signOut,sendPasswordResetEmail,setPersistence,browserLocalPersistence } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+import { getFirestore,collection,getDocs,doc,getDoc,setDoc,updateDoc,addDoc,deleteDoc,serverTimestamp,query,where } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+const firebaseConfig={"apiKey":"AIzaSyDA_79FRQq90gVJgD17dRr_pUHKe4S8XBg","authDomain":"oposmurcia360-5a389.firebaseapp.com","projectId":"oposmurcia360-5a389","storageBucket":"oposmurcia360-5a389.firebasestorage.app","messagingSenderId":"730198455785","appId":"1:730198455785:web:1f3e3d4f8edf8774780778","measurementId":"G-T8QHKNDX5T"};
+const app=initializeApp(firebaseConfig);
+const appCheck=initializeAppCheck(app,{
+  provider:new ReCaptchaEnterpriseProvider("6LfJJaMtAAAAAFiIMFM8wbT3C5Pf1708_iS-3jVQ"),
+  isTokenAutoRefreshEnabled:true
+});
+const auth=getAuth(app),db=getFirestore(app);
+await setPersistence(auth,browserLocalPersistence);
+const $=s=>document.querySelector(s),PUBLIC_URL="https://oposmurcia360.github.io/oposmurcia360/";
+let TESTS=[],PRACTICALS=[],currentTest=null,answers=[],current=0,penalty=false,timed=false,timeLimit=0,elapsed=0,interval=null,startedAt=0,deferredPrompt=null;
+let currentPractical=null,practicalAnswers=[],practicalCurrent=0,practicalPenalty=false,practicalTimed=false,practicalTimeLimit=0,practicalElapsed=0,practicalInterval=null,practicalStartedAt=0,practicalQuizStarted=false,practicalStatementY=0;
+let finishingQuiz=false,finishingPractical=false;
+async function registrarProgreso({tipo,ejercicioId,titulo,categoria,totalPreguntas,aciertos,errores,blancos,nota,penalizacion,tiempoEmpleado}){
+  const user=auth.currentUser;
+  if(!user) throw new Error('No hay un usuario autenticado.');
+  await addDoc(collection(db,'progreso'),{
+    uid:user.uid,
+    email:user.email||'',
+    tipo,
+    ejercicioId:String(ejercicioId||''),
+    titulo:String(titulo||''),
+    categoria:String(categoria||'Sin clasificar'),
+    fecha:serverTimestamp(),
+    totalPreguntas:Number(totalPreguntas),
+    aciertos:Number(aciertos),
+    errores:Number(errores),
+    blancos:Number(blancos),
+    nota:Number(nota),
+    penalizacion:Boolean(penalizacion),
+    tiempoEmpleado:Math.max(0,Math.floor(Number(tiempoEmpleado)||0))
+  });
+}
+
+function progressDateValue(fecha){
+  if(!fecha)return 0;
+  if(typeof fecha.toMillis==='function')return fecha.toMillis();
+  if(fecha.seconds!=null)return Number(fecha.seconds)*1000;
+  return 0;
+}
+function formatProgressDate(fecha,short=false){
+  const ms=progressDateValue(fecha);
+  if(!ms)return '—';
+  const d=new Date(ms);
+  return short
+    ? d.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'})
+    : d.toLocaleString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+function formatProgressTime(seconds){
+  const s=Math.max(0,Math.floor(Number(seconds)||0));
+  const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;
+  if(h)return `${h} h ${String(m).padStart(2,'0')} min`;
+  if(m)return `${m} min ${String(sec).padStart(2,'0')} s`;
+  return `${sec} s`;
+}
+
+function progressTopicKey(item){
+  // V23 Fase 5: la categoría guardada es la fuente principal.
+  if((item.categoria||'').toString().trim()){
+    return item.categoria.toString().trim();
+  }
+
+  // Compatibilidad con los intentos de prueba anteriores:
+  // buscamos el ejercicio real en la biblioteca y usamos SU misma clasificación.
+  if(item.tipo==='test'){
+    const t=TESTS.find(x=>String(x.id)===String(item.ejercicioId));
+    if(t){
+      const info=topicInfo(t);
+      if(info && info.label) return info.label;
     }
-    if(d.collection==="supuestos" && !d.statement) throw new Error("Falta el enunciado de "+d.title);
+  }else if(item.tipo==='supuesto'){
+    const p=PRACTICALS.find(x=>String(x.id)===String(item.ejercicioId));
+    if(p){
+      return (p.topic||p.tema||p.subject||'Otros supuestos').toString().trim()||'Otros supuestos';
+    }
+  }
+
+  return 'Sin clasificar';
+}function renderProgressTopics(items){
+  const box=$('#progressTopicList');
+  if(!items.length){
+    box.innerHTML='<div class="progress-empty">Todavía no hay datos suficientes para calcular el rendimiento por temas.</div>';
+    return;
+  }
+
+  const groups=new Map();
+  for(const item of items){
+    const key=progressTopicKey(item);
+    if(!groups.has(key)) groups.set(key,[]);
+    groups.get(key).push(item);
+  }
+
+  const rows=[...groups.entries()].map(([tema,arr])=>{
+    const notas=arr.map(x=>Number(x.nota)||0);
+    const avg=notas.reduce((a,b)=>a+b,0)/notas.length;
+    const best=Math.max(...notas);
+    const last=[...arr].sort((a,b)=>progressDateValue(b.fecha)-progressDateValue(a.fecha))[0];
+    return {tema,intentos:arr.length,avg,best,last};
+  }).sort((a,b)=>a.tema.localeCompare(b.tema,'es'));
+
+  box.innerHTML=rows.map(r=>`
+    <div class="progress-topic-item">
+      <div class="progress-topic-head">
+        <div class="progress-topic-name">${esc(r.tema)}</div>
+        <div class="progress-topic-best">${r.best.toFixed(2).replace('.',',')}/10</div>
+      </div>
+      <div class="progress-topic-meta">
+        <span>${r.intentos} ${r.intentos===1?'intento':'intentos'}</span>
+        <span>Nota media: ${r.avg.toFixed(2).replace('.',',')}/10</span>
+        <span>Mejor nota: ${r.best.toFixed(2).replace('.',',')}/10</span>
+        <span>Último: ${formatProgressDate(r.last.fecha,true)}</span>
+      </div>
+    </div>`).join('');
+}
+
+
+async function resetStatsAsAdmin(){
+  const user=auth.currentUser;
+  const emailAdmin=(user?.email||'').toLowerCase();
+
+  if(emailAdmin!==ADMIN_EMAIL){
+    alert('Esta función está reservada al administrador.');
+    return;
+  }
+
+  const objetivo=(prompt(
+    'Escribe el correo electrónico del usuario cuyas estadísticas quieres resetear:',
+    emailAdmin
+  )||'').trim().toLowerCase();
+
+  if(!objetivo)return;
+  if(!objetivo.includes('@')){
+    alert('Introduce un correo electrónico válido.');
+    return;
+  }
+
+  if(!confirm(
+    'Se borrará TODO el historial de progreso de:\n\n'+objetivo+
+    '\n\nTests realizados, nota media, mejor nota, actividad e historial quedarán a cero.'+
+    '\n\nNo se borrarán tests, supuestos, usuarios ni dispositivos.'+
+    '\n\n¿Quieres continuar?'
+  )) return;
+
+  try{
+    const q=query(collection(db,'progreso'),where('email','==',objetivo));
+    const snap=await getDocs(q);
+    await Promise.all(snap.docs.map(d=>deleteDoc(d.ref)));
+
+    if(objetivo===emailAdmin){
+      localStorage.removeItem('opos360_stats_v14');
+      await loadMyProgress();
+      await renderStats();
+    }
+
+    alert(
+      'Estadísticas reseteadas correctamente.\n\n'+
+      'Usuario: '+objetivo+'\n'+
+      'Intentos eliminados: '+snap.size
+    );
+  }catch(e){
+    console.error('No se pudieron resetear las estadísticas:',e);
+    alert('No se han podido resetear las estadísticas.\n\n'+(e?.message||e));
   }
 }
 
-login.onclick=async()=>{
- try{
-   const r=await signInWithPopup(auth,provider);
-   if((r.user.email||"").toLowerCase()!==ADMIN_EMAIL) throw new Error("Este importador solo puede utilizarlo el administrador.");
-   status.textContent="Administrador identificado correctamente.\nPulsa «Comprobar lote».";
-   status.className="ok"; check.disabled=false;
- }catch(e){status.textContent="ERROR DE ACCESO\n"+(e.message||e);status.className="err";}
+window.resetStatsAsAdmin=resetStatsAsAdmin;
+
+
+async function loadAllProgressAsAdmin(){
+  const user=auth.currentUser;
+  const email=(user?.email||'').toLowerCase();
+  if(email!==ADMIN_EMAIL){
+    alert('Esta función está reservada al administrador.');
+    return;
+  }
+
+  const box=$('#adminAllProgressList');
+  if(!box)return;
+  box.innerHTML='<div class="progress-status">Cargando seguimiento...</div>';
+
+  try{
+    const snap=await getDocs(collection(db,'progreso'));
+    const items=snap.docs.map(d=>({id:d.id,...d.data()}))
+      .filter(x=>((x.email||'').toLowerCase()!==ADMIN_EMAIL));
+
+    if(!items.length){
+      box.innerHTML='<div class="progress-empty">No hay progreso de alumnos registrado.</div>';
+      return;
+    }
+
+    const porAlumno={};
+    items.forEach(x=>{
+      const correo=(x.email||'Sin correo').toLowerCase();
+      (porAlumno[correo]??=[]).push(x);
+    });
+
+    box.innerHTML=Object.keys(porAlumno).sort().map(correo=>{
+      const intentos=porAlumno[correo].sort((a,b)=>progressDateValue(b.fecha)-progressDateValue(a.fecha));
+      const notas=intentos.map(x=>Number(x.nota)).filter(Number.isFinite);
+      const media=notas.length?notas.reduce((a,b)=>a+b,0)/notas.length:null;
+      const mejor=notas.length?Math.max(...notas):null;
+
+      const historial=intentos.map(x=>`
+        <div class="progress-item">
+          <div class="progress-item-top">
+            <div class="progress-item-title">${esc(x.titulo||'Ejercicio')}</div>
+            <div class="progress-score">${Number.isFinite(Number(x.nota))?Number(x.nota).toFixed(2).replace('.',','):'—'}/10</div>
+          </div>
+          <div class="progress-meta">
+            <span>${x.tipo==='supuesto'?'Supuesto práctico':'Test'}</span>
+            <span>${esc(x.categoria||'Sin categoría')}</span>
+            <span>${formatProgressDate(x.fecha)}</span>
+          </div>
+        </div>`).join('');
+
+      return `
+        <div class="progress-panel" style="margin-top:12px">
+          <h3>${esc(correo)}</h3>
+          <div class="progress-status" style="margin-top:-5px">
+            ${intentos.length} ${intentos.length===1?'intento':'intentos'} ·
+            Nota media: ${media===null?'—':media.toFixed(2).replace('.',',')}/10 ·
+            Mejor nota: ${mejor===null?'—':mejor.toFixed(2).replace('.',',')}/10
+          </div>
+          <div class="progress-list" style="margin-top:10px">${historial}</div>
+        </div>`;
+    }).join('');
+  }catch(e){
+    console.error('No se pudo cargar el seguimiento de alumnos:',e);
+    box.innerHTML='<div class="progress-empty">No se ha podido cargar el seguimiento de alumnos.</div>';
+  }
+}
+window.loadAllProgressAsAdmin=loadAllProgressAsAdmin;
+
+async function loadMyProgress(){
+  const user=auth.currentUser;
+  if(!user)return;
+  $('#progressUserEmail').textContent=user.email||'';
+  $('#progressStatus').textContent='Cargando progreso…';
+  $('#progressList').innerHTML='';
+  try{
+    // La consulta incluye el UID para que las reglas de Firestore garanticen
+    // que un alumno solo puede recuperar sus propios documentos.
+    const q=query(collection(db,'progreso'),where('uid','==',user.uid));
+    const snap=await getDocs(q);
+    const items=snap.docs.map(d=>({id:d.id,...d.data()}))
+      .sort((a,b)=>progressDateValue(b.fecha)-progressDateValue(a.fecha));
+
+    $('#progressAttempts').textContent=items.length;
+    if(items.length){
+      const avg=items.reduce((sum,x)=>sum+(Number(x.nota)||0),0)/items.length;
+      const best=Math.max(...items.map(x=>Number(x.nota)||0));
+      $('#progressAverage').textContent=avg.toFixed(2).replace('.',',')+'/10';
+      $('#progressBest').textContent=best.toFixed(2).replace('.',',')+'/10';
+      $('#progressLast').textContent=formatProgressDate(items[0].fecha,true);
+      $('#progressList').innerHTML=items.map(x=>`
+        <div class="progress-item">
+          <div class="progress-item-top">
+            <div class="progress-item-title">${esc(x.titulo||'Ejercicio')}</div>
+            <div class="progress-score">${(Number(x.nota)||0).toFixed(2).replace('.',',')}/10</div>
+          </div>
+          <div class="progress-meta">
+            <span>${x.tipo==='supuesto'?'Supuesto práctico':'Test'}</span>
+            <span>${formatProgressDate(x.fecha)}</span>
+            <span>${Number(x.aciertos)||0} aciertos · ${Number(x.errores)||0} errores · ${Number(x.blancos)||0} blancos</span>
+            <span>${formatProgressTime(x.tiempoEmpleado)}</span>
+            <span>${x.penalizacion?'Penalización 1/3':'Sin penalización'}</span>
+          </div>
+        </div>`).join('');
+      renderProgressTopics(items);
+      $('#progressStatus').textContent=`${items.length} ${items.length===1?'intento registrado':'intentos registrados'}.`;
+    }else{
+      $('#progressAverage').textContent='—';
+      $('#progressBest').textContent='—';
+      $('#progressLast').textContent='—';
+      $('#progressList').innerHTML='<div class="progress-empty">Todavía no tienes ejercicios registrados. Finaliza un test o supuesto práctico y aparecerá aquí.</div>';
+      $('#progressTopicList').innerHTML='<div class="progress-empty">Todavía no hay datos suficientes para calcular el rendimiento por temas.</div>';
+      $('#progressStatus').textContent='Aún no hay actividad registrada.';
+    }
+  }catch(e){
+    console.error('No se pudo cargar Mi progreso:',e);
+    $('#progressStatus').textContent='No se ha podido cargar el progreso.';
+    $('#progressList').innerHTML='<div class="progress-empty">No se ha podido consultar tu historial. Comprueba la conexión y vuelve a intentarlo.</div>';
+    $('#progressTopicList').innerHTML='<div class="progress-empty">No se ha podido calcular el rendimiento por temas.</div>';
+  }
+}
+window.loadMyProgress=loadMyProgress;
+window.openMyProgress=async()=>{
+  const user=auth.currentUser;
+  const isAdmin=((user?.email||'').toLowerCase()===ADMIN_EMAIL);
+  const resetPanel=$('#adminResetStatsPanel');
+  const allProgressPanel=$('#adminAllProgressPanel');
+  if(resetPanel)resetPanel.classList.toggle('hidden',!isAdmin);
+  if(allProgressPanel)allProgressPanel.classList.toggle('hidden',!isAdmin);
+  show('myProgress');
+  await loadMyProgress();
 };
 
-check.onclick=async()=>{
- check.disabled=true; run.disabled=true; checked=false; status.className=""; status.textContent="Comprobando estructura y Firestore…";
- try{
-   validateLocal();
-   for(const d of DOCS){
-     const existing=await getDoc(doc(db,d.collection,d.id));
-     if(existing.exists()) throw new Error("Ya existe "+d.collection+"/"+d.id+". No se modificará nada.");
-   }
-   for(const col of ["tests","supuestos"]){
-     const snap=await getDocs(collection(db,col));
-     const vals=snap.docs.map(x=>Number(x.data().order)).filter(Number.isFinite);
-     const max=vals.length?Math.max(...vals):0;
-     orders[col]=[max+1,max+2];
-   }
-   checked=true; run.disabled=false;
-   status.textContent="COMPROBACIÓN CORRECTA\n4 documentos nuevos\n120 preguntas\nNo existe ninguno de los cuatro IDs en Firestore.\n\nYa puedes pulsar «Importar los 4 documentos».";
-   status.className="ok";
- }catch(e){status.textContent="NO SE IMPORTARÁ NADA\n"+(e.message||e);status.className="err";check.disabled=false;}
-};
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function msg(t,type='error'){const e=$('#authMsg');e.textContent=t;e.className='authmsg '+type} function clearMsg(){const e=$('#authMsg');e.textContent='';e.className='hidden'}
+function ferr(c){return ({'auth/invalid-credential':'Correo o contraseña incorrectos.','auth/user-disabled':'Esta cuenta está desactivada.','auth/too-many-requests':'Demasiados intentos. Inténtalo más tarde.','auth/invalid-email':'El correo electrónico no es válido.','auth/network-request-failed':'No se ha podido conectar. Comprueba tu conexión.'}[c]||'No se ha podido iniciar sesión.')}
+$('#loginForm').addEventListener('submit',async e=>{e.preventDefault();clearMsg();const b=$('#loginBtn');b.disabled=true;b.textContent='Accediendo…';try{await signInWithEmailAndPassword(auth,$('#email').value.trim(),$('#password').value)}catch(x){msg(ferr(x.code))}finally{b.disabled=false;b.textContent='Iniciar sesión'}});
+const googleProvider=new GoogleAuthProvider();
+googleProvider.setCustomParameters({prompt:'select_account'});
+const googleLoginBtn=$('#googleLoginBtn');
+if(googleLoginBtn)googleLoginBtn.addEventListener('click',async()=>{
+  clearMsg();
+  googleLoginBtn.disabled=true;
+  const oldText=googleLoginBtn.innerHTML;
+  googleLoginBtn.textContent='Conectando con Google…';
+  try{
+    await signInWithPopup(auth,googleProvider);
+  }catch(x){
+    if(x?.code!=='auth/popup-closed-by-user' && x?.code!=='auth/cancelled-popup-request'){
+      msg(ferr(x?.code)||'No se ha podido iniciar sesión con Google.');
+    }
+  }finally{
+    googleLoginBtn.disabled=false;
+    googleLoginBtn.innerHTML=oldText;
+  }
+});
 
-run.onclick=async()=>{
- if(!checked)return;
- run.disabled=true; check.disabled=true; status.className=""; status.textContent="Importando…";
- try{
-   let ti=0,si=0;
-   for(const d of DOCS){
-     const order=d.collection==="tests"?orders.tests[ti++]:orders.supuestos[si++];
-     const payload={...d,order,createdAt:serverTimestamp()};
-     delete payload.collection; delete payload.id;
-     await setDoc(doc(db,d.collection,d.id),payload);
-   }
-   status.textContent="IMPORTACIÓN COMPLETADA\n\n2 tests de repaso añadidos\n2 supuestos prácticos de repaso añadidos\n120 preguntas incorporadas\n\nAhora vuelve a publicar las reglas definitivas de V23 antes de dar el proceso por cerrado.";
-   status.className="ok";
- }catch(e){status.textContent="ERROR DURANTE LA IMPORTACIÓN\n"+(e.message||e)+"\n\nNo pulses de nuevo hasta revisar el resultado.";status.className="err";}
+$('#resetBtn').addEventListener('click',async()=>{clearMsg();const email=$('#email').value.trim();if(!email)return msg('Escribe primero tu correo electrónico.');try{await sendPasswordResetEmail(auth,email);msg('Correo de recuperación enviado.','success')}catch(x){msg(ferr(x.code))}}); $('#logoutBtn').addEventListener('click',()=>signOut(auth));
+async function loadTests(){
+  const s=await getDocs(collection(db,'tests'));
+  TESTS=s.docs.map(d=>{
+    const data=d.data();
+    const raw=data.questions;
+    let questions=[];
+    if(Array.isArray(raw)){
+      questions=raw.map(q=>{
+        if(Array.isArray(q)) return q;
+        if(q && typeof q==='object') return [q.text??q.question??'', q.options??q.answers??[], Number(q.correct??q.correctIndex??0)];
+        return null;
+      }).filter(Boolean);
+    } else if(raw && typeof raw==='object'){
+      questions=Object.values(raw)
+        .sort((a,b)=>(Number(a?.order)||999)-(Number(b?.order)||999))
+        .map(q=>[q?.text??q?.question??'', Array.isArray(q?.options)?q.options:(q?.answers??[]), Number(q?.correct??q?.correctIndex??0)]);
+    }
+    questions=questions.filter(q=>Array.isArray(q) && typeof q[0]==='string' && Array.isArray(q[1]) && q[1].length>=2 && Number.isInteger(q[2]));
+    return {id:d.id,...data,questions};
+  }).sort((a,b)=>(a.order??999)-(b.order??999));
+
+  const invalid=TESTS.filter(t=>!Array.isArray(t.questions)||!t.questions.length);
+  if(invalid.length){
+    console.error('Tests sin preguntas válidas:',invalid);
+    throw new Error('Hay tests en Firestore cuyo formato de preguntas no es válido.');
+  }
+}
+async function loadPracticals(){
+  try{
+    const s=await getDocs(collection(db,'supuestos'));
+    PRACTICALS=s.docs.map(d=>{
+      const data=d.data();
+      const raw=data.questions;
+      let questions=[];
+      if(Array.isArray(raw)){
+        questions=raw.map(q=>{
+          if(Array.isArray(q)) return q;
+          if(q && typeof q==='object') return [q.text??q.question??'', q.options??q.answers??[], Number(q.correct??q.correctIndex??0)];
+          return null;
+        }).filter(Boolean);
+      }else if(raw && typeof raw==='object'){
+        questions=Object.values(raw)
+          .sort((a,b)=>(Number(a?.order)||999)-(Number(b?.order)||999))
+          .map(q=>[q?.text??q?.question??'', Array.isArray(q?.options)?q.options:(q?.answers??[]), Number(q?.correct??q?.correctIndex??0)]);
+      }
+      questions=questions.filter(q=>Array.isArray(q) && typeof q[0]==='string' && Array.isArray(q[1]) && q[1].length>=2 && Number.isInteger(q[2]));
+      return {id:d.id,...data,statement:String(data.statement??data.enunciado??''),questions};
+    }).filter(p=>p.statement && p.questions.length)
+      .sort((a,b)=>(a.order??999)-(b.order??999));
+  }catch(e){
+    console.error('No se pudieron cargar los supuestos prácticos:',e);
+    PRACTICALS=[];
+  }
+}
+function stats(){try{return JSON.parse(localStorage.getItem('opos360_stats_v14')||'{"done":0,"best":null}')}catch(e){return {done:0,best:null}}}
+function saveStats(s){localStorage.setItem('opos360_stats_v14',JSON.stringify(s))}
+async function renderStats(){
+  const user=auth.currentUser;
+  if(!user){
+    $('#doneCount').textContent='0';
+    $('#bestScore').textContent='—';
+    return;
+  }
+  try{
+    const q=query(collection(db,'progreso'),where('uid','==',user.uid));
+    const snap=await getDocs(q);
+    const items=snap.docs.map(d=>d.data());
+    $('#doneCount').textContent=items.length;
+    if(items.length){
+      const best=Math.max(...items.map(x=>Number(x.nota)||0));
+      $('#bestScore').textContent=best.toFixed(2).replace('.',',');
+    }else{
+      $('#bestScore').textContent='—';
+    }
+  }catch(e){
+    console.error('No se pudieron sincronizar las estadísticas:',e);
+    const s=stats();
+    $('#doneCount').textContent=s.done||0;
+    $('#bestScore').textContent=s.best==null?'—':Number(s.best).toFixed(2).replace('.',',');
+  }
+}
+function topicInfo(t){
+  const hay=((t.title||'')+' '+(t.description||'')+' '+(t.id||'')).toLowerCase();
+
+  // Los tests de repaso se agrupan siempre aparte, aunque en Firestore
+  // tengan asignado un tema concreto como "Constitución Española".
+  if(
+    hay.includes('repaso') ||
+    hay.includes('resumen parte general') ||
+    hay.includes('resumen temas parte general')
+  ){
+    return {key:'repaso-tests',label:'Repaso de tests',order:800};
+  }
+
+  const explicit=(t.topic||t.tema||t.subject||'').toString().trim();
+  if(explicit){
+    const n=(explicit.match(/(\d+)/)||[])[1];
+    return {key:'explicit-'+explicit.toLowerCase(),label:explicit,order:n?Number(n):900};
+  }
+
+  if(hay.includes('constituci')) return {key:'tema-1-constitucion',label:'Tema 1 · Constitución Española',order:1};
+  return {key:'otros',label:'Otros tests',order:999};
+}
+function repasoOrdinal(t){
+  const titulo=(t.title||'').toString();
+  const nums=titulo.match(/\d+/g);
+  return nums&&nums.length ? Number(nums[nums.length-1]) : 0;
+}
+function renderTestCard(t){
+  const hay=((t.title||'')+' '+(t.description||'')+' '+(t.id||'')).toLowerCase();
+  const esRepaso=hay.includes('repaso') || hay.includes('resumen parte general') || hay.includes('resumen temas parte general');
+  return `<article class="test-card ${esRepaso?'repaso-card':''}"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=22-appcheck" alt=""><div><h3>${esc(t.title)}</h3><div class="muted">${esc(t.description||t.subtitle||'Cuestionario de preparación')}</div></div></div><div class="pills"><span class="pill">${t.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-test="${esc(t.id)}">Realizar test</button></article>`;
+}
+function renderPracticalCard(p){
+  const hay=((p.title||'')+' '+(p.description||'')+' '+(p.id||'')).toLowerCase();
+  const esRepaso=hay.includes('repaso');
+  return `<article class="practical-card ${esRepaso?'repaso-card':''}"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=22-appcheck" alt=""><div><h3>${esc(p.title)}</h3><div class="muted">${esc(p.description||p.subtitle||'Supuesto práctico para Auxiliares Administrativos')}</div></div></div><span class="practical-tag">📖 Enunciado + cuestionario</span><div class="pills"><span class="pill">${p.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-practical="${esc(p.id)}">Realizar supuesto práctico</button></article>`;
+}
+function renderHome(){
+  const totalQuestions=TESTS.reduce((n,t)=>n+(t.questions?.length||0),0)+PRACTICALS.reduce((n,p)=>n+(p.questions?.length||0),0);
+  $('#heroCount').textContent=`${TESTS.length} ${TESTS.length===1?'test':'tests'} · ${PRACTICALS.length} ${PRACTICALS.length===1?'supuesto':'supuestos'}`;
+  $('#qCount').textContent=totalQuestions;
+  $('#testCountBadge').textContent=`${TESTS.length} ${TESTS.length===1?'test':'tests'}`;
+  $('#practicalCountBadge').textContent=`${PRACTICALS.length} ${PRACTICALS.length===1?'supuesto':'supuestos'}`;
+  $('#quickTestsCount').textContent=`${TESTS.length} ${TESTS.length===1?'test disponible':'tests disponibles'}`;
+  $('#quickPracticalsCount').textContent=`${PRACTICALS.length} ${PRACTICALS.length===1?'supuesto disponible':'supuestos disponibles'}`;
+  renderStats();
+
+  const grid=$('#testGrid');
+  if(!TESTS.length){
+    grid.innerHTML='<div class="empty">No hay tests disponibles todavía en Firestore.</div>';
+  }else{
+    const groups=new Map();
+    TESTS.forEach(t=>{
+      const info=topicInfo(t);
+      if(!groups.has(info.key)) groups.set(info.key,{...info,tests:[]});
+      groups.get(info.key).tests.push(t);
+    });
+    const ordered=[...groups.values()].sort((a,b)=>{
+      if(a.key==='repaso-tests' && b.key!=='repaso-tests') return 1;
+      if(b.key==='repaso-tests' && a.key!=='repaso-tests') return -1;
+      return a.order-b.order||a.label.localeCompare(b.label,'es');
+    });
+    grid.innerHTML=ordered.map(g=>{
+      if(g.key==='repaso-tests'){
+        g.tests.sort((a,b)=>repasoOrdinal(a)-repasoOrdinal(b) || (a.title||'').localeCompare(b.title||'','es'));
+      }
+      return `
+      <section class="topic-section">
+        <div class="topic-heading">
+          <h2>${esc(g.label)}</h2>
+          <span class="topic-count">${g.tests.length} ${g.tests.length===1?'test':'tests'}</span>
+        </div>
+        <div class="topic-grid">${g.tests.map(renderTestCard).join('')}</div>
+      </section>`;
+    }).join('');
+  }
+
+  const pgrid=$('#practicalGrid');
+  if(!PRACTICALS.length){
+    pgrid.innerHTML='<div class="empty">No hay supuestos prácticos disponibles todavía.</div>';
+  }else{
+    const groups=new Map();
+    PRACTICALS.forEach(p=>{
+      const label=(p.topic||p.tema||p.subject||'Otros supuestos').toString().trim()||'Otros supuestos';
+      const key=label.toLowerCase();
+      if(!groups.has(key)) groups.set(key,{label,items:[]});
+      groups.get(key).items.push(p);
+    });
+    const ordered=[...groups.values()].sort((a,b)=>a.label.localeCompare(b.label,'es'));
+    pgrid.innerHTML=ordered.map(g=>`
+      <section class="topic-section">
+        <div class="topic-heading">
+          <h2>${esc(g.label)}</h2>
+          <span class="topic-count">${g.items.length} ${g.items.length===1?'supuesto':'supuestos'}</span>
+        </div>
+        <div class="topic-grid">${g.items.map(renderPracticalCard).join('')}</div>
+      </section>`).join('');
+  }
+
+  document.querySelectorAll('[data-test]').forEach(b=>b.onclick=()=>openSetup(b.dataset.test));
+  document.querySelectorAll('[data-practical]').forEach(b=>b.onclick=()=>openPracticalSetup(b.dataset.practical));
+}
+window.goToLibrarySection=(id)=>{
+  const el=document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
 };
-</script></body></html>
+function show(id){['home','myProgress','setup','quiz','results','practicalSetup','practicalWork','practicalResults','practicalResultStatement'].forEach(x=>$('#'+x).classList.toggle('hidden',x!==id));window.scrollTo({top:0,behavior:'smooth'})}
+window.goHome=()=>{clearInterval(interval);interval=null;clearInterval(practicalInterval);practicalInterval=null;show('home');renderHome()};function openSetup(id){currentTest=TESTS.find(t=>t.id===id);if(!currentTest)return;$('#setupTitle').textContent=currentTest.title;$('#setupDesc').textContent=currentTest.description||currentTest.subtitle||'';show('setup')}
+window.startQuiz=()=>{if(!currentTest||!Array.isArray(currentTest.questions)||!currentTest.questions.length){alert('Este test no contiene preguntas válidas.');return;}finishingQuiz=false;answers=Array(currentTest.questions.length).fill(null);current=0;penalty=$('#penalty').checked;timed=document.querySelector('input[name="timeMode"]:checked').value==='timed';timeLimit=Math.max(1,parseInt($('#minutes').value||30))*60;elapsed=0;startedAt=Date.now();show('quiz');renderQuestion();tick();clearInterval(interval);interval=setInterval(()=>{elapsed=Math.floor((Date.now()-startedAt)/1000);tick();if(timed&&elapsed>=timeLimit)finishQuiz(true)},1000)};
+function fmt(s){s=Math.max(0,Math.floor(s));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}function tick(){$('#timer').textContent=timed?fmt(Math.max(0,timeLimit-elapsed)):fmt(elapsed)}
+function renderQuestion(){const q=currentTest.questions[current];$('#qnum').textContent=`Pregunta ${current+1} de ${currentTest.questions.length}`;$('#question').textContent=q[0];$('#progress').style.width=((current+1)/currentTest.questions.length*100)+'%';$('#options').innerHTML=q[1].map((o,i)=>`<button class="option ${answers[current]===i?'selected':''}" data-choice="${i}"><strong>${String.fromCharCode(65+i)})</strong> ${esc(o)}</button>`).join('');document.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>{answers[current]=Number(b.dataset.choice);renderQuestion()})}
+window.prevQ=()=>{if(current>0){current--;renderQuestion()}};window.nextQ=()=>{if(current<currentTest.questions.length-1){current++;renderQuestion()}};window.confirmExit=()=>{if(confirm('¿Salir del test? Se perderán las respuestas de este intento.'))goHome()};
+window.finishQuiz=async(auto=false)=>{if(finishingQuiz)return;finishingQuiz=true;clearInterval(interval);interval=null;elapsed=Math.floor((Date.now()-startedAt)/1000);let ok=0,bad=0,blank=0;currentTest.questions.forEach((q,i)=>{if(answers[i]===null)blank++;else if(answers[i]===q[2])ok++;else bad++});const raw=ok-(penalty?bad/3:0),score=Math.max(0,(raw/currentTest.questions.length)*10),usedTime=timed?Math.min(elapsed,timeLimit):elapsed;$('#resultTitle').textContent=currentTest.title;$('#score').textContent=score.toFixed(2).replace('.',',')+'/10';$('#ok').textContent=ok;$('#bad').textContent=bad;$('#blank').textContent=blank;$('#resultInfo').textContent=(auto?'Tiempo agotado. · ':'')+'Tiempo empleado: '+fmt(usedTime)+' · '+(penalty?'Penalización 1/3 aplicada.':'Sin penalización.');$('#review').classList.add('hidden');$('#review').innerHTML='';const s=stats();s.done=(s.done||0)+1;s.best=s.best==null?score:Math.max(Number(s.best),score);saveStats(s);show('results');try{await registrarProgreso({tipo:'test',ejercicioId:currentTest.id,titulo:currentTest.title,categoria:topicInfo(currentTest).label,totalPreguntas:currentTest.questions.length,aciertos:ok,errores:bad,blancos:blank,nota:score,penalizacion:penalty,tiempoEmpleado:usedTime});}catch(e){console.error('No se pudo registrar el progreso del test:',e);alert('El resultado se muestra correctamente, pero no se ha podido guardar el progreso en tu historial. Comprueba la conexión e inténtalo de nuevo más tarde.');finishingQuiz=false;}};
+window.toggleReview=()=>{const box=$('#review');if(!box.innerHTML)box.innerHTML=currentTest.questions.map((q,i)=>{const a=answers[i],state=a===null?'blank':(a===q[2]?'ok':'bad'),y=a===null?'Sin contestar':String.fromCharCode(65+a)+') '+q[1][a],r=String.fromCharCode(65+q[2])+') '+q[1][q[2]];return `<div class="review-item ${state}"><strong>${i+1}. ${esc(q[0])}</strong><br>Tu respuesta: ${esc(y)}<br>Correcta: ${esc(r)}</div>`}).join('');box.classList.toggle('hidden')};window.repeatQuiz=()=>openSetup(currentTest.id);window.shareResult=()=>location.href='https://wa.me/?text='+encodeURIComponent('OposMurcia 360 · '+currentTest.title+' · Resultado: '+$('#score').textContent+' · '+PUBLIC_URL);
+
+function openPracticalSetup(id){
+  currentPractical=PRACTICALS.find(p=>p.id===id);
+  if(!currentPractical)return;
+  $('#practicalSetupTitle').textContent=currentPractical.title;
+  $('#practicalSetupDesc').textContent=currentPractical.description||currentPractical.subtitle||'Lee el enunciado completo antes de iniciar el cuestionario.';
+  show('practicalSetup');
+}
+window.startPractical=()=>{
+  if(!currentPractical||!currentPractical.questions.length||!currentPractical.statement){alert('Este supuesto práctico no contiene todos los datos necesarios.');return}
+  finishingPractical=false;
+  practicalAnswers=Array(currentPractical.questions.length).fill(null);
+  practicalCurrent=0;
+  practicalPenalty=$('#practicalPenalty').checked;
+  practicalTimed=document.querySelector('input[name="practicalTimeMode"]:checked').value==='timed';
+  practicalTimeLimit=Math.max(1,parseInt($('#practicalMinutes').value||30))*60;
+  practicalElapsed=0; practicalStartedAt=Date.now(); practicalQuizStarted=false; practicalStatementY=0;
+  $('#practicalStatementTitle').textContent=currentPractical.title;
+  $('#practicalStatement').textContent=currentPractical.statement;
+  $('#statementQuizButton').textContent='Comenzar supuesto práctico →';
+  $('#practicalQuizTab').className='secondary hidden';
+  show('practicalWork');
+  showPracticalStatement(true);
+  practicalTick();
+  clearInterval(practicalInterval);
+  practicalInterval=setInterval(()=>{
+    practicalElapsed=Math.floor((Date.now()-practicalStartedAt)/1000);
+    practicalTick();
+    if(practicalTimed&&practicalElapsed>=practicalTimeLimit)finishPractical(true);
+  },1000);
+};
+function practicalTick(){
+  $('#practicalTimer').textContent=practicalTimed?fmt(Math.max(0,practicalTimeLimit-practicalElapsed)):fmt(practicalElapsed);
+}
+window.showPracticalStatement=(initial=false)=>{
+  if(!currentPractical)return;
+  if(!initial && !$('#practicalStatementView').classList.contains('hidden')) practicalStatementY=window.scrollY;
+  $('#practicalQuizView').classList.add('hidden');
+  $('#practicalStatementView').classList.remove('hidden');
+  $('#practicalStatementTab').className='primary';
+  if(practicalQuizStarted){
+    $('#practicalQuizTab').className='secondary';
+    $('#statementQuizButton').textContent='Volver al cuestionario →';
+  }else{
+    $('#practicalQuizTab').className='secondary hidden';
+    $('#statementQuizButton').textContent='Comenzar supuesto práctico →';
+  }
+  setTimeout(()=>window.scrollTo(0,practicalStatementY||0),0);
+};
+window.showPracticalQuiz=()=>{
+  if(!currentPractical)return;
+  practicalStatementY=window.scrollY;
+  practicalQuizStarted=true;
+  $('#practicalQuizTab').className='primary';
+  $('#practicalStatementTab').className='secondary';
+  $('#statementQuizButton').textContent='Volver al cuestionario →';
+  $('#practicalStatementView').classList.add('hidden');
+  $('#practicalQuizView').classList.remove('hidden');
+  renderPracticalQuestion();
+  setTimeout(()=>$('#practicalQuizView').scrollIntoView({block:'start'}),0);
+};
+function renderPracticalQuestion(){
+  const q=currentPractical.questions[practicalCurrent];
+  $('#practicalQnum').textContent=`Pregunta ${practicalCurrent+1} de ${currentPractical.questions.length}`;
+  $('#practicalQuestion').textContent=q[0];
+  $('#practicalProgress').style.width=((practicalCurrent+1)/currentPractical.questions.length*100)+'%';
+  $('#practicalOptions').innerHTML=q[1].map((o,i)=>`<button class="option ${practicalAnswers[practicalCurrent]===i?'selected':''}" data-pchoice="${i}"><strong>${String.fromCharCode(65+i)})</strong> ${esc(o)}</button>`).join('');
+  document.querySelectorAll('[data-pchoice]').forEach(b=>b.onclick=()=>{practicalAnswers[practicalCurrent]=Number(b.dataset.pchoice);renderPracticalQuestion()});
+}
+window.prevPracticalQ=()=>{if(practicalCurrent>0){practicalCurrent--;renderPracticalQuestion()}};
+window.nextPracticalQ=()=>{if(practicalCurrent<currentPractical.questions.length-1){practicalCurrent++;renderPracticalQuestion()}};
+window.confirmPracticalExit=()=>{if(confirm('¿Salir del supuesto práctico? Se perderán las respuestas de este intento.'))goHome()};
+window.finishPractical=async(auto=false)=>{
+  if(finishingPractical)return;
+  finishingPractical=true;
+  clearInterval(practicalInterval); practicalInterval=null;
+  practicalElapsed=Math.floor((Date.now()-practicalStartedAt)/1000);
+  let ok=0,bad=0,blank=0;
+  currentPractical.questions.forEach((q,i)=>{if(practicalAnswers[i]===null)blank++;else if(practicalAnswers[i]===q[2])ok++;else bad++});
+  const raw=ok-(practicalPenalty?bad/3:0),score=Math.max(0,(raw/currentPractical.questions.length)*10),usedTime=practicalTimed?Math.min(practicalElapsed,practicalTimeLimit):practicalElapsed;
+  $('#practicalResultTitle').textContent=currentPractical.title;
+  $('#practicalScore').textContent=score.toFixed(2).replace('.',',')+'/10';
+  $('#practicalOk').textContent=ok; $('#practicalBad').textContent=bad; $('#practicalBlank').textContent=blank;
+  $('#practicalResultInfo').textContent=(auto?'Tiempo agotado. · ':'')+'Tiempo empleado: '+fmt(usedTime)+' · '+(practicalPenalty?'Penalización 1/3 aplicada.':'Sin penalización.');
+  $('#practicalReview').classList.add('hidden'); $('#practicalReview').innerHTML='';
+  const s=stats(); s.done=(s.done||0)+1; s.best=s.best==null?score:Math.max(Number(s.best),score); saveStats(s);
+  show('practicalResults');
+  try{
+    await registrarProgreso({tipo:'supuesto',ejercicioId:currentPractical.id,titulo:currentPractical.title,categoria:(currentPractical.topic||currentPractical.tema||currentPractical.subject||'Otros supuestos').toString().trim()||'Otros supuestos',totalPreguntas:currentPractical.questions.length,aciertos:ok,errores:bad,blancos:blank,nota:score,penalizacion:practicalPenalty,tiempoEmpleado:usedTime});
+  }catch(e){
+    console.error('No se pudo registrar el progreso del supuesto:',e);
+    alert('El resultado se muestra correctamente, pero no se ha podido guardar el progreso en tu historial. Comprueba la conexión e inténtalo de nuevo más tarde.');
+    finishingPractical=false;
+  }
+};
+window.togglePracticalReview=()=>{
+  const box=$('#practicalReview');
+  if(!box.innerHTML)box.innerHTML=currentPractical.questions.map((q,i)=>{
+    const a=practicalAnswers[i],state=a===null?'blank':(a===q[2]?'ok':'bad');
+    const y=a===null?'Sin contestar':String.fromCharCode(65+a)+') '+q[1][a];
+    const r=String.fromCharCode(65+q[2])+') '+q[1][q[2]];
+    return `<div class="review-item ${state}"><strong>${i+1}. ${esc(q[0])}</strong><br>Tu respuesta: ${esc(y)}<br>Correcta: ${esc(r)}</div>`;
+  }).join('');
+  box.classList.toggle('hidden');
+};
+window.showPracticalStatementFromResults=()=>{
+  $('#practicalResultStatementTitle').textContent=currentPractical.title;
+  $('#practicalResultStatementText').textContent=currentPractical.statement;
+  show('practicalResultStatement');
+};
+window.returnPracticalResults=()=>show('practicalResults');
+window.repeatPractical=()=>openPracticalSetup(currentPractical.id);
+window.sharePracticalResult=()=>location.href='https://wa.me/?text='+encodeURIComponent('OposMurcia 360 · Supuesto práctico · '+currentPractical.title+' · Resultado: '+$('#practicalScore').textContent+' · '+PUBLIC_URL);
+
+window.openHelp=()=>$('#help').classList.remove('hidden');window.closeHelp=()=>$('#help').classList.add('hidden');window.backdropClose=e=>{if(e.target.id==='help')closeHelp()};
+
+
+
+
+let deferredInstallPrompt=null;
+function isStandalone(){
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true;
+}
+function updateInstallUI(){
+  const installed=isStandalone();
+  const buttons=[$('#installBtn'),$('#loginInstallBtn')].filter(Boolean);
+  buttons.forEach(btn=>{
+    if(installed){
+      btn.textContent='✓ App instalada';
+      btn.disabled=true;
+      btn.style.opacity='.82';
+      btn.style.cursor='default';
+    }
+  });
+  const status=$('#installStatus');
+  if(status)status.textContent=installed?'Abierta como aplicación':'';
+}
+function showInstallInfo(){
+  const c=$('#installHelpContent');
+  if(!c)return;
+  if(isStandalone()){
+    c.innerHTML='<p><strong>OposMurcia 360 ya está instalada</strong> en este dispositivo. Puedes abrirla desde su icono como cualquier otra aplicación.</p>';
+  }else if(/android/i.test(navigator.userAgent)){
+    c.innerHTML='<p>Para instalarla en <strong>Android</strong>, abre OposMurcia 360 en <strong>Google Chrome</strong>.</p><ol class="install-steps"><li>Si has llegado desde WhatsApp u otro navegador interno, usa su menú para <strong>abrir en Chrome</strong>.</li><li>En Chrome, pulsa el menú <strong>⋮</strong>.</li><li>Selecciona <strong>“Instalar aplicación”</strong> o <strong>“Añadir a pantalla de inicio”</strong>.</li><li>Confirma <strong>Instalar</strong>.</li></ol><p>Después aparecerá el icono de OposMurcia 360 entre tus aplicaciones.</p>';
+  }else{
+    c.innerHTML='<p>Este botón está preparado principalmente para <strong>Android con Google Chrome</strong>. En otros dispositivos, utiliza la opción de instalación o “Añadir a pantalla de inicio” del navegador.</p>';
+  }
+  $('#installHelp').classList.remove('hidden');
+}
+window.closeInstallHelp=()=>$('#installHelp').classList.add('hidden');
+window.installBackdropClose=e=>{if(e.target.id==='installHelp')closeInstallHelp()};
+async function requestInstall(){
+  if(isStandalone()){showInstallInfo();return}
+  if(deferredInstallPrompt){
+    const promptEvent=deferredInstallPrompt;
+    deferredInstallPrompt=null;
+    promptEvent.prompt();
+    try{
+      const choice=await promptEvent.userChoice;
+      if(!choice || choice.outcome!=='accepted')showInstallInfo();
+    }catch(e){
+      showInstallInfo();
+    }
+    return;
+  }
+  showInstallInfo();
+}
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  deferredInstallPrompt=e;
+  updateInstallUI();
+});
+window.addEventListener('appinstalled',()=>{
+  deferredInstallPrompt=null;
+  updateInstallUI();
+});
+const installButton=$('#installBtn');
+const loginInstallButton=$('#loginInstallBtn');
+if(installButton)installButton.addEventListener('click',requestInstall);
+if(loginInstallButton)loginInstallButton.addEventListener('click',requestInstall);
+updateInstallUI();
+
+
+const ADMIN_EMAIL='oposmurcia360@gmail.com';
+
+function deviceStorageKey(uid){
+  return `opos360_device_secret_${uid}`;
+}
+function bytesToHex(bytes){
+  return Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');
+}
+function getOrCreateDeviceSecret(uid){
+  const key=deviceStorageKey(uid);
+  let secret=localStorage.getItem(key);
+  if(secret)return secret;
+  const bytes=new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  secret=bytesToHex(bytes);
+  localStorage.setItem(key,secret);
+  return secret;
+}
+async function sha256Hex(value){
+  const data=new TextEncoder().encode(value);
+  const digest=await crypto.subtle.digest('SHA-256',data);
+  return bytesToHex(new Uint8Array(digest));
+}
+async function obtenerMaxDispositivos(user){
+  // El límite se configura por alumno en /autorizados/{email}.
+  // Si el campo no existe, se mantiene el comportamiento histórico: 1 dispositivo.
+  const email=(user.email||'').toLowerCase();
+  if(email===ADMIN_EMAIL)return 99;
+  const ref=doc(db,'autorizados',email);
+  const snap=await getDoc(ref);
+  if(!snap.exists() || snap.data().activo!==true)throw Object.assign(new Error('Usuario no autorizado'),{code:'permission-denied'});
+  const n=Number(snap.data().maxDispositivos||1);
+  return Math.max(1,Math.min(2,Number.isFinite(n)?Math.trunc(n):1));
+}
+
+async function registrarSlotDispositivo(user,slot,hash){
+  const ref=doc(db,'dispositivos',user.uid,'equipos',slot);
+  await setDoc(ref,{
+    uid:user.uid,
+    email:user.email||'',
+    huellaHash:hash,
+    activo:true,
+    creadoEn:serverTimestamp(),
+    ultimoAcceso:serverTimestamp(),
+    version:2
+  });
+}
+
+async function comprobarDispositivo(user){
+  // El administrador continúa exento para trabajar desde varios equipos.
+  if((user.email||'').toLowerCase()===ADMIN_EMAIL)return true;
+
+  const maxDispositivos=await obtenerMaxDispositivos(user);
+  const storageKey=deviceStorageKey(user.uid);
+  let localSecret=localStorage.getItem(storageKey);
+  let hash=localSecret ? await sha256Hex(localSecret) : null;
+
+  // V23: cada alumno dispone de uno o dos slots según maxDispositivos.
+  const slots=[];
+  for(let i=1;i<=maxDispositivos;i++){
+    const slot=`slot${i}`;
+    const ref=doc(db,'dispositivos',user.uid,'equipos',slot);
+    const snap=await getDoc(ref);
+    slots.push({slot,ref,snap});
+  }
+
+  // Si este navegador ya está registrado en uno de sus slots, acceso permitido.
+  if(hash){
+    for(const item of slots){
+      if(item.snap.exists()){
+        const data=item.snap.data();
+        if(data.activo===true && data.huellaHash===hash){
+          await updateDoc(item.ref,{ultimoAcceso:serverTimestamp()});
+          return true;
+        }
+      }
+    }
+  }
+
+  // Migración transparente desde V22: si este era el dispositivo ya autorizado,
+  // lo trasladamos a slot1 sin invalidar la copia estable anterior.
+  const legacyRef=doc(db,'dispositivos',user.uid);
+  const legacySnap=await getDoc(legacyRef);
+  if(legacySnap.exists() && hash){
+    const legacy=legacySnap.data();
+    if(legacy.activo===true && legacy.huellaHash===hash && !slots[0].snap.exists()){
+      await registrarSlotDispositivo(user,'slot1',hash);
+      return true;
+    }
+  }
+
+  // Nuevo dispositivo: solo se registra si queda un slot libre.
+  const libre=slots.find(item=>!item.snap.exists());
+  if(!libre)return false;
+
+  if(!localSecret){
+    localSecret=getOrCreateDeviceSecret(user.uid);
+    hash=await sha256Hex(localSecret);
+  }
+  await registrarSlotDispositivo(user,libre.slot,hash);
+  return true;
+}
+
+onAuthStateChanged(auth,async user=>{
+  $('#loadingScreen').classList.add('hidden');
+  if(!user){
+    TESTS=[];
+    $('#appShell').classList.add('hidden');
+    $('#loginScreen').classList.remove('hidden');
+    return;
+  }
+  $('#loginScreen').classList.add('hidden');
+  $('#appShell').classList.remove('hidden');
+  $('#userEmail').textContent=user.email||'Usuario';
+  try{
+    const dispositivoPermitido=await comprobarDispositivo(user);
+    if(!dispositivoPermitido){
+      await signOut(auth);
+      $('#appShell').classList.add('hidden');
+      $('#loginScreen').classList.remove('hidden');
+      msg('Dispositivo no autorizado. Esta cuenta ya está vinculada a otro dispositivo. Contacta con el administrador.');
+      return;
+    }
+    await Promise.all([loadTests(),loadPracticals()]);
+    renderHome();
+  }catch(e){
+    console.error(e);
+    if(e?.code==='permission-denied' || e?.code==='firestore/permission-denied'){
+      await signOut(auth);
+      $('#appShell').classList.add('hidden');
+      $('#loginScreen').classList.remove('hidden');
+      msg('Usuario no autorizado. Solicita acceso al administrador antes de entrar en OposMurcia 360.');
+      return;
+    }
+    $('#testGrid').innerHTML='<div class="data-error"><strong>No se han podido cargar las preguntas.</strong><br>La sesión funciona, pero los datos de Firestore no tienen el formato esperado o el navegador conserva una versión antigua. Recarga esta versión de la app.</div>';
+  }
+});
+if('caches' in window){caches.keys().then(keys=>Promise.all(keys.filter(k=>k!=='oposmurcia360-v22-appcheck').map(k=>caches.delete(k)))).catch(()=>{})}
+if('serviceWorker' in navigator)window.addEventListener('load',async()=>{try{const r=await navigator.serviceWorker.register('sw.js?v=22-appcheck',{updateViaCache:'none'});await r.update()}catch(e){console.error(e)}});
+</script>
+</body></html>
