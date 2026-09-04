@@ -316,6 +316,73 @@ button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important
 
 
 
+
+/* V24 · Supervivencia optimizada para móvil vertical */
+@media (max-width: 699px){
+  #survivalScreen .survival-card{
+    padding:18px 14px !important;
+  }
+
+  /* Cabecera de juego: vidas arriba y datos en una sola fila compacta */
+  #survivalScreen .survival-top{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:10px !important;
+    align-items:center !important;
+  }
+
+  #survivalLives{
+    display:block !important;
+    width:100% !important;
+    text-align:center !important;
+    white-space:nowrap !important;
+    font-size:25px !important;
+    line-height:1 !important;
+    letter-spacing:2px !important;
+  }
+
+  #survivalScreen .survival-meta{
+    display:grid !important;
+    grid-template-columns:auto 1fr auto !important;
+    gap:8px !important;
+    width:100% !important;
+    align-items:center !important;
+  }
+
+  #survivalQuestionNo{
+    white-space:nowrap !important;
+    font-size:13px !important;
+    padding:7px 10px !important;
+    text-align:center !important;
+  }
+
+  #survivalScore,
+  #survivalPoints{
+    white-space:nowrap !important;
+    font-size:14px !important;
+    line-height:1.15 !important;
+    text-align:center !important;
+  }
+
+  #survivalPoints{
+    justify-self:end !important;
+  }
+}
+
+@media (max-width: 390px){
+  #survivalScreen .survival-meta{
+    gap:5px !important;
+  }
+  #survivalQuestionNo{
+    font-size:12px !important;
+    padding:6px 8px !important;
+  }
+  #survivalScore,
+  #survivalPoints{
+    font-size:12.5px !important;
+  }
+}
+
 </style>
 </head>
 <body>
