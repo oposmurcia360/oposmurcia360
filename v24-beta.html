@@ -267,6 +267,53 @@ button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important
 .medal-detail{margin-top:10px;padding:11px;border-radius:12px;background:#FFF9F1;border:1px solid #FFE0B9;font-size:12px;line-height:1.4}
 @media(max-width:699px){.help-grid{grid-template-columns:1fr}}
 
+
+.help-icon{position:relative}
+.help-icon::after{
+  content:attr(data-tip);
+  position:absolute;
+  left:50%;
+  bottom:calc(100% + 10px);
+  transform:translateX(-50%);
+  width:240px;
+  max-width:70vw;
+  padding:9px 11px;
+  border-radius:10px;
+  background:#123B5D;
+  color:#fff;
+  font-size:11px;
+  line-height:1.35;
+  font-weight:600;
+  text-align:left;
+  box-shadow:0 8px 22px rgba(0,0,0,.18);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  z-index:50;
+  transition:opacity .15s ease,visibility .15s ease;
+}
+.help-icon::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:calc(100% + 4px);
+  transform:translateX(-50%);
+  border:6px solid transparent;
+  border-top-color:#123B5D;
+  opacity:0;
+  visibility:hidden;
+  z-index:51;
+  transition:opacity .15s ease,visibility .15s ease;
+}
+.help-icon:hover::after,.help-icon:hover::before,
+.help-icon:focus::after,.help-icon:focus::before{
+  opacity:1;
+  visibility:visible;
+}
+@media(max-width:699px){
+  .help-icon::after{width:210px}
+}
+
 </style>
 </head>
 <body>
@@ -323,10 +370,10 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
 
   <div id="quickHelpBox" class="help-panel hidden" style="margin-bottom:10px"></div>
   <div class="game-stats">
-   <div class="game-stat"><b id="gameStreak">🔥 0</b><span>Racha actual <button class="help-icon" type="button" data-help="streak">i</button></span></div>
-   <div class="game-stat"><b id="gameXP">⭐ 0</b><span>XP acumulada <button class="help-icon" type="button" data-help="xp">i</button></span></div>
-   <div class="game-stat"><b id="gameMedals">🏅 0</b><span>Logros <button class="help-icon" type="button" data-help="medals">i</button></span></div>
-   <div class="game-stat"><b id="gameMastery">📊 —</b><span>Dominio global <button class="help-icon" type="button" data-help="mastery">i</button></span></div>
+   <div class="game-stat"><b id="gameStreak">🔥 0</b><span>Racha actual <button class="help-icon" type="button" data-help="streak" data-tip="Cuenta los días consecutivos con actividad real de estudio. Entrar en la app sin completar actividad no suma.">i</button></span></div>
+   <div class="game-stat"><b id="gameXP">⭐ 0</b><span>XP acumulada <button class="help-icon" type="button" data-help="xp" data-tip="Los XP reflejan tu avance. Se obtienen por rendimiento, constancia, objetivo diario y mejora del récord en Supervivencia.">i</button></span></div>
+   <div class="game-stat"><b id="gameMedals">🏅 0</b><span>Logros <button class="help-icon" type="button" data-help="medals" data-tip="Los logros se desbloquean al alcanzar hitos concretos. Pulsa una insignia para ver su requisito.">i</button></span></div>
+   <div class="game-stat"><b id="gameMastery">📊 —</b><span>Dominio global <button class="help-icon" type="button" data-help="mastery" data-tip="El dominio estima tu rendimiento con tus mejores resultados registrados. No es una probabilidad de obtener plaza.">i</button></span></div>
   </div>
   <div class="game-level"><div class="game-level-top"><span id="gameLevelName">Aspirante</span><span id="gameNextLevel">0 / 500 XP</span></div><div class="game-bar"><span id="gameLevelBar" style="width:0%"></span></div><div id="gameLevelHint" class="level-hint"></div><div class="game-note">XP: mejor resultado de cada ejercicio + constancia diaria + objetivo diario + mejora de récord en Supervivencia.</div></div>
   <div class="game-grid">
@@ -1104,7 +1151,31 @@ function renderGame(items){
  $('#dailyRewardText').classList.toggle('hidden',g.todayQuestions<20);
  $('#survivalRecordText').innerHTML=`<strong>Récord:</strong> <span class="${g.survivalRecord?'record-good':''}">${g.survivalRecord?g.survivalRecord+' aciertos':'—'}</span>`;
  const weakBtn=$('#weakTopicBtn');
- if(g.mastery.length){$('#weakTopicText').innerHTML=`<strong>Próximo objetivo:</strong> ${esc(g.mastery[0].name)} · ${g.mastery[0].pct}% de dominio.`;weakBtn.classList.remove('hidden');weakBtn.onclick=()=>{show('home');setTimeout(()=>{const target=[...document.querySelectorAll('.topic-card,.test-card,.card')].find(el=>el.textContent.includes(g.mastery[0].name));if(target)target.scrollIntoView({behavior:'smooth',block:'center'});},80)}}
+ if(g.mastery.length){$('#weakTopicText').innerHTML=`<strong>Próximo objetivo:</strong> ${esc(g.mastery[0].name)} · ${g.mastery[0].pct}% de dominio.`;weakBtn.classList.remove('hidden');weakBtn.onclick=()=>{
+   show('home');
+   const wanted=(g.mastery[0].name||'').trim().toLowerCase();
+   setTimeout(()=>{
+     const sections=[...document.querySelectorAll('.topic-section')];
+     let target=sections.find(sec=>{
+       const h=sec.querySelector('.topic-heading h2');
+       return h && h.textContent.trim().toLowerCase()===wanted;
+     });
+     if(!target){
+       target=sections.find(sec=>{
+         const h=sec.querySelector('.topic-heading h2');
+         const label=(h?.textContent||'').trim().toLowerCase();
+         return label && (label.includes(wanted)||wanted.includes(label));
+       });
+     }
+     if(target){
+       target.scrollIntoView({behavior:'smooth',block:'start'});
+       target.animate([{outline:'3px solid rgba(0,113,156,.35)'},{outline:'0 solid transparent'}],{duration:1200,easing:'ease-out'});
+     }else{
+       const fallback=wanted.includes('supuesto')||wanted.includes('parte específica')?$('#practicalGrid'):$('#testGrid');
+       if(fallback) fallback.scrollIntoView({behavior:'smooth',block:'start'});
+     }
+   },100);
+ }}
  else{$('#weakTopicText').innerHTML='<strong>Próximo objetivo:</strong> completa ejercicios para detectar tu materia a reforzar.';weakBtn.classList.add('hidden')}
  $('#masteryBasis').textContent=g.evaluatedExercises?`Estimación basada en ${g.evaluatedExercises} ejercicios con resultado registrado. Las materias aún no realizadas no reducen este porcentaje.`:'';
  $('#medalRow').innerHTML=g.medals.map(([name,on])=>`<span class="medal-chip ${on?'':'locked'}" data-medal="${esc(name)}" data-unlocked="${on?'1':'0'}">${on?'🏅':'🔒'} ${esc(name)}</span>`).join('');
