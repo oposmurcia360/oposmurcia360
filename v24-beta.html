@@ -380,11 +380,11 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
 <section id="survival" class="hidden">
  <div class="view-top"><button class="back" onclick="exitSurvival()">← Biblioteca</button><div class="timer">Modo Supervivencia</div></div>
  <div class="survival-shell"><div class="survival-panel">
-  <div class="survival-top"><div id="survivalLives" class="survival-lives">❤️ ❤️ ❤️</div><div><span id="survivalQuestionNo" class="type-badge">Pregunta 1</span> <span id="survivalScore" class="survival-score">0 aciertos</span></div></div>
+  <div class="survival-top"><div id="survivalLives" class="survival-lives">❤️ ❤️ ❤️</div><div><span id="survivalQuestionNo" class="type-badge">Pregunta 1</span> <span id="survivalScore" class="survival-score">0 aciertos</span> · <span id="survivalPoints" class="survival-score">0 XP</span></div></div>
   <div id="survivalGame">
    <div id="survivalQuestion" class="survival-question"></div>
    <div id="survivalOptions" class="survival-options"></div>
-   <div id="survivalFeedback" class="survival-feedback hidden"></div>
+   <div id="survivalFeedback" class="survival-feedback hidden"></div><button id="survivalNext" class="primary hidden" type="button" style="width:100%;margin-top:14px">Siguiente pregunta</button>
   </div>
   <div id="survivalEnd" class="survival-end hidden">
    <div class="section-kicker">Partida terminada</div><h2>❤️ Modo Supervivencia</h2>
@@ -1046,10 +1046,11 @@ function renderSurvival(){
  const item=survivalPool[survivalIndex],q=item.q;survivalLocked=false;
  $('#survivalLives').textContent='❤️ '.repeat(survivalLives)+'🖤 '.repeat(3-survivalLives);
  $('#survivalScore').textContent=`${survivalCorrect} aciertos`;
+ $('#survivalPoints').textContent=`${survivalCorrect*10} XP`;
  $('#survivalQuestionNo').textContent=`Pregunta ${survivalIndex+1}`;
  $('#survivalQuestion').textContent=q[0];
  $('#survivalOptions').innerHTML=q[1].map((o,i)=>`<button class="option" data-schoice="${i}"><strong>${String.fromCharCode(65+i)})</strong> ${esc(o)}</button>`).join('');
- $('#survivalFeedback').className='survival-feedback hidden';$('#survivalFeedback').textContent='';
+ $('#survivalFeedback').className='survival-feedback hidden';$('#survivalFeedback').textContent='';$('#survivalNext').classList.add('hidden');$('#survivalNext').onclick=null;
  document.querySelectorAll('[data-schoice]').forEach(b=>b.onclick=()=>answerSurvival(Number(b.dataset.schoice)));
 }
 function answerSurvival(choice){
@@ -1057,8 +1058,14 @@ function answerSurvival(choice){
  const q=survivalPool[survivalIndex].q,ok=choice===q[2],fb=$('#survivalFeedback');
  if(ok){survivalCorrect++;fb.textContent='✓ Correcto · sigues con 3 vidas'.replace('3',String(survivalLives));fb.className='survival-feedback ok'}
  else{survivalWrong++;survivalLives--;fb.textContent=`✕ Incorrecto · correcta: ${String.fromCharCode(65+q[2])}) ${q[1][q[2]]}`;fb.className='survival-feedback bad'}
- $('#survivalLives').textContent='❤️ '.repeat(survivalLives)+'🖤 '.repeat(3-survivalLives);$('#survivalScore').textContent=`${survivalCorrect} aciertos`;
- setTimeout(()=>{survivalIndex++;renderSurvival()},900);
+ $('#survivalLives').textContent='❤️ '.repeat(survivalLives)+'🖤 '.repeat(3-survivalLives);
+ $('#survivalScore').textContent=`${survivalCorrect} aciertos`;
+ $('#survivalPoints').textContent=`${survivalCorrect*10} XP`;
+ document.querySelectorAll('[data-schoice]').forEach(b=>b.disabled=true);
+ const nextBtn=$('#survivalNext');
+ nextBtn.classList.remove('hidden');
+ nextBtn.textContent=survivalLives<=0?'Ver resultado':'Siguiente pregunta';
+ nextBtn.onclick=()=>{survivalIndex++;renderSurvival()};
 }
 async function finishSurvival(){
  $('#survivalGame').classList.add('hidden');$('#survivalEnd').classList.remove('hidden');
