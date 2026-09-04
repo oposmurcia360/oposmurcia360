@@ -243,6 +243,11 @@ button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important
 .survival-end{text-align:center;padding:18px}.survival-end strong{display:block;font-size:34px;color:var(--blue-dark);margin:8px 0}
 @media(max-width:699px){.game-stats{grid-template-columns:1fr 1fr}.game-grid{grid-template-columns:1fr}.game-zone{padding:14px}.survival-shell{padding:10px}.survival-question{font-size:17px}}
 
+
+.survival-options .option.correct{border-color:#2f9d59;background:#eaf8ef;color:#176b38}
+.survival-options .option.wrong{border-color:#c94b4b;background:#fff0f0;color:#9c2020}
+.survival-options .option:disabled{cursor:default;opacity:1}
+
 </style>
 </head>
 <body>
@@ -376,10 +381,12 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
    <div id="survivalQuestion" class="survival-question"></div>
    <div id="survivalOptions" class="survival-options"></div>
    <div id="survivalFeedback" class="survival-feedback hidden"></div>
+   <button id="survivalNextBtn" class="primary hidden" type="button" style="margin-top:12px;width:100%">Siguiente pregunta</button>
   </div>
   <div id="survivalEnd" class="survival-end hidden">
    <div class="section-kicker">Partida terminada</div><h2>❤️ Modo Supervivencia</h2>
    <strong id="survivalFinalScore">0</strong><p id="survivalFinalText"></p>
+   <p id="survivalRewardText" style="font-weight:850;color:var(--blue-dark)"></p>
    <button class="primary" type="button" onclick="startSurvival()">Jugar otra vez</button>
    <button class="secondary" type="button" onclick="goHome()">Volver a la biblioteca</button>
   </div>
@@ -1034,21 +1041,37 @@ function renderSurvival(){
  $('#survivalQuestion').textContent=q[0];
  $('#survivalOptions').innerHTML=q[1].map((o,i)=>`<button class="option" data-schoice="${i}"><strong>${String.fromCharCode(65+i)})</strong> ${esc(o)}</button>`).join('');
  $('#survivalFeedback').className='survival-feedback hidden';$('#survivalFeedback').textContent='';
+ const nextBtn=$('#survivalNextBtn');nextBtn.classList.add('hidden');nextBtn.onclick=null;
  document.querySelectorAll('[data-schoice]').forEach(b=>b.onclick=()=>answerSurvival(Number(b.dataset.schoice)));
 }
 function answerSurvival(choice){
  if(survivalLocked)return;survivalLocked=true;
  const q=survivalPool[survivalIndex].q,ok=choice===q[2],fb=$('#survivalFeedback');
- if(ok){survivalCorrect++;fb.textContent='✓ Correcto · sigues con 3 vidas'.replace('3',String(survivalLives));fb.className='survival-feedback ok'}
- else{survivalWrong++;survivalLives--;fb.textContent=`✕ Incorrecto · correcta: ${String.fromCharCode(65+q[2])}) ${q[1][q[2]]}`;fb.className='survival-feedback bad'}
+ const buttons=[...document.querySelectorAll('[data-schoice]')];
+ buttons.forEach((b,i)=>{b.disabled=true;if(i===q[2])b.classList.add('correct');if(i===choice&&!ok)b.classList.add('wrong')});
+ if(ok){survivalCorrect++;fb.textContent='✓ Correcto';fb.className='survival-feedback ok'}
+ else{survivalWrong++;survivalLives--;fb.textContent=`✕ Incorrecto. La respuesta correcta es ${String.fromCharCode(65+q[2])}) ${q[1][q[2]]}`;fb.className='survival-feedback bad'}
  $('#survivalLives').textContent='❤️ '.repeat(survivalLives)+'🖤 '.repeat(3-survivalLives);$('#survivalScore').textContent=`${survivalCorrect} aciertos`;
- setTimeout(()=>{survivalIndex++;renderSurvival()},900);
+ const nextBtn=$('#survivalNextBtn');nextBtn.textContent=survivalLives<=0?'Ver resultado':'Siguiente pregunta';nextBtn.classList.remove('hidden');
+ nextBtn.onclick=()=>{survivalIndex++;renderSurvival()};
 }
 async function finishSurvival(){
  $('#survivalGame').classList.add('hidden');$('#survivalEnd').classList.remove('hidden');
  $('#survivalFinalScore').textContent=`${survivalCorrect} aciertos`;
  $('#survivalFinalText').textContent=`Has respondido ${survivalCorrect+survivalWrong} preguntas antes de perder las 3 vidas.`;
  const used=Math.floor((Date.now()-survivalStartedAt)/1000),total=survivalCorrect+survivalWrong,nota=total?survivalCorrect/total*10:0;
+ let previousRecord=0;
+ try{
+   const user=auth.currentUser;
+   if(user){
+     const qy=query(collection(db,'progreso'),where('uid','==',user.uid));
+     const snap=await getDocs(qy);
+     previousRecord=Math.max(0,...snap.docs.map(d=>d.data()).filter(x=>x.tipo==='supervivencia').map(x=>Number(x.aciertos)||0));
+   }
+ }catch(e){console.error('No se pudo consultar el récord anterior:',e)}
+ const earnedXP=survivalCorrect*10;
+ const isRecord=survivalCorrect>previousRecord;
+ $('#survivalRewardText').textContent=`⭐ +${earnedXP} XP${isRecord?' · 🏆 ¡Nuevo récord personal!':previousRecord?` · Récord personal: ${previousRecord}`:''}`;
  try{await registrarProgreso({tipo:'supervivencia',ejercicioId:'modo-supervivencia',titulo:'Modo Supervivencia',categoria:'Modo Supervivencia',totalPreguntas:total,aciertos:survivalCorrect,errores:survivalWrong,blancos:0,nota,penalizacion:false,tiempoEmpleado:used});await refreshGame()}
  catch(e){console.error('No se pudo guardar el récord de supervivencia:',e)}
 }
