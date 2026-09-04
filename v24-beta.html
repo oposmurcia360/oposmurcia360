@@ -244,10 +244,14 @@ button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important
 @media(max-width:699px){.game-stats{grid-template-columns:1fr 1fr}.game-grid{grid-template-columns:1fr}.game-zone{padding:14px}.survival-shell{padding:10px}.survival-question{font-size:17px}}
 
 
-.survival-options .option.correct{border-color:#2f9d59;background:#eaf8ef;color:#176b38}
-.survival-options .option.wrong{border-color:#c94b4b;background:#fff0f0;color:#9c2020}
-.survival-options .option:disabled{cursor:default;opacity:1}
-
+.game-note{font-size:11px;color:var(--muted);margin-top:6px}
+.game-reward{font-size:12px;font-weight:850;color:#176b38;margin-top:6px}
+.weak-action{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:8px}
+.weak-action button{padding:7px 10px;font-size:11px}
+.level-hint{font-size:12px;font-weight:800;color:var(--blue-dark);margin-top:7px}
+.record-good{color:#8a4c00;font-weight:900}
+@keyframes trophyPop{0%{transform:scale(.8)}55%{transform:scale(1.12)}100%{transform:scale(1)}}
+.trophy-pop{display:inline-block;animation:trophyPop .55s ease}
 </style>
 </head>
 <body>
@@ -284,13 +288,13 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
    <div class="game-stat"><b id="gameMedals">🏅 0</b><span>Logros</span></div>
    <div class="game-stat"><b id="gameMastery">📊 —</b><span>Dominio global</span></div>
   </div>
-  <div class="game-level"><div class="game-level-top"><span id="gameLevelName">Aspirante</span><span id="gameNextLevel">0 / 500 XP</span></div><div class="game-bar"><span id="gameLevelBar" style="width:0%"></span></div></div>
+  <div class="game-level"><div class="game-level-top"><span id="gameLevelName">Aspirante</span><span id="gameNextLevel">0 / 500 XP</span></div><div class="game-bar"><span id="gameLevelBar" style="width:0%"></span></div><div id="gameLevelHint" class="level-hint"></div></div>
   <div class="game-grid">
-   <div class="game-card"><h3>🎯 Objetivo diario · 20 preguntas</h3><p id="dailyGoalText">0/20 preguntas completadas hoy</p><div class="game-bar"><span id="dailyGoalBar" style="width:0%"></span></div><p id="weakTopicText"><strong>Próximo objetivo:</strong> completa ejercicios para detectar tu materia a reforzar.</p></div>
+   <div class="game-card"><h3>🎯 Objetivo diario · 20 preguntas</h3><p id="dailyGoalText">0/20 preguntas completadas hoy</p><div id="dailyRewardText" class="game-reward hidden"></div><div class="game-bar"><span id="dailyGoalBar" style="width:0%"></span></div><div class="weak-action"><p id="weakTopicText"><strong>Próximo objetivo:</strong> completa ejercicios para detectar tu materia a reforzar.</p><button id="weakTopicBtn" class="secondary hidden" type="button">Reforzar</button></div></div>
    <div class="game-card"><h3>❤️ Modo Supervivencia</h3><p>3 vidas. Cada fallo resta una. Supera tu récord respondiendo preguntas de tus tests.</p><p id="survivalRecordText"><strong>Récord:</strong> —</p><button class="primary" type="button" onclick="startSurvival()">Jugar</button></div>
   </div>
   <div class="game-card" style="margin-top:12px"><h3>🏅 Tus logros</h3><div id="medalRow" class="medal-row"></div></div>
-  <div class="game-card" style="margin-top:12px"><h3>📊 Dominio por materias</h3><div id="masteryList" class="mastery-list"><p class="muted">Completa ejercicios para calcular tu dominio.</p></div></div>
+  <div class="game-card" style="margin-top:12px"><h3>📊 Dominio por materias</h3><div id="masteryBasis" class="game-note"></div><div id="masteryList" class="mastery-list"><p class="muted">Completa ejercicios para calcular tu dominio.</p></div></div>
  </div>
 
  <div class="progress-access">
@@ -376,17 +380,15 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
 <section id="survival" class="hidden">
  <div class="view-top"><button class="back" onclick="exitSurvival()">← Biblioteca</button><div class="timer">Modo Supervivencia</div></div>
  <div class="survival-shell"><div class="survival-panel">
-  <div class="survival-top"><div id="survivalLives" class="survival-lives">❤️ ❤️ ❤️</div><div id="survivalScore" class="survival-score">0 aciertos</div></div>
+  <div class="survival-top"><div id="survivalLives" class="survival-lives">❤️ ❤️ ❤️</div><div><span id="survivalQuestionNo" class="type-badge">Pregunta 1</span> <span id="survivalScore" class="survival-score">0 aciertos</span></div></div>
   <div id="survivalGame">
    <div id="survivalQuestion" class="survival-question"></div>
    <div id="survivalOptions" class="survival-options"></div>
    <div id="survivalFeedback" class="survival-feedback hidden"></div>
-   <button id="survivalNextBtn" class="primary hidden" type="button" style="margin-top:12px;width:100%">Siguiente pregunta</button>
   </div>
   <div id="survivalEnd" class="survival-end hidden">
    <div class="section-kicker">Partida terminada</div><h2>❤️ Modo Supervivencia</h2>
    <strong id="survivalFinalScore">0</strong><p id="survivalFinalText"></p>
-   <p id="survivalRewardText" style="font-weight:850;color:var(--blue-dark)"></p>
    <button class="primary" type="button" onclick="startSurvival()">Jugar otra vez</button>
    <button class="secondary" type="button" onclick="goHome()">Volver a la biblioteca</button>
   </div>
@@ -972,7 +974,7 @@ function computeGame(items){
  bestByExercise.forEach(x=>{xp+=(Number(x.aciertos)||0)*10+(x.tipo==='supuesto'?80:50);if(Number(x.nota)>=8)xp+=50;if(Number(x.nota)>=9.999)xp+=100});
  const activeDays=[...new Set(normal.map(x=>progressDateValue(x.fecha)).filter(Boolean).map(localDay))].sort();
  xp+=activeDays.length*25;
- const survival=items.filter(x=>x.tipo==='supervivencia');
+ const survival=items.filter(x=>x.tipo==='supervivencia'||x.ejercicioId==='modo-supervivencia'||String(x.categoria||'').toLowerCase().includes('supervivencia'));
  const survivalRecord=survival.length?Math.max(...survival.map(x=>Number(x.aciertos)||0)):0;
  xp+=survivalRecord*10;
  let streak=0,bestStreak=0;
@@ -999,7 +1001,7 @@ function computeGame(items){
   ['🧠 Centenario',totalCorrect>=100],['🔥 Constante',bestStreak>=7],['🔥 Imparable',bestStreak>=30],
   ['📚 Repaso activo',repaso>=3],['🏆 Especialista práctico',practicals>=10]
  ];
- return {xp,streak,bestStreak,survivalRecord,mastery,global,todayQuestions,medals,tests,practicals};
+ return {xp,streak,bestStreak,survivalRecord,mastery,global,todayQuestions,medals,tests,practicals,evaluatedExercises:bestByExercise.size};
 }
 function renderGame(items){
  const g=computeGame(items), unlocked=g.medals.filter(x=>x[1]).length;
@@ -1014,10 +1016,16 @@ function renderGame(items){
  const pct=next?Math.max(0,Math.min(100,(g.xp-cur.xp)/(next.xp-cur.xp)*100)):100;
  $('#gameLevelBar').style.width=pct+'%';
  $('#gameNextLevel').textContent=next?`${g.xp.toLocaleString('es-ES')} / ${next.xp.toLocaleString('es-ES')} XP`:`${g.xp.toLocaleString('es-ES')} XP · nivel máximo`;
+ $('#gameLevelHint').textContent=next?`⭐ Te faltan ${(next.xp-g.xp).toLocaleString('es-ES')} XP para alcanzar «${next.name}».`:'🏆 Has alcanzado el nivel máximo.';
  const daily=Math.min(100,g.todayQuestions/20*100);$('#dailyGoalBar').style.width=daily+'%';
- $('#dailyGoalText').textContent=g.todayQuestions>=20?`✓ Objetivo completado · ${g.todayQuestions} preguntas hoy`:`${g.todayQuestions}/20 preguntas completadas hoy`;
- $('#survivalRecordText').innerHTML=`<strong>Récord:</strong> ${g.survivalRecord?g.survivalRecord+' aciertos':'—'}`;
- $('#weakTopicText').innerHTML=g.mastery.length?`<strong>Próximo objetivo:</strong> ${esc(g.mastery[0].name)} · ${g.mastery[0].pct}% de dominio.`:'<strong>Próximo objetivo:</strong> completa ejercicios para detectar tu materia a reforzar.';
+ $('#dailyGoalText').textContent=g.todayQuestions>=20?`✓ Objetivo diario completado · ${g.todayQuestions} preguntas hoy`:`${g.todayQuestions}/20 preguntas completadas hoy`;
+ $('#dailyRewardText').textContent=g.todayQuestions>=20?'⭐ Objetivo conseguido · +50 XP de constancia':'';
+ $('#dailyRewardText').classList.toggle('hidden',g.todayQuestions<20);
+ $('#survivalRecordText').innerHTML=`<strong>Récord:</strong> <span class="${g.survivalRecord?'record-good':''}">${g.survivalRecord?g.survivalRecord+' aciertos':'—'}</span>`;
+ const weakBtn=$('#weakTopicBtn');
+ if(g.mastery.length){$('#weakTopicText').innerHTML=`<strong>Próximo objetivo:</strong> ${esc(g.mastery[0].name)} · ${g.mastery[0].pct}% de dominio.`;weakBtn.classList.remove('hidden');weakBtn.onclick=()=>{show('home');setTimeout(()=>{const target=[...document.querySelectorAll('.topic-card,.test-card,.card')].find(el=>el.textContent.includes(g.mastery[0].name));if(target)target.scrollIntoView({behavior:'smooth',block:'center'});},80)}}
+ else{$('#weakTopicText').innerHTML='<strong>Próximo objetivo:</strong> completa ejercicios para detectar tu materia a reforzar.';weakBtn.classList.add('hidden')}
+ $('#masteryBasis').textContent=g.evaluatedExercises?`Estimación basada en ${g.evaluatedExercises} ejercicios con resultado registrado. Las materias aún no realizadas no reducen este porcentaje.`:'';
  $('#medalRow').innerHTML=g.medals.map(([name,on])=>`<span class="medal-chip ${on?'':'locked'}">${on?'🏅':'🔒'} ${esc(name)}</span>`).join('');
  $('#masteryList').innerHTML=g.mastery.length?g.mastery.slice().sort((a,b)=>b.pct-a.pct).map(t=>`<div class="mastery-item"><div class="mastery-top"><span>${esc(t.name)}</span><span>${t.pct}%</span></div><div class="mastery-mini"><span style="width:${Math.max(0,Math.min(100,t.pct))}%"></span></div></div>`).join(''):'<p class="muted">Completa ejercicios para calcular tu dominio.</p>';
 }
@@ -1038,40 +1046,29 @@ function renderSurvival(){
  const item=survivalPool[survivalIndex],q=item.q;survivalLocked=false;
  $('#survivalLives').textContent='❤️ '.repeat(survivalLives)+'🖤 '.repeat(3-survivalLives);
  $('#survivalScore').textContent=`${survivalCorrect} aciertos`;
+ $('#survivalQuestionNo').textContent=`Pregunta ${survivalIndex+1}`;
  $('#survivalQuestion').textContent=q[0];
  $('#survivalOptions').innerHTML=q[1].map((o,i)=>`<button class="option" data-schoice="${i}"><strong>${String.fromCharCode(65+i)})</strong> ${esc(o)}</button>`).join('');
  $('#survivalFeedback').className='survival-feedback hidden';$('#survivalFeedback').textContent='';
- const nextBtn=$('#survivalNextBtn');nextBtn.classList.add('hidden');nextBtn.onclick=null;
  document.querySelectorAll('[data-schoice]').forEach(b=>b.onclick=()=>answerSurvival(Number(b.dataset.schoice)));
 }
 function answerSurvival(choice){
  if(survivalLocked)return;survivalLocked=true;
  const q=survivalPool[survivalIndex].q,ok=choice===q[2],fb=$('#survivalFeedback');
- const buttons=[...document.querySelectorAll('[data-schoice]')];
- buttons.forEach((b,i)=>{b.disabled=true;if(i===q[2])b.classList.add('correct');if(i===choice&&!ok)b.classList.add('wrong')});
- if(ok){survivalCorrect++;fb.textContent='✓ Correcto';fb.className='survival-feedback ok'}
- else{survivalWrong++;survivalLives--;fb.textContent=`✕ Incorrecto. La respuesta correcta es ${String.fromCharCode(65+q[2])}) ${q[1][q[2]]}`;fb.className='survival-feedback bad'}
+ if(ok){survivalCorrect++;fb.textContent='✓ Correcto · sigues con 3 vidas'.replace('3',String(survivalLives));fb.className='survival-feedback ok'}
+ else{survivalWrong++;survivalLives--;fb.textContent=`✕ Incorrecto · correcta: ${String.fromCharCode(65+q[2])}) ${q[1][q[2]]}`;fb.className='survival-feedback bad'}
  $('#survivalLives').textContent='❤️ '.repeat(survivalLives)+'🖤 '.repeat(3-survivalLives);$('#survivalScore').textContent=`${survivalCorrect} aciertos`;
- const nextBtn=$('#survivalNextBtn');nextBtn.textContent=survivalLives<=0?'Ver resultado':'Siguiente pregunta';nextBtn.classList.remove('hidden');
- nextBtn.onclick=()=>{survivalIndex++;renderSurvival()};
+ setTimeout(()=>{survivalIndex++;renderSurvival()},900);
 }
 async function finishSurvival(){
  $('#survivalGame').classList.add('hidden');$('#survivalEnd').classList.remove('hidden');
  $('#survivalFinalScore').textContent=`${survivalCorrect} aciertos`;
- $('#survivalFinalText').textContent=`Has respondido ${survivalCorrect+survivalWrong} preguntas antes de perder las 3 vidas.`;
- const used=Math.floor((Date.now()-survivalStartedAt)/1000),total=survivalCorrect+survivalWrong,nota=total?survivalCorrect/total*10:0;
+ const total=survivalCorrect+survivalWrong,pct=total?Math.round(survivalCorrect/total*100):0,xpEarned=survivalCorrect*10;
  let previousRecord=0;
- try{
-   const user=auth.currentUser;
-   if(user){
-     const qy=query(collection(db,'progreso'),where('uid','==',user.uid));
-     const snap=await getDocs(qy);
-     previousRecord=Math.max(0,...snap.docs.map(d=>d.data()).filter(x=>x.tipo==='supervivencia').map(x=>Number(x.aciertos)||0));
-   }
- }catch(e){console.error('No se pudo consultar el récord anterior:',e)}
- const earnedXP=survivalCorrect*10;
- const isRecord=survivalCorrect>previousRecord;
- $('#survivalRewardText').textContent=`⭐ +${earnedXP} XP${isRecord?' · 🏆 ¡Nuevo récord personal!':previousRecord?` · Récord personal: ${previousRecord}`:''}`;
+ try{const u=auth.currentUser;if(u){const qs=await getDocs(query(collection(db,'progreso'),where('uid','==',u.uid)));previousRecord=Math.max(0,...qs.docs.map(d=>d.data()).filter(x=>x.tipo==='supervivencia'||x.ejercicioId==='modo-supervivencia').map(x=>Number(x.aciertos)||0))}}catch(e){}
+ const recordMsg=survivalCorrect>previousRecord?` · <span class="trophy-pop">🏆</span> ¡Nuevo récord personal!`:'';
+ $('#survivalFinalText').innerHTML=`${survivalCorrect} aciertos · ${survivalWrong} errores · ${pct}%<br>Has respondido ${total} preguntas antes de perder las 3 vidas.<br><br>⭐ <strong>+${xpEarned} XP</strong>${recordMsg}`;
+ const used=Math.floor((Date.now()-survivalStartedAt)/1000),nota=total?survivalCorrect/total*10:0;
  try{await registrarProgreso({tipo:'supervivencia',ejercicioId:'modo-supervivencia',titulo:'Modo Supervivencia',categoria:'Modo Supervivencia',totalPreguntas:total,aciertos:survivalCorrect,errores:survivalWrong,blancos:0,nota,penalizacion:false,tiempoEmpleado:used});await refreshGame()}
  catch(e){console.error('No se pudo guardar el récord de supervivencia:',e)}
 }
