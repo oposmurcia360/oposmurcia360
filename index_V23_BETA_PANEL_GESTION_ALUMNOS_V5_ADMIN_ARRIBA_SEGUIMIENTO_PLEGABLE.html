@@ -1,0 +1,1517 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0758B8">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="OposMurcia 360">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="OposMurcia 360">
+<meta name="description" content="OposMurcia 360 · Tests y supuestos prácticos para Auxiliares Administrativos del Ayuntamiento de Murcia">
+<title>OposMurcia 360</title>
+<link rel="manifest" href="manifest.webmanifest?v=22-appcheck">
+<link rel="icon" href="icon-192.png?v=20">
+<link rel="apple-touch-icon" href="icon-192.png?v=20">
+<style>
+:root{
+ --blue:#0758B8;--blue-dark:#063E82;--blue-soft:#EAF3FF;
+ --bg:#F6F8FB;--card:#FFFFFF;--text:#122033;--muted:#637083;
+ --line:#DDE5EF;--ok:#207A54;--bad:#B94141;--blank:#7D8896;
+ --shadow:0 10px 30px rgba(18,32,51,.08);
+ --radius:20px;
+}
+*{box-sizing:border-box} html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important}
+.shell{max-width:980px;margin:0 auto;padding:0 24px 96px;min-height:100vh}
+.top{
+ margin:0 -24px 24px;padding:22px 28px 26px;
+ background:var(--blue);color:#fff;border-radius:0 0 28px 28px;
+ box-shadow:0 10px 26px rgba(7,88,184,.20)
+}
+.brand{display:flex;align-items:center;gap:12px}.brand img{width:86px;height:86px;object-fit:contain;background:#fff;border:4px solid #fff;border-radius:50%;padding:3px;box-shadow:0 4px 14px rgba(0,0,0,.14)}
+.brand h1{font-size:25px;line-height:1.05;margin:0;font-weight:900;letter-spacing:-.035em}
+.brand p{margin:5px 0 0;color:#E8F2FF;font-size:12px;line-height:1.4}
+.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:22px}
+.hero small{display:block;color:#DCEBFF;font-size:12px}.hero strong{display:block;font-size:28px;line-height:1.05;margin-top:3px}
+.install{border:1px solid rgba(255,255,255,.55);background:#fff;color:var(--blue-dark);border-radius:13px;padding:10px 13px;font-weight:850}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:22px}
+.metric{background:#fff;border:1px solid var(--line);border-radius:17px;padding:13px 7px;text-align:center;box-shadow:0 5px 18px rgba(18,32,51,.05)}
+.metric b{display:block;font-size:21px;color:var(--blue-dark)}.metric span{font-size:11px;color:var(--muted)}
+.section-kicker{font-size:11px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;color:var(--blue)}
+.section-title{font-size:21px;margin:5px 0 13px;letter-spacing:-.02em}
+.test-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.test-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:17px;box-shadow:var(--shadow)}
+/* Solo las tarjetas de TEST/SUPUESTO DE REPASO cambian de color.
+   El resto de la interfaz y el logo permanecen intactos. */
+.repaso-card{
+  background:linear-gradient(180deg,#FFF9F5 0%,#FFFFFF 100%);
+  border:1.5px solid #F0B48E;
+  box-shadow:0 7px 22px rgba(199,92,32,.10);
+}
+.repaso-card h3{color:#A94712}
+.repaso-card .pill,
+.repaso-card .practical-tag{
+  color:#A94712;
+  background:#FFF2E8;
+  border-color:#F3C4A6;
+}
+.repaso-card .primary{background:#D65A12}
+.repaso-card .primary:active{background:#B8490D}
+
+.test-head{display:flex;align-items:flex-start;gap:12px}.test-logo{width:62px;height:62px;flex:0 0 62px;background:#fff;border-radius:50%;padding:2px}
+.test-card h3{font-size:18px;line-height:1.25;margin:1px 0 5px}.muted{color:var(--muted);font-size:13px;line-height:1.45}
+.pills{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0}
+.pill{border:1px solid #CFE0F6;background:#F7FBFF;color:var(--blue-dark);padding:6px 8px;border-radius:999px;font-size:11px;font-weight:750}
+.primary,.secondary,.option{border-radius:14px;min-height:48px;font-weight:800}
+.primary{border:0;background:var(--blue);color:#fff;width:100%;padding:11px 14px}
+.primary:active{background:var(--blue-dark)}
+.secondary{border:1px solid #BED3ED;background:#fff;color:var(--blue-dark);padding:10px 13px}
+.view-top{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0 12px}
+.back{border:0;background:transparent;color:var(--blue-dark);font-weight:850;padding:8px 2px}
+.timer{font-weight:900;color:var(--blue-dark);font-variant-numeric:tabular-nums}
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.panel h2{margin:4px 0 8px;font-size:22px}.panel label{display:flex;align-items:center;gap:9px;margin:13px 0;color:#344256}
+.panel input[type=number]{width:86px;border:1px solid var(--line);border-radius:11px;padding:9px;background:#fff;color:var(--text)}
+.info{background:var(--blue-soft);border:1px solid #C9E0FA;border-radius:14px;padding:12px;color:#23486E;font-size:13px;line-height:1.45;margin:14px 0}
+.progress-track{height:8px;background:#E1E8F1;border-radius:999px;overflow:hidden;margin:0 0 14px}
+.progress{height:100%;width:0;background:var(--blue)}
+.qindex{font-size:12px;color:var(--muted);font-weight:850}.question{font-size:18px;font-weight:800;line-height:1.48;margin:9px 0 16px}
+.options{display:grid;gap:10px}.option{text-align:left;width:100%;border:1.5px solid var(--line);background:#fff;color:var(--text);padding:14px;line-height:1.4}
+.option.selected{border-color:var(--blue);background:var(--blue-soft);box-shadow:inset 0 0 0 1px rgba(7,88,184,.08)}
+.nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.finish{grid-column:1/-1}
+.score{font-size:48px;font-weight:950;letter-spacing:-.045em;color:var(--blue-dark);text-align:center;margin:12px 0}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0}
+.result-box{text-align:center;border:1px solid var(--line);border-radius:14px;background:#F9FBFD;padding:11px 7px}.result-box b{display:block;font-size:21px}
+.review-item{border:1px solid var(--line);border-radius:14px;padding:13px;margin:9px 0;font-size:13px;line-height:1.5;background:#fff}
+.review-item.ok{border-left:4px solid var(--ok)}.review-item.bad{border-left:4px solid var(--bad)}.review-item.blank{border-left:4px solid var(--blank)}
+.modal-wrap{position:fixed;inset:0;background:rgba(12,27,45,.48);display:grid;place-items:center;padding:18px;z-index:30}
+.modal{max-width:560px;width:100%;max-height:86vh;overflow:auto;background:#fff;border-radius:20px;padding:19px;box-shadow:0 24px 70px rgba(0,0,0,.24)}
+.modal h2{margin:0 0 9px}.modal p,.modal li{font-size:13px;line-height:1.55;color:#344256}
+.help-link{border:0;background:transparent;color:#fff;font-weight:800;padding:6px 0;text-decoration:underline;text-underline-offset:3px}
+.foot{text-align:center;color:var(--muted);font-size:11px;margin-top:27px}
+@media(max-width:700px){
+ .test-grid{grid-template-columns:1fr}.brand img{width:76px;height:76px}.brand h1{font-size:22px}
+ .hero strong{font-size:25px}.test-card{padding:15px}.panel{padding:16px}
+}
+@media(max-width:390px){
+ .shell{padding-left:14px;padding-right:14px}.top{margin-left:-14px;margin-right:-14px;padding-left:18px;padding-right:18px}
+ .summary{gap:6px}.metric{padding:11px 4px}.metric b{font-size:19px}
+ .nav{grid-template-columns:1fr}.finish{grid-column:auto}.result-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:340px){.brand p{display:none}.test-logo{width:48px;height:48px;flex-basis:48px}}
+
+.login-shell{min-height:100vh;background:linear-gradient(180deg,var(--blue) 0 36%,var(--bg) 36%);display:grid;place-items:center;padding:40px 20px}.login-wrap{width:min(100%,520px)}.login-brand{text-align:center;color:#fff;margin-bottom:18px}.login-logo{width:112px;height:112px;border-radius:50%;background:#fff;padding:6px;margin:0 auto 12px;display:grid;place-items:center;box-shadow:0 10px 24px rgba(0,0,0,.15)}.login-logo img{width:100%;height:100%;object-fit:contain}.login-brand h1{margin:0;font-size:28px}.login-brand p{margin:6px 0 0;color:#E8F2FF;font-size:13px}.login-card{background:#fff;border-radius:24px;padding:28px;box-shadow:0 20px 60px rgba(10,32,60,.18)}.login-card h2{margin:0 0 5px}.login-card>p{margin:0 0 18px;color:var(--muted);font-size:13px}.field{margin:13px 0}.field label{display:block;font-size:12px;font-weight:850;margin-bottom:6px}.field input{width:100%;height:50px;border:1.5px solid var(--line);border-radius:14px;padding:0 13px;outline:none}.field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(7,88,184,.10)}.authmsg{border-radius:12px;padding:10px 12px;font-size:12px;margin:10px 0}.authmsg.error{background:#FFF2F2;border:1px solid #F2C9C9;color:#8D2C2C}.authmsg.success{background:#EFFAF5;border:1px solid #CDE9DA;color:#276347}.auth-separator{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--muted);font-size:12px}.auth-separator:before,.auth-separator:after{content:"";height:1px;background:#D8E7F7;flex:1}.google-login{width:100%;min-height:46px;border:1.5px solid #D8E1EC;background:#fff;color:#263238;border-radius:14px;padding:12px 14px;font-weight:850;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px}.google-login:active{background:#F5F7FA}.google-g{width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 18px}.google-g svg{display:block;width:18px;height:18px}
+.login-install{width:100%;margin-top:12px;border:1.5px solid var(--blue);background:#F4F9FF;color:var(--blue-dark);border-radius:14px;padding:13px 14px;font-weight:850;cursor:pointer}
+.login-install:active{background:#EAF4FF}
+.install-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.install-status{font-size:11px;color:#DCEBFF;line-height:1.35}
+.install-steps{margin:10px 0 0;padding-left:20px}.install-steps li{margin:8px 0}
+.install-badge{display:inline-block;background:#EAF4FF;color:var(--blue-dark);font-weight:850;border-radius:999px;padding:5px 9px;font-size:12px;margin-bottom:8px}
+.login-note{text-align:center;color:var(--muted);font-size:11px;margin-top:13px}.loading-screen{min-height:100vh;display:grid;place-items:center;text-align:center}.spinner{width:42px;height:42px;border:4px solid #DDE8F7;border-top-color:var(--blue);border-radius:50%;animation:spin .85s linear infinite;margin:auto}@keyframes spin{to{transform:rotate(360deg)}}.userbar{display:flex;align-items:center;gap:8px;margin-left:auto}.userbar small{max-width:170px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.logout{border:1px solid rgba(255,255,255,.55);background:#fff;color:var(--blue-dark);border-radius:11px;padding:8px 10px;font-weight:850}.empty{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;color:var(--muted)}
+
+.login-description{margin:14px 0 20px;padding:14px 15px;border:1px solid #CFE0F6;background:#F7FBFF;border-radius:14px;color:#294B70;font-size:13px;line-height:1.55;text-align:left}
+.home-intro{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 18px;margin:0 0 20px;box-shadow:0 5px 18px rgba(18,32,51,.05)}
+.home-intro h2{margin:0 0 6px;font-size:18px;color:var(--blue-dark)}
+.home-intro p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+.data-error{background:#FFF2F2;border:1px solid #F2C9C9;color:#8D2C2C;border-radius:16px;padding:14px 16px;line-height:1.5}
+
+
+.topic-section{margin:0 0 28px}
+.topic-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 14px;padding:12px 14px;border-left:4px solid var(--blue);background:#F4F9FF;border-radius:0 14px 14px 0}
+.topic-heading h2{margin:0;color:var(--blue-dark);font-size:20px;line-height:1.25}
+.topic-count{white-space:nowrap;font-size:12px;font-weight:800;color:var(--blue-dark);background:#fff;border:1px solid #D7E8F7;border-radius:999px;padding:5px 9px}
+.topic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.copyright{margin:18px 0 4px;padding:18px 12px 4px;border-top:1px solid #D8E7F7;text-align:center;color:var(--muted);font-size:12px;line-height:1.5;font-weight:600}
+@media(max-width:699px){.topic-heading{align-items:flex-start}.topic-heading h2{font-size:18px}.topic-grid{grid-template-columns:1fr}}
+
+
+.content-block{margin:26px 0 34px}
+.content-type-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:0 0 15px}
+.content-type-head h2{margin:3px 0 0;font-size:24px;letter-spacing:-.025em;color:var(--blue-dark)}
+.content-type-head p{margin:3px 0 0;color:var(--muted);font-size:13px;line-height:1.5}
+.type-badge{white-space:nowrap;border:1px solid #CFE0F6;background:#F7FBFF;color:var(--blue-dark);padding:7px 10px;border-radius:999px;font-size:12px;font-weight:850}
+.practical-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:17px;box-shadow:var(--shadow)}
+.practical-card h3{font-size:18px;line-height:1.25;margin:1px 0 5px}
+.practical-tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:850;color:var(--blue-dark);background:var(--blue-soft);border:1px solid #CFE0F6;border-radius:999px;padding:6px 9px;margin-top:10px}
+.practical-tabs{display:flex;gap:8px;position:sticky;top:8px;z-index:8;margin-bottom:12px;background:rgba(246,248,251,.94);backdrop-filter:blur(8px);padding:7px;border-radius:15px}
+.practical-tabs button{flex:1}
+.statement{white-space:pre-line;text-align:justify;text-justify:inter-word;hyphens:auto;line-height:1.75;font-size:15px;max-width:78ch;margin:0 auto;color:#26384C}
+.statement-title{font-size:19px;line-height:1.35;margin:0 0 15px;color:var(--blue-dark)}
+.statement-actions{margin-top:20px}
+.practical-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.practical-nav .finish{grid-column:1/-1}
+.practical-review-head{display:flex;justify-content:flex-end;margin:0 0 12px}
+@media(max-width:699px){
+ .content-type-head{align-items:flex-start;flex-direction:column}
+ .content-type-head h2{font-size:22px}
+ .practical-tabs{top:4px}
+}
+@media(max-width:390px){
+ .practical-nav{grid-template-columns:1fr}
+ .practical-nav .finish{grid-column:auto}
+ .statement{font-size:14px;line-height:1.68}
+}
+
+
+.library-jump{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0 28px}
+.library-jump-btn{display:flex;align-items:center;gap:12px;text-align:left;width:100%;border:1.5px solid #CFE0F6;background:#fff;color:var(--text);padding:15px 16px;border-radius:16px;box-shadow:var(--shadow);cursor:pointer}
+.library-jump-btn:hover{border-color:var(--blue);transform:translateY(-1px)}
+.library-jump-btn:focus-visible{outline:3px solid rgba(7,88,184,.18);outline-offset:2px}
+.library-jump-btn .library-jump-icon{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:13px;background:var(--blue-soft);color:var(--blue-dark);font-weight:900;font-size:18px}
+.library-jump-btn strong{display:block;color:var(--blue-dark);font-size:15px;line-height:1.2}
+.library-jump-btn small{display:block;margin-top:4px;color:var(--muted);font-size:12px;font-weight:650}
+.library-jump-btn.practical{border-color:#BFD8F4;background:#F9FCFF}
+.library-anchor{scroll-margin-top:18px}
+.practicals-home-block{border-top:2px solid #D8E7F7;padding-top:26px}
+@media(max-width:699px){
+ .library-jump{grid-template-columns:1fr;gap:9px;margin:14px 0 24px}
+ .library-jump-btn{min-height:68px;padding:12px 14px}
+ .library-jump-btn .library-jump-icon{flex-basis:40px;width:40px;height:40px}
+}
+
+
+/* =========================
+   V23 · MI PROGRESO
+   ========================= */
+.progress-access{margin:18px 0 4px}
+.progress-access-btn{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;border:1.5px solid #BFD8F4;background:linear-gradient(180deg,#F7FBFF 0%,#FFFFFF 100%);padding:15px 16px;border-radius:16px;box-shadow:var(--shadow);cursor:pointer;text-align:left}
+.progress-access-btn:hover{border-color:var(--blue);transform:translateY(-1px)}
+.progress-access-btn strong{display:block;color:var(--blue-dark);font-size:16px}
+.progress-access-btn small{display:block;color:var(--muted);font-size:12px;font-weight:650;margin-top:3px}
+.progress-access-icon{display:grid;place-items:center;flex:0 0 44px;width:44px;height:44px;border-radius:13px;background:var(--blue-soft);color:var(--blue-dark);font-size:21px;font-weight:900}
+.progress-shell{max-width:980px;margin:0 auto}
+.progress-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px}
+.progress-head h2{margin:2px 0 4px;color:var(--blue-dark);font-size:26px}
+.progress-head p{margin:0;color:var(--muted);font-size:13px}
+.progress-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}
+.progress-metric{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow)}
+.progress-metric b{display:block;color:var(--blue-dark);font-size:24px;line-height:1.1}
+.progress-metric span{display:block;margin-top:6px;color:var(--muted);font-size:12px;font-weight:750}
+.progress-panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.progress-panel h3{margin:0 0 13px;color:var(--blue-dark);font-size:18px}
+.progress-list{display:grid;gap:10px}
+.progress-item{border:1px solid #DCE8F5;border-radius:14px;padding:13px 14px;background:#FBFDFF}
+.progress-item-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.progress-item-title{font-weight:850;color:var(--text);font-size:14px;line-height:1.35}
+.progress-score{white-space:nowrap;font-weight:900;color:var(--blue-dark);font-size:16px}
+.progress-meta{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:8px;color:var(--muted);font-size:12px;font-weight:650}
+.progress-empty{padding:24px 14px;text-align:center;color:var(--muted);border:1px dashed #C9D9EA;border-radius:14px;background:#FBFDFF}
+.progress-status{margin:12px 0;color:var(--muted);font-size:13px}
+@media(max-width:699px){
+ .progress-metrics{grid-template-columns:1fr 1fr}
+ .progress-head{flex-direction:column}
+ .progress-head h2{font-size:23px}
+}
+
+
+/* =========================
+   V23 · RENDIMIENTO POR TEMAS
+   ========================= */
+.progress-topics{margin-top:16px}
+.progress-topic-list{display:grid;gap:10px}
+.progress-topic-item{border:1px solid #DCE8F5;border-radius:14px;padding:13px 14px;background:#FBFDFF}
+.progress-topic-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.progress-topic-name{font-weight:850;color:var(--text);font-size:14px;line-height:1.35}
+.progress-topic-best{font-weight:900;color:var(--blue-dark);white-space:nowrap}
+.progress-topic-meta{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:7px;color:var(--muted);font-size:12px;font-weight:650}
+
+/* =========================
+   V23 BETA · ADMINISTRACIÓN DE ALUMNOS
+   ========================= */
+.admin-users-panel{margin-top:16px}
+.admin-users-form{display:grid;grid-template-columns:minmax(0,2fr) minmax(150px,1fr) auto;gap:10px;align-items:end;margin:14px 0}
+.admin-users-form .field{margin:0}.admin-users-form select{width:100%;height:46px;border:1.5px solid var(--line);border-radius:12px;padding:0 10px;background:#fff;color:var(--text)}
+.admin-users-list{display:grid;gap:12px;margin-top:14px}.admin-user-card{border:1px solid #DCE8F5;border-radius:16px;padding:14px;background:#FBFDFF}.admin-user-card.blocked{border-color:#E8CACA;background:#FFF8F8}
+.admin-user-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.admin-user-email{font-weight:900;color:var(--text);word-break:break-word}.admin-user-state{white-space:nowrap;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:900;background:#EAF7F1;color:#207A54}.admin-user-state.blocked{background:#FCECEC;color:#A33838}
+.admin-user-meta{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:8px;color:var(--muted);font-size:12px;font-weight:650}.admin-user-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.admin-user-actions button{min-height:40px}.admin-device-list{margin-top:10px;display:grid;gap:7px}.admin-device{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid #E1E9F2;background:#fff;border-radius:12px;padding:9px 10px;font-size:12px}.admin-device strong{color:var(--blue-dark)}
+@media(max-width:699px){.admin-users-form{grid-template-columns:1fr}.admin-user-head{flex-direction:column}.admin-user-actions{display:grid;grid-template-columns:1fr 1fr}.admin-device{align-items:flex-start;flex-direction:column}}
+@media(max-width:390px){.admin-user-actions{grid-template-columns:1fr}}
+
+/* =========================
+   V23 BETA V4 · ADMINISTRACIÓN SEPARADA
+   ========================= */
+.admin-access{margin:10px 0 22px}
+.admin-access-btn{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;border:1.5px solid #B8CFEA;background:linear-gradient(180deg,#F1F7FF 0%,#FFFFFF 100%);padding:15px 16px;border-radius:16px;box-shadow:var(--shadow);cursor:pointer;text-align:left}
+.admin-access-btn:hover{border-color:var(--blue);transform:translateY(-1px)}
+.admin-access-btn strong{display:block;color:var(--blue-dark);font-size:16px}
+.admin-access-btn small{display:block;color:var(--muted);font-size:12px;font-weight:650;margin-top:3px}
+.admin-access-icon{display:grid;place-items:center;flex:0 0 44px;width:44px;height:44px;border-radius:13px;background:var(--blue);color:#fff;font-size:20px;font-weight:900}
+.admin-shell{max-width:980px;margin:0 auto}
+.admin-head{margin-bottom:18px}
+.admin-head h2{margin:3px 0 6px;color:var(--blue-dark);font-size:27px;letter-spacing:-.025em}
+.admin-head p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+.admin-section-grid{display:grid;gap:16px}
+.admin-section-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.admin-section-card h3{margin:0 0 7px;color:var(--blue-dark);font-size:19px}
+.admin-section-note{margin:0 0 14px;color:var(--muted);font-size:12px;line-height:1.5}
+
+</style>
+</head>
+<body>
+<section id="loginScreen" class="login-shell hidden"><div class="login-wrap"><div class="login-brand"><div class="login-logo"><img src="logo-oposmurcia360.png?v=22-appcheck" alt="OposMurcia 360"></div><h1>OposMurcia 360</h1><p>Tests y supuestos prácticos · Auxiliares Administrativos</p></div><div class="login-card"><h2>Acceso a OposMurcia 360</h2>
+<div class="login-description"><strong>Plataforma privada de preparación para Auxiliares Administrativos del Ayuntamiento de Murcia.</strong><br>
+Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, aplica penalización opcional y revisa tus resultados al finalizar.</div>
+<p>Introduce las credenciales facilitadas por el administrador.</p><div id="authMsg" class="hidden"></div><form id="loginForm"><div class="field"><label for="email">Correo electrónico</label><input id="email" type="email" autocomplete="username" required></div><div class="field"><label for="password">Contraseña</label><input id="password" type="password" autocomplete="current-password" required></div><button id="loginBtn" class="primary" style="width:100%" type="submit">Iniciar sesión</button></form><div class="auth-separator"><span>o</span></div><button id="googleLoginBtn" class="google-login" type="button"><span class="google-g" aria-hidden="true"><svg viewBox="0 0 18 18" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M17.64 9.205c0-.638-.057-1.252-.164-1.841H9v3.482h4.844a4.14 4.14 0 0 1-1.797 2.715v2.258h2.909c1.702-1.567 2.684-3.878 2.684-6.614Z"/><path fill="#4285F4" d="M9 18c2.43 0 4.468-.806 5.956-2.181l-2.909-2.258c-.806.54-1.835.859-3.047.859-2.344 0-4.328-1.585-5.037-3.715H.956v2.332A9 9 0 0 0 9 18Z"/><path fill="#FBBC05" d="M3.963 10.705A5.42 5.42 0 0 1 3.681 9c0-.592.102-1.168.282-1.705V4.963H.956A9 9 0 0 0 0 9c0 1.452.347 2.827.956 4.037l3.007-2.332Z"/><path fill="#34A853" d="M9 3.58c1.321 0 2.507.454 3.44 1.345l2.581-2.581C13.464.892 11.426 0 9 0A9 9 0 0 0 .956 4.963l3.007 2.332C4.672 5.165 6.656 3.58 9 3.58Z"/></svg></span><span>Continuar con Google</span></button><button id="resetBtn" class="secondary" style="width:100%;margin-top:10px" type="button">¿Has olvidado tu contraseña?</button><button id="loginInstallBtn" class="login-install" type="button">📲 Instalar OposMurcia 360 en Android</button><div class="login-note">Acceso exclusivo para usuarios autorizados · Sin registro público</div></div></div></section><section id="loadingScreen" class="loading-screen"><div><div class="spinner"></div><p class="muted">Comprobando acceso…</p></div></section><div id="appShell" class="shell hidden">
+<section id="home">
+ <header class="top">
+  <div class="brand">
+   <img src="logo-oposmurcia360.png?v=22-appcheck" alt="OposMurcia 360">
+   <div><h1>OposMurcia 360</h1><p>Tests y supuestos prácticos para Auxiliares Administrativos del Ayuntamiento de Murcia</p></div>
+  </div><div class="userbar"><small id="userEmail"></small><button id="logoutBtn" class="logout">Cerrar sesión</button></div>
+  <div class="hero">
+   <div><small>Biblioteca disponible</small><strong id="heroCount">Tests + supuestos</strong><button class="help-link" onclick="openHelp()">Cómo funciona</button></div>
+   <div class="install-row"><button id="installBtn" class="install" type="button">📲 Instalar app</button><span id="installStatus" class="install-status"></span></div>
+  </div>
+ </header>
+ <div id="adminAccess" class="admin-access hidden">
+  <button class="admin-access-btn" type="button" onclick="openAdminManagement()">
+   <span class="admin-access-icon">⚙</span>
+   <span style="flex:1"><strong>Administración de alumnos</strong><small>Altas, accesos, dispositivos, seguimiento y estadísticas.</small></span>
+   <span aria-hidden="true">›</span>
+  </button>
+ </div>
+ <div class="home-intro">
+  <h2>Tu espacio privado de preparación</h2>
+  <p>Practica con tests y supuestos prácticos, controla tu tiempo y revisa tus respuestas. En los supuestos podrás consultar el enunciado durante todo el ejercicio sin perder la pregunta ni tus respuestas.</p>
+ </div>
+ <div class="summary">
+  <div class="metric"><b id="qCount">80</b><span>preguntas</span></div>
+  <div class="metric"><b id="doneCount">0</b><span>completados</span></div>
+  <div class="metric"><b id="bestScore">—</b><span>mejor nota</span></div>
+ </div>
+ <div class="progress-access">
+  <button class="progress-access-btn" type="button" onclick="openMyProgress()">
+   <span class="progress-access-icon">↗</span>
+   <span style="flex:1"><strong>Mi progreso</strong><small>Consulta tus intentos, nota media y actividad reciente.</small></span>
+   <span aria-hidden="true">›</span>
+  </button>
+ </div>
+ <div class="library-jump" aria-label="Accesos rápidos a la biblioteca">
+  <button class="library-jump-btn" onclick="goToLibrarySection('testsSection')">
+   <span class="library-jump-icon">✓</span>
+   <span><strong>Ir a Tests</strong><small id="quickTestsCount">Tests disponibles</small></span>
+  </button>
+  <button class="library-jump-btn practical" onclick="goToLibrarySection('practicalsSection')">
+   <span class="library-jump-icon">📖</span>
+   <span><strong>Ir a Supuestos prácticos</strong><small id="quickPracticalsCount">Supuestos disponibles</small></span>
+  </button>
+ </div>
+ <div id="testsSection" class="content-block library-anchor">
+  <div class="content-type-head">
+   <div><div class="section-kicker">Tests</div><h2>Tests por temas</h2><p>Cuestionarios de preparación organizados por materias.</p></div>
+   <span id="testCountBadge" class="type-badge">0 tests</span>
+  </div>
+  <div id="testGrid"></div>
+ </div>
+ <div id="practicalsSection" class="content-block library-anchor practicals-home-block">
+  <div class="content-type-head">
+   <div><div class="section-kicker">Supuestos prácticos</div><h2>Supuestos prácticos por temas</h2><p>Lee el enunciado y resuelve el cuestionario pudiendo consultarlo durante todo el ejercicio.</p></div>
+   <span id="practicalCountBadge" class="type-badge">0 supuestos</span>
+  </div>
+  <div id="practicalGrid"></div>
+ </div>
+ <div class="foot">OposMurcia 360 · Preparación práctica</div>
+ <footer class="copyright">© 2026 OposMurcia 360 · Todos los derechos reservados.</footer>
+</section>
+
+
+<section id="myProgress" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Biblioteca</button><button class="secondary" type="button" onclick="loadMyProgress()">Actualizar</button></div>
+ <div class="progress-shell">
+  <div class="progress-head">
+   <div><div class="section-kicker">V23 · Seguimiento personal</div><h2>Mi progreso</h2><p id="progressUserEmail"></p></div>
+  </div>
+  <div id="progressStatus" class="progress-status">Cargando progreso…</div>
+  <div class="progress-metrics">
+   <div class="progress-metric"><b id="progressAttempts">0</b><span>Ejercicios realizados</span></div>
+   <div class="progress-metric"><b id="progressAverage">—</b><span>Nota media</span></div>
+   <div class="progress-metric"><b id="progressBest">—</b><span>Mejor nota</span></div>
+   <div class="progress-metric"><b id="progressLast">—</b><span>Última actividad</span></div>
+  </div>
+  <div class="progress-panel">
+   <h3>Historial de intentos</h3>
+   <div id="progressList" class="progress-list"></div>
+  </div>
+
+  <div class="progress-panel progress-topics">
+   <h3>Rendimiento por materias / temas</h3><div class="progress-status" style="margin-top:-5px">Agrupado según la misma clasificación de la biblioteca.</div>
+   <div id="progressTopicList" class="progress-topic-list"></div>
+  </div>
+
+ </div>
+</section>
+
+
+<section id="adminManagement" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Biblioteca</button><button class="secondary" type="button" onclick="refreshAdminManagement()">Actualizar</button></div>
+ <div class="admin-shell">
+  <div class="admin-head">
+   <div class="section-kicker">Administración · Solo administrador</div>
+   <h2>Gestión de alumnos</h2>
+   <p>Zona independiente para administrar altas, accesos, dispositivos, seguimiento y estadísticas de los alumnos. No modifica tu progreso personal.</p>
+  </div>
+  <div class="admin-section-grid">
+   <div id="adminUsersPanel" class="admin-section-card admin-users-panel">
+    <h3>Altas, accesos y dispositivos</h3>
+    <p class="admin-section-note">Da de alta alumnos, bloquea o reactiva su acceso, cambia el número de dispositivos permitidos y libera dispositivos registrados.</p>
+    <div class="admin-users-form">
+     <div class="field"><label for="adminNewEmail">Correo del alumno</label><input id="adminNewEmail" type="email" placeholder="alumno@correo.com"></div>
+     <div class="field"><label for="adminNewMaxDevices">Dispositivos permitidos</label><select id="adminNewMaxDevices"><option value="1">1 dispositivo</option><option value="2" selected>2 dispositivos</option></select></div>
+     <button class="primary" type="button" onclick="adminAddStudent()">Dar de alta</button>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="secondary" type="button" onclick="loadAdminStudents()">Actualizar listado</button></div>
+    <div id="adminUsersStatus" class="progress-status"></div>
+    <div id="adminUsersList" class="admin-users-list"></div>
+   </div>
+
+   <div id="adminAllProgressPanel" class="admin-section-card">
+    <h3>Seguimiento de alumnos</h3>
+    <p class="admin-section-note">Consulta el historial y rendimiento de los alumnos. Esta vista sigue siendo exclusiva del administrador.</p>
+    <button id="adminProgressToggleBtn" class="secondary" type="button" onclick="toggleAllProgressAsAdmin()" aria-expanded="false">Ver seguimiento de alumnos ▼</button>
+    <div id="adminAllProgressList" class="hidden" style="margin-top:14px"></div>
+   </div>
+
+   <div id="adminResetStatsPanel" class="admin-section-card">
+    <h3>Resetear estadísticas</h3>
+    <p class="admin-section-note">Borra únicamente el historial estadístico del usuario indicado. No elimina tests, supuestos, autorización ni dispositivos.</p>
+    <button class="secondary" type="button" onclick="resetStatsAsAdmin()">Resetear estadísticas de un usuario</button>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="setup" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Volver</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
+ <div class="panel">
+  <img src="logo-oposmurcia360.png?v=22-appcheck" alt="" style="width:72px;height:72px;float:right;margin-left:10px;background:#fff;border-radius:50%;padding:3px">
+  <div class="section-kicker">Configurar test</div>
+  <h2 id="setupTitle"></h2><p id="setupDesc" class="muted"></p>
+  <label><input type="radio" name="timeMode" value="none" checked> Sin tiempo · cronómetro de tiempo empleado</label>
+  <label><input type="radio" name="timeMode" value="timed"> Con tiempo · cuenta atrás</label>
+  <label>Minutos <input id="minutes" type="number" min="1" max="180" value="30"></label>
+  <label><input id="penalty" type="checkbox"> Aplicar penalización de 1/3 por respuesta incorrecta</label>
+  <div class="info">Puedes pulsar <strong>Finalizar y ver resultados</strong> en cualquier momento. Las preguntas no contestadas quedan en blanco y no cuentan como error.</div>
+  <button class="primary" onclick="startQuiz()">Comenzar test</button>
+ </div>
+</section>
+
+<section id="quiz" class="hidden">
+ <div class="view-top"><button class="back" onclick="confirmExit()">← Salir</button><div id="timer" class="timer">00:00</div></div>
+ <div class="progress-track"><div id="progress" class="progress"></div></div>
+ <div class="panel">
+  <div id="qnum" class="qindex"></div>
+  <div id="question" class="question"></div>
+  <div id="options" class="options"></div>
+  <div class="nav">
+   <button class="secondary" onclick="prevQ()">Anterior</button>
+   <button class="secondary" onclick="nextQ()">Siguiente</button>
+   <button class="primary finish" onclick="finishQuiz(false)">Finalizar y ver resultados</button>
+  </div>
+ </div>
+</section>
+
+
+<section id="practicalSetup" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Volver</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
+ <div class="panel">
+  <img src="logo-oposmurcia360.png?v=22-appcheck" alt="" style="width:72px;height:72px;float:right;margin-left:10px;background:#fff;border-radius:50%;padding:3px">
+  <div class="section-kicker">Configurar supuesto práctico</div>
+  <h2 id="practicalSetupTitle"></h2><p id="practicalSetupDesc" class="muted"></p>
+  <label><input type="radio" name="practicalTimeMode" value="none" checked> Sin tiempo · cronómetro de tiempo empleado</label>
+  <label><input type="radio" name="practicalTimeMode" value="timed"> Con tiempo · cuenta atrás</label>
+  <label>Minutos <input id="practicalMinutes" type="number" min="1" max="240" value="30"></label>
+  <label><input id="practicalPenalty" type="checkbox"> Aplicar penalización de 1/3 por respuesta incorrecta</label>
+  <div class="info">Al comenzar accederás primero al <strong>enunciado completo</strong>. El cuestionario solo se habilitará cuando pulses el botón situado al final del enunciado.</div>
+  <button class="primary" onclick="startPractical()">Comenzar supuesto práctico</button>
+ </div>
+</section>
+
+<section id="practicalWork" class="hidden">
+ <div class="view-top"><button class="back" onclick="confirmPracticalExit()">← Salir</button><div id="practicalTimer" class="timer">00:00</div></div>
+ <div class="practical-tabs">
+  <button id="practicalStatementTab" class="primary" onclick="showPracticalStatement()">📖 Supuesto práctico</button>
+  <button id="practicalQuizTab" class="secondary hidden" onclick="showPracticalQuiz()">✅ Cuestionario</button>
+ </div>
+ <div id="practicalStatementView" class="panel">
+  <h2 id="practicalStatementTitle" class="statement-title"></h2>
+  <div id="practicalStatement" class="statement"></div>
+  <div class="statement-actions"><button id="statementQuizButton" class="primary" onclick="showPracticalQuiz()">Comenzar supuesto práctico →</button></div>
+ </div>
+ <div id="practicalQuizView" class="hidden">
+  <div class="progress-track"><div id="practicalProgress" class="progress"></div></div>
+  <div class="panel">
+   <div id="practicalQnum" class="qindex"></div>
+   <div id="practicalQuestion" class="question"></div>
+   <div id="practicalOptions" class="options"></div>
+   <div class="practical-nav">
+    <button class="secondary" onclick="prevPracticalQ()">Anterior</button>
+    <button class="secondary" onclick="nextPracticalQ()">Siguiente</button>
+    <button class="secondary finish" onclick="showPracticalStatement()">📖 Consultar enunciado</button>
+    <button class="primary finish" onclick="finishPractical(false)">Finalizar y ver resultados</button>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="practicalResults" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Biblioteca</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
+ <div class="panel">
+  <div class="section-kicker">Resultado · supuesto práctico</div><h2 id="practicalResultTitle"></h2>
+  <div id="practicalScore" class="score">0,00/10</div>
+  <div class="result-grid">
+   <div class="result-box"><b id="practicalOk">0</b><span>Aciertos</span></div>
+   <div class="result-box"><b id="practicalBad">0</b><span>Errores</span></div>
+   <div class="result-box"><b id="practicalBlank">0</b><span>En blanco</span></div>
+  </div>
+  <p id="practicalResultInfo" class="muted"></p>
+  <div class="nav">
+   <button class="secondary" onclick="showPracticalStatementFromResults()">📖 Consultar enunciado</button>
+   <button class="primary" onclick="togglePracticalReview()">Revisar respuestas</button>
+  </div>
+  <div id="practicalReview" class="hidden" style="margin-top:13px"></div>
+  <div class="nav">
+   <button class="secondary" onclick="repeatPractical()">Repetir supuesto</button>
+   <button class="primary finish" onclick="sharePracticalResult()">Compartir resultado por WhatsApp</button>
+  </div>
+ </div>
+</section>
+
+<section id="practicalResultStatement" class="hidden">
+ <div class="view-top"><button class="back" onclick="returnPracticalResults()">← Volver a resultados</button><div class="timer">Enunciado</div></div>
+ <div class="panel">
+  <h2 id="practicalResultStatementTitle" class="statement-title"></h2>
+  <div id="practicalResultStatementText" class="statement"></div>
+  <div class="statement-actions"><button class="primary" onclick="returnPracticalResults()">Volver a resultados →</button></div>
+ </div>
+</section>
+
+<section id="results" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Biblioteca</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
+ <div class="panel">
+  <div class="section-kicker">Resultado</div><h2 id="resultTitle"></h2>
+  <div id="score" class="score">0,00/10</div>
+  <div class="result-grid">
+   <div class="result-box"><b id="ok">0</b><span>Aciertos</span></div>
+   <div class="result-box"><b id="bad">0</b><span>Errores</span></div>
+   <div class="result-box"><b id="blank">0</b><span>En blanco</span></div>
+  </div>
+  <p id="resultInfo" class="muted"></p>
+  <button class="primary" onclick="toggleReview()">Revisar respuestas</button>
+  <div id="review" class="hidden" style="margin-top:13px"></div>
+  <div class="nav">
+   <button class="secondary" onclick="repeatQuiz()">Repetir test</button>
+   
+   <button class="primary finish" onclick="shareResult()">Compartir resultado por WhatsApp</button>
+  </div>
+ </div>
+</section>
+</div>
+
+
+
+
+<div id="installHelp" class="modal-wrap hidden" onclick="installBackdropClose(event)">
+ <div class="modal">
+  <span class="install-badge">Instalación en Android</span>
+  <h2>Instalar OposMurcia 360</h2>
+  <div id="installHelpContent"></div>
+  <button class="primary" style="width:100%;margin-top:12px" type="button" onclick="closeInstallHelp()">Entendido</button>
+ </div>
+</div>
+
+<div id="help" class="modal-wrap hidden" onclick="backdropClose(event)">
+ <div class="modal">
+  <h2>Cómo funciona</h2>
+  <p><strong>Sin tiempo:</strong> verás un cronómetro con el tiempo empleado. <strong>Con tiempo:</strong> verás una cuenta atrás y el test terminará automáticamente al llegar a 00:00.</p>
+  <p>La penalización de <strong>1/3</strong> es opcional. Si la activas, cada error descuenta un tercio de un acierto. Las respuestas en blanco no penalizan.</p>
+  <p>Puedes avanzar y retroceder entre preguntas. No hay mapa de preguntas ni marcadores de revisión.</p><p>En los <strong>supuestos prácticos</strong> accederás primero al enunciado. Antes de comenzar el cuestionario no aparece el acceso superior «Cuestionario». Una vez iniciado, podrás alternar entre <strong>Supuesto práctico</strong> y <strong>Cuestionario</strong> sin perder la pregunta ni las respuestas.</p>
+  <p><strong>Finalizar y ver resultados</strong> está disponible durante todo el test. Al terminar verás nota sobre 10, aciertos, errores, blancos, tiempo y revisión completa.</p>
+  <button class="primary" onclick="closeHelp()">Entendido</button>
+ </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app-check.js";
+import { getAuth,onAuthStateChanged,signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider,signOut,sendPasswordResetEmail,setPersistence,browserLocalPersistence } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+import { getFirestore,collection,collectionGroup,getDocs,doc,getDoc,setDoc,updateDoc,addDoc,deleteDoc,serverTimestamp,query,where } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+const firebaseConfig={"apiKey":"AIzaSyDA_79FRQq90gVJgD17dRr_pUHKe4S8XBg","authDomain":"oposmurcia360-5a389.firebaseapp.com","projectId":"oposmurcia360-5a389","storageBucket":"oposmurcia360-5a389.firebasestorage.app","messagingSenderId":"730198455785","appId":"1:730198455785:web:1f3e3d4f8edf8774780778","measurementId":"G-T8QHKNDX5T"};
+const app=initializeApp(firebaseConfig);
+const appCheck=initializeAppCheck(app,{
+  provider:new ReCaptchaEnterpriseProvider("6LfJJaMtAAAAAFiIMFM8wbT3C5Pf1708_iS-3jVQ"),
+  isTokenAutoRefreshEnabled:true
+});
+const auth=getAuth(app),db=getFirestore(app);
+await setPersistence(auth,browserLocalPersistence);
+const $=s=>document.querySelector(s),PUBLIC_URL="https://oposmurcia360.github.io/oposmurcia360/";
+let TESTS=[],PRACTICALS=[],currentTest=null,answers=[],current=0,penalty=false,timed=false,timeLimit=0,elapsed=0,interval=null,startedAt=0,deferredPrompt=null;
+let currentPractical=null,practicalAnswers=[],practicalCurrent=0,practicalPenalty=false,practicalTimed=false,practicalTimeLimit=0,practicalElapsed=0,practicalInterval=null,practicalStartedAt=0,practicalQuizStarted=false,practicalStatementY=0;
+let finishingQuiz=false,finishingPractical=false;
+async function registrarProgreso({tipo,ejercicioId,titulo,categoria,totalPreguntas,aciertos,errores,blancos,nota,penalizacion,tiempoEmpleado}){
+  const user=auth.currentUser;
+  if(!user) throw new Error('No hay un usuario autenticado.');
+  await addDoc(collection(db,'progreso'),{
+    uid:user.uid,
+    email:user.email||'',
+    tipo,
+    ejercicioId:String(ejercicioId||''),
+    titulo:String(titulo||''),
+    categoria:String(categoria||'Sin clasificar'),
+    fecha:serverTimestamp(),
+    totalPreguntas:Number(totalPreguntas),
+    aciertos:Number(aciertos),
+    errores:Number(errores),
+    blancos:Number(blancos),
+    nota:Number(nota),
+    penalizacion:Boolean(penalizacion),
+    tiempoEmpleado:Math.max(0,Math.floor(Number(tiempoEmpleado)||0))
+  });
+}
+
+function progressDateValue(fecha){
+  if(!fecha)return 0;
+  if(typeof fecha.toMillis==='function')return fecha.toMillis();
+  if(fecha.seconds!=null)return Number(fecha.seconds)*1000;
+  return 0;
+}
+function formatProgressDate(fecha,short=false){
+  const ms=progressDateValue(fecha);
+  if(!ms)return '—';
+  const d=new Date(ms);
+  return short
+    ? d.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'})
+    : d.toLocaleString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+function formatProgressTime(seconds){
+  const s=Math.max(0,Math.floor(Number(seconds)||0));
+  const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;
+  if(h)return `${h} h ${String(m).padStart(2,'0')} min`;
+  if(m)return `${m} min ${String(sec).padStart(2,'0')} s`;
+  return `${sec} s`;
+}
+
+function progressTopicKey(item){
+  // V23 Fase 5: la categoría guardada es la fuente principal.
+  if((item.categoria||'').toString().trim()){
+    return item.categoria.toString().trim();
+  }
+
+  // Compatibilidad con los intentos de prueba anteriores:
+  // buscamos el ejercicio real en la biblioteca y usamos SU misma clasificación.
+  if(item.tipo==='test'){
+    const t=TESTS.find(x=>String(x.id)===String(item.ejercicioId));
+    if(t){
+      const info=topicInfo(t);
+      if(info && info.label) return info.label;
+    }
+  }else if(item.tipo==='supuesto'){
+    const p=PRACTICALS.find(x=>String(x.id)===String(item.ejercicioId));
+    if(p){
+      return (p.topic||p.tema||p.subject||'Otros supuestos').toString().trim()||'Otros supuestos';
+    }
+  }
+
+  return 'Sin clasificar';
+}function renderProgressTopics(items){
+  const box=$('#progressTopicList');
+  if(!items.length){
+    box.innerHTML='<div class="progress-empty">Todavía no hay datos suficientes para calcular el rendimiento por temas.</div>';
+    return;
+  }
+
+  const groups=new Map();
+  for(const item of items){
+    const key=progressTopicKey(item);
+    if(!groups.has(key)) groups.set(key,[]);
+    groups.get(key).push(item);
+  }
+
+  const rows=[...groups.entries()].map(([tema,arr])=>{
+    const notas=arr.map(x=>Number(x.nota)||0);
+    const avg=notas.reduce((a,b)=>a+b,0)/notas.length;
+    const best=Math.max(...notas);
+    const last=[...arr].sort((a,b)=>progressDateValue(b.fecha)-progressDateValue(a.fecha))[0];
+    return {tema,intentos:arr.length,avg,best,last};
+  }).sort((a,b)=>a.tema.localeCompare(b.tema,'es'));
+
+  box.innerHTML=rows.map(r=>`
+    <div class="progress-topic-item">
+      <div class="progress-topic-head">
+        <div class="progress-topic-name">${esc(r.tema)}</div>
+        <div class="progress-topic-best">${r.best.toFixed(2).replace('.',',')}/10</div>
+      </div>
+      <div class="progress-topic-meta">
+        <span>${r.intentos} ${r.intentos===1?'intento':'intentos'}</span>
+        <span>Nota media: ${r.avg.toFixed(2).replace('.',',')}/10</span>
+        <span>Mejor nota: ${r.best.toFixed(2).replace('.',',')}/10</span>
+        <span>Último: ${formatProgressDate(r.last.fecha,true)}</span>
+      </div>
+    </div>`).join('');
+}
+
+
+async function resetStatsAsAdmin(){
+  const user=auth.currentUser;
+  const emailAdmin=(user?.email||'').toLowerCase();
+
+  if(emailAdmin!==ADMIN_EMAIL){
+    alert('Esta función está reservada al administrador.');
+    return;
+  }
+
+  const objetivo=(prompt(
+    'Escribe el correo electrónico del usuario cuyas estadísticas quieres resetear:',
+    emailAdmin
+  )||'').trim().toLowerCase();
+
+  if(!objetivo)return;
+  if(!objetivo.includes('@')){
+    alert('Introduce un correo electrónico válido.');
+    return;
+  }
+
+  if(!confirm(
+    'Se borrará TODO el historial de progreso de:\n\n'+objetivo+
+    '\n\nTests realizados, nota media, mejor nota, actividad e historial quedarán a cero.'+
+    '\n\nNo se borrarán tests, supuestos, usuarios ni dispositivos.'+
+    '\n\n¿Quieres continuar?'
+  )) return;
+
+  try{
+    const q=query(collection(db,'progreso'),where('email','==',objetivo));
+    const snap=await getDocs(q);
+    await Promise.all(snap.docs.map(d=>deleteDoc(d.ref)));
+
+    if(objetivo===emailAdmin){
+      localStorage.removeItem('opos360_stats_v14');
+      await loadMyProgress();
+      await renderStats();
+    }
+
+    alert(
+      'Estadísticas reseteadas correctamente.\n\n'+
+      'Usuario: '+objetivo+'\n'+
+      'Intentos eliminados: '+snap.size
+    );
+  }catch(e){
+    console.error('No se pudieron resetear las estadísticas:',e);
+    alert('No se han podido resetear las estadísticas.\n\n'+(e?.message||e));
+  }
+}
+
+window.resetStatsAsAdmin=resetStatsAsAdmin;
+
+
+async function loadAllProgressAsAdmin(){
+  const user=auth.currentUser;
+  const email=(user?.email||'').toLowerCase();
+  if(email!==ADMIN_EMAIL){
+    alert('Esta función está reservada al administrador.');
+    return;
+  }
+
+  const box=$('#adminAllProgressList');
+  if(!box)return;
+  box.innerHTML='<div class="progress-status">Cargando seguimiento...</div>';
+
+  try{
+    const snap=await getDocs(collection(db,'progreso'));
+    const items=snap.docs.map(d=>({id:d.id,...d.data()}))
+      .filter(x=>((x.email||'').toLowerCase()!==ADMIN_EMAIL));
+
+    if(!items.length){
+      box.innerHTML='<div class="progress-empty">No hay progreso de alumnos registrado.</div>';
+      return;
+    }
+
+    const porAlumno={};
+    items.forEach(x=>{
+      const correo=(x.email||'Sin correo').toLowerCase();
+      (porAlumno[correo]??=[]).push(x);
+    });
+
+    box.innerHTML=Object.keys(porAlumno).sort().map(correo=>{
+      const intentos=porAlumno[correo].sort((a,b)=>progressDateValue(b.fecha)-progressDateValue(a.fecha));
+      const notas=intentos.map(x=>Number(x.nota)).filter(Number.isFinite);
+      const media=notas.length?notas.reduce((a,b)=>a+b,0)/notas.length:null;
+      const mejor=notas.length?Math.max(...notas):null;
+
+      const historial=intentos.map(x=>`
+        <div class="progress-item">
+          <div class="progress-item-top">
+            <div class="progress-item-title">${esc(x.titulo||'Ejercicio')}</div>
+            <div class="progress-score">${Number.isFinite(Number(x.nota))?Number(x.nota).toFixed(2).replace('.',','):'—'}/10</div>
+          </div>
+          <div class="progress-meta">
+            <span>${x.tipo==='supuesto'?'Supuesto práctico':'Test'}</span>
+            <span>${esc(x.categoria||'Sin categoría')}</span>
+            <span>${formatProgressDate(x.fecha)}</span>
+          </div>
+        </div>`).join('');
+
+      return `
+        <div class="progress-panel" style="margin-top:12px">
+          <h3>${esc(correo)}</h3>
+          <div class="progress-status" style="margin-top:-5px">
+            ${intentos.length} ${intentos.length===1?'intento':'intentos'} ·
+            Nota media: ${media===null?'—':media.toFixed(2).replace('.',',')}/10 ·
+            Mejor nota: ${mejor===null?'—':mejor.toFixed(2).replace('.',',')}/10
+          </div>
+          <div class="progress-list" style="margin-top:10px">${historial}</div>
+        </div>`;
+    }).join('');
+  }catch(e){
+    console.error('No se pudo cargar el seguimiento de alumnos:',e);
+    box.innerHTML='<div class="progress-empty">No se ha podido cargar el seguimiento de alumnos.</div>';
+  }
+}
+window.loadAllProgressAsAdmin=loadAllProgressAsAdmin;
+
+window.toggleAllProgressAsAdmin=async()=>{
+  if(!adminOnly()){alert('Esta función está reservada al administrador.');return;}
+  const box=$('#adminAllProgressList');
+  const btn=$('#adminProgressToggleBtn');
+  if(!box||!btn)return;
+  const isOpen=!box.classList.contains('hidden');
+  if(isOpen){
+    box.classList.add('hidden');
+    btn.textContent='Ver seguimiento de alumnos ▼';
+    btn.setAttribute('aria-expanded','false');
+    return;
+  }
+  box.classList.remove('hidden');
+  btn.textContent='Ocultar seguimiento de alumnos ▲';
+  btn.setAttribute('aria-expanded','true');
+  await loadAllProgressAsAdmin();
+};
+
+/* =========================
+   V23 BETA · PANEL ADMINISTRACIÓN DE ALUMNOS
+   ========================= */
+function adminOnly(){
+  return ((auth.currentUser?.email||'').toLowerCase()===ADMIN_EMAIL);
+}
+function normalizeStudentEmail(value){
+  return String(value||'').trim().toLowerCase();
+}
+async function adminDeviceMap(){
+  const map={};
+  const snap=await getDocs(collectionGroup(db,'equipos'));
+  snap.docs.forEach(d=>{
+    const x=d.data()||{};
+    const email=normalizeStudentEmail(x.email);
+    if(!email)return;
+    (map[email]??=[]).push({
+      id:d.id,
+      path:d.ref.path,
+      ref:d.ref,
+      uid:String(x.uid||''),
+      activo:x.activo===true,
+      ultimoAcceso:x.ultimoAcceso||null,
+      creadoEn:x.creadoEn||null
+    });
+  });
+  Object.values(map).forEach(arr=>arr.sort((a,b)=>a.id.localeCompare(b.id,'es')));
+  return map;
+}
+window.loadAdminStudents=async()=>{
+  if(!adminOnly()){alert('Esta función está reservada al administrador.');return;}
+  const status=$('#adminUsersStatus'),box=$('#adminUsersList');
+  status.textContent='Cargando alumnos y dispositivos…'; box.innerHTML='';
+  try{
+    // Cargamos primero el listado de autorizados. La lectura de dispositivos se
+    // hace aparte para que un problema puntual en collectionGroup('equipos')
+    // no impida ver y gestionar los alumnos autorizados.
+    const authSnap=await getDocs(collection(db,'autorizados'));
+    let devices={};
+    let deviceWarning='';
+    try{
+      devices=await adminDeviceMap();
+    }catch(deviceError){
+      console.error('Panel alumnos · dispositivos:',deviceError);
+      deviceWarning=' · No se han podido leer los dispositivos';
+    }
+    const rows=authSnap.docs.map(d=>({id:d.id,...d.data()}))
+      .filter(x=>normalizeStudentEmail(x.id)!==ADMIN_EMAIL)
+      .sort((a,b)=>normalizeStudentEmail(a.id).localeCompare(normalizeStudentEmail(b.id),'es'));
+    if(!rows.length){box.innerHTML='<div class="progress-empty">No hay alumnos autorizados.</div>';status.textContent='';return;}
+    box.innerHTML=rows.map(x=>{
+      const email=normalizeStudentEmail(x.id),active=x.activo===true,max=Number(x.maxDispositivos)===2?2:1,devs=devices[email]||[];
+      const devHtml=devs.length?devs.map(d=>`<div class="admin-device"><span><strong>${esc(d.id)}</strong> · ${d.uid?esc(d.uid.slice(0,10))+'…':'UID no disponible'}${d.ultimoAcceso?' · Último acceso: '+esc(formatProgressDate(d.ultimoAcceso)):''}</span><button class="secondary" type="button" onclick="adminReleaseDevice('${encodeURIComponent(email)}','${encodeURIComponent(d.path)}')">Liberar</button></div>`).join(''):'<div class="muted">Sin dispositivos registrados.</div>';
+      return `<div class="admin-user-card ${active?'':'blocked'}"><div class="admin-user-head"><div><div class="admin-user-email">${esc(email)}</div><div class="admin-user-meta"><span>${max} ${max===1?'dispositivo permitido':'dispositivos permitidos'}</span><span>${devs.length} ${devs.length===1?'slot ocupado':'slots ocupados'}</span></div></div><span class="admin-user-state ${active?'':'blocked'}">${active?'ACTIVO':'BLOQUEADO'}</span></div><div class="admin-user-actions"><button class="secondary" type="button" onclick="adminToggleStudent('${encodeURIComponent(email)}',${active?'false':'true'})">${active?'Bloquear acceso':'Reactivar acceso'}</button><button class="secondary" type="button" onclick="adminSetMaxDevices('${encodeURIComponent(email)}',${max===1?2:1})">Permitir ${max===1?2:1} dispositivo${max===1?'s':''}</button>${devs.length>1?`<button class="secondary" type="button" onclick="adminReleaseAllDevices('${encodeURIComponent(email)}')">Liberar todos</button>`:''}</div><div class="admin-device-list">${devHtml}</div></div>`;
+    }).join('');
+    status.textContent=`${rows.length} ${rows.length===1?'alumno':'alumnos'} en autorizados.${deviceWarning}`;
+  }catch(e){
+    console.error('Panel alumnos:',e);
+    status.textContent='No se ha podido cargar el listado de alumnos autorizados. Comprueba las reglas del panel.';
+  }
+};
+window.adminAddStudent=async()=>{
+  if(!adminOnly())return;
+  const email=normalizeStudentEmail($('#adminNewEmail').value),max=Number($('#adminNewMaxDevices').value)===2?2:1;
+  if(!email || !email.includes('@')){alert('Introduce un correo electrónico válido.');return;}
+  if(email===ADMIN_EMAIL){alert('El administrador no se gestiona desde este panel.');return;}
+  try{
+    const ref=doc(db,'autorizados',email),snap=await getDoc(ref);
+    if(snap.exists() && !confirm('Este correo ya existe en autorizados. ¿Quieres reactivarlo y establecer '+max+' dispositivo(s)?'))return;
+    await setDoc(ref,{activo:true,maxDispositivos:max,rol:'alumno',email}, {merge:true});
+    $('#adminNewEmail').value='';
+    alert('Alumno autorizado correctamente.\n\n'+email+'\nDispositivos permitidos: '+max);
+    await loadAdminStudents();
+  }catch(e){console.error(e);alert('No se ha podido dar de alta al alumno.\n\n'+(e?.message||e));}
+};
+window.adminToggleStudent=async(encodedEmail,active)=>{
+  if(!adminOnly())return;
+  const email=decodeURIComponent(encodedEmail);
+  const action=active?'reactivar':'bloquear';
+  if(!confirm(`¿Quieres ${action} el acceso de ${email}?\n\nNo se borrará su progreso ni sus dispositivos.`))return;
+  try{await updateDoc(doc(db,'autorizados',email),{activo:Boolean(active)});await loadAdminStudents();}
+  catch(e){console.error(e);alert('No se ha podido modificar el acceso.\n\n'+(e?.message||e));}
+};
+window.adminSetMaxDevices=async(encodedEmail,max)=>{
+  if(!adminOnly())return;
+  const email=decodeURIComponent(encodedEmail),n=Number(max)===2?2:1;
+  if(!confirm(`Cambiar el límite de ${email} a ${n} dispositivo(s)?\n\nSi reduces a 1 y actualmente existen dos slots, libera después el dispositivo que no quieras conservar.`))return;
+  try{await updateDoc(doc(db,'autorizados',email),{maxDispositivos:n});await loadAdminStudents();}
+  catch(e){console.error(e);alert('No se ha podido cambiar el límite.\n\n'+(e?.message||e));}
+};
+window.adminReleaseDevice=async(encodedEmail,encodedPath)=>{
+  if(!adminOnly())return;
+  const email=decodeURIComponent(encodedEmail),path=decodeURIComponent(encodedPath);
+  if(!confirm(`Liberar este dispositivo de ${email}?\n\nEl alumno podrá ocupar de nuevo un slot desde otro navegador o dispositivo.`))return;
+  try{const parts=path.split('/');await deleteDoc(doc(db,...parts));await loadAdminStudents();}
+  catch(e){console.error(e);alert('No se ha podido liberar el dispositivo.\n\n'+(e?.message||e));}
+};
+window.adminReleaseAllDevices=async(encodedEmail)=>{
+  if(!adminOnly())return;
+  const email=decodeURIComponent(encodedEmail);
+  if(!confirm(`¿Liberar TODOS los dispositivos de ${email}?\n\nNo se borrará el alumno ni su progreso.`))return;
+  try{
+    const snap=await getDocs(collectionGroup(db,'equipos'));
+    const refs=snap.docs.filter(d=>normalizeStudentEmail(d.data()?.email)===email).map(d=>d.ref);
+    await Promise.all(refs.map(ref=>deleteDoc(ref)));
+    await loadAdminStudents();
+  }catch(e){console.error(e);alert('No se han podido liberar todos los dispositivos.\n\n'+(e?.message||e));}
+};
+
+
+async function loadMyProgress(){
+  const user=auth.currentUser;
+  if(!user)return;
+  $('#progressUserEmail').textContent=user.email||'';
+  $('#progressStatus').textContent='Cargando progreso…';
+  $('#progressList').innerHTML='';
+  try{
+    // La consulta incluye el UID para que las reglas de Firestore garanticen
+    // que un alumno solo puede recuperar sus propios documentos.
+    const q=query(collection(db,'progreso'),where('uid','==',user.uid));
+    const snap=await getDocs(q);
+    const items=snap.docs.map(d=>({id:d.id,...d.data()}))
+      .sort((a,b)=>progressDateValue(b.fecha)-progressDateValue(a.fecha));
+
+    $('#progressAttempts').textContent=items.length;
+    if(items.length){
+      const avg=items.reduce((sum,x)=>sum+(Number(x.nota)||0),0)/items.length;
+      const best=Math.max(...items.map(x=>Number(x.nota)||0));
+      $('#progressAverage').textContent=avg.toFixed(2).replace('.',',')+'/10';
+      $('#progressBest').textContent=best.toFixed(2).replace('.',',')+'/10';
+      $('#progressLast').textContent=formatProgressDate(items[0].fecha,true);
+      $('#progressList').innerHTML=items.map(x=>`
+        <div class="progress-item">
+          <div class="progress-item-top">
+            <div class="progress-item-title">${esc(x.titulo||'Ejercicio')}</div>
+            <div class="progress-score">${(Number(x.nota)||0).toFixed(2).replace('.',',')}/10</div>
+          </div>
+          <div class="progress-meta">
+            <span>${x.tipo==='supuesto'?'Supuesto práctico':'Test'}</span>
+            <span>${formatProgressDate(x.fecha)}</span>
+            <span>${Number(x.aciertos)||0} aciertos · ${Number(x.errores)||0} errores · ${Number(x.blancos)||0} blancos</span>
+            <span>${formatProgressTime(x.tiempoEmpleado)}</span>
+            <span>${x.penalizacion?'Penalización 1/3':'Sin penalización'}</span>
+          </div>
+        </div>`).join('');
+      renderProgressTopics(items);
+      $('#progressStatus').textContent=`${items.length} ${items.length===1?'intento registrado':'intentos registrados'}.`;
+    }else{
+      $('#progressAverage').textContent='—';
+      $('#progressBest').textContent='—';
+      $('#progressLast').textContent='—';
+      $('#progressList').innerHTML='<div class="progress-empty">Todavía no tienes ejercicios registrados. Finaliza un test o supuesto práctico y aparecerá aquí.</div>';
+      $('#progressTopicList').innerHTML='<div class="progress-empty">Todavía no hay datos suficientes para calcular el rendimiento por temas.</div>';
+      $('#progressStatus').textContent='Aún no hay actividad registrada.';
+    }
+  }catch(e){
+    console.error('No se pudo cargar Mi progreso:',e);
+    $('#progressStatus').textContent='No se ha podido cargar el progreso.';
+    $('#progressList').innerHTML='<div class="progress-empty">No se ha podido consultar tu historial. Comprueba la conexión y vuelve a intentarlo.</div>';
+    $('#progressTopicList').innerHTML='<div class="progress-empty">No se ha podido calcular el rendimiento por temas.</div>';
+  }
+}
+window.loadMyProgress=loadMyProgress;
+window.openMyProgress=async()=>{
+  show('myProgress');
+  await loadMyProgress();
+};
+window.openAdminManagement=async()=>{
+  if(!adminOnly()){alert('Esta zona está reservada al administrador.');return;}
+  show('adminManagement');
+  const progressBox=$('#adminAllProgressList');
+  const progressBtn=$('#adminProgressToggleBtn');
+  if(progressBox)progressBox.classList.add('hidden');
+  if(progressBtn){progressBtn.textContent='Ver seguimiento de alumnos ▼';progressBtn.setAttribute('aria-expanded','false');}
+  await loadAdminStudents();
+};
+window.refreshAdminManagement=async()=>{
+  if(!adminOnly())return;
+  await loadAdminStudents();
+};
+
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function msg(t,type='error'){const e=$('#authMsg');e.textContent=t;e.className='authmsg '+type} function clearMsg(){const e=$('#authMsg');e.textContent='';e.className='hidden'}
+function ferr(c){return ({'auth/invalid-credential':'Correo o contraseña incorrectos.','auth/user-disabled':'Esta cuenta está desactivada.','auth/too-many-requests':'Demasiados intentos. Inténtalo más tarde.','auth/invalid-email':'El correo electrónico no es válido.','auth/network-request-failed':'No se ha podido conectar. Comprueba tu conexión.'}[c]||'No se ha podido iniciar sesión.')}
+$('#loginForm').addEventListener('submit',async e=>{e.preventDefault();clearMsg();const b=$('#loginBtn');b.disabled=true;b.textContent='Accediendo…';try{await signInWithEmailAndPassword(auth,$('#email').value.trim(),$('#password').value)}catch(x){msg(ferr(x.code))}finally{b.disabled=false;b.textContent='Iniciar sesión'}});
+const googleProvider=new GoogleAuthProvider();
+googleProvider.setCustomParameters({prompt:'select_account'});
+const googleLoginBtn=$('#googleLoginBtn');
+if(googleLoginBtn)googleLoginBtn.addEventListener('click',async()=>{
+  clearMsg();
+  googleLoginBtn.disabled=true;
+  const oldText=googleLoginBtn.innerHTML;
+  googleLoginBtn.textContent='Conectando con Google…';
+  try{
+    await signInWithPopup(auth,googleProvider);
+  }catch(x){
+    if(x?.code!=='auth/popup-closed-by-user' && x?.code!=='auth/cancelled-popup-request'){
+      msg(ferr(x?.code)||'No se ha podido iniciar sesión con Google.');
+    }
+  }finally{
+    googleLoginBtn.disabled=false;
+    googleLoginBtn.innerHTML=oldText;
+  }
+});
+
+$('#resetBtn').addEventListener('click',async()=>{clearMsg();const email=$('#email').value.trim();if(!email)return msg('Escribe primero tu correo electrónico.');try{await sendPasswordResetEmail(auth,email);msg('Correo de recuperación enviado.','success')}catch(x){msg(ferr(x.code))}}); $('#logoutBtn').addEventListener('click',()=>signOut(auth));
+async function loadTests(){
+  const s=await getDocs(collection(db,'tests'));
+  TESTS=s.docs.map(d=>{
+    const data=d.data();
+    const raw=data.questions;
+    let questions=[];
+    if(Array.isArray(raw)){
+      questions=raw.map(q=>{
+        if(Array.isArray(q)) return q;
+        if(q && typeof q==='object') return [q.text??q.question??'', q.options??q.answers??[], Number(q.correct??q.correctIndex??0)];
+        return null;
+      }).filter(Boolean);
+    } else if(raw && typeof raw==='object'){
+      questions=Object.values(raw)
+        .sort((a,b)=>(Number(a?.order)||999)-(Number(b?.order)||999))
+        .map(q=>[q?.text??q?.question??'', Array.isArray(q?.options)?q.options:(q?.answers??[]), Number(q?.correct??q?.correctIndex??0)]);
+    }
+    questions=questions.filter(q=>Array.isArray(q) && typeof q[0]==='string' && Array.isArray(q[1]) && q[1].length>=2 && Number.isInteger(q[2]));
+    return {id:d.id,...data,questions};
+  }).sort((a,b)=>(a.order??999)-(b.order??999));
+
+  const invalid=TESTS.filter(t=>!Array.isArray(t.questions)||!t.questions.length);
+  if(invalid.length){
+    console.error('Tests sin preguntas válidas:',invalid);
+    throw new Error('Hay tests en Firestore cuyo formato de preguntas no es válido.');
+  }
+}
+async function loadPracticals(){
+  try{
+    const s=await getDocs(collection(db,'supuestos'));
+    PRACTICALS=s.docs.map(d=>{
+      const data=d.data();
+      const raw=data.questions;
+      let questions=[];
+      if(Array.isArray(raw)){
+        questions=raw.map(q=>{
+          if(Array.isArray(q)) return q;
+          if(q && typeof q==='object') return [q.text??q.question??'', q.options??q.answers??[], Number(q.correct??q.correctIndex??0)];
+          return null;
+        }).filter(Boolean);
+      }else if(raw && typeof raw==='object'){
+        questions=Object.values(raw)
+          .sort((a,b)=>(Number(a?.order)||999)-(Number(b?.order)||999))
+          .map(q=>[q?.text??q?.question??'', Array.isArray(q?.options)?q.options:(q?.answers??[]), Number(q?.correct??q?.correctIndex??0)]);
+      }
+      questions=questions.filter(q=>Array.isArray(q) && typeof q[0]==='string' && Array.isArray(q[1]) && q[1].length>=2 && Number.isInteger(q[2]));
+      return {id:d.id,...data,statement:String(data.statement??data.enunciado??''),questions};
+    }).filter(p=>p.statement && p.questions.length)
+      .sort((a,b)=>(a.order??999)-(b.order??999));
+  }catch(e){
+    console.error('No se pudieron cargar los supuestos prácticos:',e);
+    PRACTICALS=[];
+  }
+}
+function stats(){try{return JSON.parse(localStorage.getItem('opos360_stats_v14')||'{"done":0,"best":null}')}catch(e){return {done:0,best:null}}}
+function saveStats(s){localStorage.setItem('opos360_stats_v14',JSON.stringify(s))}
+async function renderStats(){
+  const user=auth.currentUser;
+  if(!user){
+    $('#doneCount').textContent='0';
+    $('#bestScore').textContent='—';
+    return;
+  }
+  try{
+    const q=query(collection(db,'progreso'),where('uid','==',user.uid));
+    const snap=await getDocs(q);
+    const items=snap.docs.map(d=>d.data());
+    $('#doneCount').textContent=items.length;
+    if(items.length){
+      const best=Math.max(...items.map(x=>Number(x.nota)||0));
+      $('#bestScore').textContent=best.toFixed(2).replace('.',',');
+    }else{
+      $('#bestScore').textContent='—';
+    }
+  }catch(e){
+    console.error('No se pudieron sincronizar las estadísticas:',e);
+    const s=stats();
+    $('#doneCount').textContent=s.done||0;
+    $('#bestScore').textContent=s.best==null?'—':Number(s.best).toFixed(2).replace('.',',');
+  }
+}
+function topicInfo(t){
+  const hay=((t.title||'')+' '+(t.description||'')+' '+(t.id||'')).toLowerCase();
+
+  // Los tests de repaso se agrupan siempre aparte, aunque en Firestore
+  // tengan asignado un tema concreto como "Constitución Española".
+  if(
+    hay.includes('repaso') ||
+    hay.includes('resumen parte general') ||
+    hay.includes('resumen temas parte general')
+  ){
+    return {key:'repaso-tests',label:'Repaso de tests',order:800};
+  }
+
+  const explicit=(t.topic||t.tema||t.subject||'').toString().trim();
+  if(explicit){
+    const n=(explicit.match(/(\d+)/)||[])[1];
+    return {key:'explicit-'+explicit.toLowerCase(),label:explicit,order:n?Number(n):900};
+  }
+
+  if(hay.includes('constituci')) return {key:'tema-1-constitucion',label:'Tema 1 · Constitución Española',order:1};
+  return {key:'otros',label:'Otros tests',order:999};
+}
+function repasoOrdinal(t){
+  const titulo=(t.title||'').toString();
+  const nums=titulo.match(/\d+/g);
+  return nums&&nums.length ? Number(nums[nums.length-1]) : 0;
+}
+function renderTestCard(t){
+  const hay=((t.title||'')+' '+(t.description||'')+' '+(t.id||'')).toLowerCase();
+  const esRepaso=hay.includes('repaso') || hay.includes('resumen parte general') || hay.includes('resumen temas parte general');
+  return `<article class="test-card ${esRepaso?'repaso-card':''}"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=22-appcheck" alt=""><div><h3>${esc(t.title)}</h3><div class="muted">${esc(t.description||t.subtitle||'Cuestionario de preparación')}</div></div></div><div class="pills"><span class="pill">${t.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-test="${esc(t.id)}">Realizar test</button></article>`;
+}
+function renderPracticalCard(p){
+  const hay=((p.title||'')+' '+(p.description||'')+' '+(p.id||'')).toLowerCase();
+  const esRepaso=hay.includes('repaso');
+  return `<article class="practical-card ${esRepaso?'repaso-card':''}"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=22-appcheck" alt=""><div><h3>${esc(p.title)}</h3><div class="muted">${esc(p.description||p.subtitle||'Supuesto práctico para Auxiliares Administrativos')}</div></div></div><span class="practical-tag">📖 Enunciado + cuestionario</span><div class="pills"><span class="pill">${p.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-practical="${esc(p.id)}">Realizar supuesto práctico</button></article>`;
+}
+function renderHome(){
+  const totalQuestions=TESTS.reduce((n,t)=>n+(t.questions?.length||0),0)+PRACTICALS.reduce((n,p)=>n+(p.questions?.length||0),0);
+  $('#heroCount').textContent=`${TESTS.length} ${TESTS.length===1?'test':'tests'} · ${PRACTICALS.length} ${PRACTICALS.length===1?'supuesto':'supuestos'}`;
+  $('#qCount').textContent=totalQuestions;
+  $('#testCountBadge').textContent=`${TESTS.length} ${TESTS.length===1?'test':'tests'}`;
+  $('#practicalCountBadge').textContent=`${PRACTICALS.length} ${PRACTICALS.length===1?'supuesto':'supuestos'}`;
+  $('#quickTestsCount').textContent=`${TESTS.length} ${TESTS.length===1?'test disponible':'tests disponibles'}`;
+  $('#quickPracticalsCount').textContent=`${PRACTICALS.length} ${PRACTICALS.length===1?'supuesto disponible':'supuestos disponibles'}`;
+  renderStats();
+
+  const grid=$('#testGrid');
+  if(!TESTS.length){
+    grid.innerHTML='<div class="empty">No hay tests disponibles todavía en Firestore.</div>';
+  }else{
+    const groups=new Map();
+    TESTS.forEach(t=>{
+      const info=topicInfo(t);
+      if(!groups.has(info.key)) groups.set(info.key,{...info,tests:[]});
+      groups.get(info.key).tests.push(t);
+    });
+    const ordered=[...groups.values()].sort((a,b)=>{
+      if(a.key==='repaso-tests' && b.key!=='repaso-tests') return 1;
+      if(b.key==='repaso-tests' && a.key!=='repaso-tests') return -1;
+      return a.order-b.order||a.label.localeCompare(b.label,'es');
+    });
+    grid.innerHTML=ordered.map(g=>{
+      if(g.key==='repaso-tests'){
+        g.tests.sort((a,b)=>repasoOrdinal(a)-repasoOrdinal(b) || (a.title||'').localeCompare(b.title||'','es'));
+      }
+      return `
+      <section class="topic-section">
+        <div class="topic-heading">
+          <h2>${esc(g.label)}</h2>
+          <span class="topic-count">${g.tests.length} ${g.tests.length===1?'test':'tests'}</span>
+        </div>
+        <div class="topic-grid">${g.tests.map(renderTestCard).join('')}</div>
+      </section>`;
+    }).join('');
+  }
+
+  const pgrid=$('#practicalGrid');
+  if(!PRACTICALS.length){
+    pgrid.innerHTML='<div class="empty">No hay supuestos prácticos disponibles todavía.</div>';
+  }else{
+    const groups=new Map();
+    PRACTICALS.forEach(p=>{
+      const label=(p.topic||p.tema||p.subject||'Otros supuestos').toString().trim()||'Otros supuestos';
+      const key=label.toLowerCase();
+      if(!groups.has(key)) groups.set(key,{label,items:[]});
+      groups.get(key).items.push(p);
+    });
+    const ordered=[...groups.values()].sort((a,b)=>a.label.localeCompare(b.label,'es'));
+    pgrid.innerHTML=ordered.map(g=>`
+      <section class="topic-section">
+        <div class="topic-heading">
+          <h2>${esc(g.label)}</h2>
+          <span class="topic-count">${g.items.length} ${g.items.length===1?'supuesto':'supuestos'}</span>
+        </div>
+        <div class="topic-grid">${g.items.map(renderPracticalCard).join('')}</div>
+      </section>`).join('');
+  }
+
+  document.querySelectorAll('[data-test]').forEach(b=>b.onclick=()=>openSetup(b.dataset.test));
+  document.querySelectorAll('[data-practical]').forEach(b=>b.onclick=()=>openPracticalSetup(b.dataset.practical));
+}
+window.goToLibrarySection=(id)=>{
+  const el=document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+};
+function show(id){['home','myProgress','adminManagement','setup','quiz','results','practicalSetup','practicalWork','practicalResults','practicalResultStatement'].forEach(x=>$('#'+x).classList.toggle('hidden',x!==id));window.scrollTo({top:0,behavior:'smooth'})}
+window.goHome=()=>{clearInterval(interval);interval=null;clearInterval(practicalInterval);practicalInterval=null;show('home');renderHome()};function openSetup(id){currentTest=TESTS.find(t=>t.id===id);if(!currentTest)return;$('#setupTitle').textContent=currentTest.title;$('#setupDesc').textContent=currentTest.description||currentTest.subtitle||'';show('setup')}
+window.startQuiz=()=>{if(!currentTest||!Array.isArray(currentTest.questions)||!currentTest.questions.length){alert('Este test no contiene preguntas válidas.');return;}finishingQuiz=false;answers=Array(currentTest.questions.length).fill(null);current=0;penalty=$('#penalty').checked;timed=document.querySelector('input[name="timeMode"]:checked').value==='timed';timeLimit=Math.max(1,parseInt($('#minutes').value||30))*60;elapsed=0;startedAt=Date.now();show('quiz');renderQuestion();tick();clearInterval(interval);interval=setInterval(()=>{elapsed=Math.floor((Date.now()-startedAt)/1000);tick();if(timed&&elapsed>=timeLimit)finishQuiz(true)},1000)};
+function fmt(s){s=Math.max(0,Math.floor(s));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}function tick(){$('#timer').textContent=timed?fmt(Math.max(0,timeLimit-elapsed)):fmt(elapsed)}
+function renderQuestion(){const q=currentTest.questions[current];$('#qnum').textContent=`Pregunta ${current+1} de ${currentTest.questions.length}`;$('#question').textContent=q[0];$('#progress').style.width=((current+1)/currentTest.questions.length*100)+'%';$('#options').innerHTML=q[1].map((o,i)=>`<button class="option ${answers[current]===i?'selected':''}" data-choice="${i}"><strong>${String.fromCharCode(65+i)})</strong> ${esc(o)}</button>`).join('');document.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>{answers[current]=Number(b.dataset.choice);renderQuestion()})}
+window.prevQ=()=>{if(current>0){current--;renderQuestion()}};window.nextQ=()=>{if(current<currentTest.questions.length-1){current++;renderQuestion()}};window.confirmExit=()=>{if(confirm('¿Salir del test? Se perderán las respuestas de este intento.'))goHome()};
+window.finishQuiz=async(auto=false)=>{if(finishingQuiz)return;finishingQuiz=true;clearInterval(interval);interval=null;elapsed=Math.floor((Date.now()-startedAt)/1000);let ok=0,bad=0,blank=0;currentTest.questions.forEach((q,i)=>{if(answers[i]===null)blank++;else if(answers[i]===q[2])ok++;else bad++});const raw=ok-(penalty?bad/3:0),score=Math.max(0,(raw/currentTest.questions.length)*10),usedTime=timed?Math.min(elapsed,timeLimit):elapsed;$('#resultTitle').textContent=currentTest.title;$('#score').textContent=score.toFixed(2).replace('.',',')+'/10';$('#ok').textContent=ok;$('#bad').textContent=bad;$('#blank').textContent=blank;$('#resultInfo').textContent=(auto?'Tiempo agotado. · ':'')+'Tiempo empleado: '+fmt(usedTime)+' · '+(penalty?'Penalización 1/3 aplicada.':'Sin penalización.');$('#review').classList.add('hidden');$('#review').innerHTML='';const s=stats();s.done=(s.done||0)+1;s.best=s.best==null?score:Math.max(Number(s.best),score);saveStats(s);show('results');try{await registrarProgreso({tipo:'test',ejercicioId:currentTest.id,titulo:currentTest.title,categoria:topicInfo(currentTest).label,totalPreguntas:currentTest.questions.length,aciertos:ok,errores:bad,blancos:blank,nota:score,penalizacion:penalty,tiempoEmpleado:usedTime});}catch(e){console.error('No se pudo registrar el progreso del test:',e);alert('El resultado se muestra correctamente, pero no se ha podido guardar el progreso en tu historial. Comprueba la conexión e inténtalo de nuevo más tarde.');finishingQuiz=false;}};
+window.toggleReview=()=>{const box=$('#review');if(!box.innerHTML)box.innerHTML=currentTest.questions.map((q,i)=>{const a=answers[i],state=a===null?'blank':(a===q[2]?'ok':'bad'),y=a===null?'Sin contestar':String.fromCharCode(65+a)+') '+q[1][a],r=String.fromCharCode(65+q[2])+') '+q[1][q[2]];return `<div class="review-item ${state}"><strong>${i+1}. ${esc(q[0])}</strong><br>Tu respuesta: ${esc(y)}<br>Correcta: ${esc(r)}</div>`}).join('');box.classList.toggle('hidden')};window.repeatQuiz=()=>openSetup(currentTest.id);window.shareResult=()=>location.href='https://wa.me/?text='+encodeURIComponent('OposMurcia 360 · '+currentTest.title+' · Resultado: '+$('#score').textContent+' · '+PUBLIC_URL);
+
+function openPracticalSetup(id){
+  currentPractical=PRACTICALS.find(p=>p.id===id);
+  if(!currentPractical)return;
+  $('#practicalSetupTitle').textContent=currentPractical.title;
+  $('#practicalSetupDesc').textContent=currentPractical.description||currentPractical.subtitle||'Lee el enunciado completo antes de iniciar el cuestionario.';
+  show('practicalSetup');
+}
+window.startPractical=()=>{
+  if(!currentPractical||!currentPractical.questions.length||!currentPractical.statement){alert('Este supuesto práctico no contiene todos los datos necesarios.');return}
+  finishingPractical=false;
+  practicalAnswers=Array(currentPractical.questions.length).fill(null);
+  practicalCurrent=0;
+  practicalPenalty=$('#practicalPenalty').checked;
+  practicalTimed=document.querySelector('input[name="practicalTimeMode"]:checked').value==='timed';
+  practicalTimeLimit=Math.max(1,parseInt($('#practicalMinutes').value||30))*60;
+  practicalElapsed=0; practicalStartedAt=Date.now(); practicalQuizStarted=false; practicalStatementY=0;
+  $('#practicalStatementTitle').textContent=currentPractical.title;
+  $('#practicalStatement').textContent=currentPractical.statement;
+  $('#statementQuizButton').textContent='Comenzar supuesto práctico →';
+  $('#practicalQuizTab').className='secondary hidden';
+  show('practicalWork');
+  showPracticalStatement(true);
+  practicalTick();
+  clearInterval(practicalInterval);
+  practicalInterval=setInterval(()=>{
+    practicalElapsed=Math.floor((Date.now()-practicalStartedAt)/1000);
+    practicalTick();
+    if(practicalTimed&&practicalElapsed>=practicalTimeLimit)finishPractical(true);
+  },1000);
+};
+function practicalTick(){
+  $('#practicalTimer').textContent=practicalTimed?fmt(Math.max(0,practicalTimeLimit-practicalElapsed)):fmt(practicalElapsed);
+}
+window.showPracticalStatement=(initial=false)=>{
+  if(!currentPractical)return;
+  if(!initial && !$('#practicalStatementView').classList.contains('hidden')) practicalStatementY=window.scrollY;
+  $('#practicalQuizView').classList.add('hidden');
+  $('#practicalStatementView').classList.remove('hidden');
+  $('#practicalStatementTab').className='primary';
+  if(practicalQuizStarted){
+    $('#practicalQuizTab').className='secondary';
+    $('#statementQuizButton').textContent='Volver al cuestionario →';
+  }else{
+    $('#practicalQuizTab').className='secondary hidden';
+    $('#statementQuizButton').textContent='Comenzar supuesto práctico →';
+  }
+  setTimeout(()=>window.scrollTo(0,practicalStatementY||0),0);
+};
+window.showPracticalQuiz=()=>{
+  if(!currentPractical)return;
+  practicalStatementY=window.scrollY;
+  practicalQuizStarted=true;
+  $('#practicalQuizTab').className='primary';
+  $('#practicalStatementTab').className='secondary';
+  $('#statementQuizButton').textContent='Volver al cuestionario →';
+  $('#practicalStatementView').classList.add('hidden');
+  $('#practicalQuizView').classList.remove('hidden');
+  renderPracticalQuestion();
+  setTimeout(()=>$('#practicalQuizView').scrollIntoView({block:'start'}),0);
+};
+function renderPracticalQuestion(){
+  const q=currentPractical.questions[practicalCurrent];
+  $('#practicalQnum').textContent=`Pregunta ${practicalCurrent+1} de ${currentPractical.questions.length}`;
+  $('#practicalQuestion').textContent=q[0];
+  $('#practicalProgress').style.width=((practicalCurrent+1)/currentPractical.questions.length*100)+'%';
+  $('#practicalOptions').innerHTML=q[1].map((o,i)=>`<button class="option ${practicalAnswers[practicalCurrent]===i?'selected':''}" data-pchoice="${i}"><strong>${String.fromCharCode(65+i)})</strong> ${esc(o)}</button>`).join('');
+  document.querySelectorAll('[data-pchoice]').forEach(b=>b.onclick=()=>{practicalAnswers[practicalCurrent]=Number(b.dataset.pchoice);renderPracticalQuestion()});
+}
+window.prevPracticalQ=()=>{if(practicalCurrent>0){practicalCurrent--;renderPracticalQuestion()}};
+window.nextPracticalQ=()=>{if(practicalCurrent<currentPractical.questions.length-1){practicalCurrent++;renderPracticalQuestion()}};
+window.confirmPracticalExit=()=>{if(confirm('¿Salir del supuesto práctico? Se perderán las respuestas de este intento.'))goHome()};
+window.finishPractical=async(auto=false)=>{
+  if(finishingPractical)return;
+  finishingPractical=true;
+  clearInterval(practicalInterval); practicalInterval=null;
+  practicalElapsed=Math.floor((Date.now()-practicalStartedAt)/1000);
+  let ok=0,bad=0,blank=0;
+  currentPractical.questions.forEach((q,i)=>{if(practicalAnswers[i]===null)blank++;else if(practicalAnswers[i]===q[2])ok++;else bad++});
+  const raw=ok-(practicalPenalty?bad/3:0),score=Math.max(0,(raw/currentPractical.questions.length)*10),usedTime=practicalTimed?Math.min(practicalElapsed,practicalTimeLimit):practicalElapsed;
+  $('#practicalResultTitle').textContent=currentPractical.title;
+  $('#practicalScore').textContent=score.toFixed(2).replace('.',',')+'/10';
+  $('#practicalOk').textContent=ok; $('#practicalBad').textContent=bad; $('#practicalBlank').textContent=blank;
+  $('#practicalResultInfo').textContent=(auto?'Tiempo agotado. · ':'')+'Tiempo empleado: '+fmt(usedTime)+' · '+(practicalPenalty?'Penalización 1/3 aplicada.':'Sin penalización.');
+  $('#practicalReview').classList.add('hidden'); $('#practicalReview').innerHTML='';
+  const s=stats(); s.done=(s.done||0)+1; s.best=s.best==null?score:Math.max(Number(s.best),score); saveStats(s);
+  show('practicalResults');
+  try{
+    await registrarProgreso({tipo:'supuesto',ejercicioId:currentPractical.id,titulo:currentPractical.title,categoria:(currentPractical.topic||currentPractical.tema||currentPractical.subject||'Otros supuestos').toString().trim()||'Otros supuestos',totalPreguntas:currentPractical.questions.length,aciertos:ok,errores:bad,blancos:blank,nota:score,penalizacion:practicalPenalty,tiempoEmpleado:usedTime});
+  }catch(e){
+    console.error('No se pudo registrar el progreso del supuesto:',e);
+    alert('El resultado se muestra correctamente, pero no se ha podido guardar el progreso en tu historial. Comprueba la conexión e inténtalo de nuevo más tarde.');
+    finishingPractical=false;
+  }
+};
+window.togglePracticalReview=()=>{
+  const box=$('#practicalReview');
+  if(!box.innerHTML)box.innerHTML=currentPractical.questions.map((q,i)=>{
+    const a=practicalAnswers[i],state=a===null?'blank':(a===q[2]?'ok':'bad');
+    const y=a===null?'Sin contestar':String.fromCharCode(65+a)+') '+q[1][a];
+    const r=String.fromCharCode(65+q[2])+') '+q[1][q[2]];
+    return `<div class="review-item ${state}"><strong>${i+1}. ${esc(q[0])}</strong><br>Tu respuesta: ${esc(y)}<br>Correcta: ${esc(r)}</div>`;
+  }).join('');
+  box.classList.toggle('hidden');
+};
+window.showPracticalStatementFromResults=()=>{
+  $('#practicalResultStatementTitle').textContent=currentPractical.title;
+  $('#practicalResultStatementText').textContent=currentPractical.statement;
+  show('practicalResultStatement');
+};
+window.returnPracticalResults=()=>show('practicalResults');
+window.repeatPractical=()=>openPracticalSetup(currentPractical.id);
+window.sharePracticalResult=()=>location.href='https://wa.me/?text='+encodeURIComponent('OposMurcia 360 · Supuesto práctico · '+currentPractical.title+' · Resultado: '+$('#practicalScore').textContent+' · '+PUBLIC_URL);
+
+window.openHelp=()=>$('#help').classList.remove('hidden');window.closeHelp=()=>$('#help').classList.add('hidden');window.backdropClose=e=>{if(e.target.id==='help')closeHelp()};
+
+
+
+
+let deferredInstallPrompt=null;
+function isStandalone(){
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true;
+}
+function updateInstallUI(){
+  const installed=isStandalone();
+  const buttons=[$('#installBtn'),$('#loginInstallBtn')].filter(Boolean);
+  buttons.forEach(btn=>{
+    if(installed){
+      btn.textContent='✓ App instalada';
+      btn.disabled=true;
+      btn.style.opacity='.82';
+      btn.style.cursor='default';
+    }
+  });
+  const status=$('#installStatus');
+  if(status)status.textContent=installed?'Abierta como aplicación':'';
+}
+function showInstallInfo(){
+  const c=$('#installHelpContent');
+  if(!c)return;
+  if(isStandalone()){
+    c.innerHTML='<p><strong>OposMurcia 360 ya está instalada</strong> en este dispositivo. Puedes abrirla desde su icono como cualquier otra aplicación.</p>';
+  }else if(/android/i.test(navigator.userAgent)){
+    c.innerHTML='<p>Para instalarla en <strong>Android</strong>, abre OposMurcia 360 en <strong>Google Chrome</strong>.</p><ol class="install-steps"><li>Si has llegado desde WhatsApp u otro navegador interno, usa su menú para <strong>abrir en Chrome</strong>.</li><li>En Chrome, pulsa el menú <strong>⋮</strong>.</li><li>Selecciona <strong>“Instalar aplicación”</strong> o <strong>“Añadir a pantalla de inicio”</strong>.</li><li>Confirma <strong>Instalar</strong>.</li></ol><p>Después aparecerá el icono de OposMurcia 360 entre tus aplicaciones.</p>';
+  }else{
+    c.innerHTML='<p>Este botón está preparado principalmente para <strong>Android con Google Chrome</strong>. En otros dispositivos, utiliza la opción de instalación o “Añadir a pantalla de inicio” del navegador.</p>';
+  }
+  $('#installHelp').classList.remove('hidden');
+}
+window.closeInstallHelp=()=>$('#installHelp').classList.add('hidden');
+window.installBackdropClose=e=>{if(e.target.id==='installHelp')closeInstallHelp()};
+async function requestInstall(){
+  if(isStandalone()){showInstallInfo();return}
+  if(deferredInstallPrompt){
+    const promptEvent=deferredInstallPrompt;
+    deferredInstallPrompt=null;
+    promptEvent.prompt();
+    try{
+      const choice=await promptEvent.userChoice;
+      if(!choice || choice.outcome!=='accepted')showInstallInfo();
+    }catch(e){
+      showInstallInfo();
+    }
+    return;
+  }
+  showInstallInfo();
+}
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  deferredInstallPrompt=e;
+  updateInstallUI();
+});
+window.addEventListener('appinstalled',()=>{
+  deferredInstallPrompt=null;
+  updateInstallUI();
+});
+const installButton=$('#installBtn');
+const loginInstallButton=$('#loginInstallBtn');
+if(installButton)installButton.addEventListener('click',requestInstall);
+if(loginInstallButton)loginInstallButton.addEventListener('click',requestInstall);
+updateInstallUI();
+
+
+const ADMIN_EMAIL='oposmurcia360@gmail.com';
+
+function deviceStorageKey(uid){
+  return `opos360_device_secret_${uid}`;
+}
+function bytesToHex(bytes){
+  return Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');
+}
+function getOrCreateDeviceSecret(uid){
+  const key=deviceStorageKey(uid);
+  let secret=localStorage.getItem(key);
+  if(secret)return secret;
+  const bytes=new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  secret=bytesToHex(bytes);
+  localStorage.setItem(key,secret);
+  return secret;
+}
+async function sha256Hex(value){
+  const data=new TextEncoder().encode(value);
+  const digest=await crypto.subtle.digest('SHA-256',data);
+  return bytesToHex(new Uint8Array(digest));
+}
+async function obtenerMaxDispositivos(user){
+  // El límite se configura por alumno en /autorizados/{email}.
+  // Si el campo no existe, se mantiene el comportamiento histórico: 1 dispositivo.
+  const email=(user.email||'').toLowerCase();
+  if(email===ADMIN_EMAIL)return 99;
+  const ref=doc(db,'autorizados',email);
+  const snap=await getDoc(ref);
+  if(!snap.exists() || snap.data().activo!==true)throw Object.assign(new Error('Usuario no autorizado'),{code:'permission-denied'});
+  const n=Number(snap.data().maxDispositivos||1);
+  return Math.max(1,Math.min(2,Number.isFinite(n)?Math.trunc(n):1));
+}
+
+async function registrarSlotDispositivo(user,slot,hash){
+  const ref=doc(db,'dispositivos',user.uid,'equipos',slot);
+  await setDoc(ref,{
+    uid:user.uid,
+    email:user.email||'',
+    huellaHash:hash,
+    activo:true,
+    creadoEn:serverTimestamp(),
+    ultimoAcceso:serverTimestamp(),
+    version:2
+  });
+}
+
+async function comprobarDispositivo(user){
+  // El administrador continúa exento para trabajar desde varios equipos.
+  if((user.email||'').toLowerCase()===ADMIN_EMAIL)return true;
+
+  const maxDispositivos=await obtenerMaxDispositivos(user);
+  const storageKey=deviceStorageKey(user.uid);
+  let localSecret=localStorage.getItem(storageKey);
+  let hash=localSecret ? await sha256Hex(localSecret) : null;
+
+  // V23: cada alumno dispone de uno o dos slots según maxDispositivos.
+  const slots=[];
+  for(let i=1;i<=maxDispositivos;i++){
+    const slot=`slot${i}`;
+    const ref=doc(db,'dispositivos',user.uid,'equipos',slot);
+    const snap=await getDoc(ref);
+    slots.push({slot,ref,snap});
+  }
+
+  // Si este navegador ya está registrado en uno de sus slots, acceso permitido.
+  if(hash){
+    for(const item of slots){
+      if(item.snap.exists()){
+        const data=item.snap.data();
+        if(data.activo===true && data.huellaHash===hash){
+          await updateDoc(item.ref,{ultimoAcceso:serverTimestamp()});
+          return true;
+        }
+      }
+    }
+  }
+
+  // Migración transparente desde V22: si este era el dispositivo ya autorizado,
+  // lo trasladamos a slot1 sin invalidar la copia estable anterior.
+  const legacyRef=doc(db,'dispositivos',user.uid);
+  const legacySnap=await getDoc(legacyRef);
+  if(legacySnap.exists() && hash){
+    const legacy=legacySnap.data();
+    if(legacy.activo===true && legacy.huellaHash===hash && !slots[0].snap.exists()){
+      await registrarSlotDispositivo(user,'slot1',hash);
+      return true;
+    }
+  }
+
+  // Nuevo dispositivo: solo se registra si queda un slot libre.
+  const libre=slots.find(item=>!item.snap.exists());
+  if(!libre)return false;
+
+  if(!localSecret){
+    localSecret=getOrCreateDeviceSecret(user.uid);
+    hash=await sha256Hex(localSecret);
+  }
+  await registrarSlotDispositivo(user,libre.slot,hash);
+  return true;
+}
+
+onAuthStateChanged(auth,async user=>{
+  $('#loadingScreen').classList.add('hidden');
+  if(!user){
+    TESTS=[];
+    $('#appShell').classList.add('hidden');
+    $('#loginScreen').classList.remove('hidden');
+    return;
+  }
+  $('#loginScreen').classList.add('hidden');
+  $('#appShell').classList.remove('hidden');
+  $('#userEmail').textContent=user.email||'Usuario';
+  const adminAccess=$('#adminAccess');
+  if(adminAccess)adminAccess.classList.toggle('hidden',((user.email||'').toLowerCase()!==ADMIN_EMAIL));
+  try{
+    const dispositivoPermitido=await comprobarDispositivo(user);
+    if(!dispositivoPermitido){
+      await signOut(auth);
+      $('#appShell').classList.add('hidden');
+      $('#loginScreen').classList.remove('hidden');
+      msg('Dispositivo no autorizado. Esta cuenta ya está vinculada a otro dispositivo. Contacta con el administrador.');
+      return;
+    }
+    await Promise.all([loadTests(),loadPracticals()]);
+    renderHome();
+  }catch(e){
+    console.error(e);
+    if(e?.code==='permission-denied' || e?.code==='firestore/permission-denied'){
+      await signOut(auth);
+      $('#appShell').classList.add('hidden');
+      $('#loginScreen').classList.remove('hidden');
+      msg('Usuario no autorizado. Solicita acceso al administrador antes de entrar en OposMurcia 360.');
+      return;
+    }
+    $('#testGrid').innerHTML='<div class="data-error"><strong>No se han podido cargar las preguntas.</strong><br>La sesión funciona, pero los datos de Firestore no tienen el formato esperado o el navegador conserva una versión antigua. Recarga esta versión de la app.</div>';
+  }
+});
+if('caches' in window){caches.keys().then(keys=>Promise.all(keys.filter(k=>k!=='oposmurcia360-v22-appcheck').map(k=>caches.delete(k)))).catch(()=>{})}
+if('serviceWorker' in navigator)window.addEventListener('load',async()=>{try{const r=await navigator.serviceWorker.register('sw.js?v=22-appcheck',{updateViaCache:'none'});await r.update()}catch(e){console.error(e)}});
+</script>
+</body></html>
