@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OposMurcia 360 · Corrector único de 2 preguntas</title>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f4f7f9;color:#173042;margin:0}
+main{max-width:850px;margin:38px auto;padding:0 18px}
+.card{background:#fff;border:1px solid #dbe5ea;border-radius:18px;padding:24px;box-shadow:0 8px 25px #0000000b}
+h1{margin-top:0} .muted{color:#607482}.ok{color:#087443}.bad{color:#b42318}
+button{border:0;border-radius:12px;padding:13px 18px;font-weight:700;cursor:pointer;background:#0071ba;color:white}
+button:disabled{opacity:.5;cursor:not-allowed}
+pre{white-space:pre-wrap;background:#f7fafb;border:1px solid #e2eaee;border-radius:12px;padding:14px;line-height:1.45}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0}
+</style>
+</head>
+<body>
+<main><div class="card">
+<h1>Corrector único · 2 preguntas</h1>
+<p class="muted">Herramienta específica para corregir únicamente los dos enunciados detectados. No modifica opciones, respuesta correcta, orden ni ninguna otra pregunta.</p>
+<div class="row">
+<button id="login">Entrar con Google</button>
+<button id="scan" disabled>1. Comprobar antes de corregir</button>
+<button id="fix" disabled>2. Aplicar las 2 correcciones</button>
+<button id="verify" disabled>3. Verificar resultado</button>
+</div>
+<div id="who" class="muted"></div>
+<pre id="log">Esperando inicio de sesión del administrador…</pre>
+</div></main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+const firebaseConfig={
+ apiKey:"AIzaSyDA_79FRQq90gVJgD17dRr_pUHKe4S8XBg",
+ authDomain:"oposmurcia360-5a389.firebaseapp.com",
+ projectId:"oposmurcia360-5a389",
+ storageBucket:"oposmurcia360-5a389.firebasestorage.app",
+ messagingSenderId:"730198455785",
+ appId:"1:730198455785:web:1f3e3d4f8edf8774780778",
+ measurementId:"G-T8QHKNDX5T"
+};
+const ADMIN="oposmurcia360@gmail.com";
+const app=initializeApp(firebaseConfig), auth=getAuth(app), db=getFirestore(app);
+const $=s=>document.querySelector(s), log=t=>$("#log").textContent=t;
+
+let found=null;
+
+$("#login").onclick=()=>signInWithPopup(auth,new GoogleAuthProvider());
+
+onAuthStateChanged(auth,u=>{
+ const admin=!!u && (u.email||"").toLowerCase()===ADMIN;
+ $("#who").textContent=u?`Sesión: ${u.email}${admin?" · Administrador":" · SIN PERMISO DE CORRECCIÓN"}`:"";
+ $("#scan").disabled=!admin; $("#verify").disabled=!admin; $("#fix").disabled=true;
+ if(admin) log("Administrador identificado. Pulsa «1. Comprobar antes de corregir».");
+});
+
+function norm(s){return (s||"").toString().replace(/\s+/g," ").trim().toLowerCase();}
+function optionsOf(q){return Array.isArray(q?.options)?q.options.map(x=>(x||"").toString()):[]}
+
+async function locate(){
+ if(!auth.currentUser || (auth.currentUser.email||"").toLowerCase()!==ADMIN) throw new Error("Solo puede ejecutar la corrección el administrador.");
+ const snap=await getDocs(collection(db,"tests"));
+ let ce=[], rl=[];
+ snap.forEach(ds=>{
+   const d=ds.data(), qs=d.questions;
+   if(!qs || Array.isArray(qs) || typeof qs!=="object") return; // estructura esperada: MAPA
+   Object.entries(qs).forEach(([key,q])=>{
+     const txt=norm(q?.text), ops=optionsOf(q).map(norm);
+     if(txt==="el ejercicio de estos derechos:" && ops.some(x=>x.includes("censura previa"))){
+       ce.push({id:ds.id,title:d.title||"",key,q});
+     }
+     // La segunda pregunta se identifica por el texto defectuoso REAL visto en la app.
+     // No exigimos coincidencia literal de las opciones porque precisamente la importación
+     // puede haber alterado signos, acentos, mayúsculas o fragmentos del PDF.
+     if(txt==="2 lbrl"){
+       rl.push({id:ds.id,title:d.title||"",key,q});
+     }
+   });
+ });
+ if(ce.length!==1) throw new Error(`Seguridad: esperaba localizar exactamente 1 pregunta «El ejercicio de estos derechos:» y he encontrado ${ce.length}. No se modificará nada.`);
+ if(rl.length!==1) throw new Error(`Seguridad: esperaba localizar exactamente 1 pregunta cuyo texto actual sea «2 LBRL» y he encontrado ${rl.length}. No se modificará nada.`);
+ return {ce:ce[0],rl:rl[0]};
+}
+
+function describe(x){
+ return `Documento: ${x.id}\nTítulo: ${x.title}\nClave: ${x.key}\nEnunciado actual: ${x.q.text}\nOpciones:\n${optionsOf(x.q).map((o,i)=>`${"ABC"[i]}) ${o}`).join("\n")}\ncorrect: ${x.q.correct}\norder: ${x.q.order}`;
+}
+
+$("#scan").onclick=async()=>{
+ try{
+   log("Comprobando estructura real de Firestore y localizando exactamente las dos preguntas…");
+   found=await locate();
+   log("LOCALIZADAS SIN MODIFICAR:\n\n[1]\n"+describe(found.ce)+"\n\n[2]\n"+describe(found.rl)+
+   "\n\nLa herramienta solo cambiará questions."+found.ce.key+".text y questions."+found.rl.key+".text.\nNo tocará options, correct ni order.");
+   $("#fix").disabled=false;
+ }catch(e){found=null;$("#fix").disabled=true;log("ERROR / CORRECCIÓN BLOQUEADA:\n"+e.message);}
+};
+
+$("#fix").onclick=async()=>{
+ try{
+   // Volver a localizar justo antes de escribir: evita actuar sobre datos que hayan cambiado.
+   const current=await locate();
+
+   // Salvaguarda adicional: la pregunta «2 LBRL» debe tener al menos las opciones que
+   // el administrador ha identificado visualmente. Se usan fragmentos mínimos y normalizados.
+   const rops=optionsOf(current.rl.q).map(norm);
+   const opcionesCompatibles =
+      rops.some(x=>x.includes("solo en castellano")) &&
+      rops.some(x=>x.includes("castellano")) &&
+      rops.some(x=>x.includes("lengua cooficial"));
+   if(!opcionesCompatibles){
+      throw new Error("Seguridad: se ha localizado «2 LBRL», pero sus opciones no coinciden suficientemente con la pregunta identificada. No se modificará nada.");
+   }
+
+   const ceRef=doc(db,"tests",current.ce.id), rlRef=doc(db,"tests",current.rl.id);
+
+   const ceNew="El ejercicio de los derechos reconocidos en el artículo 20 CE:";
+   const rlNew="La denominación de los Municipios podrá ser, a todos los efectos, según el artículo 14.2 LBRL:";
+
+   await updateDoc(ceRef,{[`questions.${current.ce.key}.text`]:ceNew});
+   await updateDoc(rlRef,{[`questions.${current.rl.key}.text`]:rlNew});
+
+   $("#fix").disabled=true;
+   log("Correcciones escritas. Verificando inmediatamente…");
+   await verify();
+ }catch(e){log("ERROR:\n"+e.message+"\n\nSi una escritura hubiera llegado a ejecutarse, pulsa «3. Verificar resultado» antes de hacer nada más.");}
+};
+
+async function verify(){
+ const all=await getDocs(collection(db,"tests"));
+ let ceOK=[], rlOK=[];
+ all.forEach(ds=>{
+   const d=ds.data(), qs=d.questions;
+   if(!qs || Array.isArray(qs) || typeof qs!=="object") return;
+   Object.entries(qs).forEach(([key,q])=>{
+     const txt=norm(q?.text), ops=optionsOf(q).map(norm);
+     if(txt===norm("El ejercicio de los derechos reconocidos en el artículo 20 CE:") &&
+        ops.some(x=>x.includes("censura previa"))) ceOK.push({id:ds.id,key,q});
+     if(txt===norm("La denominación de los Municipios podrá ser, a todos los efectos, según el artículo 14.2 LBRL:"))
+        rlOK.push({id:ds.id,key,q});
+   });
+ });
+ const ok=ceOK.length===1 && rlOK.length===1;
+ log((ok?"VERIFICACIÓN OK ✓":"VERIFICACIÓN NO CONCLUYENTE")+
+   `\n\nConstitución corregida: ${ceOK.length===1?"SÍ":"NO"}${ceOK[0]?` · ${ceOK[0].id} / ${ceOK[0].key}`:""}`+
+   `\nRégimen Local corregida: ${rlOK.length===1?"SÍ":"NO"}${rlOK[0]?` · ${rlOK[0].id} / ${rlOK[0].key}`:""}`+
+   "\n\nNo se han programado cambios en opciones, correct ni order.");
+}
+
+$("#verify").onclick=async()=>{try{await verify()}catch(e){log("ERROR DE VERIFICACIÓN:\n"+e.message)}};
+</script>
+</body>
+</html>
