@@ -419,6 +419,42 @@ button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important
     font-size:12.5px !important;
   }
 }
+
+/* =========================
+   OPOSMURCIA 360 PRO · PORTADA LIMPIA V1
+   ========================= */
+.pro-hero{margin-bottom:18px}
+.pro-game-compact{background:#fff;border:1px solid #dfe8ee;border-radius:20px;padding:18px;margin:18px 0;box-shadow:0 8px 24px rgba(18,60,80,.06)}
+.pro-game-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.pro-game-title h2{margin:2px 0 0;font-size:1.35rem}
+.pro-game-row{display:grid;grid-template-columns:minmax(0,1fr) 105px 105px;gap:10px;align-items:stretch}
+.pro-game-level,.pro-mini-stat,.pro-next-step,.pro-daily{border:1px solid #e4ebef;border-radius:15px;background:#fbfdfe}
+.pro-game-level{padding:13px}
+.pro-mini-stat{padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.pro-mini-stat b{font-size:1.08rem}.pro-mini-stat span{font-size:.78rem;color:#65747c;margin-top:3px}
+.pro-next-step{margin-top:10px;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:14px}
+.pro-next-step p{margin:4px 0 0;color:#52636c}
+.pro-daily{margin-top:10px;padding:13px}
+.pro-daily>div:first-child{display:flex;justify-content:space-between;gap:10px;margin-bottom:8px;font-size:.9rem}
+.pro-main-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0 24px}
+.pro-main-card{width:100%;border:1px solid #dce7ec;background:#fff;border-radius:18px;padding:18px;display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:13px;text-align:left;cursor:pointer;box-shadow:0 6px 18px rgba(18,60,80,.05)}
+.pro-main-card:hover{transform:translateY(-1px);box-shadow:0 9px 24px rgba(18,60,80,.09)}
+.pro-main-icon{width:46px;height:46px;border-radius:14px;background:#eaf5f9;display:flex;align-items:center;justify-content:center;font-size:1.25rem}
+.pro-main-card strong{display:block;font-size:1.02rem;color:#173744}.pro-main-card small{display:block;margin-top:3px;color:#687982;line-height:1.35}
+.pro-main-card>b{font-size:1.5rem;color:#79909b}
+.pro-library-shell{max-width:1180px;margin:0 auto;padding:4px 16px 36px}
+.pro-library-head{background:#fff;border:1px solid #e0e8ec;border-radius:18px;padding:20px;margin:12px 0 16px}
+.pro-library-head h2{margin:3px 0 5px}.pro-library-head p{margin:0;color:#64757d}
+#testsLibrary .content-block,#practicalsLibrary .content-block{margin-top:0}
+@media(max-width:720px){
+ .pro-game-row{grid-template-columns:1fr 1fr}
+ .pro-game-level{grid-column:1/-1}
+ .pro-main-actions{grid-template-columns:1fr}
+ .pro-next-step{align-items:flex-start;flex-direction:column}
+ .pro-next-step button{width:100%}
+ .pro-daily>div:first-child{flex-direction:column;gap:3px}
+}
+
 </style>
 </head>
 <body>
@@ -432,8 +468,8 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
    <img src="logo-oposmurcia360.png?v=22-appcheck" alt="OposMurcia 360">
    <div><h1>OposMurcia 360</h1><p>Tests y supuestos prácticos para Auxiliares Administrativos del Ayuntamiento de Murcia</p></div>
   </div><div class="userbar"><small id="userEmail"></small><button id="logoutBtn" class="logout">Cerrar sesión</button></div>
-  <div class="hero">
-   <div><small>Biblioteca disponible</small><strong id="heroCount">Tests + supuestos</strong><button class="help-link" onclick="openHelp()">Cómo funciona</button></div>
+  <div class="hero pro-hero">
+   <div><small>Preparación personal</small><strong id="heroCount">Tests + supuestos</strong><button class="help-link" onclick="openHelp()">Cómo funciona</button></div>
    <div class="install-row"><button id="installBtn" class="install" type="button">📲 Instalar app</button><span id="installStatus" class="install-status"></span></div>
   </div>
  </header>
@@ -444,95 +480,85 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
    <span aria-hidden="true">›</span>
   </button>
  </div>
- <div class="home-intro">
-  <h2>Tu espacio privado de preparación</h2>
-  <p>Practica con tests y supuestos prácticos, controla tu tiempo y revisa tus respuestas. En los supuestos podrás consultar el enunciado durante todo el ejercicio sin perder la pregunta ni tus respuestas.</p>
+ <div class="hidden" aria-hidden="true">
+  <div id="qCount">0</div><div id="doneCount">0</div><div id="bestScore">—</div>
  </div>
- <div class="summary">
-  <div class="metric"><b id="qCount">80</b><span>preguntas</span></div>
-  <div class="metric"><b id="doneCount">0</b><span>completados</span></div>
-  <div class="metric"><b id="bestScore">—</b><span>mejor nota</span></div>
- </div>
- <div id="gameZone" class="game-zone">
-  <div class="game-head"><div><div class="section-kicker">Camino a la plaza</div><h2>Tu progreso de hoy</h2><p>Constancia, rendimiento y dominio real del temario.</p></div><span id="gameLevelBadge" class="type-badge">Nivel 1</span></div>
-  <div class="help-actions">
-    <button id="toggleProgressHelp" class="secondary" type="button">¿Cómo funciona tu progreso?</button>
-    <button id="toggleXpHelp" class="secondary" type="button">Ver cómo gano XP</button>
+ <div id="gameZone" class="pro-game-compact">
+  <div class="pro-game-title">
+   <div><div class="section-kicker">Camino a la plaza</div><h2>Tu progreso de hoy</h2></div>
+   <span id="gameLevelBadge" class="type-badge">Nivel 1</span>
   </div>
-  <div id="progressHelpPanel" class="help-panel hidden">
-    <h3>Cómo funciona tu progreso</h3>
-    <p><strong>Racha:</strong> cuenta los días consecutivos en los que completas actividad real de estudio.</p>
-    <p><strong>XP:</strong> mide tu avance y te hace subir de nivel. Se obtiene por rendimiento, constancia y objetivos.</p>
-    <p><strong>Dominio:</strong> estima tu rendimiento por materias usando tus mejores resultados registrados. No es una probabilidad de obtener plaza.</p>
-    <p><strong>Logros:</strong> se desbloquean al alcanzar hitos concretos.</p>
+  <div class="pro-game-row">
+   <div class="pro-game-level">
+    <div class="game-level-top"><strong id="gameLevelName">Aspirante</strong><span id="gameNextLevel">0 / 500 XP</span></div>
+    <div class="game-bar"><span id="gameLevelBar" style="width:0%"></span></div>
+    <div id="gameLevelHint" class="level-hint"></div>
+   </div>
+   <div class="pro-mini-stat"><b id="gameStreak">🔥 0</b><span>Racha</span></div>
+   <div class="pro-mini-stat"><b id="gameXP">⭐ 0</b><span>XP</span></div>
   </div>
-  <div id="xpHelpPanel" class="help-panel hidden">
-    <h3>Cómo ganas XP</h3>
-    <div class="help-grid">
-      <div class="help-item"><b>📝 Test</b>+10 XP por cada acierto de tu mejor intento.<br>+50 XP por completarlo.<br>+50 XP extra con 8/10 o más.<br>+100 XP extra con 10/10.</div>
-      <div class="help-item"><b>📚 Supuesto práctico</b>+10 XP por cada acierto de tu mejor intento.<br>+80 XP por completarlo.<br>+50 XP extra con 8/10 o más.<br>+100 XP extra con 10/10.</div>
-      <div class="help-item"><b>🎯 Objetivo diario</b>+50 XP cuando completas al menos 20 preguntas en el día.</div>
-      <div class="help-item"><b>🔥 Constancia</b>+25 XP por cada día con actividad real de estudio.</div>
-      <div class="help-item"><b>❤️ Supervivencia</b>Obtienes puntos durante la partida. Solo sumas XP cuando superas tu récord personal.</div>
-      <div class="help-item"><b>⭐ Niveles</b>Subes automáticamente cuando alcanzas el XP requerido para el siguiente nivel.</div>
-    </div>
-    <div class="help-inline">Para evitar acumular XP artificialmente, repetir el mismo test o supuesto no vuelve a sumar todo: cuenta tu mejor resultado.</div>
+  <div class="pro-next-step">
+   <div>
+    <strong>Tu siguiente paso</strong>
+    <p id="weakTopicText">Completa ejercicios para detectar tu materia a reforzar.</p>
+   </div>
+   <button id="weakTopicBtn" class="primary hidden" type="button">Continuar</button>
+  </div>
+  <div class="pro-daily">
+   <div><strong>🎯 Objetivo de hoy</strong><span id="dailyGoalText">0/20 preguntas completadas hoy</span></div>
+   <div class="game-bar"><span id="dailyGoalBar" style="width:0%"></span></div>
+   <div id="dailyRewardText" class="game-reward hidden"></div>
   </div>
 
-  <div id="quickHelpBox" class="help-panel hidden" style="margin-bottom:10px"></div>
-  <div class="game-stats">
-   <div class="game-stat"><b id="gameStreak">🔥 0</b><span>Racha actual <button class="help-icon" type="button" data-help="streak" data-tip="Cuenta los días consecutivos con actividad real de estudio. Entrar en la app sin completar actividad no suma.">i</button></span></div>
-   <div class="game-stat"><b id="gameXP">⭐ 0</b><span>XP acumulada <button class="help-icon" type="button" data-help="xp" data-tip="Los XP reflejan tu avance. Se obtienen por rendimiento, constancia, objetivo diario y mejora del récord en Supervivencia.">i</button></span></div>
-   <div class="game-stat"><b id="gameMedals">🏅 0</b><span>Logros <button class="help-icon" type="button" data-help="medals" data-tip="Los logros se desbloquean al alcanzar hitos concretos. Pulsa una insignia para ver su requisito.">i</button></span></div>
-   <div class="game-stat"><b id="gameMastery">📊 —</b><span>Dominio global <button class="help-icon" type="button" data-help="mastery" data-tip="El dominio estima tu rendimiento con tus mejores resultados registrados. No es una probabilidad de obtener plaza.">i</button></span></div>
+  <!-- Datos de gamificación conservados para la lógica actual; se mostrarán más adelante en Mi progreso -->
+  <div class="hidden" aria-hidden="true">
+   <span id="gameMedals">🏅 0</span><span id="gameMastery">📊 —</span>
+   <div id="medalRow"></div><div id="medalDetail"></div><div id="masteryBasis"></div><div id="masteryList"></div>
+   <div id="survivalRecordText"><strong>Récord:</strong> —</div>
+   <div id="quickHelpBox"></div><div id="progressHelpPanel"></div><div id="xpHelpPanel"></div>
+   <button id="toggleProgressHelp" type="button"></button><button id="toggleXpHelp" type="button"></button>
   </div>
-  <div class="game-level"><div class="game-level-top"><span id="gameLevelName">Aspirante</span><span id="gameNextLevel">0 / 500 XP</span></div><div class="game-bar"><span id="gameLevelBar" style="width:0%"></span></div><div id="gameLevelHint" class="level-hint"></div><div class="game-note">XP: mejor resultado de cada ejercicio + constancia diaria + objetivo diario + mejora de récord en Supervivencia.</div></div>
-  <div class="game-grid">
-   <div class="game-card"><h3>🎯 Objetivo diario · 20 preguntas</h3><p id="dailyGoalText">0/20 preguntas completadas hoy</p><div id="dailyRewardText" class="game-reward hidden"></div><div class="game-bar"><span id="dailyGoalBar" style="width:0%"></span></div><div class="weak-action"><p id="weakTopicText"><strong>Próximo objetivo:</strong> completa ejercicios para detectar tu materia a reforzar.</p><button id="weakTopicBtn" class="secondary hidden" type="button">Reforzar</button></div></div>
-   <div class="game-card"><h3>❤️ Modo Supervivencia</h3><p>3 vidas. Cada fallo resta una. Supera tu récord respondiendo preguntas de tus tests.</p><p id="survivalRecordText"><strong>Récord:</strong> —</p><button class="primary" type="button" onclick="startSurvival()">Jugar</button></div>
-  </div>
-  <div class="game-card" style="margin-top:12px"><h3>🏅 Tus logros</h3><div id="medalRow" class="medal-row"></div><div id="medalDetail" class="medal-detail hidden"></div></div>
-  <div class="game-card" style="margin-top:12px"><h3>📊 Dominio por materias</h3><div id="masteryBasis" class="game-note"></div><div id="masteryList" class="mastery-list"><p class="muted">Completa ejercicios para calcular tu dominio.</p></div></div>
  </div>
 
- <div class="progress-access">
-  <button class="progress-access-btn" type="button" onclick="openMyProgress()">
-   <span class="progress-access-icon">↗</span>
-   <span style="flex:1"><strong>Mi progreso</strong><small>Consulta tus intentos, nota media y actividad reciente.</small></span>
-   <span aria-hidden="true">›</span>
+
+ <div class="pro-main-actions" aria-label="Áreas de preparación">
+  <button class="pro-main-card" type="button" onclick="openTestsLibrary()">
+   <span class="pro-main-icon">✓</span><span><strong>Tests</strong><small id="quickTestsCount">Tests disponibles</small></span><b>›</b>
   </button>
- </div>
- <div class="library-jump" aria-label="Accesos rápidos a la biblioteca">
-  <button class="library-jump-btn" onclick="goToLibrarySection('testsSection')">
-   <span class="library-jump-icon">✓</span>
-   <span><strong>Ir a Tests</strong><small id="quickTestsCount">Tests disponibles</small></span>
+  <button class="pro-main-card practical" type="button" onclick="openPracticalsLibrary()">
+   <span class="pro-main-icon">📖</span><span><strong>Supuestos prácticos</strong><small id="quickPracticalsCount">Supuestos disponibles</small></span><b>›</b>
   </button>
-  <button class="library-jump-btn practical" onclick="goToLibrarySection('practicalsSection')">
-   <span class="library-jump-icon">📖</span>
-   <span><strong>Ir a Supuestos prácticos</strong><small id="quickPracticalsCount">Supuestos disponibles</small></span>
+  <button class="pro-main-card survival" type="button" onclick="startSurvival()">
+   <span class="pro-main-icon">❤️</span><span><strong>Supervivencia</strong><small>Entrena con 3 vidas y supera tu récord</small></span><b>›</b>
   </button>
- </div>
- <div id="testsSection" class="content-block library-anchor">
-  <div class="content-type-head">
-   <div><div class="section-kicker">Tests</div><h2>Tests por temas</h2><p>Cuestionarios de preparación organizados por materias.</p></div>
-   <span id="testCountBadge" class="type-badge">0 tests</span>
-  </div>
-  <div id="testGrid"></div>
- </div>
- <div id="practicalsSection" class="content-block library-anchor practicals-home-block">
-  <div class="content-type-head">
-   <div><div class="section-kicker">Supuestos prácticos</div><h2>Supuestos prácticos por temas</h2><p>Lee el enunciado y resuelve el cuestionario pudiendo consultarlo durante todo el ejercicio.</p></div>
-   <span id="practicalCountBadge" class="type-badge">0 supuestos</span>
-  </div>
-  <div id="practicalGrid"></div>
+  <button class="pro-main-card progress" type="button" onclick="openMyProgress()">
+   <span class="pro-main-icon">↗</span><span><strong>Mi progreso</strong><small>Historial, rendimiento y evolución</small></span><b>›</b>
+  </button>
  </div>
  <div class="foot">OposMurcia 360 · Preparación práctica</div>
  <footer class="copyright">© 2026 OposMurcia 360 · Todos los derechos reservados.</footer>
 </section>
 
+<section id="testsLibrary" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Inicio</button><span class="type-badge" id="testCountBadge">0 tests</span></div>
+ <div class="pro-library-shell">
+  <div class="pro-library-head"><div class="section-kicker">Biblioteca</div><h2>Tests</h2><p>Elige una materia y después el cuestionario que quieras realizar.</p></div>
+  <div id="testsSection" class="content-block library-anchor"><div id="testGrid"></div></div>
+ </div>
+</section>
+
+<section id="practicalsLibrary" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Inicio</button><span class="type-badge" id="practicalCountBadge">0 supuestos</span></div>
+ <div class="pro-library-shell">
+  <div class="pro-library-head"><div class="section-kicker">Biblioteca</div><h2>Supuestos prácticos</h2><p>Elige una materia y después el supuesto práctico que quieras resolver.</p></div>
+  <div id="practicalsSection" class="content-block library-anchor"><div id="practicalGrid"></div></div>
+ </div>
+</section>
+
+
 
 <section id="myProgress" class="hidden">
- <div class="view-top"><button class="back" onclick="goHome()">← Biblioteca</button><button class="secondary" type="button" onclick="loadMyProgress()">Actualizar</button></div>
+ <div class="view-top"><button class="back" onclick="goHome()">← Inicio</button><button class="secondary" type="button" onclick="loadMyProgress()">Actualizar</button></div>
  <div class="progress-shell">
   <div class="progress-head">
    <div><div class="section-kicker">Seguimiento personal</div><h2>Mi progreso</h2><p id="progressUserEmail"></p></div>
@@ -559,7 +585,7 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
 
 
 <section id="adminManagement" class="hidden">
- <div class="view-top"><button class="back" onclick="goHome()">← Biblioteca</button><button class="secondary" type="button" onclick="refreshAdminManagement()">Actualizar</button></div>
+ <div class="view-top"><button class="back" onclick="goHome()">← Inicio</button><button class="secondary" type="button" onclick="refreshAdminManagement()">Actualizar</button></div>
  <div class="admin-shell">
   <div class="admin-head">
    <div class="section-kicker">Administración · Solo administrador</div>
@@ -600,7 +626,7 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
 </section>
 
 <section id="survival" class="hidden">
- <div class="view-top"><button class="back" onclick="exitSurvival()">← Biblioteca</button><div class="timer">Modo Supervivencia</div></div>
+ <div class="view-top"><button class="back" onclick="exitSurvival()">← Inicio</button><div class="timer">Modo Supervivencia</div></div>
  <div class="survival-shell"><div class="survival-panel">
   <div class="survival-top"><div id="survivalLives" class="survival-lives">❤️ ❤️ ❤️</div><div><span id="survivalQuestionNo" class="type-badge">Pregunta 1</span> <span id="survivalScore" class="survival-score">0 aciertos</span> · <span id="survivalPoints" class="survival-score">0 puntos</span></div></div>
   <div id="survivalGame">
@@ -612,7 +638,7 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
    <div class="section-kicker">Partida terminada</div><h2>❤️ Modo Supervivencia</h2>
    <strong id="survivalFinalScore">0</strong><p id="survivalFinalText"></p>
    <button class="primary" type="button" onclick="startSurvival()">Jugar otra vez</button>
-   <button class="secondary" type="button" onclick="goHome()">Volver a la biblioteca</button>
+   <button class="secondary" type="button" onclick="goHome()">Volver al inicio</button>
   </div>
  </div></div>
 </section>
@@ -692,7 +718,7 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
 </section>
 
 <section id="practicalResults" class="hidden">
- <div class="view-top"><button class="back" onclick="goHome()">← Biblioteca</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
+ <div class="view-top"><button class="back" onclick="goHome()">← Inicio</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
  <div class="panel">
   <div class="section-kicker">Resultado · supuesto práctico</div><h2 id="practicalResultTitle"></h2>
   <div id="practicalScore" class="score">0,00/10</div>
@@ -724,7 +750,7 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
 </section>
 
 <section id="results" class="hidden">
- <div class="view-top"><button class="back" onclick="goHome()">← Biblioteca</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
+ <div class="view-top"><button class="back" onclick="goHome()">← Inicio</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
  <div class="panel">
   <div class="section-kicker">Resultado</div><h2 id="resultTitle"></h2>
   <div id="score" class="score">0,00/10</div>
@@ -1642,11 +1668,10 @@ function renderHome(){
   document.querySelectorAll('[data-test]').forEach(b=>b.onclick=()=>openSetup(b.dataset.test));
   document.querySelectorAll('[data-practical]').forEach(b=>b.onclick=()=>openPracticalSetup(b.dataset.practical));
 }
-window.goToLibrarySection=(id)=>{
-  const el=document.getElementById(id);
-  if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
-};
-function show(id){['home','myProgress','adminManagement','survival','setup','quiz','results','practicalSetup','practicalWork','practicalResults','practicalResultStatement'].forEach(x=>$('#'+x).classList.toggle('hidden',x!==id));window.scrollTo({top:0,behavior:'smooth'})}
+window.goToLibrarySection=(id)=>{if(id==='testsSection')openTestsLibrary();else if(id==='practicalsSection')openPracticalsLibrary();};
+function show(id){['home','testsLibrary','practicalsLibrary','myProgress','adminManagement','survival','setup','quiz','results','practicalSetup','practicalWork','practicalResults','practicalResultStatement'].forEach(x=>$('#'+x).classList.toggle('hidden',x!==id));window.scrollTo({top:0,behavior:'smooth'})}
+window.openTestsLibrary=()=>{renderHome();show('testsLibrary')};
+window.openPracticalsLibrary=()=>{renderHome();show('practicalsLibrary')};
 window.goHome=()=>{clearInterval(interval);interval=null;clearInterval(practicalInterval);practicalInterval=null;show('home');renderHome()};function openSetup(id){currentTest=TESTS.find(t=>t.id===id);if(!currentTest)return;$('#setupTitle').textContent=currentTest.title;$('#setupDesc').textContent=currentTest.description||currentTest.subtitle||'';show('setup')}
 window.startQuiz=()=>{if(!currentTest||!Array.isArray(currentTest.questions)||!currentTest.questions.length){alert('Este test no contiene preguntas válidas.');return;}finishingQuiz=false;answers=Array(currentTest.questions.length).fill(null);current=0;penalty=$('#penalty').checked;timed=document.querySelector('input[name="timeMode"]:checked').value==='timed';timeLimit=Math.max(1,parseInt($('#minutes').value||30))*60;elapsed=0;startedAt=Date.now();show('quiz');renderQuestion();tick();clearInterval(interval);interval=setInterval(()=>{elapsed=Math.floor((Date.now()-startedAt)/1000);tick();if(timed&&elapsed>=timeLimit)finishQuiz(true)},1000)};
 function fmt(s){s=Math.max(0,Math.floor(s));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}function tick(){$('#timer').textContent=timed?fmt(Math.max(0,timeLimit-elapsed)):fmt(elapsed)}
