@@ -455,6 +455,363 @@ button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important
  .pro-daily>div:first-child{flex-direction:column;gap:3px}
 }
 
+
+/* Ajuste visual PC/tablet. La vista móvil (<=720 px) permanece intacta. */
+@media (min-width:721px){
+ #home{max-width:1040px;margin:0 auto}
+ #home .hero.pro-hero{padding:14px 18px;margin-bottom:12px}
+ #home .hero.pro-hero strong{font-size:1.05rem}
+ #home .pro-game-compact{padding:14px;margin:12px 0;border-radius:17px}
+ #home .pro-game-title{margin-bottom:10px}
+ #home .pro-game-title h2{font-size:1.18rem}
+ #home .pro-game-row{grid-template-columns:minmax(0,1fr) 92px 92px;gap:8px}
+ #home .pro-game-level{padding:10px}
+ #home .pro-mini-stat{padding:9px}
+ #home .pro-next-step{margin-top:8px;padding:11px}
+ #home .pro-next-step p{font-size:.9rem}
+ #home .pro-next-step button{padding:9px 14px;font-size:.88rem}
+ #home .pro-daily{margin-top:8px;padding:10px}
+ #home .pro-main-actions{gap:10px;margin:12px 0 18px}
+ #home .pro-main-card{padding:13px 15px;border-radius:15px;grid-template-columns:40px 1fr auto;gap:10px}
+ #home .pro-main-icon{width:39px;height:39px;border-radius:12px;font-size:1.05rem}
+ #home .pro-main-card strong{font-size:.96rem}
+ #home .pro-main-card small{font-size:.78rem}
+ #home .foot{margin-top:10px}
+}
+
+
+/* PRO · Repaso inteligente */
+.smart-review-label{font-size:.72rem;font-weight:700;color:#55727e}
+.smart-review-reason{font-size:.82rem;color:#657780}
+.smart-review-panel{background:#fff;border:1px solid #dfe8ec;border-radius:18px;padding:17px;margin:14px 0}
+.smart-review-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.smart-review-head h3{margin:2px 0 0}
+.smart-review-intro{margin:7px 0 13px;color:#64767e;font-size:.9rem}
+.smart-review-list{display:grid;gap:8px}
+.smart-review-item{width:100%;border:1px solid #e2e9ed;background:#fbfdfe;border-radius:13px;padding:11px 12px;display:grid;grid-template-columns:10px 1fr auto;gap:10px;align-items:center;text-align:left;cursor:pointer}
+.smart-review-item:hover{background:#f5fafc}
+.smart-review-dot{width:9px;height:9px;border-radius:50%;background:#94a5ad}
+.smart-review-item.due .smart-review-dot{background:#d34a4a}
+.smart-review-item.soon .smart-review-dot{background:#d98b2b}
+.smart-review-item.later .smart-review-dot{background:#4f9568}
+.smart-review-copy strong,.smart-review-copy small{display:block}
+.smart-review-copy small{margin-top:2px;color:#6a7a82}
+.smart-review-when{font-size:.82rem;font-weight:800;white-space:nowrap}
+@media(max-width:720px){
+ .smart-review-item{grid-template-columns:10px 1fr}
+ .smart-review-when{grid-column:2}
+}
+
+
+/* PRO V2 FINAL · PC/tablet más compacto; móvil <=720 px sin cambios */
+@media (min-width:721px){
+ #home{max-width:900px;margin:0 auto}
+ #home .hero.pro-hero{padding:9px 13px;margin-bottom:7px;border-radius:14px}
+ #home .hero.pro-hero strong{font-size:.94rem}
+ #home .pro-game-compact{padding:10px 11px;margin:7px 0;border-radius:14px}
+ #home .pro-game-title{margin-bottom:6px}
+ #home .pro-game-title h2{font-size:1rem}
+ #home .pro-game-row{grid-template-columns:minmax(0,1fr) 74px 74px;gap:6px}
+ #home .pro-game-level{padding:7px}
+ #home .pro-mini-stat{padding:6px}
+ #home .pro-mini-stat b{font-size:.9rem}
+ #home .pro-mini-stat span{font-size:.68rem}
+ #home .pro-next-step{margin-top:6px;padding:7px 9px;min-height:0}
+ #home .pro-next-step strong{font-size:.86rem}
+ #home .pro-next-step p{font-size:.76rem;line-height:1.25;margin:2px 0 0}
+ #home .pro-next-step button.primary{width:auto!important;min-width:0!important;padding:5px 10px!important;font-size:.74rem!important;border-radius:9px!important;line-height:1.15!important}
+ #home .pro-daily{margin-top:6px;padding:7px 9px}
+ #home .pro-daily>div:first-child{font-size:.76rem;margin-bottom:4px}
+ #home .pro-main-actions{gap:7px;margin:8px 0 11px}
+ #home .pro-main-card{padding:9px 11px;border-radius:13px;grid-template-columns:32px 1fr auto;gap:7px}
+ #home .pro-main-icon{width:32px;height:32px;border-radius:9px;font-size:.9rem}
+ #home .pro-main-card strong{font-size:.86rem}
+ #home .pro-main-card small{font-size:.68rem}
+}
+@media (min-width:721px) and (max-width:1100px){#home{max-width:820px}}
+
+
+/* PRO V3 · Ajustes de disposición y ayudas */
+@media (min-width:721px){
+ #home .pro-next-step{
+   display:grid!important;
+   grid-template-columns:minmax(0,1fr) auto!important;
+   justify-content:start!important;
+   align-items:center!important;
+   column-gap:12px!important;
+ }
+ #home .pro-next-step>div{min-width:0}
+ #home .pro-next-step button.primary{
+   justify-self:start!important;
+   margin:0!important;
+ }
+}
+.game-info-btn{
+ width:19px;height:19px;min-width:19px;border-radius:50%;border:1px solid #b9cad3;
+ background:#fff;color:#31566a;font-size:11px;font-weight:900;line-height:1;
+ display:inline-flex;align-items:center;justify-content:center;padding:0;cursor:pointer;
+ vertical-align:middle;margin-left:5px;
+}
+.game-info-btn:hover{background:#f2f8fb}
+.pro-game-help{
+ margin-top:8px;padding:9px 11px;border:1px solid #dce8ee;border-radius:11px;
+ background:#f8fbfd;color:#526a76;font-size:.8rem;line-height:1.4;
+}
+.admin-user-name{font-weight:900;color:var(--blue-dark);font-size:14px;margin-bottom:2px}
+.admin-user-contact{font-size:12px;color:var(--muted);margin-top:2px}
+@media(min-width:700px){
+ .admin-users-form{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1.5fr) minmax(150px,.7fr) auto}
+}
+
+
+/* PRO V4 · Corrección fina de alineación en PC/tablet */
+.game-level-name-wrap{
+ display:inline-flex;
+ align-items:center;
+ gap:5px;
+}
+@media (min-width:721px){
+ #home .pro-next-step{
+   display:grid!important;
+   grid-template-columns:auto auto!important;
+   justify-content:start!important;
+   align-items:center!important;
+   column-gap:14px!important;
+ }
+ #home .pro-next-step>div{
+   min-width:0!important;
+   width:auto!important;
+   max-width:620px!important;
+ }
+ #home .pro-next-step button.primary{
+   justify-self:start!important;
+   align-self:center!important;
+   margin:0!important;
+ }
+ #home .game-level-top{
+   display:flex!important;
+   align-items:center!important;
+   justify-content:space-between!important;
+   gap:10px!important;
+ }
+ #home .game-level-name-wrap{
+   display:inline-flex!important;
+   align-items:center!important;
+   gap:5px!important;
+   flex:0 0 auto!important;
+ }
+}
+@media (min-width:721px) and (max-width:900px){
+ #home .pro-next-step{
+   grid-template-columns:minmax(0,1fr) auto!important;
+ }
+ #home .pro-next-step>div{
+   max-width:none!important;
+ }
+}
+
+
+/* PRO V6 · Niveles y logros */
+.level-tools{display:flex;align-items:center;gap:7px}
+.level-map-btn{padding:6px 9px!important;font-size:.72rem!important;min-height:auto!important}
+.levels-panel{margin:0 0 10px;padding:12px;border:1px solid #dbe7ed;border-radius:14px;background:#f9fcfd}
+.levels-panel-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:10px}
+.levels-panel-head strong,.levels-panel-head small{display:block}
+.levels-panel-head small{margin-top:2px;color:#6a7b84;font-size:.76rem}
+.levels-map{display:grid;gap:7px}
+.level-map-item{display:grid;grid-template-columns:30px 1fr auto;gap:9px;align-items:center;border:1px solid #e3eaee;border-radius:11px;padding:8px 9px;background:#fff}
+.level-map-step{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:900;background:#eef4f7;color:#45616f}
+.level-map-copy strong,.level-map-copy small{display:block}
+.level-map-copy small{color:#6c7b83;font-size:.72rem;margin-top:1px}
+.level-map-state{font-size:.7rem;font-weight:850;color:#6b7b83}
+.level-map-item.done .level-map-step{background:#e8f5ee;color:#28734a}
+.level-map-item.current{border-color:#9ec8dc;background:#f4fbfe}
+.level-map-item.current .level-map-step{background:#dff2fa;color:#0b678d}
+.level-map-item.current .level-map-state{color:#0b678d}
+.achievements-panel{margin-top:16px}
+.achievements-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.achievements-head h3{margin:2px 0 0}
+.achievements-intro{margin:7px 0 12px;color:#657780;font-size:.9rem}
+.achievements-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.achievement-card{display:grid;grid-template-columns:36px 1fr auto;gap:9px;align-items:center;border:1px solid #e1e8ec;border-radius:13px;padding:10px;background:#fbfdfe}
+.achievement-card.locked{opacity:.72}
+.achievement-icon{font-size:1.25rem}
+.achievement-card strong,.achievement-card small{display:block}
+.achievement-card small{margin-top:2px;color:#667780;font-size:.75rem;line-height:1.35}
+.achievement-card>span{font-size:.7rem;font-weight:850;white-space:nowrap}
+@media(max-width:720px){
+ .level-tools{gap:5px}
+ .level-map-btn{padding:5px 7px!important}
+ .levels-panel-head{flex-direction:column}
+ .levels-panel-head button{width:100%}
+ .level-map-item{grid-template-columns:28px 1fr}
+ .level-map-state{grid-column:2}
+ .achievements-grid{grid-template-columns:1fr}
+ .achievement-card{grid-template-columns:34px 1fr}
+ .achievement-card>span{grid-column:2}
+}
+
+
+/* PRO V7 · Logros visibles + iconos i circulares */
+#achievementsPanel{display:block!important;visibility:visible!important}
+.game-info-btn{
+ width:19px!important;height:19px!important;
+ min-width:19px!important;min-height:19px!important;
+ max-width:19px!important;max-height:19px!important;
+ flex:0 0 19px!important;aspect-ratio:1/1!important;
+ border-radius:50%!important;padding:0!important;
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ line-height:1!important;box-sizing:border-box!important;
+}
+.pro-next-step strong{display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px}
+.pro-next-step strong .game-info-btn{margin-left:1px!important}
+
+
+/* PRO V8 · Ayudas más legibles en PC/tablet */
+@media (min-width:721px){
+  .pro-game-help,
+  #quickHelpBox,
+  #progressHelpPanel,
+  #xpHelpPanel{
+    width:fit-content!important;
+    max-width:430px!important;
+    min-width:0!important;
+    line-height:1.5!important;
+  }
+  #quickHelpBox{
+    justify-self:start!important;
+  }
+}
+
+
+/* PRO V9 · Cuadros de información "i" realmente compactos */
+@media (min-width:721px){
+  #home #quickHelpBox.pro-game-help,
+  #home .pro-game-help,
+  #progressHelpPanel,
+  #xpHelpPanel{
+    display:block;
+    width:auto!important;
+    max-width:360px!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
+    justify-self:start!important;
+    align-self:start!important;
+    padding:10px 12px!important;
+    line-height:1.42!important;
+    font-size:12.5px!important;
+  }
+  #home #quickHelpBox.pro-game-help:not(.hidden){
+    display:inline-block!important;
+  }
+  #home #quickHelpBox.pro-game-help p,
+  #home #quickHelpBox.pro-game-help div,
+  #progressHelpPanel p,#xpHelpPanel p{
+    max-width:336px!important;
+    margin-left:0!important;
+    margin-right:0!important;
+  }
+}
+
+
+/* PRO V10 · corrección definitiva ayudas i + paneles plegables */
+@media (min-width:721px){
+ #home .pro-game-card{position:relative!important}
+ #home #quickHelpBox.pro-game-help{
+   position:absolute!important;z-index:100!important;
+   top:56px!important;left:18px!important;right:auto!important;
+   width:300px!important;max-width:300px!important;min-width:300px!important;
+   padding:10px 12px!important;margin:0!important;
+   box-sizing:border-box!important;font-size:12.5px!important;line-height:1.42!important;
+   box-shadow:0 10px 26px rgba(18,45,62,.18)!important;
+ }
+ #home #quickHelpBox.pro-game-help.hidden{display:none!important}
+ #home #quickHelpBox.pro-game-help:not(.hidden){display:block!important}
+}
+.collapsible-progress-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.collapsible-progress-head h3{margin:0!important}
+.progress-toggle{width:auto!important;min-width:88px!important;padding:7px 10px!important;font-size:12px!important}
+.progress-collapsible-body{margin-top:12px}
+.progress-collapsible-body.hidden{display:none!important}
+
+
+/* PRO V11 · plegado por defecto + niveles visuales + tooltip nativo eliminado */
+.progress-head-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.level-map-step{
+ width:42px!important;height:42px!important;border-radius:12px!important;
+ display:grid!important;grid-template-columns:1fr!important;grid-template-rows:1fr auto!important;
+ place-items:center!important;padding:3px!important;line-height:1!important
+}
+.level-map-icon{font-size:19px;line-height:1}
+.level-map-number{font-size:9px;font-weight:900;opacity:.72}
+.level-map-item{grid-template-columns:44px 1fr auto!important}
+@media(max-width:720px){
+ .level-map-item{grid-template-columns:44px 1fr!important}
+ .progress-head-actions{justify-content:flex-start}
+}
+
+
+/* PRO V12 · ayudas i compactas, ancladas y visibles al pasar el cursor */
+@media (min-width:721px){
+ #home #quickHelpBox.pro-game-help{
+   position:fixed!important;
+   z-index:9999!important;
+   width:300px!important;
+   max-width:300px!important;
+   min-width:300px!important;
+   margin:0!important;
+   padding:10px 12px!important;
+   box-sizing:border-box!important;
+   font-size:12.5px!important;
+   line-height:1.42!important;
+   box-shadow:0 10px 26px rgba(18,45,62,.18)!important;
+ }
+ #home #quickHelpBox.pro-game-help.hidden{display:none!important}
+ #home #quickHelpBox.pro-game-help:not(.hidden){display:block!important}
+}
+
+
+/* PRO V13 · tooltip definitivo independiente del layout */
+#quickHelpBox{display:none!important}
+.global-info-tooltip{
+ position:fixed!important;
+ z-index:2147483647!important;
+ width:300px!important;
+ max-width:300px!important;
+ min-width:300px!important;
+ box-sizing:border-box!important;
+ padding:10px 12px!important;
+ border:1px solid #cfdde7!important;
+ border-radius:12px!important;
+ background:#ffffff!important;
+ color:#26445a!important;
+ box-shadow:0 10px 28px rgba(21,47,64,.20)!important;
+ font-size:12.5px!important;
+ line-height:1.42!important;
+ opacity:0!important;
+ pointer-events:none!important;
+ transform:translateY(2px)!important;
+ transition:opacity .08s ease,transform .08s ease!important;
+}
+.global-info-tooltip strong{
+ display:block!important;
+ margin:0 0 4px!important;
+ color:#0b4771!important;
+ font-size:12.5px!important;
+}
+.global-info-tooltip.show{
+ opacity:1!important;
+ transform:translateY(0)!important;
+ pointer-events:auto!important;
+}
+@media(max-width:720px){
+ .global-info-tooltip{
+   width:min(300px,calc(100vw - 24px))!important;
+   min-width:0!important;
+   max-width:calc(100vw - 24px)!important;
+ }
+}
+
 </style>
 </head>
 <body>
@@ -486,36 +843,46 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
  <div id="gameZone" class="pro-game-compact">
   <div class="pro-game-title">
    <div><div class="section-kicker">Camino a la plaza</div><h2>Tu progreso de hoy</h2></div>
-   <span id="gameLevelBadge" class="type-badge">Nivel 1</span>
+   <div class="level-tools"><span id="gameLevelBadge" class="type-badge">Nivel 1</span><button id="toggleLevelsPanel" class="secondary level-map-btn" type="button">Ver niveles</button></div>
   </div>
+  
+  <div id="levelsPanel" class="levels-panel hidden">
+   <div class="levels-panel-head">
+    <div><strong>Camino de niveles</strong><small>Tu XP acumulada determina el nivel alcanzado.</small></div>
+    <button id="closeLevelsPanel" class="secondary" type="button">Cerrar</button>
+   </div>
+   <div id="levelsMap" class="levels-map"></div>
+  </div>
+
   <div class="pro-game-row">
    <div class="pro-game-level">
-    <div class="game-level-top"><strong id="gameLevelName">Aspirante</strong><span id="gameNextLevel">0 / 500 XP</span></div>
+    <div class="game-level-top"><span class="game-level-name-wrap"><strong id="gameLevelName">Aspirante</strong><button class="game-info-btn" type="button" data-help="level" aria-label="Información sobre niveles">i</button></span><span id="gameNextLevel">0 / 500 XP</span></div>
     <div class="game-bar"><span id="gameLevelBar" style="width:0%"></span></div>
     <div id="gameLevelHint" class="level-hint"></div>
    </div>
-   <div class="pro-mini-stat"><b id="gameStreak">🔥 0</b><span>Racha</span></div>
-   <div class="pro-mini-stat"><b id="gameXP">⭐ 0</b><span>XP</span></div>
+   <div class="pro-mini-stat"><b id="gameStreak">🔥 0</b><span>Racha <button class="game-info-btn" type="button" data-help="streak" aria-label="Información sobre la racha">i</button></span></div>
+   <div class="pro-mini-stat"><b id="gameXP">⭐ 0</b><span>XP <button class="game-info-btn" type="button" data-help="xp" aria-label="Información sobre XP">i</button></span></div>
   </div>
   <div class="pro-next-step">
    <div>
-    <strong>Tu siguiente paso</strong>
-    <p id="weakTopicText">Completa ejercicios para detectar tu materia a reforzar.</p>
+    <strong>Tu siguiente paso <span class="smart-review-label">· Repaso inteligente</span><button class="game-info-btn" type="button" data-help="review" aria-label="Información sobre repaso inteligente">i</button></strong>
+    <p id="weakTopicText">Analizando tus resultados y el tiempo desde el último repaso…</p>
    </div>
    <button id="weakTopicBtn" class="primary hidden" type="button">Continuar</button>
   </div>
   <div class="pro-daily">
-   <div><strong>🎯 Objetivo de hoy</strong><span id="dailyGoalText">0/20 preguntas completadas hoy</span></div>
+   <div><strong>🎯 Objetivo de hoy <button class="game-info-btn" type="button" data-help="daily" aria-label="Información sobre el objetivo diario">i</button></strong><span id="dailyGoalText">0/20 preguntas completadas hoy</span></div>
    <div class="game-bar"><span id="dailyGoalBar" style="width:0%"></span></div>
    <div id="dailyRewardText" class="game-reward hidden"></div>
   </div>
+  <div id="quickHelpBox" class="pro-game-help hidden"></div>
 
   <!-- Datos de gamificación conservados para la lógica actual; se mostrarán más adelante en Mi progreso -->
   <div class="hidden" aria-hidden="true">
    <span id="gameMedals">🏅 0</span><span id="gameMastery">📊 —</span>
    <div id="medalRow"></div><div id="medalDetail"></div><div id="masteryBasis"></div><div id="masteryList"></div>
    <div id="survivalRecordText"><strong>Récord:</strong> —</div>
-   <div id="quickHelpBox"></div><div id="progressHelpPanel"></div><div id="xpHelpPanel"></div>
+   <div id="progressHelpPanel"></div><div id="xpHelpPanel"></div>
    <button id="toggleProgressHelp" type="button"></button><button id="toggleXpHelp" type="button"></button>
   </div>
  </div>
@@ -559,7 +926,8 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
 
 <section id="myProgress" class="hidden">
  <div class="view-top"><button class="back" onclick="goHome()">← Inicio</button><button class="secondary" type="button" onclick="loadMyProgress()">Actualizar</button></div>
- <div class="progress-shell">
+ 
+<div class="progress-shell">
   <div class="progress-head">
    <div><div class="section-kicker">Seguimiento personal</div><h2>Mi progreso</h2><p id="progressUserEmail"></p></div>
   </div>
@@ -570,14 +938,48 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
    <div class="progress-metric"><b id="progressBest">—</b><span>Mejor nota</span></div>
    <div class="progress-metric"><b id="progressLast">—</b><span>Última actividad</span></div>
   </div>
+  <div class="smart-review-panel">
+  <div class="collapsible-progress-head">
+   <div><div class="section-kicker">Repaso inteligente</div><h3>Plan de repaso</h3></div>
+   <div class="progress-head-actions"><span id="smartReviewDueCount" class="type-badge">Calculando…</span><button class="secondary progress-toggle" type="button" data-progress-toggle="smartReviewBody">Mostrar</button></div>
+  </div>
+  <div id="smartReviewBody" class="progress-collapsible-body hidden">
+   <p class="smart-review-intro">Prioriza las materias según tus resultados, la práctica acumulada y el tiempo transcurrido desde el último ejercicio.</p>
+   <div id="smartReviewPlan" class="smart-review-list"></div>
+  </div>
+ </div>
+
+  
+  <div id="achievementsPanel" class="progress-panel achievements-panel">
+   <div class="collapsible-progress-head">
+    <div><h3>Logros y recompensas</h3></div>
+    <div class="progress-head-actions"><span id="achievementsCount" class="type-badge">0/0 desbloqueados</span><button class="secondary progress-toggle" type="button" data-progress-toggle="achievementsBody">Mostrar</button></div>
+   </div>
+   <div id="achievementsBody" class="progress-collapsible-body hidden">
+    <p class="achievements-intro">Consulta las medallas conseguidas y qué necesitas para desbloquear las siguientes.</p>
+    <div id="achievementsGrid" class="achievements-grid"></div>
+   </div>
+  </div>
+
   <div class="progress-panel">
-   <h3>Historial de intentos</h3>
-   <div id="progressList" class="progress-list"></div>
+   <div class="collapsible-progress-head">
+    <h3>Historial de intentos</h3>
+    <button class="secondary progress-toggle" type="button" data-progress-toggle="progressHistoryBody">Mostrar</button>
+   </div>
+   <div id="progressHistoryBody" class="progress-collapsible-body hidden">
+    <div id="progressList" class="progress-list"></div>
+   </div>
   </div>
 
   <div class="progress-panel progress-topics">
-   <h3>Rendimiento por materias / temas</h3><div class="progress-status" style="margin-top:-5px">Agrupado según la misma clasificación de la biblioteca.</div>
-   <div id="progressTopicList" class="progress-topic-list"></div>
+   <div class="collapsible-progress-head">
+    <h3>Rendimiento por materias / temas</h3>
+    <button class="secondary progress-toggle" type="button" data-progress-toggle="progressTopicsBody">Mostrar</button>
+   </div>
+   <div id="progressTopicsBody" class="progress-collapsible-body hidden">
+    <div class="progress-status" style="margin-top:0">Agrupado según la misma clasificación de la biblioteca.</div>
+    <div id="progressTopicList" class="progress-topic-list"></div>
+   </div>
   </div>
 
  </div>
@@ -599,6 +1001,8 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
     <div id="adminUsersBody">
      <p class="admin-section-note">Da de alta alumnos, bloquea o reactiva su acceso, cambia el número de dispositivos permitidos, libera dispositivos registrados y tramita bajas.</p>
      <div class="admin-users-form">
+      <div class="field"><label for="adminNewName">Nombre y apellidos</label><input id="adminNewName" type="text" placeholder="Nombre y apellidos"></div>
+      <div class="field"><label for="adminNewPhone">Nº de teléfono</label><input id="adminNewPhone" type="tel" placeholder="600 000 000"></div>
       <div class="field"><label for="adminNewEmail">Correo del alumno</label><input id="adminNewEmail" type="email" placeholder="alumno@correo.com"></div>
       <div class="field"><label for="adminNewMaxDevices">Dispositivos permitidos</label><select id="adminNewMaxDevices"><option value="1">1 dispositivo</option><option value="2" selected>2 dispositivos</option></select></div>
       <button class="primary" type="button" onclick="adminAddStudent()">Dar de alta</button>
@@ -1113,7 +1517,8 @@ window.loadAdminStudents=async()=>{
     box.innerHTML=rows.map(x=>{
       const email=normalizeStudentEmail(x.id),active=x.activo===true,max=Number(x.maxDispositivos)===2?2:1,devs=devices[email]||[];
       const devHtml=devs.length?devs.map(d=>`<div class="admin-device"><span><strong>${esc(d.id)}</strong> · ${d.uid?esc(d.uid.slice(0,10))+'…':'UID no disponible'}${d.ultimoAcceso?' · Último acceso: '+esc(formatProgressDate(d.ultimoAcceso)):''}</span><button class="secondary" type="button" onclick="adminReleaseDevice('${encodeURIComponent(email)}','${encodeURIComponent(d.path)}')">Liberar</button></div>`).join(''):'<div class="muted">Sin dispositivos registrados.</div>';
-      return `<div class="admin-user-card ${active?'':'blocked'}"><div class="admin-user-head"><div><div class="admin-user-email">${esc(email)}</div><div class="admin-user-meta"><span>${max} ${max===1?'dispositivo permitido':'dispositivos permitidos'}</span><span>${devs.length} ${devs.length===1?'slot ocupado':'slots ocupados'}</span></div></div><span class="admin-user-state ${active?'':'blocked'}">${active?'ACTIVO':'BLOQUEADO'}</span></div><div class="admin-user-actions"><button class="secondary" type="button" onclick="adminToggleStudent('${encodeURIComponent(email)}',${active?'false':'true'})">${active?'Bloquear acceso':'Reactivar acceso'}</button><div class="admin-device-limit-control" aria-label="Dispositivos permitidos"><span>Permitir:</span><button class="secondary admin-limit-btn ${max===1?'selected':''}" type="button" onclick="adminSetMaxDevices('${encodeURIComponent(email)}',1)" ${max===1?'disabled aria-current="true"':''}>1</button><button class="secondary admin-limit-btn ${max===2?'selected':''}" type="button" onclick="adminSetMaxDevices('${encodeURIComponent(email)}',2)" ${max===2?'disabled aria-current="true"':''}>2</button></div>${devs.length>1?`<button class="secondary" type="button" onclick="adminReleaseAllDevices('${encodeURIComponent(email)}')">Liberar todos</button>`:''}<button class="secondary admin-danger" type="button" onclick="adminDeleteStudent('${encodeURIComponent(email)}')">Dar de baja</button></div><div class="admin-device-list">${devHtml}</div></div>`;
+      const nombre=(x.nombre||'').toString().trim(),telefono=(x.telefono||'').toString().trim();
+      return `<div class="admin-user-card ${active?'':'blocked'}"><div class="admin-user-head"><div>${nombre?`<div class="admin-user-name">${esc(nombre)}</div>`:''}<div class="admin-user-email">${esc(email)}</div>${telefono?`<div class="admin-user-contact">Tel.: ${esc(telefono)}</div>`:''}<div class="admin-user-meta"><span>${max} ${max===1?'dispositivo permitido':'dispositivos permitidos'}</span><span>${devs.length} ${devs.length===1?'slot ocupado':'slots ocupados'}</span></div></div><span class="admin-user-state ${active?'':'blocked'}">${active?'ACTIVO':'BLOQUEADO'}</span></div><div class="admin-user-actions"><button class="secondary" type="button" onclick="adminToggleStudent('${encodeURIComponent(email)}',${active?'false':'true'})">${active?'Bloquear acceso':'Reactivar acceso'}</button><div class="admin-device-limit-control" aria-label="Dispositivos permitidos"><span>Permitir:</span><button class="secondary admin-limit-btn ${max===1?'selected':''}" type="button" onclick="adminSetMaxDevices('${encodeURIComponent(email)}',1)" ${max===1?'disabled aria-current="true"':''}>1</button><button class="secondary admin-limit-btn ${max===2?'selected':''}" type="button" onclick="adminSetMaxDevices('${encodeURIComponent(email)}',2)" ${max===2?'disabled aria-current="true"':''}>2</button></div>${devs.length>1?`<button class="secondary" type="button" onclick="adminReleaseAllDevices('${encodeURIComponent(email)}')">Liberar todos</button>`:''}<button class="secondary admin-danger" type="button" onclick="adminDeleteStudent('${encodeURIComponent(email)}','${encodeURIComponent(nombre)}')">Dar de baja</button></div><div class="admin-device-list">${devHtml}</div></div>`;
     }).join('');
     status.textContent=`${rows.length} ${rows.length===1?'alumno':'alumnos'} en autorizados.${deviceWarning}`;
   }catch(e){
@@ -1123,15 +1528,20 @@ window.loadAdminStudents=async()=>{
 };
 window.adminAddStudent=async()=>{
   if(!adminOnly())return;
+  const nombre=$('#adminNewName').value.trim();
+  const telefono=$('#adminNewPhone').value.trim();
   const email=normalizeStudentEmail($('#adminNewEmail').value),max=Number($('#adminNewMaxDevices').value)===2?2:1;
+  if(!nombre){alert('Introduce el nombre y apellidos del alumno.');return;}
   if(!email || !email.includes('@')){alert('Introduce un correo electrónico válido.');return;}
   if(email===ADMIN_EMAIL){alert('El administrador no se gestiona desde este panel.');return;}
   try{
     const ref=doc(db,'autorizados',email),snap=await getDoc(ref);
-    if(snap.exists() && !confirm('Este correo ya existe en autorizados. ¿Quieres reactivarlo y establecer '+max+' dispositivo(s)?'))return;
-    await setDoc(ref,{activo:true,maxDispositivos:max,rol:'alumno',email}, {merge:true});
+    if(snap.exists() && !confirm('Este correo ya existe en autorizados. ¿Quieres actualizar sus datos, reactivarlo y establecer '+max+' dispositivo(s)?'))return;
+    await setDoc(ref,{activo:true,maxDispositivos:max,rol:'alumno',email,nombre,telefono}, {merge:true});
+    $('#adminNewName').value='';
+    $('#adminNewPhone').value='';
     $('#adminNewEmail').value='';
-    alert('Alumno autorizado correctamente.\n\n'+email+'\nDispositivos permitidos: '+max);
+    alert('Alumno autorizado correctamente.\n\n'+nombre+'\n'+email+(telefono?'\nTel.: '+telefono:'')+'\nDispositivos permitidos: '+max);
     await loadAdminStudents();
   }catch(e){console.error(e);alert('No se ha podido dar de alta al alumno.\n\n'+(e?.message||e));}
 };
@@ -1169,20 +1579,22 @@ window.adminReleaseAllDevices=async(encodedEmail)=>{
   }catch(e){console.error(e);alert('No se han podido liberar todos los dispositivos.\n\n'+(e?.message||e));}
 };
 
-window.adminDeleteStudent=async(encodedEmail)=>{
+window.adminDeleteStudent=async(encodedEmail,encodedName='')=>{
   if(!adminOnly())return;
   const email=decodeURIComponent(encodedEmail);
+  const nombre=encodedName?decodeURIComponent(encodedName):'';
   if(email===ADMIN_EMAIL){alert('El administrador no puede darse de baja desde este panel.');return;}
-  const ok=confirm(`¿DAR DE BAJA a ${email}?\n\nSe eliminará su autorización de acceso y se liberarán todos sus dispositivos registrados.\n\nSu historial de progreso se conservará para que no se pierdan las estadísticas. Esta acción impedirá que vuelva a entrar hasta que lo des de alta de nuevo.`);
+  const alumno=nombre?`${nombre}\n${email}`:email;
+  const ok=confirm(`¿DAR DE BAJA a ${alumno}?\n\nSe eliminará su autorización de acceso y se liberarán todos sus dispositivos registrados.\n\nSu historial de progreso se conservará para que no se pierdan las estadísticas. Esta acción impedirá que vuelva a entrar hasta que lo des de alta de nuevo.`);
   if(!ok)return;
-  const finalOk=confirm(`Confirmación final: eliminar a ${email} de la lista de alumnos autorizados?`);
+  const finalOk=confirm(`Confirmación final: eliminar a ${alumno} de la lista de alumnos autorizados?`);
   if(!finalOk)return;
   try{
     const snap=await getDocs(collectionGroup(db,'equipos'));
     const refs=snap.docs.filter(d=>normalizeStudentEmail(d.data()?.email)===email).map(d=>d.ref);
     await Promise.all(refs.map(ref=>deleteDoc(ref)));
     await deleteDoc(doc(db,'autorizados',email));
-    alert('Baja realizada correctamente.\n\n'+email+' ya no está autorizado para acceder.');
+    alert('Baja realizada correctamente.\n\n'+alumno+' ya no está autorizado para acceder.');
     await loadAdminStudents();
   }catch(e){
     console.error(e);
@@ -1228,6 +1640,8 @@ async function loadMyProgress(){
           </div>
         </div>`).join('');
       renderProgressTopics(items);
+      renderSmartReview(items);
+      try{renderAchievements(computeGame(items));}catch(e){console.warn('Logros y recompensas',e);}
       $('#progressStatus').textContent=`${items.length} ${items.length===1?'intento registrado':'intentos registrados'}.`;
     }else{
       $('#progressAverage').textContent='—';
@@ -1235,6 +1649,8 @@ async function loadMyProgress(){
       $('#progressLast').textContent='—';
       $('#progressList').innerHTML='<div class="progress-empty">Todavía no tienes ejercicios registrados. Finaliza un test o supuesto práctico y aparecerá aquí.</div>';
       $('#progressTopicList').innerHTML='<div class="progress-empty">Todavía no hay datos suficientes para calcular el rendimiento por temas.</div>';
+      renderSmartReview([]);
+      try{renderAchievements(computeGame([]));}catch(e){console.warn('Logros y recompensas',e);}
       $('#progressStatus').textContent='Aún no hay actividad registrada.';
     }
   }catch(e){
@@ -1356,6 +1772,7 @@ async function renderStats(){
     const snap=await getDocs(q);
     const items=snap.docs.map(d=>d.data());
     renderGame(items);
+    renderSmartReview(items);
     const normalItems=items.filter(x=>x.tipo==='test'||x.tipo==='supuesto');
     $('#doneCount').textContent=normalItems.length;
     if(normalItems.length){
@@ -1425,7 +1842,10 @@ function computeGame(items){
 
 const HELP_TEXT={
  streak:'La racha cuenta días consecutivos con actividad real de estudio. Iniciar sesión sin completar actividad no suma.',
- xp:'Los XP reflejan tu avance. Se obtienen por rendimiento, constancia, objetivo diario y mejora de récord en Supervivencia.',
+ xp:'Los XP son puntos de experiencia. Aumentan al completar ejercicios, acertar preguntas, mantener constancia, cumplir el objetivo diario y mejorar el récord en Supervivencia. Sirven para avanzar de nivel.',
+ level:'El nivel resume tu avance acumulado en la plataforma. Sube cuando alcanzas determinados tramos de XP y no sustituye a tu nota real.',
+ daily:'El objetivo diario busca mantener una rutina de estudio. Se completa al alcanzar 20 preguntas en el día y añade una bonificación de XP.',
+ review:'El Repaso inteligente combina tus resultados y el tiempo desde el último ejercicio para priorizar qué materia conviene revisar antes.',
  medals:'Los logros se desbloquean al alcanzar hitos concretos. Pulsa una insignia para ver qué exige.',
  mastery:'El dominio estima tu rendimiento usando resultados registrados. No representa una probabilidad de obtener plaza.'
 };
@@ -1439,28 +1859,164 @@ const MEDAL_RULES={
  '📚 Repaso activo':'Completa al menos 3 tests clasificados como repaso.',
  '🏆 Especialista práctico':'Completa al menos 10 supuestos prácticos distintos.'
 };
-function bindGameHelp(){
- const p=$('#progressHelpPanel'),x=$('#xpHelpPanel');
- const b1=$('#toggleProgressHelp'),b2=$('#toggleXpHelp');
- if(b1) b1.onclick=()=>{p.classList.toggle('hidden');x.classList.add('hidden')};
- if(b2) b2.onclick=()=>{x.classList.toggle('hidden');p.classList.add('hidden')};
- document.querySelectorAll('[data-help]').forEach(btn=>{
-   btn.setAttribute('title',HELP_TEXT[btn.dataset.help]||'');
-   btn.onclick=(ev)=>{
-     ev.preventDefault();
-     ev.stopPropagation();
-     const box=$('#quickHelpBox');
-     const key=btn.dataset.help;
-     const titles={streak:'🔥 Racha de estudio',xp:'⭐ XP acumulada',medals:'🏅 Logros',mastery:'📊 Dominio global'};
-     box.innerHTML=`<strong>${titles[key]||'Información'}</strong><br>${esc(HELP_TEXT[key]||'')}`;
-     box.classList.remove('hidden');
-     box.scrollIntoView({behavior:'smooth',block:'nearest'});
-   };
+
+function bindProgressCollapsibles(){
+ document.querySelectorAll('[data-progress-toggle]').forEach(btn=>{
+  if(btn.dataset.bound==='1')return;
+  btn.dataset.bound='1';
+  btn.addEventListener('click',()=>{
+   const body=document.getElementById(btn.dataset.progressToggle);
+   if(!body)return;
+   const hidden=body.classList.toggle('hidden');
+   btn.textContent=hidden?'Mostrar':'Ocultar';
+   btn.setAttribute('aria-expanded',String(!hidden));
+  });
  });
+}
+
+
+
+function bindGameHelp(){
+ bindLevelsPanel();
+ bindProgressCollapsibles();
+
+ // Desactivar el antiguo cuadro para evitar conflictos visuales.
+ const oldBox=document.getElementById('quickHelpBox');
+ if(oldBox) oldBox.classList.add('hidden');
+
+ let tip=document.getElementById('globalInfoTooltip');
+ if(!tip){
+   tip=document.createElement('div');
+   tip.id='globalInfoTooltip';
+   tip.className='global-info-tooltip';
+   tip.setAttribute('role','tooltip');
+   document.body.appendChild(tip);
+ }
+
+ let hideTimer=null;
+
+ const titles={
+   streak:'🔥 Racha de estudio',
+   xp:'⭐ XP acumulada',
+   level:'🎓 Niveles',
+   daily:'🎯 Objetivo diario',
+   review:'🧠 Repaso inteligente',
+   medals:'🏅 Logros',
+   mastery:'📊 Dominio global'
+ };
+
+ const placeTip=(btn)=>{
+   const r=btn.getBoundingClientRect();
+   const pad=12, gap=8;
+   const tw=tip.offsetWidth||300;
+   const th=tip.offsetHeight||90;
+
+   let left=r.right+gap;
+   if(left+tw>window.innerWidth-pad) left=r.left-tw-gap;
+   if(left<pad) left=Math.max(pad,Math.min(r.left,window.innerWidth-tw-pad));
+
+   let top=r.top + (r.height-th)/2;
+   if(top<pad) top=pad;
+   if(top+th>window.innerHeight-pad) top=window.innerHeight-th-pad;
+
+   tip.style.left=Math.round(left)+'px';
+   tip.style.top=Math.round(top)+'px';
+ };
+
+ const showTip=(btn)=>{
+   clearTimeout(hideTimer);
+   const key=btn.dataset.help;
+   tip.innerHTML=`<strong>${titles[key]||'Información'}</strong><div>${esc(HELP_TEXT[key]||'')}</div>`;
+   tip.classList.add('show');
+   tip.style.visibility='hidden';
+   requestAnimationFrame(()=>{
+     placeTip(btn);
+     tip.style.visibility='visible';
+   });
+ };
+
+ const hideTip=()=>{
+   clearTimeout(hideTimer);
+   hideTimer=setTimeout(()=>tip.classList.remove('show'),120);
+ };
+
+ document.querySelectorAll('[data-help]').forEach(btn=>{
+   if(btn.dataset.helpBoundFinal==='1')return;
+   btn.dataset.helpBoundFinal='1';
+   btn.removeAttribute('title');
+   btn.setAttribute('aria-label','Información');
+
+   // PC/tablet: solo pasar el cursor.
+   btn.addEventListener('mouseenter',()=>showTip(btn));
+   btn.addEventListener('mouseleave',hideTip);
+
+   // Teclado.
+   btn.addEventListener('focus',()=>showTip(btn));
+   btn.addEventListener('blur',hideTip);
+
+   // Móvil: toque.
+   btn.addEventListener('click',(ev)=>{
+     if(window.matchMedia('(hover: none)').matches || window.innerWidth<=720){
+       ev.preventDefault();
+       ev.stopPropagation();
+       showTip(btn);
+     }
+   });
+ });
+
+ tip.addEventListener('mouseenter',()=>clearTimeout(hideTimer));
+ tip.addEventListener('mouseleave',hideTip);
+ window.addEventListener('scroll',()=>tip.classList.remove('show'),{passive:true});
+ window.addEventListener('resize',()=>tip.classList.remove('show'));
+}
+
+
+
+
+function renderLevelsMap(currentXp=0){
+ const box=$('#levelsMap');
+ if(!box)return;
+ let currentIndex=0;
+ GAME_LEVELS.forEach((l,i)=>{if(currentXp>=l.xp)currentIndex=i});
+ const LEVEL_ICONS=['🌱','📘','🔥','🧠','🚀','🎯','🏆','🏛️'];
+ box.innerHTML=GAME_LEVELS.map((l,i)=>{
+   const state=i<currentIndex?'done':i===currentIndex?'current':'locked';
+   const next=GAME_LEVELS[i+1];
+   return `<div class="level-map-item ${state}">
+     <div class="level-map-step"><span class="level-map-icon">${LEVEL_ICONS[i]||'⭐'}</span><span class="level-map-number">${i+1}</span></div>
+     <div class="level-map-copy">
+      <strong>${esc(l.name)}</strong>
+      <small>${l.xp.toLocaleString('es-ES')} XP${next?` · siguiente a ${next.xp.toLocaleString('es-ES')} XP`:''}</small>
+     </div>
+     <div class="level-map-state">${state==='done'?'✓':state==='current'?'Actual':'Pendiente'}</div>
+   </div>`;
+ }).join('');
+}
+function renderAchievements(g){
+ const box=$('#achievementsGrid'),count=$('#achievementsCount');
+ if(!box||!count)return;
+ const medals=g.medals||[];
+ const unlocked=medals.filter(x=>x[1]).length;
+ count.textContent=`${unlocked}/${medals.length} desbloqueados`;
+ box.innerHTML=medals.map(([name,ok])=>{
+   const rule=MEDAL_RULES[name]||'Completa el requisito correspondiente.';
+   return `<div class="achievement-card ${ok?'unlocked':'locked'}">
+     <div class="achievement-icon">${ok?'🏅':'🔒'}</div>
+     <div><strong>${esc(name)}</strong><small>${esc(rule)}</small></div>
+     <span>${ok?'Conseguido':'Pendiente'}</span>
+   </div>`;
+ }).join('');
+}
+function bindLevelsPanel(){
+ const panel=$('#levelsPanel'),open=$('#toggleLevelsPanel'),close=$('#closeLevelsPanel');
+ if(open)open.onclick=()=>panel?.classList.toggle('hidden');
+ if(close)close.onclick=()=>panel?.classList.add('hidden');
 }
 
 function renderGame(items){
  const g=computeGame(items), unlocked=g.medals.filter(x=>x[1]).length;
+ renderLevelsMap(g.xp);
+ renderAchievements(g);
  $('#gameStreak').textContent=`🔥 ${g.streak}`;
  $('#gameXP').textContent=`⭐ ${g.xp.toLocaleString('es-ES')}`;
  $('#gameMedals').textContent=`🏅 ${unlocked}`;
@@ -1480,10 +2036,10 @@ function renderGame(items){
  $('#survivalRecordText').innerHTML=`<strong>Récord:</strong> <span class="${g.survivalRecord?'record-good':''}">${g.survivalRecord?g.survivalRecord+' aciertos':'—'}</span>`;
  const weakBtn=$('#weakTopicBtn');
  if(g.mastery.length){$('#weakTopicText').innerHTML=`<strong>Próximo objetivo:</strong> ${esc(g.mastery[0].name)} · ${g.mastery[0].pct}% de dominio.`;weakBtn.classList.remove('hidden');weakBtn.onclick=()=>{
-   show('home');
    const wanted=(g.mastery[0].name||'').trim().toLowerCase();
+   openTestsLibrary();
    setTimeout(()=>{
-     const sections=[...document.querySelectorAll('.topic-section')];
+     const sections=[...document.querySelectorAll('#testsLibrary .topic-section')];
      let target=sections.find(sec=>{
        const h=sec.querySelector('.topic-heading h2');
        return h && h.textContent.trim().toLowerCase()===wanted;
@@ -1499,10 +2055,10 @@ function renderGame(items){
        target.scrollIntoView({behavior:'smooth',block:'start'});
        target.animate([{outline:'3px solid rgba(0,113,156,.35)'},{outline:'0 solid transparent'}],{duration:1200,easing:'ease-out'});
      }else{
-       const fallback=wanted.includes('supuesto')||wanted.includes('parte específica')?$('#practicalGrid'):$('#testGrid');
+       const fallback=$('#testGrid');
        if(fallback) fallback.scrollIntoView({behavior:'smooth',block:'start'});
      }
-   },100);
+   },180);
  }}
  else{$('#weakTopicText').innerHTML='<strong>Próximo objetivo:</strong> completa ejercicios para detectar tu materia a reforzar.';weakBtn.classList.add('hidden')}
  $('#masteryBasis').textContent=g.evaluatedExercises?`Estimación basada en ${g.evaluatedExercises} ejercicios con resultado registrado. Las materias aún no realizadas no reducen este porcentaje.`:'';
@@ -1514,6 +2070,8 @@ async function refreshGame(){
  const user=auth.currentUser;if(!user)return;
  try{const q=query(collection(db,'progreso'),where('uid','==',user.uid));const snap=await getDocs(q);renderGame(snap.docs.map(d=>d.data()))}
  catch(e){console.error('No se pudo cargar la gamificación:',e)}
+
+ renderSmartReview();
 }
 function shuffled(a){const x=a.slice();for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x}
 window.startSurvival=async()=>{
@@ -1565,6 +2123,206 @@ async function finishSurvival(){
  catch(e){console.error('No se pudo guardar el récord de supervivencia:',e)}
 }
 window.exitSurvival=()=>{if(survivalLives>0&&survivalStartedAt&&confirm('¿Salir del Modo Supervivencia? Esta partida no se guardará.'))goHome();else if(survivalLives<=0)goHome()};
+
+
+/* =========================
+   PRO · REPASO INTELIGENTE V1
+   ========================= */
+const SMART_REVIEW={
+  minInterval:1,
+  maxInterval:30,
+  maxHomeCandidates:1
+};
+
+function smartReviewNormalAttempts(items=[]){
+  return (Array.isArray(items)?items:[]).filter(a=>
+    (a.tipo==='test'||a.tipo==='supuesto') &&
+    a.categoria &&
+    a.fecha
+  );
+}
+function smartReviewDateMs(v){
+  if(!v)return 0;
+  if(typeof v?.toDate==='function')return v.toDate().getTime();
+  if(typeof v?.seconds==='number')return v.seconds*1000;
+  const d=new Date(v);return Number.isNaN(d.getTime())?0:d.getTime();
+}
+function smartReviewScore(a){
+  const total=Number(a.totalPreguntas)||0;
+  const ok=Number(a.aciertos)||0;
+  const bad=Number(a.errores)||0;
+  if(total>0)return Math.max(0,Math.min(100,(ok/total)*100));
+  const nota=Number(a.nota);
+  return Number.isFinite(nota)?Math.max(0,Math.min(100,nota<=10?nota*10:nota)):0;
+}
+function smartReviewInterval(avg, attempts){
+  // Intervalo base adaptativo: más dominio y más práctica => más separación.
+  let days=1;
+  if(avg>=95)days=21;
+  else if(avg>=90)days=14;
+  else if(avg>=85)days=10;
+  else if(avg>=80)days=7;
+  else if(avg>=70)days=4;
+  else if(avg>=60)days=2;
+  else days=1;
+  if(attempts>=5 && avg>=80)days=Math.round(days*1.25);
+  if(attempts>=10 && avg>=85)days=Math.round(days*1.2);
+  return Math.max(SMART_REVIEW.minInterval,Math.min(SMART_REVIEW.maxInterval,days));
+}
+function computeSmartReviewPlan(items=[]){
+  const attempts=smartReviewNormalAttempts(items);
+  const by=new Map();
+  for(const a of attempts){
+    const cat=(a.categoria||'').toString().trim();
+    if(!cat)continue;
+    if(!by.has(cat))by.set(cat,[]);
+    by.get(cat).push(a);
+  }
+  const now=Date.now(), DAY=86400000;
+  const rows=[];
+  for(const [name,list] of by){
+    list.sort((a,b)=>smartReviewDateMs(b.fecha)-smartReviewDateMs(a.fecha));
+    // Damos más peso a los 5 resultados más recientes para que el plan responda a la evolución.
+    const recent=list.slice(0,5);
+    let weight=0,sum=0;
+    recent.forEach((a,i)=>{const w=recent.length-i;sum+=smartReviewScore(a)*w;weight+=w});
+    const avg=weight?sum/weight:0;
+    const lastMs=smartReviewDateMs(list[0].fecha);
+    const interval=smartReviewInterval(avg,list.length);
+    const dueMs=lastMs+interval*DAY;
+    const daysSince=lastMs?Math.max(0,Math.floor((now-lastMs)/DAY)):999;
+    const daysTo=Math.ceil((dueMs-now)/DAY);
+    // Urgencia: vencimiento + bajo rendimiento. Permite priorizar una materia floja incluso antes.
+    const overdue=Math.max(0,(now-dueMs)/DAY);
+    const weakness=(100-avg)/10;
+    const urgency=overdue*3+weakness+(daysTo<=0?8:0);
+    let status='later';
+    if(daysTo<=0)status='due';
+    else if(daysTo<=2)status='soon';
+    rows.push({name,avg,attempts:list.length,lastMs,interval,dueMs,daysSince,daysTo,urgency,status,preferredType:(list[0]?.tipo||'test')});
+  }
+  rows.sort((a,b)=>{
+    const rank={due:0,soon:1,later:2};
+    return rank[a.status]-rank[b.status] || b.urgency-a.urgency || a.daysTo-b.daysTo;
+  });
+  return rows;
+}
+function smartReviewWhen(r){
+  if(r.daysTo<=0)return 'Repasar hoy';
+  if(r.daysTo===1)return 'Repasar mañana';
+  return `Repasar en ${r.daysTo} días`;
+}
+function smartReviewReason(r){
+  const pct=Math.round(r.avg);
+  if(r.avg<70)return `rendimiento ${pct}% · necesita refuerzo frecuente`;
+  if(r.daysTo<=0)return `rendimiento ${pct}% · intervalo de ${r.interval} días cumplido`;
+  return `rendimiento ${pct}% · último trabajo hace ${r.daysSince} días`;
+}
+function smartReviewOpen(r){
+  const clean=s=>String(s||'').toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[·–—\-_/()[\],.:;]+/g,' ')
+    .replace(/\s+/g,' ').trim();
+
+  const wanted=clean(r?.name);
+  const wantsSpecific=wanted.includes('parte especifica');
+  const wantsGeneral=wanted.includes('parte general');
+
+  const openAndFind=(libraryId)=>{
+    show(libraryId);
+    setTimeout(()=>{
+      const root=document.getElementById(libraryId);
+      if(!root)return;
+
+      // 1. Coincidencia fuerte por tarjeta: evita mandar "Parte Específica"
+      //    a un bloque de Parte General.
+      const cards=[...root.querySelectorAll('.test-card,.practical-card')];
+      let target=null;
+
+      if(wantsSpecific || wantsGeneral){
+        const phrase=wantsSpecific?'parte especifica':'parte general';
+        target=cards.find(card=>clean(card.textContent).includes(phrase));
+      }
+
+      // 2. Si no hay coincidencia literal, buscar por palabras significativas.
+      if(!target){
+        const stop=new Set(['repaso','parte','tema','tests','test','supuesto','supuestos','practico','practicos','de','del','la','el','y']);
+        const tokens=wanted.split(' ').filter(t=>t.length>2&&!stop.has(t));
+        let best=null,bestScore=0;
+        cards.forEach(card=>{
+          const txt=clean(card.textContent);
+          const score=tokens.reduce((n,t)=>n+(txt.includes(t)?1:0),0);
+          if(score>bestScore){best=card;bestScore=score}
+        });
+        if(bestScore>0)target=best;
+      }
+
+      // 3. Último recurso: encabezado de materia.
+      if(!target){
+        const sections=[...root.querySelectorAll('.topic-section')];
+        target=sections.find(sec=>{
+          const label=clean(sec.querySelector('.topic-heading h2')?.textContent);
+          return label && (label===wanted || label.includes(wanted) || wanted.includes(label));
+        });
+      }
+
+      target=(target||root.querySelector('.pro-library-head')||root);
+      target.scrollIntoView({behavior:'smooth',block:'center'});
+      if(target.classList?.contains('test-card')||target.classList?.contains('practical-card')||target.classList?.contains('topic-section')){
+        target.animate(
+          [{outline:'3px solid rgba(0,113,156,.38)'},{outline:'0 solid transparent'}],
+          {duration:1400,easing:'ease-out'}
+        );
+      }
+    },140);
+  };
+
+  // Mantener el tipo real del ejercicio que originó la recomendación.
+  // Para "Parte Específica", si procede de un test, se queda en Tests;
+  // si procede de un supuesto, abre Supuestos.
+  openAndFind(r?.preferredType==='supuesto'?'practicalsLibrary':'testsLibrary');
+}
+function renderSmartReview(items=[]){
+  let plan=[];
+  try{plan=computeSmartReviewPlan(items);}catch(e){console.warn('Repaso inteligente',e);plan=[];}
+  const text=$('#weakTopicText'), btn=$('#weakTopicBtn');
+  if(text&&btn){
+    if(plan.length){
+      const r=plan[0];
+      text.innerHTML=`<strong>${esc(smartReviewWhen(r))}: ${esc(r.name)}</strong><br><span class="smart-review-reason">${esc(smartReviewReason(r))}</span>`;
+      btn.classList.remove('hidden');
+      btn.textContent='Continuar';
+      btn.onclick=()=>smartReviewOpen(r);
+    }else{
+      text.textContent='Completa algunos tests o supuestos para que podamos crear tu plan de repaso.';
+      btn.classList.add('hidden');
+    }
+  }
+  const list=$('#smartReviewPlan'), badge=$('#smartReviewDueCount');
+  if(badge){
+    const due=plan.filter(r=>r.daysTo<=0).length;
+    badge.textContent=due?`${due} para hoy`:(plan.length?'Al día':'Sin datos');
+  }
+  if(list){
+    if(!plan.length){
+      list.innerHTML='<div class="empty">Todavía no hay resultados suficientes para crear un plan de repaso.</div>';
+    }else{
+      list.innerHTML=plan.map((r,i)=>{
+        const cls=r.status==='due'?'due':r.status==='soon'?'soon':'later';
+        return `<button class="smart-review-item ${cls}" type="button" data-smart-review="${i}">
+          <span class="smart-review-dot"></span>
+          <span class="smart-review-copy"><strong>${esc(r.name)}</strong><small>${esc(smartReviewReason(r))}</small></span>
+          <span class="smart-review-when">${esc(smartReviewWhen(r))}</span>
+        </button>`;
+      }).join('');
+      [...list.querySelectorAll('[data-smart-review]')].forEach(el=>{
+        el.onclick=()=>smartReviewOpen(plan[Number(el.dataset.smartReview)]);
+      });
+    }
+  }
+  return plan;
+}
+
 
 function topicInfo(t){
   const hay=((t.title||'')+' '+(t.description||'')+' '+(t.id||'')).toLowerCase();
