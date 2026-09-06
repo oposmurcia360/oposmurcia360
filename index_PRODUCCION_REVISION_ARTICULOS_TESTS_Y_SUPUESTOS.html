@@ -1,0 +1,2976 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0758B8">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="OposMurcia 360">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="OposMurcia 360">
+<meta name="description" content="OposMurcia 360 · Tests y supuestos prácticos para Auxiliares Administrativos del Ayuntamiento de Murcia">
+<title>OposMurcia 360</title>
+<link rel="manifest" href="manifest.webmanifest?v=22-appcheck">
+<link rel="icon" href="icon-192.png?v=20">
+<link rel="apple-touch-icon" href="icon-192.png?v=20">
+<style>
+:root{
+ --blue:#0758B8;--blue-dark:#063E82;--blue-soft:#EAF3FF;
+ --bg:#F6F8FB;--card:#FFFFFF;--text:#122033;--muted:#637083;
+ --line:#DDE5EF;--ok:#207A54;--bad:#B94141;--blank:#7D8896;
+ --shadow:0 10px 30px rgba(18,32,51,.08);
+ --radius:20px;
+}
+*{box-sizing:border-box} html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important}
+.shell{max-width:980px;margin:0 auto;padding:0 24px 96px;min-height:100vh}
+.top{
+ margin:0 -24px 24px;padding:22px 28px 26px;
+ background:var(--blue);color:#fff;border-radius:0 0 28px 28px;
+ box-shadow:0 10px 26px rgba(7,88,184,.20)
+}
+.brand{display:flex;align-items:center;gap:12px}.brand img{width:86px;height:86px;object-fit:contain;background:#fff;border:4px solid #fff;border-radius:50%;padding:3px;box-shadow:0 4px 14px rgba(0,0,0,.14)}
+.brand h1{font-size:25px;line-height:1.05;margin:0;font-weight:900;letter-spacing:-.035em}
+.brand p{margin:5px 0 0;color:#E8F2FF;font-size:12px;line-height:1.4}
+.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:22px}
+.hero small{display:block;color:#DCEBFF;font-size:12px}.hero strong{display:block;font-size:28px;line-height:1.05;margin-top:3px}
+.install{border:1px solid rgba(255,255,255,.55);background:#fff;color:var(--blue-dark);border-radius:13px;padding:10px 13px;font-weight:850}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:22px}
+.metric{background:#fff;border:1px solid var(--line);border-radius:17px;padding:13px 7px;text-align:center;box-shadow:0 5px 18px rgba(18,32,51,.05)}
+.metric b{display:block;font-size:21px;color:var(--blue-dark)}.metric span{font-size:11px;color:var(--muted)}
+.section-kicker{font-size:11px;font-weight:900;letter-spacing:.11em;text-transform:uppercase;color:var(--blue)}
+.section-title{font-size:21px;margin:5px 0 13px;letter-spacing:-.02em}
+.test-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.test-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:17px;box-shadow:var(--shadow)}
+/* Solo las tarjetas de TEST/SUPUESTO DE REPASO cambian de color.
+   El resto de la interfaz y el logo permanecen intactos. */
+.repaso-card{
+  background:linear-gradient(180deg,#FFF9F5 0%,#FFFFFF 100%);
+  border:1.5px solid #F0B48E;
+  box-shadow:0 7px 22px rgba(199,92,32,.10);
+}
+.repaso-card h3{color:#A94712}
+.repaso-card .pill,
+.repaso-card .practical-tag{
+  color:#A94712;
+  background:#FFF2E8;
+  border-color:#F3C4A6;
+}
+.repaso-card .primary{background:#D65A12}
+.repaso-card .primary:active{background:#B8490D}
+
+.test-head{display:flex;align-items:flex-start;gap:12px}.test-logo{width:62px;height:62px;flex:0 0 62px;background:#fff;border-radius:50%;padding:2px}
+.test-card h3{font-size:18px;line-height:1.25;margin:1px 0 5px}.muted{color:var(--muted);font-size:13px;line-height:1.45}
+.pills{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0}
+.pill{border:1px solid #CFE0F6;background:#F7FBFF;color:var(--blue-dark);padding:6px 8px;border-radius:999px;font-size:11px;font-weight:750}
+.primary,.secondary,.option{border-radius:14px;min-height:48px;font-weight:800}
+.primary{border:0;background:var(--blue);color:#fff;width:100%;padding:11px 14px}
+.primary:active{background:var(--blue-dark)}
+.secondary{border:1px solid #BED3ED;background:#fff;color:var(--blue-dark);padding:10px 13px}
+.view-top{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0 12px}
+.back{border:0;background:transparent;color:var(--blue-dark);font-weight:850;padding:8px 2px}
+.timer{font-weight:900;color:var(--blue-dark);font-variant-numeric:tabular-nums}
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.panel h2{margin:4px 0 8px;font-size:22px}.panel label{display:flex;align-items:center;gap:9px;margin:13px 0;color:#344256}
+.panel input[type=number]{width:86px;border:1px solid var(--line);border-radius:11px;padding:9px;background:#fff;color:var(--text)}
+.info{background:var(--blue-soft);border:1px solid #C9E0FA;border-radius:14px;padding:12px;color:#23486E;font-size:13px;line-height:1.45;margin:14px 0}
+.progress-track{height:8px;background:#E1E8F1;border-radius:999px;overflow:hidden;margin:0 0 14px}
+.progress{height:100%;width:0;background:var(--blue)}
+.qindex{font-size:12px;color:var(--muted);font-weight:850}.question{font-size:18px;font-weight:800;line-height:1.48;margin:9px 0 16px}
+.options{display:grid;gap:10px}.option{text-align:left;width:100%;border:1.5px solid var(--line);background:#fff;color:var(--text);padding:14px;line-height:1.4}
+.option.selected{border-color:var(--blue);background:var(--blue-soft);box-shadow:inset 0 0 0 1px rgba(7,88,184,.08)}
+.nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.finish{grid-column:1/-1}
+.score{font-size:48px;font-weight:950;letter-spacing:-.045em;color:var(--blue-dark);text-align:center;margin:12px 0}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0}
+.result-box{text-align:center;border:1px solid var(--line);border-radius:14px;background:#F9FBFD;padding:11px 7px}.result-box b{display:block;font-size:21px}
+.review-item{border:1px solid var(--line);border-radius:14px;padding:13px;margin:9px 0;font-size:13px;line-height:1.5;background:#fff}
+.review-item.ok{border-left:4px solid var(--ok)}.review-item.bad{border-left:4px solid var(--bad)}.review-item.blank{border-left:4px solid var(--blank)}
+.modal-wrap{position:fixed;inset:0;background:rgba(12,27,45,.48);display:grid;place-items:center;padding:18px;z-index:30}
+.modal{max-width:560px;width:100%;max-height:86vh;overflow:auto;background:#fff;border-radius:20px;padding:19px;box-shadow:0 24px 70px rgba(0,0,0,.24)}
+.modal h2{margin:0 0 9px}.modal p,.modal li{font-size:13px;line-height:1.55;color:#344256}
+.help-link{border:0;background:transparent;color:#fff;font-weight:800;padding:6px 0;text-decoration:underline;text-underline-offset:3px}
+.foot{text-align:center;color:var(--muted);font-size:11px;margin-top:27px}
+@media(max-width:700px){
+ .test-grid{grid-template-columns:1fr}.brand img{width:76px;height:76px}.brand h1{font-size:22px}
+ .hero strong{font-size:25px}.test-card{padding:15px}.panel{padding:16px}
+}
+@media(max-width:390px){
+ .shell{padding-left:14px;padding-right:14px}.top{margin-left:-14px;margin-right:-14px;padding-left:18px;padding-right:18px}
+ .summary{gap:6px}.metric{padding:11px 4px}.metric b{font-size:19px}
+ .nav{grid-template-columns:1fr}.finish{grid-column:auto}.result-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:340px){.brand p{display:none}.test-logo{width:48px;height:48px;flex-basis:48px}}
+
+.login-shell{min-height:100vh;background:linear-gradient(180deg,var(--blue) 0 36%,var(--bg) 36%);display:grid;place-items:center;padding:40px 20px}.login-wrap{width:min(100%,520px)}.login-brand{text-align:center;color:#fff;margin-bottom:18px}.login-logo{width:112px;height:112px;border-radius:50%;background:#fff;padding:6px;margin:0 auto 12px;display:grid;place-items:center;box-shadow:0 10px 24px rgba(0,0,0,.15)}.login-logo img{width:100%;height:100%;object-fit:contain}.login-brand h1{margin:0;font-size:28px}.login-brand p{margin:6px 0 0;color:#E8F2FF;font-size:13px}.login-card{background:#fff;border-radius:24px;padding:28px;box-shadow:0 20px 60px rgba(10,32,60,.18)}.login-card h2{margin:0 0 5px}.login-card>p{margin:0 0 18px;color:var(--muted);font-size:13px}.field{margin:13px 0}.field label{display:block;font-size:12px;font-weight:850;margin-bottom:6px}.field input{width:100%;height:50px;border:1.5px solid var(--line);border-radius:14px;padding:0 13px;outline:none}.field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(7,88,184,.10)}.authmsg{border-radius:12px;padding:10px 12px;font-size:12px;margin:10px 0}.authmsg.error{background:#FFF2F2;border:1px solid #F2C9C9;color:#8D2C2C}.authmsg.success{background:#EFFAF5;border:1px solid #CDE9DA;color:#276347}.auth-separator{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--muted);font-size:12px}.auth-separator:before,.auth-separator:after{content:"";height:1px;background:#D8E7F7;flex:1}.google-login{width:100%;min-height:46px;border:1.5px solid #D8E1EC;background:#fff;color:#263238;border-radius:14px;padding:12px 14px;font-weight:850;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px}.google-login:active{background:#F5F7FA}.google-g{width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 18px}.google-g svg{display:block;width:18px;height:18px}
+.login-install{width:100%;margin-top:12px;border:1.5px solid var(--blue);background:#F4F9FF;color:var(--blue-dark);border-radius:14px;padding:13px 14px;font-weight:850;cursor:pointer}
+.login-install:active{background:#EAF4FF}
+.install-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.install-status{font-size:11px;color:#DCEBFF;line-height:1.35}
+.install-steps{margin:10px 0 0;padding-left:20px}.install-steps li{margin:8px 0}
+.install-badge{display:inline-block;background:#EAF4FF;color:var(--blue-dark);font-weight:850;border-radius:999px;padding:5px 9px;font-size:12px;margin-bottom:8px}
+.login-note{text-align:center;color:var(--muted);font-size:11px;margin-top:13px}.loading-screen{min-height:100vh;display:grid;place-items:center;text-align:center}.spinner{width:42px;height:42px;border:4px solid #DDE8F7;border-top-color:var(--blue);border-radius:50%;animation:spin .85s linear infinite;margin:auto}@keyframes spin{to{transform:rotate(360deg)}}.userbar{display:flex;align-items:center;gap:8px;margin-left:auto}.userbar small{max-width:170px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.logout{border:1px solid rgba(255,255,255,.55);background:#fff;color:var(--blue-dark);border-radius:11px;padding:8px 10px;font-weight:850}.empty{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;color:var(--muted)}
+
+.login-description{margin:14px 0 20px;padding:14px 15px;border:1px solid #CFE0F6;background:#F7FBFF;border-radius:14px;color:#294B70;font-size:13px;line-height:1.55;text-align:left}
+.home-intro{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 18px;margin:0 0 20px;box-shadow:0 5px 18px rgba(18,32,51,.05)}
+.home-intro h2{margin:0 0 6px;font-size:18px;color:var(--blue-dark)}
+.home-intro p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+.data-error{background:#FFF2F2;border:1px solid #F2C9C9;color:#8D2C2C;border-radius:16px;padding:14px 16px;line-height:1.5}
+
+
+.topic-section{margin:0 0 28px}
+.topic-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 14px;padding:12px 14px;border-left:4px solid var(--blue);background:#F4F9FF;border-radius:0 14px 14px 0}
+.topic-heading h2{margin:0;color:var(--blue-dark);font-size:20px;line-height:1.25}
+.topic-count{white-space:nowrap;font-size:12px;font-weight:800;color:var(--blue-dark);background:#fff;border:1px solid #D7E8F7;border-radius:999px;padding:5px 9px}
+.topic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.copyright{margin:18px 0 4px;padding:18px 12px 4px;border-top:1px solid #D8E7F7;text-align:center;color:var(--muted);font-size:12px;line-height:1.5;font-weight:600}
+@media(max-width:699px){.topic-heading{align-items:flex-start}.topic-heading h2{font-size:18px}.topic-grid{grid-template-columns:1fr}}
+
+
+.content-block{margin:26px 0 34px}
+.content-type-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:0 0 15px}
+.content-type-head h2{margin:3px 0 0;font-size:24px;letter-spacing:-.025em;color:var(--blue-dark)}
+.content-type-head p{margin:3px 0 0;color:var(--muted);font-size:13px;line-height:1.5}
+.type-badge{white-space:nowrap;border:1px solid #CFE0F6;background:#F7FBFF;color:var(--blue-dark);padding:7px 10px;border-radius:999px;font-size:12px;font-weight:850}
+.practical-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:17px;box-shadow:var(--shadow)}
+.practical-card h3{font-size:18px;line-height:1.25;margin:1px 0 5px}
+.practical-tag{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:850;color:var(--blue-dark);background:var(--blue-soft);border:1px solid #CFE0F6;border-radius:999px;padding:6px 9px;margin-top:10px}
+.practical-tabs{display:flex;gap:8px;position:sticky;top:8px;z-index:8;margin-bottom:12px;background:rgba(246,248,251,.94);backdrop-filter:blur(8px);padding:7px;border-radius:15px}
+.practical-tabs button{flex:1}
+.statement{white-space:pre-line;text-align:justify;text-justify:inter-word;hyphens:auto;line-height:1.75;font-size:15px;max-width:78ch;margin:0 auto;color:#26384C}
+.statement-title{font-size:19px;line-height:1.35;margin:0 0 15px;color:var(--blue-dark)}
+.statement-actions{margin-top:20px}
+.practical-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.practical-nav .finish{grid-column:1/-1}
+.practical-review-head{display:flex;justify-content:flex-end;margin:0 0 12px}
+@media(max-width:699px){
+ .content-type-head{align-items:flex-start;flex-direction:column}
+ .content-type-head h2{font-size:22px}
+ .practical-tabs{top:4px}
+}
+@media(max-width:390px){
+ .practical-nav{grid-template-columns:1fr}
+ .practical-nav .finish{grid-column:auto}
+ .statement{font-size:14px;line-height:1.68}
+}
+
+
+.library-jump{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0 28px}
+.library-jump-btn{display:flex;align-items:center;gap:12px;text-align:left;width:100%;border:1.5px solid #CFE0F6;background:#fff;color:var(--text);padding:15px 16px;border-radius:16px;box-shadow:var(--shadow);cursor:pointer}
+.library-jump-btn:hover{border-color:var(--blue);transform:translateY(-1px)}
+.library-jump-btn:focus-visible{outline:3px solid rgba(7,88,184,.18);outline-offset:2px}
+.library-jump-btn .library-jump-icon{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:13px;background:var(--blue-soft);color:var(--blue-dark);font-weight:900;font-size:18px}
+.library-jump-btn strong{display:block;color:var(--blue-dark);font-size:15px;line-height:1.2}
+.library-jump-btn small{display:block;margin-top:4px;color:var(--muted);font-size:12px;font-weight:650}
+.library-jump-btn.practical{border-color:#BFD8F4;background:#F9FCFF}
+.library-anchor{scroll-margin-top:18px}
+.practicals-home-block{border-top:2px solid #D8E7F7;padding-top:26px}
+@media(max-width:699px){
+ .library-jump{grid-template-columns:1fr;gap:9px;margin:14px 0 24px}
+ .library-jump-btn{min-height:68px;padding:12px 14px}
+ .library-jump-btn .library-jump-icon{flex-basis:40px;width:40px;height:40px}
+}
+
+
+/* =========================
+   V23 · MI PROGRESO
+   ========================= */
+.progress-access{margin:18px 0 4px}
+.progress-access-btn{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;border:1.5px solid #BFD8F4;background:linear-gradient(180deg,#F7FBFF 0%,#FFFFFF 100%);padding:15px 16px;border-radius:16px;box-shadow:var(--shadow);cursor:pointer;text-align:left}
+.progress-access-btn:hover{border-color:var(--blue);transform:translateY(-1px)}
+.progress-access-btn strong{display:block;color:var(--blue-dark);font-size:16px}
+.progress-access-btn small{display:block;color:var(--muted);font-size:12px;font-weight:650;margin-top:3px}
+.progress-access-icon{display:grid;place-items:center;flex:0 0 44px;width:44px;height:44px;border-radius:13px;background:var(--blue-soft);color:var(--blue-dark);font-size:21px;font-weight:900}
+.progress-shell{max-width:980px;margin:0 auto}
+.progress-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px}
+.progress-head h2{margin:2px 0 4px;color:var(--blue-dark);font-size:26px}
+.progress-head p{margin:0;color:var(--muted);font-size:13px}
+.progress-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}
+.progress-metric{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow)}
+.progress-metric b{display:block;color:var(--blue-dark);font-size:24px;line-height:1.1}
+.progress-metric span{display:block;margin-top:6px;color:var(--muted);font-size:12px;font-weight:750}
+.progress-panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.progress-panel h3{margin:0 0 13px;color:var(--blue-dark);font-size:18px}
+.progress-list{display:grid;gap:10px}
+.progress-item{border:1px solid #DCE8F5;border-radius:14px;padding:13px 14px;background:#FBFDFF}
+.progress-item-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.progress-item-title{font-weight:850;color:var(--text);font-size:14px;line-height:1.35}
+.progress-score{white-space:nowrap;font-weight:900;color:var(--blue-dark);font-size:16px}
+.progress-meta{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:8px;color:var(--muted);font-size:12px;font-weight:650}
+.progress-empty{padding:24px 14px;text-align:center;color:var(--muted);border:1px dashed #C9D9EA;border-radius:14px;background:#FBFDFF}
+.progress-status{margin:12px 0;color:var(--muted);font-size:13px}
+@media(max-width:699px){
+ .progress-metrics{grid-template-columns:1fr 1fr}
+ .progress-head{flex-direction:column}
+ .progress-head h2{font-size:23px}
+}
+
+
+/* =========================
+   V23 · RENDIMIENTO POR TEMAS
+   ========================= */
+.progress-topics{margin-top:16px}
+.progress-topic-list{display:grid;gap:10px}
+.progress-topic-item{border:1px solid #DCE8F5;border-radius:14px;padding:13px 14px;background:#FBFDFF}
+.progress-topic-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.progress-topic-name{font-weight:850;color:var(--text);font-size:14px;line-height:1.35}
+.progress-topic-best{font-weight:900;color:var(--blue-dark);white-space:nowrap}
+.progress-topic-meta{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:7px;color:var(--muted);font-size:12px;font-weight:650}
+
+/* =========================
+   V23 · ADMINISTRACIÓN DE ALUMNOS
+   ========================= */
+.admin-users-panel{margin-top:16px}
+.admin-users-form{display:grid;grid-template-columns:minmax(0,2fr) minmax(150px,1fr) auto;gap:10px;align-items:end;margin:14px 0}
+.admin-users-form .field{margin:0}.admin-users-form select{width:100%;height:46px;border:1.5px solid var(--line);border-radius:12px;padding:0 10px;background:#fff;color:var(--text)}
+.admin-users-list{display:grid;gap:12px;margin-top:14px}.admin-user-card{border:1px solid #DCE8F5;border-radius:16px;padding:14px;background:#FBFDFF}.admin-user-card.blocked{border-color:#E8CACA;background:#FFF8F8}
+.admin-user-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.admin-user-email{font-weight:900;color:var(--text);word-break:break-word}.admin-user-state{white-space:nowrap;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:900;background:#EAF7F1;color:#207A54}.admin-user-state.blocked{background:#FCECEC;color:#A33838}
+.admin-user-meta{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:8px;color:var(--muted);font-size:12px;font-weight:650}.admin-user-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.admin-user-actions button{min-height:40px}.admin-device-list{margin-top:10px;display:grid;gap:7px}.admin-device{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid #E1E9F2;background:#fff;border-radius:12px;padding:9px 10px;font-size:12px}.admin-device strong{color:var(--blue-dark)}
+@media(max-width:699px){.admin-users-form{grid-template-columns:1fr}.admin-user-head{flex-direction:column}.admin-user-actions{display:grid;grid-template-columns:1fr 1fr}.admin-device{align-items:flex-start;flex-direction:column}}
+@media(max-width:390px){.admin-user-actions{grid-template-columns:1fr}}
+
+/* =========================
+   V23 · ADMINISTRACIÓN SEPARADA
+   ========================= */
+.admin-access{margin:10px 0 22px}
+.admin-access-btn{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;border:1.5px solid #B8CFEA;background:linear-gradient(180deg,#F1F7FF 0%,#FFFFFF 100%);padding:15px 16px;border-radius:16px;box-shadow:var(--shadow);cursor:pointer;text-align:left}
+.admin-access-btn:hover{border-color:var(--blue);transform:translateY(-1px)}
+.admin-access-btn strong{display:block;color:var(--blue-dark);font-size:16px}
+.admin-access-btn small{display:block;color:var(--muted);font-size:12px;font-weight:650;margin-top:3px}
+.admin-access-icon{display:grid;place-items:center;flex:0 0 44px;width:44px;height:44px;border-radius:13px;background:var(--blue);color:#fff;font-size:20px;font-weight:900}
+.admin-shell{max-width:980px;margin:0 auto}
+.admin-head{margin-bottom:18px}
+.admin-head h2{margin:3px 0 6px;color:var(--blue-dark);font-size:27px;letter-spacing:-.025em}
+.admin-head p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+.admin-section-grid{display:grid;gap:16px}
+.admin-section-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.admin-section-card h3{margin:0 0 7px;color:var(--blue-dark);font-size:19px}
+.admin-section-title-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.admin-section-title-row h3{margin:0}.admin-danger{border-color:#D9A1A1!important;background:#FFF7F7!important;color:#A32626!important}.admin-danger:hover{background:#FDECEC!important}
+.admin-section-note{margin:0 0 14px;color:var(--muted);font-size:12px;line-height:1.5}
+.admin-section-toggle{margin:2px 0 14px}
+.admin-device-limit-control{display:inline-flex;align-items:center;gap:6px;min-height:40px}
+.admin-device-limit-control>span{font-size:12px;font-weight:800;color:var(--muted);margin-right:2px}
+.admin-limit-btn{min-width:42px!important;padding-left:12px!important;padding-right:12px!important;font-weight:900}
+.admin-limit-btn.selected,.admin-limit-btn:disabled{background:#EAF3FC!important;border-color:#8FB5D9!important;color:var(--blue-dark)!important;opacity:1;cursor:default}
+
+
+
+/* =========================
+   V24 · GAMIFICACIÓN
+   ========================= */
+.game-zone{margin:18px 0 22px;border:1px solid #D7E6F4;border-radius:20px;background:linear-gradient(180deg,#F8FCFF,#FFFFFF);padding:18px;box-shadow:0 8px 24px rgba(0,71,112,.06)}
+.game-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
+.game-head h2{margin:2px 0 4px;font-size:21px}.game-head p{margin:0;color:var(--muted);font-size:13px}
+.game-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.game-stat{border:1px solid #DCE8F5;border-radius:15px;padding:13px;background:#fff;min-height:72px}
+.game-stat b{display:block;font-size:20px;color:var(--blue-dark);margin-bottom:4px}.game-stat span{font-size:12px;color:var(--muted);font-weight:700}
+.game-level{margin-top:12px;padding:14px;border-radius:15px;background:#F3F8FC;border:1px solid #DCE8F5}
+.game-level-top{display:flex;justify-content:space-between;gap:10px;font-size:13px;font-weight:850}
+.game-bar{height:10px;background:#DFEAF3;border-radius:999px;overflow:hidden;margin-top:9px}.game-bar>span{display:block;height:100%;background:linear-gradient(90deg,#00719C,#20A5C7);border-radius:999px}
+.game-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;margin-top:12px}
+.game-card{border:1px solid #DCE8F5;border-radius:15px;padding:14px;background:#fff}
+.game-card h3{font-size:15px;margin:0 0 7px}.game-card p{font-size:13px;color:var(--muted);margin:4px 0}
+.game-card .primary{margin-top:9px}
+.medal-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.medal-chip{font-size:12px;font-weight:800;padding:7px 9px;border-radius:999px;background:#FFF5E8;border:1px solid #FFD7A4;color:#8A4C00}.medal-chip.locked{filter:grayscale(1);opacity:.45}
+.mastery-list{display:grid;gap:8px;margin-top:10px}.mastery-item{font-size:12px}.mastery-top{display:flex;justify-content:space-between;gap:8px;font-weight:750}.mastery-mini{height:7px;background:#E7EEF5;border-radius:999px;overflow:hidden;margin-top:5px}.mastery-mini span{display:block;height:100%;background:#2A91B5;border-radius:999px}
+.survival-shell{max-width:760px;margin:0 auto;padding:18px}.survival-panel{background:#fff;border:1px solid #DCE8F5;border-radius:20px;padding:20px;box-shadow:0 10px 30px rgba(0,71,112,.08)}
+.survival-top{display:flex;justify-content:space-between;align-items:center;gap:12px}.survival-lives{font-size:24px;letter-spacing:3px}.survival-score{font-weight:900;color:var(--blue-dark)}
+.survival-question{font-size:19px;line-height:1.45;font-weight:850;margin:20px 0 14px}.survival-options{display:grid;gap:10px}.survival-feedback{margin-top:14px;padding:12px;border-radius:12px;font-weight:800}.survival-feedback.ok{background:#EAF8EF;color:#176B38}.survival-feedback.bad{background:#FFF0F0;color:#9C2020}
+.survival-end{text-align:center;padding:18px}.survival-end strong{display:block;font-size:34px;color:var(--blue-dark);margin:8px 0}
+@media(max-width:699px){.game-stats{grid-template-columns:1fr 1fr}.game-grid{grid-template-columns:1fr}.game-zone{padding:14px}.survival-shell{padding:10px}.survival-question{font-size:17px}}
+
+
+.game-note{font-size:11px;color:var(--muted);margin-top:6px}
+.game-reward{font-size:12px;font-weight:850;color:#176b38;margin-top:6px}
+.weak-action{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:8px}
+.weak-action button{padding:7px 10px;font-size:11px}
+.level-hint{font-size:12px;font-weight:800;color:var(--blue-dark);margin-top:7px}
+.record-good{color:#8a4c00;font-weight:900}
+@keyframes trophyPop{0%{transform:scale(.8)}55%{transform:scale(1.12)}100%{transform:scale(1)}}
+.trophy-pop{display:inline-block;animation:trophyPop .55s ease}
+
+.help-icon{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:1px solid #B9D2E6;background:#fff;color:#006F9C;font-size:11px;font-weight:900;cursor:pointer;vertical-align:middle;margin-left:5px}
+.help-icon:hover{background:#EEF7FC}
+.help-panel{margin-top:12px;border:1px solid #DCE8F5;border-radius:15px;background:#FBFDFF;padding:14px}
+.help-panel h3{margin:0 0 8px;font-size:16px}
+.help-panel p{margin:5px 0;color:var(--muted);font-size:13px}
+.help-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.help-item{border:1px solid #E0EAF3;border-radius:12px;padding:11px;background:#fff;font-size:12px;line-height:1.45}
+.help-item b{display:block;color:var(--blue-dark);margin-bottom:3px}
+.help-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.help-inline{font-size:12px;color:var(--muted);margin-top:6px}
+.medal-chip{cursor:pointer}
+.medal-detail{margin-top:10px;padding:11px;border-radius:12px;background:#FFF9F1;border:1px solid #FFE0B9;font-size:12px;line-height:1.4}
+@media(max-width:699px){.help-grid{grid-template-columns:1fr}}
+
+
+.help-icon{position:relative}
+.help-icon::after{
+  content:attr(data-tip);
+  position:absolute;
+  left:50%;
+  bottom:calc(100% + 10px);
+  transform:translateX(-50%);
+  width:240px;
+  max-width:70vw;
+  padding:9px 11px;
+  border-radius:10px;
+  background:#123B5D;
+  color:#fff;
+  font-size:11px;
+  line-height:1.35;
+  font-weight:600;
+  text-align:left;
+  box-shadow:0 8px 22px rgba(0,0,0,.18);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  z-index:50;
+  transition:opacity .15s ease,visibility .15s ease;
+}
+.help-icon::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:calc(100% + 4px);
+  transform:translateX(-50%);
+  border:6px solid transparent;
+  border-top-color:#123B5D;
+  opacity:0;
+  visibility:hidden;
+  z-index:51;
+  transition:opacity .15s ease,visibility .15s ease;
+}
+.help-icon:hover::after,.help-icon:hover::before,
+.help-icon:focus::after,.help-icon:focus::before{
+  opacity:1;
+  visibility:visible;
+}
+@media(max-width:699px){
+  .help-icon::after{width:210px}
+}
+
+
+
+
+/* V24 · Supervivencia optimizada para móvil vertical */
+@media (max-width: 699px){
+  #survivalScreen .survival-card{
+    padding:18px 14px !important;
+  }
+
+  /* Cabecera de juego: vidas arriba y datos en una sola fila compacta */
+  #survivalScreen .survival-top{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:10px !important;
+    align-items:center !important;
+  }
+
+  #survivalLives{
+    display:block !important;
+    width:100% !important;
+    text-align:center !important;
+    white-space:nowrap !important;
+    font-size:25px !important;
+    line-height:1 !important;
+    letter-spacing:2px !important;
+  }
+
+  #survivalScreen .survival-meta{
+    display:grid !important;
+    grid-template-columns:auto 1fr auto !important;
+    gap:8px !important;
+    width:100% !important;
+    align-items:center !important;
+  }
+
+  #survivalQuestionNo{
+    white-space:nowrap !important;
+    font-size:13px !important;
+    padding:7px 10px !important;
+    text-align:center !important;
+  }
+
+  #survivalScore,
+  #survivalPoints{
+    white-space:nowrap !important;
+    font-size:14px !important;
+    line-height:1.15 !important;
+    text-align:center !important;
+  }
+
+  #survivalPoints{
+    justify-self:end !important;
+  }
+}
+
+@media (max-width: 390px){
+  #survivalScreen .survival-meta{
+    gap:5px !important;
+  }
+  #survivalQuestionNo{
+    font-size:12px !important;
+    padding:6px 8px !important;
+  }
+  #survivalScore,
+  #survivalPoints{
+    font-size:12.5px !important;
+  }
+}
+
+/* =========================
+   OPOSMURCIA 360 PRO · PORTADA LIMPIA V1
+   ========================= */
+.pro-hero{margin-bottom:18px}
+.pro-game-compact{background:#fff;border:1px solid #dfe8ee;border-radius:20px;padding:18px;margin:18px 0;box-shadow:0 8px 24px rgba(18,60,80,.06)}
+.pro-game-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.pro-game-title h2{margin:2px 0 0;font-size:1.35rem}
+.pro-game-row{display:grid;grid-template-columns:minmax(0,1fr) 105px 105px;gap:10px;align-items:stretch}
+.pro-game-level,.pro-mini-stat,.pro-next-step,.pro-daily{border:1px solid #e4ebef;border-radius:15px;background:#fbfdfe}
+.pro-game-level{padding:13px}
+.pro-mini-stat{padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.pro-mini-stat b{font-size:1.08rem}.pro-mini-stat span{font-size:.78rem;color:#65747c;margin-top:3px}
+.pro-next-step{margin-top:10px;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:14px}
+.pro-next-step p{margin:4px 0 0;color:#52636c}
+.pro-daily{margin-top:10px;padding:13px}
+.pro-daily>div:first-child{display:flex;justify-content:space-between;gap:10px;margin-bottom:8px;font-size:.9rem}
+.pro-main-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0 24px}
+.pro-main-card{width:100%;border:1px solid #dce7ec;background:#fff;border-radius:18px;padding:18px;display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:13px;text-align:left;cursor:pointer;box-shadow:0 6px 18px rgba(18,60,80,.05)}
+.pro-main-card:hover{transform:translateY(-1px);box-shadow:0 9px 24px rgba(18,60,80,.09)}
+.pro-main-icon{width:46px;height:46px;border-radius:14px;background:#eaf5f9;display:flex;align-items:center;justify-content:center;font-size:1.25rem}
+.pro-main-card strong{display:block;font-size:1.02rem;color:#173744}.pro-main-card small{display:block;margin-top:3px;color:#687982;line-height:1.35}
+.pro-main-card>b{font-size:1.5rem;color:#79909b}
+.pro-library-shell{max-width:1180px;margin:0 auto;padding:4px 16px 36px}
+.pro-library-head{background:#fff;border:1px solid #e0e8ec;border-radius:18px;padding:20px;margin:12px 0 16px}
+.pro-library-head h2{margin:3px 0 5px}.pro-library-head p{margin:0;color:#64757d}
+#testsLibrary .content-block,#practicalsLibrary .content-block{margin-top:0}
+@media(max-width:720px){
+ .pro-game-row{grid-template-columns:1fr 1fr}
+ .pro-game-level{grid-column:1/-1}
+ .pro-main-actions{grid-template-columns:1fr}
+ .pro-next-step{align-items:flex-start;flex-direction:column}
+ .pro-next-step button{width:100%}
+ .pro-daily>div:first-child{flex-direction:column;gap:3px}
+}
+
+
+/* Ajuste visual PC/tablet. La vista móvil (<=720 px) permanece intacta. */
+@media (min-width:721px){
+ #home{max-width:1040px;margin:0 auto}
+ #home .hero.pro-hero{padding:14px 18px;margin-bottom:12px}
+ #home .hero.pro-hero strong{font-size:1.05rem}
+ #home .pro-game-compact{padding:14px;margin:12px 0;border-radius:17px}
+ #home .pro-game-title{margin-bottom:10px}
+ #home .pro-game-title h2{font-size:1.18rem}
+ #home .pro-game-row{grid-template-columns:minmax(0,1fr) 92px 92px;gap:8px}
+ #home .pro-game-level{padding:10px}
+ #home .pro-mini-stat{padding:9px}
+ #home .pro-next-step{margin-top:8px;padding:11px}
+ #home .pro-next-step p{font-size:.9rem}
+ #home .pro-next-step button{padding:9px 14px;font-size:.88rem}
+ #home .pro-daily{margin-top:8px;padding:10px}
+ #home .pro-main-actions{gap:10px;margin:12px 0 18px}
+ #home .pro-main-card{padding:13px 15px;border-radius:15px;grid-template-columns:40px 1fr auto;gap:10px}
+ #home .pro-main-icon{width:39px;height:39px;border-radius:12px;font-size:1.05rem}
+ #home .pro-main-card strong{font-size:.96rem}
+ #home .pro-main-card small{font-size:.78rem}
+ #home .foot{margin-top:10px}
+}
+
+
+/* PRO · Repaso inteligente */
+.smart-review-label{font-size:.72rem;font-weight:700;color:#55727e}
+.smart-review-reason{font-size:.82rem;color:#657780}
+.smart-review-panel{background:#fff;border:1px solid #dfe8ec;border-radius:18px;padding:17px;margin:14px 0}
+.smart-review-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.smart-review-head h3{margin:2px 0 0}
+.smart-review-intro{margin:7px 0 13px;color:#64767e;font-size:.9rem}
+.smart-review-list{display:grid;gap:8px}
+.smart-review-item{width:100%;border:1px solid #e2e9ed;background:#fbfdfe;border-radius:13px;padding:11px 12px;display:grid;grid-template-columns:10px 1fr auto;gap:10px;align-items:center;text-align:left;cursor:pointer}
+.smart-review-item:hover{background:#f5fafc}
+.smart-review-dot{width:9px;height:9px;border-radius:50%;background:#94a5ad}
+.smart-review-item.due .smart-review-dot{background:#d34a4a}
+.smart-review-item.soon .smart-review-dot{background:#d98b2b}
+.smart-review-item.later .smart-review-dot{background:#4f9568}
+.smart-review-copy strong,.smart-review-copy small{display:block}
+.smart-review-copy small{margin-top:2px;color:#6a7a82}
+.smart-review-when{font-size:.82rem;font-weight:800;white-space:nowrap}
+@media(max-width:720px){
+ .smart-review-item{grid-template-columns:10px 1fr}
+ .smart-review-when{grid-column:2}
+}
+
+
+/* PRO V2 FINAL · PC/tablet más compacto; móvil <=720 px sin cambios */
+@media (min-width:721px){
+ #home{max-width:900px;margin:0 auto}
+ #home .hero.pro-hero{padding:9px 13px;margin-bottom:7px;border-radius:14px}
+ #home .hero.pro-hero strong{font-size:.94rem}
+ #home .pro-game-compact{padding:10px 11px;margin:7px 0;border-radius:14px}
+ #home .pro-game-title{margin-bottom:6px}
+ #home .pro-game-title h2{font-size:1rem}
+ #home .pro-game-row{grid-template-columns:minmax(0,1fr) 74px 74px;gap:6px}
+ #home .pro-game-level{padding:7px}
+ #home .pro-mini-stat{padding:6px}
+ #home .pro-mini-stat b{font-size:.9rem}
+ #home .pro-mini-stat span{font-size:.68rem}
+ #home .pro-next-step{margin-top:6px;padding:7px 9px;min-height:0}
+ #home .pro-next-step strong{font-size:.86rem}
+ #home .pro-next-step p{font-size:.76rem;line-height:1.25;margin:2px 0 0}
+ #home .pro-next-step button.primary{width:auto!important;min-width:0!important;padding:5px 10px!important;font-size:.74rem!important;border-radius:9px!important;line-height:1.15!important}
+ #home .pro-daily{margin-top:6px;padding:7px 9px}
+ #home .pro-daily>div:first-child{font-size:.76rem;margin-bottom:4px}
+ #home .pro-main-actions{gap:7px;margin:8px 0 11px}
+ #home .pro-main-card{padding:9px 11px;border-radius:13px;grid-template-columns:32px 1fr auto;gap:7px}
+ #home .pro-main-icon{width:32px;height:32px;border-radius:9px;font-size:.9rem}
+ #home .pro-main-card strong{font-size:.86rem}
+ #home .pro-main-card small{font-size:.68rem}
+}
+@media (min-width:721px) and (max-width:1100px){#home{max-width:820px}}
+
+
+/* PRO V3 · Ajustes de disposición y ayudas */
+@media (min-width:721px){
+ #home .pro-next-step{
+   display:grid!important;
+   grid-template-columns:minmax(0,1fr) auto!important;
+   justify-content:start!important;
+   align-items:center!important;
+   column-gap:12px!important;
+ }
+ #home .pro-next-step>div{min-width:0}
+ #home .pro-next-step button.primary{
+   justify-self:start!important;
+   margin:0!important;
+ }
+}
+.game-info-btn{
+ width:19px;height:19px;min-width:19px;border-radius:50%;border:1px solid #b9cad3;
+ background:#fff;color:#31566a;font-size:11px;font-weight:900;line-height:1;
+ display:inline-flex;align-items:center;justify-content:center;padding:0;cursor:pointer;
+ vertical-align:middle;margin-left:5px;
+}
+.game-info-btn:hover{background:#f2f8fb}
+.pro-game-help{
+ margin-top:8px;padding:9px 11px;border:1px solid #dce8ee;border-radius:11px;
+ background:#f8fbfd;color:#526a76;font-size:.8rem;line-height:1.4;
+}
+.admin-user-name{font-weight:900;color:var(--blue-dark);font-size:14px;margin-bottom:2px}
+.admin-user-contact{font-size:12px;color:var(--muted);margin-top:2px}
+@media(min-width:700px){
+ .admin-users-form{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1.5fr) minmax(150px,.7fr) auto}
+}
+
+
+/* PRO V4 · Corrección fina de alineación en PC/tablet */
+.game-level-name-wrap{
+ display:inline-flex;
+ align-items:center;
+ gap:5px;
+}
+@media (min-width:721px){
+ #home .pro-next-step{
+   display:grid!important;
+   grid-template-columns:auto auto!important;
+   justify-content:start!important;
+   align-items:center!important;
+   column-gap:14px!important;
+ }
+ #home .pro-next-step>div{
+   min-width:0!important;
+   width:auto!important;
+   max-width:620px!important;
+ }
+ #home .pro-next-step button.primary{
+   justify-self:start!important;
+   align-self:center!important;
+   margin:0!important;
+ }
+ #home .game-level-top{
+   display:flex!important;
+   align-items:center!important;
+   justify-content:space-between!important;
+   gap:10px!important;
+ }
+ #home .game-level-name-wrap{
+   display:inline-flex!important;
+   align-items:center!important;
+   gap:5px!important;
+   flex:0 0 auto!important;
+ }
+}
+@media (min-width:721px) and (max-width:900px){
+ #home .pro-next-step{
+   grid-template-columns:minmax(0,1fr) auto!important;
+ }
+ #home .pro-next-step>div{
+   max-width:none!important;
+ }
+}
+
+
+/* PRO V6 · Niveles y logros */
+.level-tools{display:flex;align-items:center;gap:7px}
+.level-map-btn{padding:6px 9px!important;font-size:.72rem!important;min-height:auto!important}
+.levels-panel{margin:0 0 10px;padding:12px;border:1px solid #dbe7ed;border-radius:14px;background:#f9fcfd}
+.levels-panel-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:10px}
+.levels-panel-head strong,.levels-panel-head small{display:block}
+.levels-panel-head small{margin-top:2px;color:#6a7b84;font-size:.76rem}
+.levels-map{display:grid;gap:7px}
+.level-map-item{display:grid;grid-template-columns:30px 1fr auto;gap:9px;align-items:center;border:1px solid #e3eaee;border-radius:11px;padding:8px 9px;background:#fff}
+.level-map-step{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:900;background:#eef4f7;color:#45616f}
+.level-map-copy strong,.level-map-copy small{display:block}
+.level-map-copy small{color:#6c7b83;font-size:.72rem;margin-top:1px}
+.level-map-state{font-size:.7rem;font-weight:850;color:#6b7b83}
+.level-map-item.done .level-map-step{background:#e8f5ee;color:#28734a}
+.level-map-item.current{border-color:#9ec8dc;background:#f4fbfe}
+.level-map-item.current .level-map-step{background:#dff2fa;color:#0b678d}
+.level-map-item.current .level-map-state{color:#0b678d}
+.achievements-panel{margin-top:16px}
+.achievements-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.achievements-head h3{margin:2px 0 0}
+.achievements-intro{margin:7px 0 12px;color:#657780;font-size:.9rem}
+.achievements-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.achievement-card{display:grid;grid-template-columns:36px 1fr auto;gap:9px;align-items:center;border:1px solid #e1e8ec;border-radius:13px;padding:10px;background:#fbfdfe}
+.achievement-card.locked{opacity:.72}
+.achievement-icon{font-size:1.25rem}
+.achievement-card strong,.achievement-card small{display:block}
+.achievement-card small{margin-top:2px;color:#667780;font-size:.75rem;line-height:1.35}
+.achievement-card>span{font-size:.7rem;font-weight:850;white-space:nowrap}
+@media(max-width:720px){
+ .level-tools{gap:5px}
+ .level-map-btn{padding:5px 7px!important}
+ .levels-panel-head{flex-direction:column}
+ .levels-panel-head button{width:100%}
+ .level-map-item{grid-template-columns:28px 1fr}
+ .level-map-state{grid-column:2}
+ .achievements-grid{grid-template-columns:1fr}
+ .achievement-card{grid-template-columns:34px 1fr}
+ .achievement-card>span{grid-column:2}
+}
+
+
+/* PRO V7 · Logros visibles + iconos i circulares */
+#achievementsPanel{display:block!important;visibility:visible!important}
+.game-info-btn{
+ width:19px!important;height:19px!important;
+ min-width:19px!important;min-height:19px!important;
+ max-width:19px!important;max-height:19px!important;
+ flex:0 0 19px!important;aspect-ratio:1/1!important;
+ border-radius:50%!important;padding:0!important;
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ line-height:1!important;box-sizing:border-box!important;
+}
+.pro-next-step strong{display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px}
+.pro-next-step strong .game-info-btn{margin-left:1px!important}
+
+
+/* PRO V8 · Ayudas más legibles en PC/tablet */
+@media (min-width:721px){
+  .pro-game-help,
+  #quickHelpBox,
+  #progressHelpPanel,
+  #xpHelpPanel{
+    width:fit-content!important;
+    max-width:430px!important;
+    min-width:0!important;
+    line-height:1.5!important;
+  }
+  #quickHelpBox{
+    justify-self:start!important;
+  }
+}
+
+
+/* PRO V9 · Cuadros de información "i" realmente compactos */
+@media (min-width:721px){
+  #home #quickHelpBox.pro-game-help,
+  #home .pro-game-help,
+  #progressHelpPanel,
+  #xpHelpPanel{
+    display:block;
+    width:auto!important;
+    max-width:360px!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
+    justify-self:start!important;
+    align-self:start!important;
+    padding:10px 12px!important;
+    line-height:1.42!important;
+    font-size:12.5px!important;
+  }
+  #home #quickHelpBox.pro-game-help:not(.hidden){
+    display:inline-block!important;
+  }
+  #home #quickHelpBox.pro-game-help p,
+  #home #quickHelpBox.pro-game-help div,
+  #progressHelpPanel p,#xpHelpPanel p{
+    max-width:336px!important;
+    margin-left:0!important;
+    margin-right:0!important;
+  }
+}
+
+
+/* PRO V10 · corrección definitiva ayudas i + paneles plegables */
+@media (min-width:721px){
+ #home .pro-game-card{position:relative!important}
+ #home #quickHelpBox.pro-game-help{
+   position:absolute!important;z-index:100!important;
+   top:56px!important;left:18px!important;right:auto!important;
+   width:300px!important;max-width:300px!important;min-width:300px!important;
+   padding:10px 12px!important;margin:0!important;
+   box-sizing:border-box!important;font-size:12.5px!important;line-height:1.42!important;
+   box-shadow:0 10px 26px rgba(18,45,62,.18)!important;
+ }
+ #home #quickHelpBox.pro-game-help.hidden{display:none!important}
+ #home #quickHelpBox.pro-game-help:not(.hidden){display:block!important}
+}
+.collapsible-progress-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.collapsible-progress-head h3{margin:0!important}
+.progress-toggle{width:auto!important;min-width:88px!important;padding:7px 10px!important;font-size:12px!important}
+.progress-collapsible-body{margin-top:12px}
+.progress-collapsible-body.hidden{display:none!important}
+
+
+/* PRO V11 · plegado por defecto + niveles visuales + tooltip nativo eliminado */
+.progress-head-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.level-map-step{
+ width:42px!important;height:42px!important;border-radius:12px!important;
+ display:grid!important;grid-template-columns:1fr!important;grid-template-rows:1fr auto!important;
+ place-items:center!important;padding:3px!important;line-height:1!important
+}
+.level-map-icon{font-size:19px;line-height:1}
+.level-map-number{font-size:9px;font-weight:900;opacity:.72}
+.level-map-item{grid-template-columns:44px 1fr auto!important}
+@media(max-width:720px){
+ .level-map-item{grid-template-columns:44px 1fr!important}
+ .progress-head-actions{justify-content:flex-start}
+}
+
+
+/* PRO V12 · ayudas i compactas, ancladas y visibles al pasar el cursor */
+@media (min-width:721px){
+ #home #quickHelpBox.pro-game-help{
+   position:fixed!important;
+   z-index:9999!important;
+   width:300px!important;
+   max-width:300px!important;
+   min-width:300px!important;
+   margin:0!important;
+   padding:10px 12px!important;
+   box-sizing:border-box!important;
+   font-size:12.5px!important;
+   line-height:1.42!important;
+   box-shadow:0 10px 26px rgba(18,45,62,.18)!important;
+ }
+ #home #quickHelpBox.pro-game-help.hidden{display:none!important}
+ #home #quickHelpBox.pro-game-help:not(.hidden){display:block!important}
+}
+
+
+/* PRO V13 · tooltip definitivo independiente del layout */
+#quickHelpBox{display:none!important}
+.global-info-tooltip{
+ position:fixed!important;
+ z-index:2147483647!important;
+ width:300px!important;
+ max-width:300px!important;
+ min-width:300px!important;
+ box-sizing:border-box!important;
+ padding:10px 12px!important;
+ border:1px solid #cfdde7!important;
+ border-radius:12px!important;
+ background:#ffffff!important;
+ color:#26445a!important;
+ box-shadow:0 10px 28px rgba(21,47,64,.20)!important;
+ font-size:12.5px!important;
+ line-height:1.42!important;
+ opacity:0!important;
+ pointer-events:none!important;
+ transform:translateY(2px)!important;
+ transition:opacity .08s ease,transform .08s ease!important;
+}
+.global-info-tooltip strong{
+ display:block!important;
+ margin:0 0 4px!important;
+ color:#0b4771!important;
+ font-size:12.5px!important;
+}
+.global-info-tooltip.show{
+ opacity:1!important;
+ transform:translateY(0)!important;
+ pointer-events:auto!important;
+}
+@media(max-width:720px){
+ .global-info-tooltip{
+   width:min(300px,calc(100vw - 24px))!important;
+   min-width:0!important;
+   max-width:calc(100vw - 24px)!important;
+ }
+}
+
+
+/* PRODUCCIÓN V14 · Cómo funciona breve y visual */
+.help-modern{max-width:620px!important}
+.help-title{display:flex;align-items:center;gap:11px;margin-bottom:14px}
+.help-title>span{font-size:26px}
+.help-title h2{margin:0!important}
+.help-title p{margin:2px 0 0;color:var(--muted);font-size:13px}
+.help-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.help-card{display:grid;grid-template-columns:28px 1fr;gap:8px;align-items:start;border:1px solid #e1eaf0;background:#fbfdfe;border-radius:12px;padding:10px}
+.help-card>span{font-size:18px;text-align:center}
+.help-card strong,.help-card small{display:block}
+.help-card strong{font-size:13px;color:var(--blue-dark);margin-bottom:2px}
+.help-card small{font-size:11.5px;line-height:1.38;color:#60727c}
+.help-ok{width:100%;margin-top:12px}
+@media(max-width:620px){.help-grid{grid-template-columns:1fr}.help-modern{max-height:88vh;overflow:auto}}
+
+
+/* PRODUCCIÓN V15 · Zona de reto Supervivencia */
+#survival{--surv:#0b3654;--surv2:#102f45}
+#survival .survival-shell{max-width:900px;margin:0 auto}
+.survival-intro,.survival-panel{
+ border-radius:22px!important;border:1px solid rgba(30,91,124,.22)!important;
+ box-shadow:0 16px 40px rgba(15,53,76,.12)!important
+}
+.survival-intro{text-align:center;padding:28px;background:linear-gradient(145deg,#f8fcfe,#eef7fb)}
+.survival-hero-icon{width:54px;height:54px;margin:0 auto 10px;border-radius:17px;background:#0d486e;color:#fff;display:grid;place-items:center;font-size:26px;box-shadow:0 9px 20px rgba(13,72,110,.18)}
+.survival-intro h2{font-size:1.8rem;margin:4px 0 6px;color:#103d59}
+.survival-intro>p{margin:0 auto 18px;color:#5c707c}
+.survival-mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left}
+.survival-mode-card{border:1px solid #d5e5ed;background:#fff;border-radius:18px;padding:18px;cursor:pointer;text-align:left;transition:.15s;box-shadow:0 5px 14px rgba(15,53,76,.05)}
+.survival-mode-card:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(15,53,76,.10);border-color:#8bb7cc}
+.survival-mode-card .survival-mode-icon{font-size:26px;display:block;margin-bottom:7px}
+.survival-mode-card strong{display:block;font-size:1.05rem;color:#143e55;margin-bottom:4px}
+.survival-mode-card small{display:block;color:#647680;line-height:1.4;min-height:38px}
+.survival-mode-card b{display:block;margin-top:12px;color:#0d658f;font-size:.82rem}
+.survival-intro-note{font-size:.78rem;color:#617680;margin-top:14px}
+#survival .survival-panel{padding:18px;background:linear-gradient(160deg,#f9fcfd,#edf6fa)}
+.survival-challenge-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:11px}
+.survival-challenge-head>div{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.survival-mode-badge{font-size:.75rem;font-weight:800;padding:6px 9px;border-radius:999px;background:#0d486e;color:#fff}
+.survival-finish-btn{width:auto!important;background:#fff!important;color:#6d4141!important;border:1px solid #dfcaca!important;border-radius:10px!important;padding:7px 10px!important;font-size:.76rem!important}
+.survival-dashboard{display:grid;grid-template-columns:1.4fr repeat(4,1fr);gap:8px;margin-bottom:11px}
+.survival-stat{background:#fff;border:1px solid #dce8ed;border-radius:13px;padding:9px 10px;text-align:center}
+.survival-stat span{display:block;font-size:.62rem;letter-spacing:.08em;color:#70818a;font-weight:800;margin-bottom:3px}
+.survival-stat strong{font-size:1rem;color:#173e54;white-space:nowrap}
+.survival-stat.lives strong{letter-spacing:2px}
+.survival-pressure{background:#fff;border:1px solid #dce8ed;border-radius:13px;padding:9px 11px;margin-bottom:11px}
+.survival-pressure>div:first-child{display:flex;justify-content:space-between;font-size:.75rem;color:#61747e;margin-bottom:6px}
+.survival-pressure strong{font-variant-numeric:tabular-nums;color:#0d486e}
+.survival-time-track{height:7px;border-radius:999px;background:#e7eef2;overflow:hidden}
+.survival-time-track span{display:block;height:100%;background:#1680a8;border-radius:999px;transition:width .2s linear}
+.survival-pressure.urgent strong{font-weight:900}
+.survival-pressure.urgent .survival-time-track span{filter:saturate(1.5);animation:survivalPulse .65s infinite alternate}
+@keyframes survivalPulse{from{opacity:1}to{opacity:.48}}
+#survival .survival-question{background:#fff;border:1px solid #dce8ed;border-radius:16px;padding:17px;margin-bottom:10px}
+#survival .survival-options .option{border-radius:13px}
+#survival .survival-end{text-align:center}
+#survival .survival-end #survivalFinalScore{font-size:2rem;color:#0d486e}
+@media(max-width:699px){
+ .survival-intro{padding:20px 14px}
+ .survival-mode-grid{grid-template-columns:1fr}
+ .survival-mode-card small{min-height:0}
+ .survival-dashboard{grid-template-columns:1fr 1fr}
+ .survival-stat.lives{grid-column:1/-1}
+ .survival-challenge-head{align-items:flex-start}
+ .survival-finish-btn{white-space:nowrap}
+ #survival .survival-panel{padding:14px!important}
+}
+
+</style>
+</head>
+<body>
+<section id="loginScreen" class="login-shell hidden"><div class="login-wrap"><div class="login-brand"><div class="login-logo"><img src="logo-oposmurcia360.png?v=22-appcheck" alt="OposMurcia 360"></div><h1>OposMurcia 360</h1><p>Tests y supuestos prácticos · Auxiliares Administrativos</p></div><div class="login-card"><h2>Acceso a OposMurcia 360</h2>
+<div class="login-description"><strong>Plataforma privada de preparación para Auxiliares Administrativos del Ayuntamiento de Murcia.</strong><br>
+Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, aplica penalización opcional y revisa tus resultados al finalizar.</div>
+<p>Introduce las credenciales facilitadas por el administrador.</p><div id="authMsg" class="hidden"></div><form id="loginForm"><div class="field"><label for="email">Correo electrónico</label><input id="email" type="email" autocomplete="username" required></div><div class="field"><label for="password">Contraseña</label><input id="password" type="password" autocomplete="current-password" required></div><button id="loginBtn" class="primary" style="width:100%" type="submit">Iniciar sesión</button></form><div class="auth-separator"><span>o</span></div><button id="googleLoginBtn" class="google-login" type="button"><span class="google-g" aria-hidden="true"><svg viewBox="0 0 18 18" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path fill="#EA4335" d="M17.64 9.205c0-.638-.057-1.252-.164-1.841H9v3.482h4.844a4.14 4.14 0 0 1-1.797 2.715v2.258h2.909c1.702-1.567 2.684-3.878 2.684-6.614Z"/><path fill="#4285F4" d="M9 18c2.43 0 4.468-.806 5.956-2.181l-2.909-2.258c-.806.54-1.835.859-3.047.859-2.344 0-4.328-1.585-5.037-3.715H.956v2.332A9 9 0 0 0 9 18Z"/><path fill="#FBBC05" d="M3.963 10.705A5.42 5.42 0 0 1 3.681 9c0-.592.102-1.168.282-1.705V4.963H.956A9 9 0 0 0 0 9c0 1.452.347 2.827.956 4.037l3.007-2.332Z"/><path fill="#34A853" d="M9 3.58c1.321 0 2.507.454 3.44 1.345l2.581-2.581C13.464.892 11.426 0 9 0A9 9 0 0 0 .956 4.963l3.007 2.332C4.672 5.165 6.656 3.58 9 3.58Z"/></svg></span><span>Continuar con Google</span></button><button id="resetBtn" class="secondary" style="width:100%;margin-top:10px" type="button">¿Has olvidado tu contraseña?</button><button id="loginInstallBtn" class="login-install" type="button">📲 Instalar OposMurcia 360 en Android</button><div class="login-note">Acceso exclusivo para usuarios autorizados · Sin registro público</div></div></div></section><section id="loadingScreen" class="loading-screen"><div><div class="spinner"></div><p class="muted">Comprobando acceso…</p></div></section><div id="appShell" class="shell hidden">
+<section id="home">
+ <header class="top">
+  <div class="brand">
+   <img src="logo-oposmurcia360.png?v=22-appcheck" alt="OposMurcia 360">
+   <div><h1>OposMurcia 360</h1><p>Tests y supuestos prácticos para Auxiliares Administrativos del Ayuntamiento de Murcia</p></div>
+  </div><div class="userbar"><small id="userEmail"></small><button id="logoutBtn" class="logout">Cerrar sesión</button></div>
+  <div class="hero pro-hero">
+   <div><small>Preparación personal</small><strong id="heroCount">Tests + supuestos</strong><button class="help-link" onclick="openHelp()">Cómo funciona</button></div>
+   <div class="install-row"><button id="installBtn" class="install" type="button">📲 Instalar app</button><span id="installStatus" class="install-status"></span></div>
+  </div>
+ </header>
+ <div id="adminAccess" class="admin-access hidden">
+  <button class="admin-access-btn" type="button" onclick="openAdminManagement()">
+   <span class="admin-access-icon">⚙</span>
+   <span style="flex:1"><strong>Administración de alumnos</strong><small>Altas, accesos, dispositivos, seguimiento y estadísticas.</small></span>
+   <span aria-hidden="true">›</span>
+  </button>
+ </div>
+ <div class="hidden" aria-hidden="true">
+  <div id="qCount">0</div><div id="doneCount">0</div><div id="bestScore">—</div>
+ </div>
+ <div id="gameZone" class="pro-game-compact">
+  <div class="pro-game-title">
+   <div><div class="section-kicker">Camino a la plaza</div><h2>Tu progreso de hoy</h2></div>
+   <div class="level-tools"><span id="gameLevelBadge" class="type-badge">Nivel 1</span><button id="toggleLevelsPanel" class="secondary level-map-btn" type="button">Ver niveles</button></div>
+  </div>
+  
+  <div id="levelsPanel" class="levels-panel hidden">
+   <div class="levels-panel-head">
+    <div><strong>Camino de niveles</strong><small>Tu XP acumulada determina el nivel alcanzado.</small></div>
+    <button id="closeLevelsPanel" class="secondary" type="button">Cerrar</button>
+   </div>
+   <div id="levelsMap" class="levels-map"></div>
+  </div>
+
+  <div class="pro-game-row">
+   <div class="pro-game-level">
+    <div class="game-level-top"><span class="game-level-name-wrap"><strong id="gameLevelName">Aspirante</strong><button class="game-info-btn" type="button" data-help="level" aria-label="Información sobre niveles">i</button></span><span id="gameNextLevel">0 / 500 XP</span></div>
+    <div class="game-bar"><span id="gameLevelBar" style="width:0%"></span></div>
+    <div id="gameLevelHint" class="level-hint"></div>
+   </div>
+   <div class="pro-mini-stat"><b id="gameStreak">🔥 0</b><span>Racha <button class="game-info-btn" type="button" data-help="streak" aria-label="Información sobre la racha">i</button></span></div>
+   <div class="pro-mini-stat"><b id="gameXP">⭐ 0</b><span>XP <button class="game-info-btn" type="button" data-help="xp" aria-label="Información sobre XP">i</button></span></div>
+  </div>
+  <div class="pro-next-step">
+   <div>
+    <strong>Tu siguiente paso <span class="smart-review-label">· Repaso inteligente</span><button class="game-info-btn" type="button" data-help="review" aria-label="Información sobre repaso inteligente">i</button></strong>
+    <p id="weakTopicText">Analizando tus resultados y el tiempo desde el último repaso…</p>
+   </div>
+   <button id="weakTopicBtn" class="primary hidden" type="button">Continuar</button>
+  </div>
+  <div class="pro-daily">
+   <div><strong>🎯 Objetivo de hoy <button class="game-info-btn" type="button" data-help="daily" aria-label="Información sobre el objetivo diario">i</button></strong><span id="dailyGoalText">0/20 preguntas completadas hoy</span></div>
+   <div class="game-bar"><span id="dailyGoalBar" style="width:0%"></span></div>
+   <div id="dailyRewardText" class="game-reward hidden"></div>
+  </div>
+  <div id="quickHelpBox" class="pro-game-help hidden"></div>
+
+  <!-- Datos de gamificación conservados para la lógica actual; se mostrarán más adelante en Mi progreso -->
+  <div class="hidden" aria-hidden="true">
+   <span id="gameMedals">🏅 0</span><span id="gameMastery">📊 —</span>
+   <div id="medalRow"></div><div id="medalDetail"></div><div id="masteryBasis"></div><div id="masteryList"></div>
+   <div id="survivalRecordText"><strong>Récord:</strong> —</div>
+   <div id="progressHelpPanel"></div><div id="xpHelpPanel"></div>
+   <button id="toggleProgressHelp" type="button"></button><button id="toggleXpHelp" type="button"></button>
+  </div>
+ </div>
+
+
+ <div class="pro-main-actions" aria-label="Áreas de preparación">
+  <button class="pro-main-card" type="button" onclick="openTestsLibrary()">
+   <span class="pro-main-icon">✓</span><span><strong>Tests</strong><small id="quickTestsCount">Tests disponibles</small></span><b>›</b>
+  </button>
+  <button class="pro-main-card practical" type="button" onclick="openPracticalsLibrary()">
+   <span class="pro-main-icon">📖</span><span><strong>Supuestos prácticos</strong><small id="quickPracticalsCount">Supuestos disponibles</small></span><b>›</b>
+  </button>
+  <button class="pro-main-card survival" type="button" onclick="openSurvival()">
+   <span class="pro-main-icon">❤️</span><span><strong>Supervivencia</strong><small>Entrena con 3 vidas y supera tu récord</small></span><b>›</b>
+  </button>
+  <button class="pro-main-card progress" type="button" onclick="openMyProgress()">
+   <span class="pro-main-icon">↗</span><span><strong>Mi progreso</strong><small>Historial, rendimiento y evolución</small></span><b>›</b>
+  </button>
+ </div>
+ <div class="foot">OposMurcia 360 · Preparación práctica</div>
+ <footer class="copyright">© 2026 OposMurcia 360 · Todos los derechos reservados.</footer>
+</section>
+
+<section id="testsLibrary" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Inicio</button><span class="type-badge" id="testCountBadge">0 tests</span></div>
+ <div class="pro-library-shell">
+  <div class="pro-library-head"><div class="section-kicker">Biblioteca</div><h2>Tests</h2><p>Elige una materia y después el cuestionario que quieras realizar.</p></div>
+  <div id="testsSection" class="content-block library-anchor"><div id="testGrid"></div></div>
+ </div>
+</section>
+
+<section id="practicalsLibrary" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Inicio</button><span class="type-badge" id="practicalCountBadge">0 supuestos</span></div>
+ <div class="pro-library-shell">
+  <div class="pro-library-head"><div class="section-kicker">Biblioteca</div><h2>Supuestos prácticos</h2><p>Elige una materia y después el supuesto práctico que quieras resolver.</p></div>
+  <div id="practicalsSection" class="content-block library-anchor"><div id="practicalGrid"></div></div>
+ </div>
+</section>
+
+
+
+<section id="myProgress" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Inicio</button><button class="secondary" type="button" onclick="loadMyProgress()">Actualizar</button></div>
+ 
+<div class="progress-shell">
+  <div class="progress-head">
+   <div><div class="section-kicker">Seguimiento personal</div><h2>Mi progreso</h2><p id="progressUserEmail"></p></div>
+  </div>
+  <div id="progressStatus" class="progress-status">Cargando progreso…</div>
+  <div class="progress-metrics">
+   <div class="progress-metric"><b id="progressAttempts">0</b><span>Ejercicios realizados</span></div>
+   <div class="progress-metric"><b id="progressAverage">—</b><span>Nota media</span></div>
+   <div class="progress-metric"><b id="progressBest">—</b><span>Mejor nota</span></div>
+   <div class="progress-metric"><b id="progressLast">—</b><span>Última actividad</span></div>
+  </div>
+  <div class="smart-review-panel">
+  <div class="collapsible-progress-head">
+   <div><div class="section-kicker">Repaso inteligente</div><h3>Plan de repaso</h3></div>
+   <div class="progress-head-actions"><span id="smartReviewDueCount" class="type-badge">Calculando…</span><button class="secondary progress-toggle" type="button" data-progress-toggle="smartReviewBody">Mostrar</button></div>
+  </div>
+  <div id="smartReviewBody" class="progress-collapsible-body hidden">
+   <p class="smart-review-intro">Prioriza las materias según tus resultados, la práctica acumulada y el tiempo transcurrido desde el último ejercicio.</p>
+   <div id="smartReviewPlan" class="smart-review-list"></div>
+  </div>
+ </div>
+
+  
+  <div id="achievementsPanel" class="progress-panel achievements-panel">
+   <div class="collapsible-progress-head">
+    <div><h3>Logros y recompensas</h3></div>
+    <div class="progress-head-actions"><span id="achievementsCount" class="type-badge">0/0 desbloqueados</span><button class="secondary progress-toggle" type="button" data-progress-toggle="achievementsBody">Mostrar</button></div>
+   </div>
+   <div id="achievementsBody" class="progress-collapsible-body hidden">
+    <p class="achievements-intro">Consulta las medallas conseguidas y qué necesitas para desbloquear las siguientes.</p>
+    <div id="achievementsGrid" class="achievements-grid"></div>
+   </div>
+  </div>
+
+  <div class="progress-panel">
+   <div class="collapsible-progress-head">
+    <h3>Historial de intentos</h3>
+    <button class="secondary progress-toggle" type="button" data-progress-toggle="progressHistoryBody">Mostrar</button>
+   </div>
+   <div id="progressHistoryBody" class="progress-collapsible-body hidden">
+    <div id="progressList" class="progress-list"></div>
+   </div>
+  </div>
+
+  <div class="progress-panel progress-topics">
+   <div class="collapsible-progress-head">
+    <h3>Rendimiento por materias / temas</h3>
+    <button class="secondary progress-toggle" type="button" data-progress-toggle="progressTopicsBody">Mostrar</button>
+   </div>
+   <div id="progressTopicsBody" class="progress-collapsible-body hidden">
+    <div class="progress-status" style="margin-top:0">Agrupado según la misma clasificación de la biblioteca.</div>
+    <div id="progressTopicList" class="progress-topic-list"></div>
+   </div>
+  </div>
+
+ </div>
+</section>
+
+
+<section id="adminManagement" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Inicio</button><button class="secondary" type="button" onclick="refreshAdminManagement()">Actualizar</button></div>
+ <div class="admin-shell">
+  <div class="admin-head">
+   <div class="section-kicker">Administración · Solo administrador</div>
+   <h2>Gestión de alumnos</h2>
+   <p>Zona independiente para administrar altas, accesos, dispositivos, seguimiento y estadísticas de los alumnos. No modifica tu progreso personal.</p>
+  </div>
+  <div class="admin-section-grid">
+   <div id="adminUsersPanel" class="admin-section-card admin-users-panel">
+    <h3>Altas, accesos y dispositivos</h3>
+    <button id="adminUsersToggleBtn" class="secondary admin-section-toggle" type="button" onclick="toggleAdminUsersPanel()" aria-expanded="true">Ocultar altas, accesos y dispositivos ▲</button>
+    <div id="adminUsersBody">
+     <p class="admin-section-note">Da de alta alumnos, bloquea o reactiva su acceso, cambia el número de dispositivos permitidos, libera dispositivos registrados y tramita bajas.</p>
+     <div class="admin-users-form">
+      <div class="field"><label for="adminNewName">Nombre y apellidos</label><input id="adminNewName" type="text" placeholder="Nombre y apellidos"></div>
+      <div class="field"><label for="adminNewPhone">Nº de teléfono</label><input id="adminNewPhone" type="tel" placeholder="600 000 000"></div>
+      <div class="field"><label for="adminNewEmail">Correo del alumno</label><input id="adminNewEmail" type="email" placeholder="alumno@correo.com"></div>
+      <div class="field"><label for="adminNewMaxDevices">Dispositivos permitidos</label><select id="adminNewMaxDevices"><option value="1">1 dispositivo</option><option value="2" selected>2 dispositivos</option></select></div>
+      <button class="primary" type="button" onclick="adminAddStudent()">Dar de alta</button>
+     </div>
+     <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="secondary" type="button" onclick="loadAdminStudents()">Actualizar listado</button></div>
+     <div id="adminUsersStatus" class="progress-status"></div>
+     <div id="adminUsersList" class="admin-users-list"></div>
+    </div>
+   </div>
+
+   <div id="adminAllProgressPanel" class="admin-section-card">
+    <h3>Seguimiento de alumnos</h3>
+    <p class="admin-section-note">Consulta el historial y rendimiento de los alumnos. Esta vista sigue siendo exclusiva del administrador.</p>
+    <button id="adminProgressToggleBtn" class="secondary" type="button" onclick="toggleAllProgressAsAdmin()" aria-expanded="false">Ver seguimiento de alumnos ▼</button>
+    <div id="adminAllProgressList" class="hidden" style="margin-top:14px"></div>
+   </div>
+
+   <div id="adminResetStatsPanel" class="admin-section-card">
+    <h3>Resetear estadísticas</h3>
+    <p class="admin-section-note">Borra únicamente el historial estadístico del usuario indicado. No elimina tests, supuestos, autorización ni dispositivos.</p>
+    <button class="secondary" type="button" onclick="resetStatsAsAdmin()">Resetear estadísticas de un usuario</button>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="survival" class="hidden">
+ <div class="view-top survival-view-top"><button class="back" onclick="exitSurvival()">← Inicio</button><div class="timer">Zona de reto</div></div>
+ <div class="survival-shell">
+  <div id="survivalIntro" class="survival-intro">
+   <div class="survival-hero-icon">⚡</div>
+   <div class="section-kicker">Modo Supervivencia</div>
+   <h2>¿Hasta dónde llegas?</h2>
+   <p>3 vidas. Una pregunta cada vez. Elige cómo quieres entrenar.</p>
+   <div class="survival-mode-grid">
+    <button class="survival-mode-card classic" type="button" onclick="startSurvival('classic')">
+     <span class="survival-mode-icon">🔥</span><strong>Clásica</strong>
+     <small>Sin límite por pregunta. Piensa, responde y protege tus 3 vidas.</small>
+     <b>10 puntos y 10 XP de récord por acierto · Jugar →</b>
+    </button>
+    <button class="survival-mode-card pressure" type="button" onclick="startSurvival('pressure')">
+     <span class="survival-mode-icon">⚡</span><strong>Modo presión</strong>
+     <small>60 segundos por pregunta. Entrena concentración y decisión bajo tiempo.</small>
+     <b>15 puntos y 15 XP de récord por acierto · Jugar →</b>
+    </button>
+   </div>
+   <div class="survival-intro-note">🏆 Solo mejorar tu récord personal añade nuevos XP de Supervivencia.</div>
+  </div>
+
+  <div id="survivalPanel" class="survival-panel hidden">
+   <div class="survival-challenge-head">
+    <div><span id="survivalModeBadge" class="survival-mode-badge">🔥 Clásica</span><span id="survivalQuestionNo" class="type-badge">Pregunta 1</span></div>
+    <button class="survival-finish-btn" type="button" onclick="requestFinishSurvival()">Finalizar partida</button>
+   </div>
+   <div class="survival-dashboard">
+    <div class="survival-stat lives"><span>VIDAS</span><strong id="survivalLives">❤️ ❤️ ❤️</strong></div>
+    <div class="survival-stat"><span>ACIERTOS</span><strong id="survivalScore">0</strong></div>
+    <div class="survival-stat"><span>PUNTOS</span><strong id="survivalPoints">0</strong></div>
+    <div class="survival-stat"><span>RACHA</span><strong id="survivalStreak">🔥 0</strong></div>
+    <div class="survival-stat"><span>RÉCORD</span><strong id="survivalRecordLive">🏆 0</strong></div>
+   </div>
+   <div id="survivalPressureClock" class="survival-pressure hidden">
+    <div><span>Tiempo para responder</span><strong id="survivalClockText">01:00</strong></div>
+    <div class="survival-time-track"><span id="survivalTimeBar" style="width:100%"></span></div>
+   </div>
+   <div id="survivalGame">
+    <div id="survivalQuestion" class="survival-question"></div>
+    <div id="survivalOptions" class="survival-options"></div>
+    <div id="survivalFeedback" class="survival-feedback hidden"></div>
+    <button id="survivalNext" class="primary hidden" type="button" style="width:100%;margin-top:14px">Siguiente pregunta</button>
+   </div>
+  </div>
+
+  <div id="survivalEnd" class="survival-panel survival-end hidden">
+   <div class="survival-hero-icon">🏁</div>
+   <div class="section-kicker">Partida terminada</div><h2>Modo Supervivencia</h2>
+   <strong id="survivalFinalScore">0</strong><p id="survivalFinalText"></p>
+   <button class="primary" type="button" onclick="openSurvival()">Nueva partida</button>
+   <button class="secondary" type="button" onclick="goHome()">Volver al inicio</button>
+  </div>
+ </div>
+</section>
+
+<section id="setup" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Volver</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
+ <div class="panel">
+  <img src="logo-oposmurcia360.png?v=22-appcheck" alt="" style="width:72px;height:72px;float:right;margin-left:10px;background:#fff;border-radius:50%;padding:3px">
+  <div class="section-kicker">Configurar test</div>
+  <h2 id="setupTitle"></h2><p id="setupDesc" class="muted"></p>
+  <label><input type="radio" name="timeMode" value="none" checked> Sin tiempo · cronómetro de tiempo empleado</label>
+  <label><input type="radio" name="timeMode" value="timed"> Con tiempo · cuenta atrás</label>
+  <label>Minutos <input id="minutes" type="number" min="1" max="180" value="30"></label>
+  <label><input id="penalty" type="checkbox"> Aplicar penalización de 1/3 por respuesta incorrecta</label>
+  <div class="info">Puedes pulsar <strong>Finalizar y ver resultados</strong> en cualquier momento. Las preguntas no contestadas quedan en blanco y no cuentan como error.</div>
+  <button class="primary" onclick="startQuiz()">Comenzar test</button>
+ </div>
+</section>
+
+<section id="quiz" class="hidden">
+ <div class="view-top"><button class="back" onclick="confirmExit()">← Salir</button><div id="timer" class="timer">00:00</div></div>
+ <div class="progress-track"><div id="progress" class="progress"></div></div>
+ <div class="panel">
+  <div id="qnum" class="qindex"></div>
+  <div id="question" class="question"></div>
+  <div id="options" class="options"></div>
+  <div class="nav">
+   <button class="secondary" onclick="prevQ()">Anterior</button>
+   <button class="secondary" onclick="nextQ()">Siguiente</button>
+   <button class="primary finish" onclick="finishQuiz(false)">Finalizar y ver resultados</button>
+  </div>
+ </div>
+</section>
+
+
+<section id="practicalSetup" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Volver</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
+ <div class="panel">
+  <img src="logo-oposmurcia360.png?v=22-appcheck" alt="" style="width:72px;height:72px;float:right;margin-left:10px;background:#fff;border-radius:50%;padding:3px">
+  <div class="section-kicker">Configurar supuesto práctico</div>
+  <h2 id="practicalSetupTitle"></h2><p id="practicalSetupDesc" class="muted"></p>
+  <label><input type="radio" name="practicalTimeMode" value="none" checked> Sin tiempo · cronómetro de tiempo empleado</label>
+  <label><input type="radio" name="practicalTimeMode" value="timed"> Con tiempo · cuenta atrás</label>
+  <label>Minutos <input id="practicalMinutes" type="number" min="1" max="240" value="30"></label>
+  <label><input id="practicalPenalty" type="checkbox"> Aplicar penalización de 1/3 por respuesta incorrecta</label>
+  <div class="info">Al comenzar accederás primero al <strong>enunciado completo</strong>. El cuestionario solo se habilitará cuando pulses el botón situado al final del enunciado.</div>
+  <button class="primary" onclick="startPractical()">Comenzar supuesto práctico</button>
+ </div>
+</section>
+
+<section id="practicalWork" class="hidden">
+ <div class="view-top"><button class="back" onclick="confirmPracticalExit()">← Salir</button><div id="practicalTimer" class="timer">00:00</div></div>
+ <div class="practical-tabs">
+  <button id="practicalStatementTab" class="primary" onclick="showPracticalStatement()">📖 Supuesto práctico</button>
+  <button id="practicalQuizTab" class="secondary hidden" onclick="showPracticalQuiz()">✅ Cuestionario</button>
+ </div>
+ <div id="practicalStatementView" class="panel">
+  <h2 id="practicalStatementTitle" class="statement-title"></h2>
+  <div id="practicalStatement" class="statement"></div>
+  <div class="statement-actions"><button id="statementQuizButton" class="primary" onclick="showPracticalQuiz()">Comenzar supuesto práctico →</button></div>
+ </div>
+ <div id="practicalQuizView" class="hidden">
+  <div class="progress-track"><div id="practicalProgress" class="progress"></div></div>
+  <div class="panel">
+   <div id="practicalQnum" class="qindex"></div>
+   <div id="practicalQuestion" class="question"></div>
+   <div id="practicalOptions" class="options"></div>
+   <div class="practical-nav">
+    <button class="secondary" onclick="prevPracticalQ()">Anterior</button>
+    <button class="secondary" onclick="nextPracticalQ()">Siguiente</button>
+    <button class="secondary finish" onclick="showPracticalStatement()">📖 Consultar enunciado</button>
+    <button class="primary finish" onclick="finishPractical(false)">Finalizar y ver resultados</button>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="practicalResults" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Inicio</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
+ <div class="panel">
+  <div class="section-kicker">Resultado · supuesto práctico</div><h2 id="practicalResultTitle"></h2>
+  <div id="practicalScore" class="score">0,00/10</div>
+  <div class="result-grid">
+   <div class="result-box"><b id="practicalOk">0</b><span>Aciertos</span></div>
+   <div class="result-box"><b id="practicalBad">0</b><span>Errores</span></div>
+   <div class="result-box"><b id="practicalBlank">0</b><span>En blanco</span></div>
+  </div>
+  <p id="practicalResultInfo" class="muted"></p>
+  <div class="nav">
+   <button class="secondary" onclick="showPracticalStatementFromResults()">📖 Consultar enunciado</button>
+   <button class="primary" onclick="togglePracticalReview()">Revisar respuestas</button>
+  </div>
+  <div id="practicalReview" class="hidden" style="margin-top:13px"></div>
+  <div class="nav">
+   <button class="secondary" onclick="repeatPractical()">Repetir supuesto</button>
+   <button class="primary finish" onclick="sharePracticalResult()">Compartir resultado por WhatsApp</button>
+  </div>
+ </div>
+</section>
+
+<section id="practicalResultStatement" class="hidden">
+ <div class="view-top"><button class="back" onclick="returnPracticalResults()">← Volver a resultados</button><div class="timer">Enunciado</div></div>
+ <div class="panel">
+  <h2 id="practicalResultStatementTitle" class="statement-title"></h2>
+  <div id="practicalResultStatementText" class="statement"></div>
+  <div class="statement-actions"><button class="primary" onclick="returnPracticalResults()">Volver a resultados →</button></div>
+ </div>
+</section>
+
+<section id="results" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Inicio</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
+ <div class="panel">
+  <div class="section-kicker">Resultado</div><h2 id="resultTitle"></h2>
+  <div id="score" class="score">0,00/10</div>
+  <div class="result-grid">
+   <div class="result-box"><b id="ok">0</b><span>Aciertos</span></div>
+   <div class="result-box"><b id="bad">0</b><span>Errores</span></div>
+   <div class="result-box"><b id="blank">0</b><span>En blanco</span></div>
+  </div>
+  <p id="resultInfo" class="muted"></p>
+  <button class="primary" onclick="toggleReview()">Revisar respuestas</button>
+  <div id="review" class="hidden" style="margin-top:13px"></div>
+  <div class="nav">
+   <button class="secondary" onclick="repeatQuiz()">Repetir test</button>
+   
+   <button class="primary finish" onclick="shareResult()">Compartir resultado por WhatsApp</button>
+  </div>
+ </div>
+</section>
+</div>
+
+
+
+
+<div id="installHelp" class="modal-wrap hidden" onclick="installBackdropClose(event)">
+ <div class="modal">
+  <span class="install-badge">Instalación en Android</span>
+  <h2>Instalar OposMurcia 360</h2>
+  <div id="installHelpContent"></div>
+  <button class="primary" style="width:100%;margin-top:12px" type="button" onclick="closeInstallHelp()">Entendido</button>
+ </div>
+</div>
+
+<div id="help" class="modal-wrap hidden" onclick="backdropClose(event)">
+ <div class="modal help-modern">
+  <div class="help-title"><span>🧭</span><div><h2>Cómo funciona</h2><p>Lo esencial para aprovechar OposMurcia 360.</p></div></div>
+  <div class="help-grid">
+   <div class="help-card"><span>📝</span><div><strong>Tests y supuestos</strong><small>Entrena por materias. En los supuestos puedes alternar entre enunciado y cuestionario sin perder tus respuestas.</small></div></div>
+   <div class="help-card"><span>⏱️</span><div><strong>A tu ritmo</strong><small>Elige sin tiempo o cuenta atrás. La penalización 1/3 es opcional.</small></div></div>
+   <div class="help-card"><span>📊</span><div><strong>Mi progreso</strong><small>Consulta notas, historial, rendimiento por materias, logros y evolución. Despliega solo lo que quieras ver.</small></div></div>
+   <div class="help-card"><span>🧠</span><div><strong>Repaso inteligente</strong><small>La app prioriza qué conviene repasar según tus resultados y el tiempo desde la última práctica.</small></div></div>
+   <div class="help-card"><span>⭐</span><div><strong>XP, niveles y logros</strong><small>Tu actividad suma XP, permite avanzar de nivel y desbloquear logros. Las “i” explican cada indicador.</small></div></div>
+   <div class="help-card"><span>🎯</span><div><strong>Objetivo diario</strong><small>Responde 20 preguntas al día para completar el objetivo. Solo cuentan las preguntas realmente contestadas.</small></div></div>
+   <div class="help-card"><span>❤️</span><div><strong>Supervivencia</strong><small>Elige Clásica (10 puntos/acierto) o Modo presión de 60 s (15 puntos/acierto). Cada modalidad tiene récord propio y mejorar ese récord suma XP en la misma proporción.</small></div></div>
+   <div class="help-card"><span>✓</span><div><strong>Resultados</strong><small>Finaliza cuando quieras y revisa nota, aciertos, errores, blancos, tiempo y respuestas.</small></div></div>
+  </div>
+  <button class="primary help-ok" onclick="closeHelp()">Entendido</button>
+ </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app-check.js";
+import { getAuth,onAuthStateChanged,signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider,signOut,sendPasswordResetEmail,setPersistence,browserLocalPersistence } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+import { getFirestore,collection,collectionGroup,getDocs,doc,getDoc,setDoc,updateDoc,addDoc,deleteDoc,serverTimestamp,query,where } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+const firebaseConfig={"apiKey":"AIzaSyDA_79FRQq90gVJgD17dRr_pUHKe4S8XBg","authDomain":"oposmurcia360-5a389.firebaseapp.com","projectId":"oposmurcia360-5a389","storageBucket":"oposmurcia360-5a389.firebasestorage.app","messagingSenderId":"730198455785","appId":"1:730198455785:web:1f3e3d4f8edf8774780778","measurementId":"G-T8QHKNDX5T"};
+const app=initializeApp(firebaseConfig);
+const appCheck=initializeAppCheck(app,{
+  provider:new ReCaptchaEnterpriseProvider("6LfJJaMtAAAAAFiIMFM8wbT3C5Pf1708_iS-3jVQ"),
+  isTokenAutoRefreshEnabled:true
+});
+const auth=getAuth(app),db=getFirestore(app);
+await setPersistence(auth,browserLocalPersistence);
+const $=s=>document.querySelector(s),PUBLIC_URL="https://oposmurcia360.github.io/oposmurcia360/";
+let TESTS=[],PRACTICALS=[],currentTest=null,answers=[],current=0,penalty=false,timed=false,timeLimit=0,elapsed=0,interval=null,startedAt=0,deferredPrompt=null;
+let currentPractical=null,practicalAnswers=[],practicalCurrent=0,practicalPenalty=false,practicalTimed=false,practicalTimeLimit=0,practicalElapsed=0,practicalInterval=null,practicalStartedAt=0,practicalQuizStarted=false,practicalStatementY=0;
+let finishingQuiz=false,finishingPractical=false;
+let survivalPool=[],survivalIndex=0,survivalLives=3,survivalCorrect=0,survivalWrong=0,survivalStartedAt=0,survivalLocked=false,survivalPreviousRecord=0,survivalMode='classic',survivalQuestionDeadline=0,survivalQuestionTimer=null,survivalCurrentStreak=0,survivalFinished=false;
+async function registrarProgreso({tipo,ejercicioId,titulo,categoria,totalPreguntas,aciertos,errores,blancos,nota,penalizacion,tiempoEmpleado,modalidadSupervivencia=null}){
+  const user=auth.currentUser;
+  if(!user) throw new Error('No hay un usuario autenticado.');
+  await addDoc(collection(db,'progreso'),{
+    uid:user.uid,
+    email:user.email||'',
+    tipo,
+    ejercicioId:String(ejercicioId||''),
+    titulo:String(titulo||''),
+    categoria:String(categoria||'Sin clasificar'),
+    fecha:serverTimestamp(),
+    totalPreguntas:Number(totalPreguntas),
+    aciertos:Number(aciertos),
+    errores:Number(errores),
+    blancos:Number(blancos),
+    nota:Number(nota),
+    penalizacion:Boolean(penalizacion),
+    tiempoEmpleado:Math.max(0,Math.floor(Number(tiempoEmpleado)||0)),
+    ...(modalidadSupervivencia?{modalidadSupervivencia:String(modalidadSupervivencia)}:{})
+  });
+}
+
+function progressDateValue(fecha){
+  if(!fecha)return 0;
+  if(typeof fecha.toMillis==='function')return fecha.toMillis();
+  if(fecha.seconds!=null)return Number(fecha.seconds)*1000;
+  return 0;
+}
+function formatProgressDate(fecha,short=false){
+  const ms=progressDateValue(fecha);
+  if(!ms)return '—';
+  const d=new Date(ms);
+  return short
+    ? d.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'2-digit'})
+    : d.toLocaleString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+function formatProgressTime(seconds){
+  const s=Math.max(0,Math.floor(Number(seconds)||0));
+  const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;
+  if(h)return `${h} h ${String(m).padStart(2,'0')} min`;
+  if(m)return `${m} min ${String(sec).padStart(2,'0')} s`;
+  return `${sec} s`;
+}
+
+function progressTopicKey(item){
+  // V23 Fase 5: la categoría guardada es la fuente principal.
+  if((item.categoria||'').toString().trim()){
+    return item.categoria.toString().trim();
+  }
+
+  // Compatibilidad con los intentos de prueba anteriores:
+  // buscamos el ejercicio real en la biblioteca y usamos SU misma clasificación.
+  if(item.tipo==='test'){
+    const t=TESTS.find(x=>String(x.id)===String(item.ejercicioId));
+    if(t){
+      const info=topicInfo(t);
+      if(info && info.label) return info.label;
+    }
+  }else if(item.tipo==='supuesto'){
+    const p=PRACTICALS.find(x=>String(x.id)===String(item.ejercicioId));
+    if(p){
+      return (p.topic||p.tema||p.subject||'Otros supuestos').toString().trim()||'Otros supuestos';
+    }
+  }
+
+  return 'Sin clasificar';
+}function renderProgressTopics(items){
+  const box=$('#progressTopicList');
+  if(!items.length){
+    box.innerHTML='<div class="progress-empty">Todavía no hay datos suficientes para calcular el rendimiento por temas.</div>';
+    return;
+  }
+
+  const groups=new Map();
+  for(const item of items){
+    const key=progressTopicKey(item);
+    if(!groups.has(key)) groups.set(key,[]);
+    groups.get(key).push(item);
+  }
+
+  const rows=[...groups.entries()].map(([tema,arr])=>{
+    const notas=arr.map(x=>Number(x.nota)||0);
+    const avg=notas.reduce((a,b)=>a+b,0)/notas.length;
+    const best=Math.max(...notas);
+    const last=[...arr].sort((a,b)=>progressDateValue(b.fecha)-progressDateValue(a.fecha))[0];
+    return {tema,intentos:arr.length,avg,best,last};
+  }).sort((a,b)=>a.tema.localeCompare(b.tema,'es'));
+
+  box.innerHTML=rows.map(r=>`
+    <div class="progress-topic-item">
+      <div class="progress-topic-head">
+        <div class="progress-topic-name">${esc(r.tema)}</div>
+        <div class="progress-topic-best">${r.best.toFixed(2).replace('.',',')}/10</div>
+      </div>
+      <div class="progress-topic-meta">
+        <span>${r.intentos} ${r.intentos===1?'intento':'intentos'}</span>
+        <span>Nota media: ${r.avg.toFixed(2).replace('.',',')}/10</span>
+        <span>Mejor nota: ${r.best.toFixed(2).replace('.',',')}/10</span>
+        <span>Último: ${formatProgressDate(r.last.fecha,true)}</span>
+      </div>
+    </div>`).join('');
+}
+
+
+async function resetStatsAsAdmin(){
+  const user=auth.currentUser;
+  const emailAdmin=(user?.email||'').toLowerCase();
+
+  if(emailAdmin!==ADMIN_EMAIL){
+    alert('Esta función está reservada al administrador.');
+    return;
+  }
+
+  const objetivo=(prompt(
+    'Escribe el correo electrónico del usuario cuyas estadísticas quieres resetear:',
+    emailAdmin
+  )||'').trim().toLowerCase();
+
+  if(!objetivo)return;
+  if(!objetivo.includes('@')){
+    alert('Introduce un correo electrónico válido.');
+    return;
+  }
+
+  if(!confirm(
+    'Se borrará TODO el historial de progreso de:\n\n'+objetivo+
+    '\n\nTests realizados, nota media, mejor nota, actividad e historial quedarán a cero.'+
+    '\n\nNo se borrarán tests, supuestos, usuarios ni dispositivos.'+
+    '\n\n¿Quieres continuar?'
+  )) return;
+
+  try{
+    const q=query(collection(db,'progreso'),where('email','==',objetivo));
+    const snap=await getDocs(q);
+    await Promise.all(snap.docs.map(d=>deleteDoc(d.ref)));
+
+    if(objetivo===emailAdmin){
+      localStorage.removeItem('opos360_stats_v14');
+      await loadMyProgress();
+      await renderStats();
+    }
+
+    alert(
+      'Estadísticas reseteadas correctamente.\n\n'+
+      'Usuario: '+objetivo+'\n'+
+      'Intentos eliminados: '+snap.size
+    );
+  }catch(e){
+    console.error('No se pudieron resetear las estadísticas:',e);
+    alert('No se han podido resetear las estadísticas.\n\n'+(e?.message||e));
+  }
+}
+
+window.resetStatsAsAdmin=resetStatsAsAdmin;
+
+
+async function loadAllProgressAsAdmin(){
+  const user=auth.currentUser;
+  const email=(user?.email||'').toLowerCase();
+  if(email!==ADMIN_EMAIL){
+    alert('Esta función está reservada al administrador.');
+    return;
+  }
+
+  const box=$('#adminAllProgressList');
+  if(!box)return;
+  box.innerHTML='<div class="progress-status">Cargando seguimiento...</div>';
+
+  try{
+    const snap=await getDocs(collection(db,'progreso'));
+    const items=snap.docs.map(d=>({id:d.id,...d.data()}))
+      .filter(x=>((x.email||'').toLowerCase()!==ADMIN_EMAIL));
+
+    if(!items.length){
+      box.innerHTML='<div class="progress-empty">No hay progreso de alumnos registrado.</div>';
+      return;
+    }
+
+    const porAlumno={};
+    items.forEach(x=>{
+      const correo=(x.email||'Sin correo').toLowerCase();
+      (porAlumno[correo]??=[]).push(x);
+    });
+
+    box.innerHTML=Object.keys(porAlumno).sort().map(correo=>{
+      const intentos=porAlumno[correo].sort((a,b)=>progressDateValue(b.fecha)-progressDateValue(a.fecha));
+      const notas=intentos.map(x=>Number(x.nota)).filter(Number.isFinite);
+      const media=notas.length?notas.reduce((a,b)=>a+b,0)/notas.length:null;
+      const mejor=notas.length?Math.max(...notas):null;
+
+      const historial=intentos.map(x=>`
+        <div class="progress-item">
+          <div class="progress-item-top">
+            <div class="progress-item-title">${esc(x.titulo||'Ejercicio')}</div>
+            <div class="progress-score">${Number.isFinite(Number(x.nota))?Number(x.nota).toFixed(2).replace('.',','):'—'}/10</div>
+          </div>
+          <div class="progress-meta">
+            <span>${x.tipo==='supuesto'?'Supuesto práctico':'Test'}</span>
+            <span>${esc(x.categoria||'Sin categoría')}</span>
+            <span>${formatProgressDate(x.fecha)}</span>
+          </div>
+        </div>`).join('');
+
+      return `
+        <div class="progress-panel" style="margin-top:12px">
+          <h3>${esc(correo)}</h3>
+          <div class="progress-status" style="margin-top:-5px">
+            ${intentos.length} ${intentos.length===1?'intento':'intentos'} ·
+            Nota media: ${media===null?'—':media.toFixed(2).replace('.',',')}/10 ·
+            Mejor nota: ${mejor===null?'—':mejor.toFixed(2).replace('.',',')}/10
+          </div>
+          <div class="progress-list" style="margin-top:10px">${historial}</div>
+        </div>`;
+    }).join('');
+  }catch(e){
+    console.error('No se pudo cargar el seguimiento de alumnos:',e);
+    box.innerHTML='<div class="progress-empty">No se ha podido cargar el seguimiento de alumnos.</div>';
+  }
+}
+window.loadAllProgressAsAdmin=loadAllProgressAsAdmin;
+
+window.toggleAllProgressAsAdmin=async()=>{
+  if(!adminOnly()){alert('Esta función está reservada al administrador.');return;}
+  const box=$('#adminAllProgressList');
+  const btn=$('#adminProgressToggleBtn');
+  if(!box||!btn)return;
+  const isOpen=!box.classList.contains('hidden');
+  if(isOpen){
+    box.classList.add('hidden');
+    btn.textContent='Ver seguimiento de alumnos ▼';
+    btn.setAttribute('aria-expanded','false');
+    return;
+  }
+  box.classList.remove('hidden');
+  btn.textContent='Ocultar seguimiento de alumnos ▲';
+  btn.setAttribute('aria-expanded','true');
+  await loadAllProgressAsAdmin();
+};
+
+/* =========================
+   V23 · PANEL ADMINISTRACIÓN DE ALUMNOS
+   ========================= */
+function adminOnly(){
+  return ((auth.currentUser?.email||'').toLowerCase()===ADMIN_EMAIL);
+}
+function normalizeStudentEmail(value){
+  return String(value||'').trim().toLowerCase();
+}
+window.toggleAdminUsersPanel=()=>{
+  if(!adminOnly())return;
+  const body=$('#adminUsersBody'),btn=$('#adminUsersToggleBtn');
+  if(!body||!btn)return;
+  const isHidden=body.classList.contains('hidden');
+  body.classList.toggle('hidden',!isHidden);
+  btn.setAttribute('aria-expanded',isHidden?'true':'false');
+  btn.textContent=isHidden?'Ocultar altas, accesos y dispositivos ▲':'Mostrar altas, accesos y dispositivos ▼';
+};
+
+async function adminDeviceMap(){
+  const map={};
+  const snap=await getDocs(collectionGroup(db,'equipos'));
+  snap.docs.forEach(d=>{
+    const x=d.data()||{};
+    const email=normalizeStudentEmail(x.email);
+    if(!email)return;
+    (map[email]??=[]).push({
+      id:d.id,
+      path:d.ref.path,
+      ref:d.ref,
+      uid:String(x.uid||''),
+      activo:x.activo===true,
+      ultimoAcceso:x.ultimoAcceso||null,
+      creadoEn:x.creadoEn||null
+    });
+  });
+  Object.values(map).forEach(arr=>arr.sort((a,b)=>a.id.localeCompare(b.id,'es')));
+  return map;
+}
+window.loadAdminStudents=async()=>{
+  if(!adminOnly()){alert('Esta función está reservada al administrador.');return;}
+  const status=$('#adminUsersStatus'),box=$('#adminUsersList');
+  status.textContent='Cargando alumnos y dispositivos…'; box.innerHTML='';
+  try{
+    // Cargamos primero el listado de autorizados. La lectura de dispositivos se
+    // hace aparte para que un problema puntual en collectionGroup('equipos')
+    // no impida ver y gestionar los alumnos autorizados.
+    const authSnap=await getDocs(collection(db,'autorizados'));
+    let devices={};
+    let deviceWarning='';
+    try{
+      devices=await adminDeviceMap();
+    }catch(deviceError){
+      console.error('Panel alumnos · dispositivos:',deviceError);
+      deviceWarning=' · No se han podido leer los dispositivos';
+    }
+    const rows=authSnap.docs.map(d=>({id:d.id,...d.data()}))
+      .filter(x=>normalizeStudentEmail(x.id)!==ADMIN_EMAIL)
+      .sort((a,b)=>normalizeStudentEmail(a.id).localeCompare(normalizeStudentEmail(b.id),'es'));
+    if(!rows.length){box.innerHTML='<div class="progress-empty">No hay alumnos autorizados.</div>';status.textContent='';return;}
+    box.innerHTML=rows.map(x=>{
+      const email=normalizeStudentEmail(x.id),active=x.activo===true,max=Number(x.maxDispositivos)===2?2:1,devs=devices[email]||[];
+      const devHtml=devs.length?devs.map(d=>`<div class="admin-device"><span><strong>${esc(d.id)}</strong> · ${d.uid?esc(d.uid.slice(0,10))+'…':'UID no disponible'}${d.ultimoAcceso?' · Último acceso: '+esc(formatProgressDate(d.ultimoAcceso)):''}</span><button class="secondary" type="button" onclick="adminReleaseDevice('${encodeURIComponent(email)}','${encodeURIComponent(d.path)}')">Liberar</button></div>`).join(''):'<div class="muted">Sin dispositivos registrados.</div>';
+      const nombre=(x.nombre||'').toString().trim(),telefono=(x.telefono||'').toString().trim();
+      return `<div class="admin-user-card ${active?'':'blocked'}"><div class="admin-user-head"><div>${nombre?`<div class="admin-user-name">${esc(nombre)}</div>`:''}<div class="admin-user-email">${esc(email)}</div>${telefono?`<div class="admin-user-contact">Tel.: ${esc(telefono)}</div>`:''}<div class="admin-user-meta"><span>${max} ${max===1?'dispositivo permitido':'dispositivos permitidos'}</span><span>${devs.length} ${devs.length===1?'slot ocupado':'slots ocupados'}</span></div></div><span class="admin-user-state ${active?'':'blocked'}">${active?'ACTIVO':'BLOQUEADO'}</span></div><div class="admin-user-actions"><button class="secondary" type="button" onclick="adminToggleStudent('${encodeURIComponent(email)}',${active?'false':'true'})">${active?'Bloquear acceso':'Reactivar acceso'}</button><div class="admin-device-limit-control" aria-label="Dispositivos permitidos"><span>Permitir:</span><button class="secondary admin-limit-btn ${max===1?'selected':''}" type="button" onclick="adminSetMaxDevices('${encodeURIComponent(email)}',1)" ${max===1?'disabled aria-current="true"':''}>1</button><button class="secondary admin-limit-btn ${max===2?'selected':''}" type="button" onclick="adminSetMaxDevices('${encodeURIComponent(email)}',2)" ${max===2?'disabled aria-current="true"':''}>2</button></div>${devs.length>1?`<button class="secondary" type="button" onclick="adminReleaseAllDevices('${encodeURIComponent(email)}')">Liberar todos</button>`:''}<button class="secondary admin-danger" type="button" onclick="adminDeleteStudent('${encodeURIComponent(email)}','${encodeURIComponent(nombre)}')">Dar de baja</button></div><div class="admin-device-list">${devHtml}</div></div>`;
+    }).join('');
+    status.textContent=`${rows.length} ${rows.length===1?'alumno':'alumnos'} en autorizados.${deviceWarning}`;
+  }catch(e){
+    console.error('Panel alumnos:',e);
+    status.textContent='No se ha podido cargar el listado de alumnos autorizados. Comprueba las reglas del panel.';
+  }
+};
+window.adminAddStudent=async()=>{
+  if(!adminOnly())return;
+  const nombre=$('#adminNewName').value.trim();
+  const telefono=$('#adminNewPhone').value.trim();
+  const email=normalizeStudentEmail($('#adminNewEmail').value),max=Number($('#adminNewMaxDevices').value)===2?2:1;
+  if(!nombre){alert('Introduce el nombre y apellidos del alumno.');return;}
+  if(!email || !email.includes('@')){alert('Introduce un correo electrónico válido.');return;}
+  if(email===ADMIN_EMAIL){alert('El administrador no se gestiona desde este panel.');return;}
+  try{
+    const ref=doc(db,'autorizados',email),snap=await getDoc(ref);
+    if(snap.exists() && !confirm('Este correo ya existe en autorizados. ¿Quieres actualizar sus datos, reactivarlo y establecer '+max+' dispositivo(s)?'))return;
+    await setDoc(ref,{activo:true,maxDispositivos:max,rol:'alumno',email,nombre,telefono}, {merge:true});
+    $('#adminNewName').value='';
+    $('#adminNewPhone').value='';
+    $('#adminNewEmail').value='';
+    alert('Alumno autorizado correctamente.\n\n'+nombre+'\n'+email+(telefono?'\nTel.: '+telefono:'')+'\nDispositivos permitidos: '+max);
+    await loadAdminStudents();
+  }catch(e){console.error(e);alert('No se ha podido dar de alta al alumno.\n\n'+(e?.message||e));}
+};
+window.adminToggleStudent=async(encodedEmail,active)=>{
+  if(!adminOnly())return;
+  const email=decodeURIComponent(encodedEmail);
+  const action=active?'reactivar':'bloquear';
+  if(!confirm(`¿Quieres ${action} el acceso de ${email}?\n\nNo se borrará su progreso ni sus dispositivos.`))return;
+  try{await updateDoc(doc(db,'autorizados',email),{activo:Boolean(active)});await loadAdminStudents();}
+  catch(e){console.error(e);alert('No se ha podido modificar el acceso.\n\n'+(e?.message||e));}
+};
+window.adminSetMaxDevices=async(encodedEmail,max)=>{
+  if(!adminOnly())return;
+  const email=decodeURIComponent(encodedEmail),n=Number(max)===2?2:1;
+  if(!confirm(`Cambiar el límite de ${email} a ${n} dispositivo(s)?\n\nSi reduces a 1 y actualmente existen dos slots, libera después el dispositivo que no quieras conservar.`))return;
+  try{await updateDoc(doc(db,'autorizados',email),{maxDispositivos:n});await loadAdminStudents();}
+  catch(e){console.error(e);alert('No se ha podido cambiar el límite.\n\n'+(e?.message||e));}
+};
+window.adminReleaseDevice=async(encodedEmail,encodedPath)=>{
+  if(!adminOnly())return;
+  const email=decodeURIComponent(encodedEmail),path=decodeURIComponent(encodedPath);
+  if(!confirm(`Liberar este dispositivo de ${email}?\n\nEl alumno podrá ocupar de nuevo un slot desde otro navegador o dispositivo.`))return;
+  try{const parts=path.split('/');await deleteDoc(doc(db,...parts));await loadAdminStudents();}
+  catch(e){console.error(e);alert('No se ha podido liberar el dispositivo.\n\n'+(e?.message||e));}
+};
+window.adminReleaseAllDevices=async(encodedEmail)=>{
+  if(!adminOnly())return;
+  const email=decodeURIComponent(encodedEmail);
+  if(!confirm(`¿Liberar TODOS los dispositivos de ${email}?\n\nNo se borrará el alumno ni su progreso.`))return;
+  try{
+    const snap=await getDocs(collectionGroup(db,'equipos'));
+    const refs=snap.docs.filter(d=>normalizeStudentEmail(d.data()?.email)===email).map(d=>d.ref);
+    await Promise.all(refs.map(ref=>deleteDoc(ref)));
+    await loadAdminStudents();
+  }catch(e){console.error(e);alert('No se han podido liberar todos los dispositivos.\n\n'+(e?.message||e));}
+};
+
+window.adminDeleteStudent=async(encodedEmail,encodedName='')=>{
+  if(!adminOnly())return;
+  const email=decodeURIComponent(encodedEmail);
+  const nombre=encodedName?decodeURIComponent(encodedName):'';
+  if(email===ADMIN_EMAIL){alert('El administrador no puede darse de baja desde este panel.');return;}
+  const alumno=nombre?`${nombre}\n${email}`:email;
+  const ok=confirm(`¿DAR DE BAJA a ${alumno}?\n\nSe eliminará su autorización de acceso y se liberarán todos sus dispositivos registrados.\n\nSu historial de progreso se conservará para que no se pierdan las estadísticas. Esta acción impedirá que vuelva a entrar hasta que lo des de alta de nuevo.`);
+  if(!ok)return;
+  const finalOk=confirm(`Confirmación final: eliminar a ${alumno} de la lista de alumnos autorizados?`);
+  if(!finalOk)return;
+  try{
+    const snap=await getDocs(collectionGroup(db,'equipos'));
+    const refs=snap.docs.filter(d=>normalizeStudentEmail(d.data()?.email)===email).map(d=>d.ref);
+    await Promise.all(refs.map(ref=>deleteDoc(ref)));
+    await deleteDoc(doc(db,'autorizados',email));
+    alert('Baja realizada correctamente.\n\n'+alumno+' ya no está autorizado para acceder.');
+    await loadAdminStudents();
+  }catch(e){
+    console.error(e);
+    alert('No se ha podido completar la baja.\n\n'+(e?.message||e));
+    await loadAdminStudents();
+  }
+};
+
+
+async function loadMyProgress(){
+  const user=auth.currentUser;
+  if(!user)return;
+  $('#progressUserEmail').textContent=user.email||'';
+  $('#progressStatus').textContent='Cargando progreso…';
+  $('#progressList').innerHTML='';
+  try{
+    // La consulta incluye el UID para que las reglas de Firestore garanticen
+    // que un alumno solo puede recuperar sus propios documentos.
+    const q=query(collection(db,'progreso'),where('uid','==',user.uid));
+    const snap=await getDocs(q);
+    const items=snap.docs.map(d=>({id:d.id,...d.data()}))
+      .sort((a,b)=>progressDateValue(b.fecha)-progressDateValue(a.fecha));
+
+    $('#progressAttempts').textContent=items.length;
+    if(items.length){
+      const avg=items.reduce((sum,x)=>sum+(Number(x.nota)||0),0)/items.length;
+      const best=Math.max(...items.map(x=>Number(x.nota)||0));
+      $('#progressAverage').textContent=avg.toFixed(2).replace('.',',')+'/10';
+      $('#progressBest').textContent=best.toFixed(2).replace('.',',')+'/10';
+      $('#progressLast').textContent=formatProgressDate(items[0].fecha,true);
+      $('#progressList').innerHTML=items.map(x=>`
+        <div class="progress-item">
+          <div class="progress-item-top">
+            <div class="progress-item-title">${esc(x.titulo||'Ejercicio')}</div>
+            <div class="progress-score">${(Number(x.nota)||0).toFixed(2).replace('.',',')}/10</div>
+          </div>
+          <div class="progress-meta">
+            <span>${x.tipo==='supuesto'?'Supuesto práctico':'Test'}</span>
+            <span>${formatProgressDate(x.fecha)}</span>
+            <span>${Number(x.aciertos)||0} aciertos · ${Number(x.errores)||0} errores · ${Number(x.blancos)||0} blancos</span>
+            <span>${formatProgressTime(x.tiempoEmpleado)}</span>
+            <span>${x.penalizacion?'Penalización 1/3':'Sin penalización'}</span>
+          </div>
+        </div>`).join('');
+      renderProgressTopics(items);
+      renderSmartReview(items);
+      try{renderAchievements(computeGame(items));}catch(e){console.warn('Logros y recompensas',e);}
+      $('#progressStatus').textContent=`${items.length} ${items.length===1?'intento registrado':'intentos registrados'}.`;
+    }else{
+      $('#progressAverage').textContent='—';
+      $('#progressBest').textContent='—';
+      $('#progressLast').textContent='—';
+      $('#progressList').innerHTML='<div class="progress-empty">Todavía no tienes ejercicios registrados. Finaliza un test o supuesto práctico y aparecerá aquí.</div>';
+      $('#progressTopicList').innerHTML='<div class="progress-empty">Todavía no hay datos suficientes para calcular el rendimiento por temas.</div>';
+      renderSmartReview([]);
+      try{renderAchievements(computeGame([]));}catch(e){console.warn('Logros y recompensas',e);}
+      $('#progressStatus').textContent='Aún no hay actividad registrada.';
+    }
+  }catch(e){
+    console.error('No se pudo cargar Mi progreso:',e);
+    $('#progressStatus').textContent='No se ha podido cargar el progreso.';
+    $('#progressList').innerHTML='<div class="progress-empty">No se ha podido consultar tu historial. Comprueba la conexión y vuelve a intentarlo.</div>';
+    $('#progressTopicList').innerHTML='<div class="progress-empty">No se ha podido calcular el rendimiento por temas.</div>';
+  }
+}
+window.loadMyProgress=loadMyProgress;
+window.openMyProgress=async()=>{
+  show('myProgress');
+  await loadMyProgress();
+};
+window.openAdminManagement=async()=>{
+  if(!adminOnly()){alert('Esta zona está reservada al administrador.');return;}
+  show('adminManagement');
+  const progressBox=$('#adminAllProgressList');
+  const progressBtn=$('#adminProgressToggleBtn');
+  if(progressBox)progressBox.classList.add('hidden');
+  if(progressBtn){progressBtn.textContent='Ver seguimiento de alumnos ▼';progressBtn.setAttribute('aria-expanded','false');}
+  await loadAdminStudents();
+};
+window.refreshAdminManagement=async()=>{
+  if(!adminOnly())return;
+  await loadAdminStudents();
+};
+
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function msg(t,type='error'){const e=$('#authMsg');e.textContent=t;e.className='authmsg '+type} function clearMsg(){const e=$('#authMsg');e.textContent='';e.className='hidden'}
+function ferr(c){return ({'auth/invalid-credential':'Correo o contraseña incorrectos.','auth/user-disabled':'Esta cuenta está desactivada.','auth/too-many-requests':'Demasiados intentos. Inténtalo más tarde.','auth/invalid-email':'El correo electrónico no es válido.','auth/network-request-failed':'No se ha podido conectar. Comprueba tu conexión.'}[c]||'No se ha podido iniciar sesión.')}
+$('#loginForm').addEventListener('submit',async e=>{e.preventDefault();clearMsg();const b=$('#loginBtn');b.disabled=true;b.textContent='Accediendo…';try{await signInWithEmailAndPassword(auth,$('#email').value.trim(),$('#password').value)}catch(x){msg(ferr(x.code))}finally{b.disabled=false;b.textContent='Iniciar sesión'}});
+const googleProvider=new GoogleAuthProvider();
+googleProvider.setCustomParameters({prompt:'select_account'});
+const googleLoginBtn=$('#googleLoginBtn');
+if(googleLoginBtn)googleLoginBtn.addEventListener('click',async()=>{
+  clearMsg();
+  googleLoginBtn.disabled=true;
+  const oldText=googleLoginBtn.innerHTML;
+  googleLoginBtn.textContent='Conectando con Google…';
+  try{
+    await signInWithPopup(auth,googleProvider);
+  }catch(x){
+    if(x?.code!=='auth/popup-closed-by-user' && x?.code!=='auth/cancelled-popup-request'){
+      msg(ferr(x?.code)||'No se ha podido iniciar sesión con Google.');
+    }
+  }finally{
+    googleLoginBtn.disabled=false;
+    googleLoginBtn.innerHTML=oldText;
+  }
+});
+
+$('#resetBtn').addEventListener('click',async()=>{clearMsg();const email=$('#email').value.trim();if(!email)return msg('Escribe primero tu correo electrónico.');try{await sendPasswordResetEmail(auth,email);msg('Correo de recuperación enviado.','success')}catch(x){msg(ferr(x.code))}}); $('#logoutBtn').addEventListener('click',()=>signOut(auth));
+async function loadTests(){
+  const s=await getDocs(collection(db,'tests'));
+  TESTS=s.docs.map(d=>{
+    const data=d.data();
+    const raw=data.questions;
+    let questions=[];
+    if(Array.isArray(raw)){
+      questions=raw.map(q=>{
+        if(Array.isArray(q)) return q;
+        if(q && typeof q==='object') return [
+          q.text??q.question??'',
+          q.options??q.answers??[],
+          Number(q.correct??q.correctIndex??0),
+          String(q.fundamento??q.legalRef??q.reference??'').trim()
+        ];
+        return null;
+      }).filter(Boolean);
+    } else if(raw && typeof raw==='object'){
+      questions=Object.values(raw)
+        .sort((a,b)=>(Number(a?.order)||999)-(Number(b?.order)||999))
+        .map(q=>[
+          q?.text??q?.question??'',
+          Array.isArray(q?.options)?q.options:(q?.answers??[]),
+          Number(q?.correct??q?.correctIndex??0),
+          String(q?.fundamento??q?.legalRef??q?.reference??'').trim()
+        ]);
+    }
+    questions=questions.filter(q=>Array.isArray(q) && typeof q[0]==='string' && Array.isArray(q[1]) && q[1].length>=2 && Number.isInteger(q[2]));
+    return {id:d.id,...data,questions};
+  }).sort((a,b)=>(a.order??999)-(b.order??999));
+
+  const invalid=TESTS.filter(t=>!Array.isArray(t.questions)||!t.questions.length);
+  if(invalid.length){
+    console.error('Tests sin preguntas válidas:',invalid);
+    throw new Error('Hay tests en Firestore cuyo formato de preguntas no es válido.');
+  }
+}
+async function loadPracticals(){
+  try{
+    const s=await getDocs(collection(db,'supuestos'));
+    PRACTICALS=s.docs.map(d=>{
+      const data=d.data();
+      const raw=data.questions;
+      let questions=[];
+      if(Array.isArray(raw)){
+        questions=raw.map(q=>{
+          if(Array.isArray(q)) return q;
+          if(q && typeof q==='object') return [
+            q.text??q.question??'',
+            q.options??q.answers??[],
+            Number(q.correct??q.correctIndex??0),
+            String(q.fundamento??q.legalRef??q.reference??'').trim()
+          ];
+          return null;
+        }).filter(Boolean);
+      }else if(raw && typeof raw==='object'){
+        questions=Object.values(raw)
+          .sort((a,b)=>(Number(a?.order)||999)-(Number(b?.order)||999))
+          .map(q=>[
+            q?.text??q?.question??'',
+            Array.isArray(q?.options)?q.options:(q?.answers??[]),
+            Number(q?.correct??q?.correctIndex??0),
+            String(q?.fundamento??q?.legalRef??q?.reference??'').trim()
+          ]);
+      }
+      questions=questions.filter(q=>Array.isArray(q) && typeof q[0]==='string' && Array.isArray(q[1]) && q[1].length>=2 && Number.isInteger(q[2]));
+      return {id:d.id,...data,statement:String(data.statement??data.enunciado??''),questions};
+    }).filter(p=>p.statement && p.questions.length)
+      .sort((a,b)=>(a.order??999)-(b.order??999));
+  }catch(e){
+    console.error('No se pudieron cargar los supuestos prácticos:',e);
+    PRACTICALS=[];
+  }
+}
+function stats(){try{return JSON.parse(localStorage.getItem('opos360_stats_v14')||'{"done":0,"best":null}')}catch(e){return {done:0,best:null}}}
+function saveStats(s){localStorage.setItem('opos360_stats_v14',JSON.stringify(s))}
+async function renderStats(){
+  const user=auth.currentUser;
+  if(!user){
+    $('#doneCount').textContent='0';
+    $('#bestScore').textContent='—';
+    return;
+  }
+  try{
+    const q=query(collection(db,'progreso'),where('uid','==',user.uid));
+    const snap=await getDocs(q);
+    const items=snap.docs.map(d=>d.data());
+    renderGame(items);
+    renderSmartReview(items);
+    const normalItems=items.filter(x=>x.tipo==='test'||x.tipo==='supuesto');
+    $('#doneCount').textContent=normalItems.length;
+    if(normalItems.length){
+      const best=Math.max(...normalItems.map(x=>Number(x.nota)||0));
+      $('#bestScore').textContent=best.toFixed(2).replace('.',',');
+    }else{
+      $('#bestScore').textContent='—';
+    }
+  }catch(e){
+    console.error('No se pudieron sincronizar las estadísticas:',e);
+    const s=stats();
+    $('#doneCount').textContent=s.done||0;
+    $('#bestScore').textContent=s.best==null?'—':Number(s.best).toFixed(2).replace('.',',');
+  }
+}
+/* =========================
+   V24 · GAMIFICACIÓN
+   Se calcula desde /progreso: no crea una colección nueva.
+   ========================= */
+const GAME_LEVELS=[
+ {xp:0,name:'Aspirante'},{xp:500,name:'En preparación'},{xp:1200,name:'Opositor constante'},
+ {xp:2500,name:'Dominio básico'},{xp:4500,name:'Opositor avanzado'},{xp:7000,name:'Nivel examen'},
+ {xp:10000,name:'Alto rendimiento'},{xp:14000,name:'Camino a la plaza'}
+];
+function localDay(ms){const d=new Date(ms);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+function gameAttempts(items){return items.filter(x=>x.tipo==='test'||x.tipo==='supuesto')}
+function computeGame(items){
+ const normal=gameAttempts(items), bestByExercise=new Map();
+ normal.forEach(x=>{const k=`${x.tipo}:${x.ejercicioId}`,prev=bestByExercise.get(k);if(!prev||Number(x.nota||0)>Number(prev.nota||0))bestByExercise.set(k,x)});
+ let xp=0;
+ bestByExercise.forEach(x=>{xp+=(Number(x.aciertos)||0)*10+(x.tipo==='supuesto'?80:50);if(Number(x.nota)>=8)xp+=50;if(Number(x.nota)>=9.999)xp+=100});
+ const activeDays=[...new Set(normal.map(x=>progressDateValue(x.fecha)).filter(Boolean).map(localDay))].sort();
+ xp+=activeDays.length*25;
+ const questionsByDay=new Map();
+ normal.forEach(x=>{
+   const ms=progressDateValue(x.fecha);if(!ms)return;
+   const d=localDay(ms);
+   const answered=Math.max(0,(Number(x.aciertos)||0)+(Number(x.errores)||0));
+   questionsByDay.set(d,(questionsByDay.get(d)||0)+answered);
+ });
+ const dailyGoals=[...questionsByDay.values()].filter(n=>n>=20).length;
+ xp+=dailyGoals*50;
+ const survival=items.filter(x=>x.tipo==='supervivencia'||String(x.ejercicioId||'').startsWith('modo-supervivencia')||String(x.categoria||'').toLowerCase().includes('supervivencia'));
+ const survivalClassic=survival.filter(x=>{
+   const m=String(x.modalidadSupervivencia||'').toLowerCase();
+   return m==='classic'||(!m && x.ejercicioId!=='modo-supervivencia-presion');
+ });
+ const survivalPressure=survival.filter(x=>String(x.modalidadSupervivencia||'').toLowerCase()==='pressure'||x.ejercicioId==='modo-supervivencia-presion');
+ const survivalClassicRecord=survivalClassic.length?Math.max(...survivalClassic.map(x=>Number(x.aciertos)||0)):0;
+ const survivalPressureRecord=survivalPressure.length?Math.max(...survivalPressure.map(x=>Number(x.aciertos)||0)):0;
+ const survivalRecord=Math.max(survivalClassicRecord,survivalPressureRecord);
+ xp+=survivalClassicRecord*10+survivalPressureRecord*15;
+ let streak=0,bestStreak=0;
+ if(activeDays.length){
+   const set=new Set(activeDays); let d=new Date(); d.setHours(0,0,0,0);
+   const today=localDay(d.getTime()); if(!set.has(today)){d.setDate(d.getDate()-1)}
+   while(set.has(localDay(d.getTime()))){streak++;d.setDate(d.getDate()-1)}
+   let run=0,prev=null;
+   activeDays.forEach(day=>{const cur=new Date(day+'T00:00:00');if(prev&&Math.round((cur-prev)/86400000)===1)run++;else run=1;bestStreak=Math.max(bestStreak,run);prev=cur});
+ }
+ const topics=new Map();
+ normal.forEach(x=>{const cat=(x.categoria||'Sin clasificar').trim(),k=`${x.tipo}:${x.ejercicioId}`,best=bestByExercise.get(k);if(best!==x)return;if(!topics.has(cat))topics.set(cat,[]);topics.get(cat).push(Number(x.nota)||0)});
+ const mastery=[...topics.entries()].map(([name,vals])=>({name,pct:Math.round(vals.reduce((a,b)=>a+b,0)/vals.length*10),n:vals.length})).sort((a,b)=>a.pct-b.pct);
+ const global=mastery.length?Math.round(mastery.reduce((a,b)=>a+b.pct,0)/mastery.length):null;
+ const nowDay=localDay(Date.now());
+ const todayQuestions=normal.filter(x=>{const ms=progressDateValue(x.fecha);return ms&&localDay(ms)===nowDay}).reduce((n,x)=>n+Math.max(0,(Number(x.aciertos)||0)+(Number(x.errores)||0)),0);
+ const totalCorrect=normal.reduce((n,x)=>n+(Number(x.aciertos)||0),0);
+ const perfect=normal.some(x=>Number(x.nota)>=9.999);
+ const practicals=new Set(normal.filter(x=>x.tipo==='supuesto').map(x=>x.ejercicioId)).size;
+ const tests=new Set(normal.filter(x=>x.tipo==='test').map(x=>x.ejercicioId)).size;
+ const repaso=new Set(normal.filter(x=>x.tipo==='test'&&String(x.categoria).toLowerCase().includes('repaso')).map(x=>x.ejercicioId)).size;
+ const medals=[
+  ['🎯 Primer paso',normal.length>=1],['📝 Caso resuelto',practicals>=1],['💯 Pleno',perfect],
+  ['🧠 Centenario',totalCorrect>=100],['🔥 Constante',bestStreak>=7],['🔥 Imparable',bestStreak>=30],
+  ['📚 Repaso activo',repaso>=3],['🏆 Especialista práctico',practicals>=10]
+ ];
+ return {xp,streak,bestStreak,survivalRecord,survivalClassicRecord,survivalPressureRecord,mastery,global,todayQuestions,medals,tests,practicals,dailyGoals,evaluatedExercises:bestByExercise.size};
+}
+
+const HELP_TEXT={
+ streak:'La racha cuenta días consecutivos con actividad real de estudio. Iniciar sesión sin completar actividad no suma.',
+ xp:'Los XP son puntos de experiencia. Aumentan al completar ejercicios, acertar preguntas, mantener constancia, cumplir el objetivo diario y mejorar el récord en Supervivencia. Sirven para avanzar de nivel.',
+ level:'El nivel resume tu avance acumulado en la plataforma. Sube cuando alcanzas determinados tramos de XP y no sustituye a tu nota real.',
+ daily:'El objetivo diario busca mantener una rutina de estudio. Cuenta solo las preguntas que realmente respondes hoy (aciertos + errores). Se completa al llegar a 20 y añade una bonificación de XP.',
+ review:'El Repaso inteligente combina tus resultados y el tiempo desde el último ejercicio para priorizar qué materia conviene revisar antes.',
+ medals:'Los logros se desbloquean al alcanzar hitos concretos. Pulsa una insignia para ver qué exige.',
+ mastery:'El dominio estima tu rendimiento usando resultados registrados. No representa una probabilidad de obtener plaza.'
+};
+const MEDAL_RULES={
+ '🎯 Primer paso':'Completa al menos un test o supuesto práctico.',
+ '📝 Caso resuelto':'Completa al menos un supuesto práctico.',
+ '💯 Pleno':'Consigue una nota de 10/10 en cualquier test o supuesto.',
+ '🧠 Centenario':'Alcanza 100 respuestas correctas acumuladas.',
+ '🔥 Constante':'Mantén una racha de estudio de 7 días consecutivos.',
+ '🔥 Imparable':'Mantén una racha de estudio de 30 días consecutivos.',
+ '📚 Repaso activo':'Completa al menos 3 tests clasificados como repaso.',
+ '🏆 Especialista práctico':'Completa al menos 10 supuestos prácticos distintos.'
+};
+
+function bindProgressCollapsibles(){
+ document.querySelectorAll('[data-progress-toggle]').forEach(btn=>{
+  if(btn.dataset.bound==='1')return;
+  btn.dataset.bound='1';
+  btn.addEventListener('click',()=>{
+   const body=document.getElementById(btn.dataset.progressToggle);
+   if(!body)return;
+   const hidden=body.classList.toggle('hidden');
+   btn.textContent=hidden?'Mostrar':'Ocultar';
+   btn.setAttribute('aria-expanded',String(!hidden));
+  });
+ });
+}
+
+
+
+function bindGameHelp(){
+ bindLevelsPanel();
+ bindProgressCollapsibles();
+
+ // Desactivar el antiguo cuadro para evitar conflictos visuales.
+ const oldBox=document.getElementById('quickHelpBox');
+ if(oldBox) oldBox.classList.add('hidden');
+
+ let tip=document.getElementById('globalInfoTooltip');
+ if(!tip){
+   tip=document.createElement('div');
+   tip.id='globalInfoTooltip';
+   tip.className='global-info-tooltip';
+   tip.setAttribute('role','tooltip');
+   document.body.appendChild(tip);
+ }
+
+ let hideTimer=null;
+
+ const titles={
+   streak:'🔥 Racha de estudio',
+   xp:'⭐ XP acumulada',
+   level:'🎓 Niveles',
+   daily:'🎯 Objetivo diario',
+   review:'🧠 Repaso inteligente',
+   medals:'🏅 Logros',
+   mastery:'📊 Dominio global'
+ };
+
+ const placeTip=(btn)=>{
+   const r=btn.getBoundingClientRect();
+   const pad=12, gap=8;
+   const tw=tip.offsetWidth||300;
+   const th=tip.offsetHeight||90;
+
+   let left=r.right+gap;
+   if(left+tw>window.innerWidth-pad) left=r.left-tw-gap;
+   if(left<pad) left=Math.max(pad,Math.min(r.left,window.innerWidth-tw-pad));
+
+   let top=r.top + (r.height-th)/2;
+   if(top<pad) top=pad;
+   if(top+th>window.innerHeight-pad) top=window.innerHeight-th-pad;
+
+   tip.style.left=Math.round(left)+'px';
+   tip.style.top=Math.round(top)+'px';
+ };
+
+ const showTip=(btn)=>{
+   clearTimeout(hideTimer);
+   const key=btn.dataset.help;
+   tip.innerHTML=`<strong>${titles[key]||'Información'}</strong><div>${esc(HELP_TEXT[key]||'')}</div>`;
+   tip.classList.add('show');
+   tip.style.visibility='hidden';
+   requestAnimationFrame(()=>{
+     placeTip(btn);
+     tip.style.visibility='visible';
+   });
+ };
+
+ const hideTip=()=>{
+   clearTimeout(hideTimer);
+   hideTimer=setTimeout(()=>tip.classList.remove('show'),120);
+ };
+
+ document.querySelectorAll('[data-help]').forEach(btn=>{
+   if(btn.dataset.helpBoundFinal==='1')return;
+   btn.dataset.helpBoundFinal='1';
+   btn.removeAttribute('title');
+   btn.setAttribute('aria-label','Información');
+
+   // PC/tablet: solo pasar el cursor.
+   btn.addEventListener('mouseenter',()=>showTip(btn));
+   btn.addEventListener('mouseleave',hideTip);
+
+   // Teclado.
+   btn.addEventListener('focus',()=>showTip(btn));
+   btn.addEventListener('blur',hideTip);
+
+   // Móvil: toque.
+   btn.addEventListener('click',(ev)=>{
+     if(window.matchMedia('(hover: none)').matches || window.innerWidth<=720){
+       ev.preventDefault();
+       ev.stopPropagation();
+       showTip(btn);
+     }
+   });
+ });
+
+ tip.addEventListener('mouseenter',()=>clearTimeout(hideTimer));
+ tip.addEventListener('mouseleave',hideTip);
+ window.addEventListener('scroll',()=>tip.classList.remove('show'),{passive:true});
+ window.addEventListener('resize',()=>tip.classList.remove('show'));
+}
+
+
+
+
+function renderLevelsMap(currentXp=0){
+ const box=$('#levelsMap');
+ if(!box)return;
+ let currentIndex=0;
+ GAME_LEVELS.forEach((l,i)=>{if(currentXp>=l.xp)currentIndex=i});
+ const LEVEL_ICONS=['🌱','📘','🔥','🧠','🚀','🎯','🏆','🏛️'];
+ box.innerHTML=GAME_LEVELS.map((l,i)=>{
+   const state=i<currentIndex?'done':i===currentIndex?'current':'locked';
+   const next=GAME_LEVELS[i+1];
+   return `<div class="level-map-item ${state}">
+     <div class="level-map-step"><span class="level-map-icon">${LEVEL_ICONS[i]||'⭐'}</span><span class="level-map-number">${i+1}</span></div>
+     <div class="level-map-copy">
+      <strong>${esc(l.name)}</strong>
+      <small>${l.xp.toLocaleString('es-ES')} XP${next?` · siguiente a ${next.xp.toLocaleString('es-ES')} XP`:''}</small>
+     </div>
+     <div class="level-map-state">${state==='done'?'✓':state==='current'?'Actual':'Pendiente'}</div>
+   </div>`;
+ }).join('');
+}
+function renderAchievements(g){
+ const box=$('#achievementsGrid'),count=$('#achievementsCount');
+ if(!box||!count)return;
+ const medals=g.medals||[];
+ const unlocked=medals.filter(x=>x[1]).length;
+ count.textContent=`${unlocked}/${medals.length} desbloqueados`;
+ box.innerHTML=medals.map(([name,ok])=>{
+   const rule=MEDAL_RULES[name]||'Completa el requisito correspondiente.';
+   return `<div class="achievement-card ${ok?'unlocked':'locked'}">
+     <div class="achievement-icon">${ok?'🏅':'🔒'}</div>
+     <div><strong>${esc(name)}</strong><small>${esc(rule)}</small></div>
+     <span>${ok?'Conseguido':'Pendiente'}</span>
+   </div>`;
+ }).join('');
+}
+function bindLevelsPanel(){
+ const panel=$('#levelsPanel'),open=$('#toggleLevelsPanel'),close=$('#closeLevelsPanel');
+ if(open)open.onclick=()=>panel?.classList.toggle('hidden');
+ if(close)close.onclick=()=>panel?.classList.add('hidden');
+}
+
+function renderGame(items){
+ const g=computeGame(items), unlocked=g.medals.filter(x=>x[1]).length;
+ renderLevelsMap(g.xp);
+ renderAchievements(g);
+ $('#gameStreak').textContent=`🔥 ${g.streak}`;
+ $('#gameXP').textContent=`⭐ ${g.xp.toLocaleString('es-ES')}`;
+ $('#gameMedals').textContent=`🏅 ${unlocked}`;
+ $('#gameMastery').textContent=g.global==null?'📊 —':`📊 ${g.global}%`;
+ let idx=0;GAME_LEVELS.forEach((l,i)=>{if(g.xp>=l.xp)idx=i});
+ const cur=GAME_LEVELS[idx],next=GAME_LEVELS[idx+1];
+ $('#gameLevelBadge').textContent=`Nivel ${idx+1}`;
+ $('#gameLevelName').textContent=cur.name;
+ const pct=next?Math.max(0,Math.min(100,(g.xp-cur.xp)/(next.xp-cur.xp)*100)):100;
+ $('#gameLevelBar').style.width=pct+'%';
+ $('#gameNextLevel').textContent=next?`${g.xp.toLocaleString('es-ES')} / ${next.xp.toLocaleString('es-ES')} XP`:`${g.xp.toLocaleString('es-ES')} XP · nivel máximo`;
+ $('#gameLevelHint').textContent=next?`⭐ Te faltan ${(next.xp-g.xp).toLocaleString('es-ES')} XP para alcanzar «${next.name}».`:'🏆 Has alcanzado el nivel máximo.';
+ const daily=Math.min(100,g.todayQuestions/20*100);$('#dailyGoalBar').style.width=daily+'%';
+ $('#dailyGoalText').textContent=g.todayQuestions>=20?`✓ Objetivo diario completado · ${g.todayQuestions} preguntas hoy`:`${g.todayQuestions}/20 preguntas completadas hoy`;
+ $('#dailyRewardText').textContent=g.todayQuestions>=20?'⭐ Objetivo conseguido · +50 XP':'';
+ $('#dailyRewardText').classList.toggle('hidden',g.todayQuestions<20);
+ $('#survivalRecordText').innerHTML=`<strong>Récord:</strong> <span class="${g.survivalRecord?'record-good':''}">${g.survivalRecord?g.survivalRecord+' aciertos':'—'}</span>`;
+ const weakBtn=$('#weakTopicBtn');
+ if(g.mastery.length){$('#weakTopicText').innerHTML=`<strong>Próximo objetivo:</strong> ${esc(g.mastery[0].name)} · ${g.mastery[0].pct}% de dominio.`;weakBtn.classList.remove('hidden');weakBtn.onclick=()=>{
+   const wanted=(g.mastery[0].name||'').trim().toLowerCase();
+   openTestsLibrary();
+   setTimeout(()=>{
+     const sections=[...document.querySelectorAll('#testsLibrary .topic-section')];
+     let target=sections.find(sec=>{
+       const h=sec.querySelector('.topic-heading h2');
+       return h && h.textContent.trim().toLowerCase()===wanted;
+     });
+     if(!target){
+       target=sections.find(sec=>{
+         const h=sec.querySelector('.topic-heading h2');
+         const label=(h?.textContent||'').trim().toLowerCase();
+         return label && (label.includes(wanted)||wanted.includes(label));
+       });
+     }
+     if(target){
+       target.scrollIntoView({behavior:'smooth',block:'start'});
+       target.animate([{outline:'3px solid rgba(0,113,156,.35)'},{outline:'0 solid transparent'}],{duration:1200,easing:'ease-out'});
+     }else{
+       const fallback=$('#testGrid');
+       if(fallback) fallback.scrollIntoView({behavior:'smooth',block:'start'});
+     }
+   },180);
+ }}
+ else{$('#weakTopicText').innerHTML='<strong>Próximo objetivo:</strong> completa ejercicios para detectar tu materia a reforzar.';weakBtn.classList.add('hidden')}
+ $('#masteryBasis').textContent=g.evaluatedExercises?`Estimación basada en ${g.evaluatedExercises} ejercicios con resultado registrado. Las materias aún no realizadas no reducen este porcentaje.`:'';
+ $('#medalRow').innerHTML=g.medals.map(([name,on])=>`<span class="medal-chip ${on?'':'locked'}" data-medal="${esc(name)}" data-unlocked="${on?'1':'0'}">${on?'🏅':'🔒'} ${esc(name)}</span>`).join('');
+ document.querySelectorAll('[data-medal]').forEach(el=>el.onclick=()=>{const name=el.dataset.medal,on=el.dataset.unlocked==='1',d=$('#medalDetail');d.innerHTML=`<strong>${esc(name)}</strong><br>${esc(MEDAL_RULES[name]||'Hito de progreso.')}<br><strong>${on?'✓ Logro desbloqueado':'🔒 Aún no desbloqueado'}</strong>`;d.classList.remove('hidden')});
+ $('#masteryList').innerHTML=g.mastery.length?g.mastery.slice().sort((a,b)=>b.pct-a.pct).map(t=>`<div class="mastery-item"><div class="mastery-top"><span>${esc(t.name)}</span><span>${t.pct}%</span></div><div class="mastery-mini"><span style="width:${Math.max(0,Math.min(100,t.pct))}%"></span></div></div>`).join(''):'<p class="muted">Completa ejercicios para calcular tu dominio.</p>';
+}
+async function refreshGame(){
+ const user=auth.currentUser;if(!user)return;
+ try{const q=query(collection(db,'progreso'),where('uid','==',user.uid));const snap=await getDocs(q);renderGame(snap.docs.map(d=>d.data()))}
+ catch(e){console.error('No se pudo cargar la gamificación:',e)}
+
+ renderSmartReview();
+}
+function shuffled(a){const x=a.slice();for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x}
+window.openSurvival=()=>{
+ clearSurvivalTimer();
+ $('#survivalIntro').classList.remove('hidden');
+ $('#survivalPanel').classList.add('hidden');
+ $('#survivalEnd').classList.add('hidden');
+ show('survival');
+};
+window.startSurvival=async(mode='classic')=>{
+ const pool=[];TESTS.forEach(t=>(t.questions||[]).forEach((q,i)=>pool.push({q,source:t.title,id:`${t.id}:${i}`})));
+ if(!pool.length){alert('No hay preguntas disponibles para el Modo Supervivencia.');return}
+ survivalPreviousRecord=0;
+ try{const u=auth.currentUser;if(u){const qs=await getDocs(query(collection(db,'progreso'),where('uid','==',u.uid)));survivalPreviousRecord=Math.max(0,...qs.docs.map(d=>d.data()).filter(x=>{
+ const isSurvival=x.tipo==='supervivencia'||String(x.ejercicioId||'').startsWith('modo-supervivencia');
+ if(!isSurvival)return false;
+ const savedMode=String(x.modalidadSupervivencia||'').toLowerCase();
+ if(savedMode)return savedMode===survivalMode;
+ // Intentos históricos anteriores a las dos modalidades se consideran Clásica.
+ return survivalMode==='classic' && (x.ejercicioId==='modo-supervivencia'||!x.ejercicioId);
+}).map(x=>Number(x.aciertos)||0))}}catch(e){console.error('No se pudo cargar el récord previo:',e)}
+ survivalMode=mode==='pressure'?'pressure':'classic';
+ survivalPool=shuffled(pool);survivalIndex=0;survivalLives=3;survivalCorrect=0;survivalWrong=0;survivalStartedAt=Date.now();survivalLocked=false;survivalCurrentStreak=0;survivalFinished=false;
+ $('#survivalIntro').classList.add('hidden');$('#survivalEnd').classList.add('hidden');$('#survivalPanel').classList.remove('hidden');show('survival');renderSurvival();
+};
+function clearSurvivalTimer(){if(survivalQuestionTimer){clearInterval(survivalQuestionTimer);survivalQuestionTimer=null}}
+function survivalRewardPerCorrect(){return survivalMode==='pressure'?15:10}
+function updateSurvivalDashboard(){
+ $('#survivalLives').textContent='❤️ '.repeat(survivalLives)+'🖤 '.repeat(3-survivalLives);
+ $('#survivalScore').textContent=String(survivalCorrect);
+ $('#survivalPoints').textContent=String(survivalCorrect*survivalRewardPerCorrect());
+ $('#survivalStreak').textContent=`🔥 ${survivalCurrentStreak}`;
+ $('#survivalRecordLive').textContent=`🏆 ${Math.max(survivalPreviousRecord,survivalCorrect)}`;
+}
+function startSurvivalQuestionTimer(){
+ clearSurvivalTimer();
+ const box=$('#survivalPressureClock');
+ if(survivalMode!=='pressure'){box.classList.add('hidden');return}
+ box.classList.remove('hidden');
+ survivalQuestionDeadline=Date.now()+60000;
+ const tick=()=>{
+   const left=Math.max(0,survivalQuestionDeadline-Date.now());
+   const sec=Math.ceil(left/1000);
+   $('#survivalClockText').textContent=`00:${String(sec).padStart(2,'0')}`;
+   $('#survivalTimeBar').style.width=`${Math.max(0,Math.min(100,left/600))}%`;
+   box.classList.toggle('urgent',left<=10000);
+   if(left<=0){clearSurvivalTimer();timeoutSurvival()}
+ };
+ tick();survivalQuestionTimer=setInterval(tick,200);
+}
+function renderSurvival(){
+ clearSurvivalTimer();
+ if(survivalFinished)return;
+ if(survivalLives<=0||survivalIndex>=survivalPool.length){finishSurvival(false);return}
+ const item=survivalPool[survivalIndex],q=item.q;survivalLocked=false;
+ updateSurvivalDashboard();
+ $('#survivalModeBadge').textContent=survivalMode==='pressure'?'⚡ Modo presión · 60 s':'🔥 Clásica';
+ $('#survivalQuestionNo').textContent=`Pregunta ${survivalIndex+1}`;
+ $('#survivalQuestion').textContent=q[0];
+ $('#survivalOptions').innerHTML=q[1].map((o,i)=>`<button class="option" data-schoice="${i}"><strong>${String.fromCharCode(65+i)})</strong> ${esc(o)}</button>`).join('');
+ $('#survivalFeedback').className='survival-feedback hidden';$('#survivalFeedback').textContent='';$('#survivalNext').classList.add('hidden');$('#survivalNext').onclick=null;
+ document.querySelectorAll('[data-schoice]').forEach(b=>b.onclick=()=>answerSurvival(Number(b.dataset.schoice)));
+ startSurvivalQuestionTimer();
+}
+function answerSurvival(choice){
+ if(survivalLocked||survivalFinished)return;survivalLocked=true;clearSurvivalTimer();
+ const selectedBtn=document.querySelector(`[data-schoice="${choice}"]`);
+ if(selectedBtn) selectedBtn.classList.add('selected');
+ const q=survivalPool[survivalIndex].q,ok=choice===q[2],fb=$('#survivalFeedback');
+ if(ok){survivalCorrect++;survivalCurrentStreak++;fb.textContent=`✓ Correcto · racha ${survivalCurrentStreak}`;fb.className='survival-feedback ok'}
+ else{survivalWrong++;survivalLives--;survivalCurrentStreak=0;fb.textContent=`✕ Incorrecto · correcta: ${String.fromCharCode(65+q[2])}) ${q[1][q[2]]}`;fb.className='survival-feedback bad'}
+ updateSurvivalDashboard();
+ document.querySelectorAll('[data-schoice]').forEach(b=>b.disabled=true);
+ const nextBtn=$('#survivalNext');nextBtn.classList.remove('hidden');
+ nextBtn.textContent=survivalLives<=0?'Ver resultado':'Siguiente pregunta';
+ nextBtn.onclick=()=>{survivalIndex++;renderSurvival()};
+}
+function timeoutSurvival(){
+ if(survivalLocked||survivalFinished)return;survivalLocked=true;
+ survivalWrong++;survivalLives--;survivalCurrentStreak=0;
+ const q=survivalPool[survivalIndex].q,fb=$('#survivalFeedback');
+ fb.textContent=`⏱ Tiempo agotado · correcta: ${String.fromCharCode(65+q[2])}) ${q[1][q[2]]}`;fb.className='survival-feedback bad';
+ document.querySelectorAll('[data-schoice]').forEach(b=>b.disabled=true);
+ updateSurvivalDashboard();
+ const nextBtn=$('#survivalNext');nextBtn.classList.remove('hidden');
+ nextBtn.textContent=survivalLives<=0?'Ver resultado':'Siguiente pregunta';
+ nextBtn.onclick=()=>{survivalIndex++;renderSurvival()};
+}
+window.requestFinishSurvival=()=>{
+ if(survivalFinished)return;
+ if(confirm('¿Finalizar la partida ahora? Se guardará el resultado conseguido hasta este momento.'))finishSurvival(true);
+};
+async function finishSurvival(manual=false){
+ if(survivalFinished)return;survivalFinished=true;clearSurvivalTimer();
+ $('#survivalPanel').classList.add('hidden');$('#survivalIntro').classList.add('hidden');$('#survivalEnd').classList.remove('hidden');
+ $('#survivalFinalScore').textContent=`${survivalCorrect} aciertos`;
+ const total=survivalCorrect+survivalWrong,pct=total?Math.round(survivalCorrect/total*100):0,rewardPerCorrect=survivalRewardPerCorrect(),gamePoints=survivalCorrect*rewardPerCorrect;
+ const improvement=Math.max(0,survivalCorrect-survivalPreviousRecord),xpEarned=improvement*rewardPerCorrect;
+ const recordMsg=survivalCorrect>survivalPreviousRecord?` <span class="trophy-pop">🏆</span> ¡Nuevo récord personal!`:'';
+ const xpMsg=xpEarned>0?`⭐ <strong>+${xpEarned} XP acumulados</strong> por mejorar tu récord.`:`⭐ <strong>0 XP nuevos</strong> · para ganar XP de Supervivencia debes superar tu récord de ${survivalPreviousRecord}.`;
+ const modeMsg=survivalMode==='pressure'?'⚡ Modo presión · 15 puntos/acierto':'🔥 Clásica · 10 puntos/acierto';
+ const endMsg=manual?'Partida finalizada por ti.':'Partida completada.';
+ $('#survivalFinalText').innerHTML=`${modeMsg} · ${survivalCorrect} aciertos · ${survivalWrong} errores · ${pct}%<br>${endMsg}<br><br>🎮 <strong>${gamePoints} puntos de partida</strong>${recordMsg}<br>${xpMsg}`;
+ const used=Math.floor((Date.now()-survivalStartedAt)/1000),nota=total?survivalCorrect/total*10:0;
+ if(total>0){
+  try{await registrarProgreso({tipo:'supervivencia',ejercicioId:survivalMode==='pressure'?'modo-supervivencia-presion':'modo-supervivencia-clasica',titulo:`Modo Supervivencia · ${survivalMode==='pressure'?'Presión':'Clásica'}`,categoria:'Modo Supervivencia',totalPreguntas:total,aciertos:survivalCorrect,errores:survivalWrong,blancos:0,nota,penalizacion:false,tiempoEmpleado:used,modalidadSupervivencia:survivalMode});await refreshGame()}
+  catch(e){console.error('No se pudo guardar el récord de supervivencia:',e)}
+ }
+}
+window.exitSurvival=()=>{
+ if(!$('#survivalPanel').classList.contains('hidden')&&!survivalFinished){
+   if(confirm('¿Salir del Modo Supervivencia? La partida actual no se guardará.')){clearSurvivalTimer();survivalFinished=true;goHome()}
+ }else{clearSurvivalTimer();goHome()}
+};
+
+/* =========================
+   PRO · REPASO INTELIGENTE V1
+   ========================= */
+const SMART_REVIEW={
+  minInterval:1,
+  maxInterval:30,
+  maxHomeCandidates:1
+};
+
+function smartReviewNormalAttempts(items=[]){
+  return (Array.isArray(items)?items:[]).filter(a=>
+    (a.tipo==='test'||a.tipo==='supuesto') &&
+    a.categoria &&
+    a.fecha
+  );
+}
+function smartReviewDateMs(v){
+  if(!v)return 0;
+  if(typeof v?.toDate==='function')return v.toDate().getTime();
+  if(typeof v?.seconds==='number')return v.seconds*1000;
+  const d=new Date(v);return Number.isNaN(d.getTime())?0:d.getTime();
+}
+function smartReviewScore(a){
+  const total=Number(a.totalPreguntas)||0;
+  const ok=Number(a.aciertos)||0;
+  const bad=Number(a.errores)||0;
+  if(total>0)return Math.max(0,Math.min(100,(ok/total)*100));
+  const nota=Number(a.nota);
+  return Number.isFinite(nota)?Math.max(0,Math.min(100,nota<=10?nota*10:nota)):0;
+}
+function smartReviewInterval(avg, attempts){
+  // Intervalo base adaptativo: más dominio y más práctica => más separación.
+  let days=1;
+  if(avg>=95)days=21;
+  else if(avg>=90)days=14;
+  else if(avg>=85)days=10;
+  else if(avg>=80)days=7;
+  else if(avg>=70)days=4;
+  else if(avg>=60)days=2;
+  else days=1;
+  if(attempts>=5 && avg>=80)days=Math.round(days*1.25);
+  if(attempts>=10 && avg>=85)days=Math.round(days*1.2);
+  return Math.max(SMART_REVIEW.minInterval,Math.min(SMART_REVIEW.maxInterval,days));
+}
+function computeSmartReviewPlan(items=[]){
+  const attempts=smartReviewNormalAttempts(items);
+  const by=new Map();
+  for(const a of attempts){
+    const cat=(a.categoria||'').toString().trim();
+    if(!cat)continue;
+    if(!by.has(cat))by.set(cat,[]);
+    by.get(cat).push(a);
+  }
+  const now=Date.now(), DAY=86400000;
+  const rows=[];
+  for(const [name,list] of by){
+    list.sort((a,b)=>smartReviewDateMs(b.fecha)-smartReviewDateMs(a.fecha));
+    // Damos más peso a los 5 resultados más recientes para que el plan responda a la evolución.
+    const recent=list.slice(0,5);
+    let weight=0,sum=0;
+    recent.forEach((a,i)=>{const w=recent.length-i;sum+=smartReviewScore(a)*w;weight+=w});
+    const avg=weight?sum/weight:0;
+    const lastMs=smartReviewDateMs(list[0].fecha);
+    const interval=smartReviewInterval(avg,list.length);
+    const dueMs=lastMs+interval*DAY;
+    const daysSince=lastMs?Math.max(0,Math.floor((now-lastMs)/DAY)):999;
+    const daysTo=Math.ceil((dueMs-now)/DAY);
+    // Urgencia: vencimiento + bajo rendimiento. Permite priorizar una materia floja incluso antes.
+    const overdue=Math.max(0,(now-dueMs)/DAY);
+    const weakness=(100-avg)/10;
+    const urgency=overdue*3+weakness+(daysTo<=0?8:0);
+    let status='later';
+    if(daysTo<=0)status='due';
+    else if(daysTo<=2)status='soon';
+    rows.push({name,avg,attempts:list.length,lastMs,interval,dueMs,daysSince,daysTo,urgency,status,preferredType:(list[0]?.tipo||'test')});
+  }
+  rows.sort((a,b)=>{
+    const rank={due:0,soon:1,later:2};
+    return rank[a.status]-rank[b.status] || b.urgency-a.urgency || a.daysTo-b.daysTo;
+  });
+  return rows;
+}
+function smartReviewWhen(r){
+  if(r.daysTo<=0)return 'Repasar hoy';
+  if(r.daysTo===1)return 'Repasar mañana';
+  return `Repasar en ${r.daysTo} días`;
+}
+function smartReviewReason(r){
+  const pct=Math.round(r.avg);
+  if(r.avg<70)return `rendimiento ${pct}% · necesita refuerzo frecuente`;
+  if(r.daysTo<=0)return `rendimiento ${pct}% · intervalo de ${r.interval} días cumplido`;
+  return `rendimiento ${pct}% · último trabajo hace ${r.daysSince} días`;
+}
+function smartReviewOpen(r){
+  const clean=s=>String(s||'').toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[·–—\-_/()[\],.:;]+/g,' ')
+    .replace(/\s+/g,' ').trim();
+
+  const wanted=clean(r?.name);
+  const wantsSpecific=wanted.includes('parte especifica');
+  const wantsGeneral=wanted.includes('parte general');
+
+  const openAndFind=(libraryId)=>{
+    show(libraryId);
+    setTimeout(()=>{
+      const root=document.getElementById(libraryId);
+      if(!root)return;
+
+      // 1. Coincidencia fuerte por tarjeta: evita mandar "Parte Específica"
+      //    a un bloque de Parte General.
+      const cards=[...root.querySelectorAll('.test-card,.practical-card')];
+      let target=null;
+
+      if(wantsSpecific || wantsGeneral){
+        const phrase=wantsSpecific?'parte especifica':'parte general';
+        target=cards.find(card=>clean(card.textContent).includes(phrase));
+      }
+
+      // 2. Si no hay coincidencia literal, buscar por palabras significativas.
+      if(!target){
+        const stop=new Set(['repaso','parte','tema','tests','test','supuesto','supuestos','practico','practicos','de','del','la','el','y']);
+        const tokens=wanted.split(' ').filter(t=>t.length>2&&!stop.has(t));
+        let best=null,bestScore=0;
+        cards.forEach(card=>{
+          const txt=clean(card.textContent);
+          const score=tokens.reduce((n,t)=>n+(txt.includes(t)?1:0),0);
+          if(score>bestScore){best=card;bestScore=score}
+        });
+        if(bestScore>0)target=best;
+      }
+
+      // 3. Último recurso: encabezado de materia.
+      if(!target){
+        const sections=[...root.querySelectorAll('.topic-section')];
+        target=sections.find(sec=>{
+          const label=clean(sec.querySelector('.topic-heading h2')?.textContent);
+          return label && (label===wanted || label.includes(wanted) || wanted.includes(label));
+        });
+      }
+
+      target=(target||root.querySelector('.pro-library-head')||root);
+      target.scrollIntoView({behavior:'smooth',block:'center'});
+      if(target.classList?.contains('test-card')||target.classList?.contains('practical-card')||target.classList?.contains('topic-section')){
+        target.animate(
+          [{outline:'3px solid rgba(0,113,156,.38)'},{outline:'0 solid transparent'}],
+          {duration:1400,easing:'ease-out'}
+        );
+      }
+    },140);
+  };
+
+  // Mantener el tipo real del ejercicio que originó la recomendación.
+  // Para "Parte Específica", si procede de un test, se queda en Tests;
+  // si procede de un supuesto, abre Supuestos.
+  openAndFind(r?.preferredType==='supuesto'?'practicalsLibrary':'testsLibrary');
+}
+function renderSmartReview(items=[]){
+  let plan=[];
+  try{plan=computeSmartReviewPlan(items);}catch(e){console.warn('Repaso inteligente',e);plan=[];}
+  const text=$('#weakTopicText'), btn=$('#weakTopicBtn');
+  if(text&&btn){
+    if(plan.length){
+      const r=plan[0];
+      text.innerHTML=`<strong>${esc(smartReviewWhen(r))}: ${esc(r.name)}</strong><br><span class="smart-review-reason">${esc(smartReviewReason(r))}</span>`;
+      btn.classList.remove('hidden');
+      btn.textContent='Continuar';
+      btn.onclick=()=>smartReviewOpen(r);
+    }else{
+      text.textContent='Completa algunos tests o supuestos para que podamos crear tu plan de repaso.';
+      btn.classList.add('hidden');
+    }
+  }
+  const list=$('#smartReviewPlan'), badge=$('#smartReviewDueCount');
+  if(badge){
+    const due=plan.filter(r=>r.daysTo<=0).length;
+    badge.textContent=due?`${due} para hoy`:(plan.length?'Al día':'Sin datos');
+  }
+  if(list){
+    if(!plan.length){
+      list.innerHTML='<div class="empty">Todavía no hay resultados suficientes para crear un plan de repaso.</div>';
+    }else{
+      list.innerHTML=plan.map((r,i)=>{
+        const cls=r.status==='due'?'due':r.status==='soon'?'soon':'later';
+        return `<button class="smart-review-item ${cls}" type="button" data-smart-review="${i}">
+          <span class="smart-review-dot"></span>
+          <span class="smart-review-copy"><strong>${esc(r.name)}</strong><small>${esc(smartReviewReason(r))}</small></span>
+          <span class="smart-review-when">${esc(smartReviewWhen(r))}</span>
+        </button>`;
+      }).join('');
+      [...list.querySelectorAll('[data-smart-review]')].forEach(el=>{
+        el.onclick=()=>smartReviewOpen(plan[Number(el.dataset.smartReview)]);
+      });
+    }
+  }
+  return plan;
+}
+
+
+function topicInfo(t){
+  const hay=((t.title||'')+' '+(t.description||'')+' '+(t.id||'')).toLowerCase();
+
+  // Los tests de repaso se agrupan siempre aparte, aunque en Firestore
+  // tengan asignado un tema concreto como "Constitución Española".
+  if(
+    hay.includes('repaso') ||
+    hay.includes('resumen parte general') ||
+    hay.includes('resumen temas parte general')
+  ){
+    return {key:'repaso-tests',label:'Repaso de tests',order:800};
+  }
+
+  const explicit=(t.topic||t.tema||t.subject||'').toString().trim();
+  if(explicit){
+    const n=(explicit.match(/(\d+)/)||[])[1];
+    return {key:'explicit-'+explicit.toLowerCase(),label:explicit,order:n?Number(n):900};
+  }
+
+  if(hay.includes('constituci')) return {key:'tema-1-constitucion',label:'Tema 1 · Constitución Española',order:1};
+  return {key:'otros',label:'Otros tests',order:999};
+}
+function repasoOrdinal(t){
+  const titulo=(t.title||'').toString();
+  const nums=titulo.match(/\d+/g);
+  return nums&&nums.length ? Number(nums[nums.length-1]) : 0;
+}
+function renderTestCard(t){
+  const hay=((t.title||'')+' '+(t.description||'')+' '+(t.id||'')).toLowerCase();
+  const esRepaso=hay.includes('repaso') || hay.includes('resumen parte general') || hay.includes('resumen temas parte general');
+  return `<article class="test-card ${esRepaso?'repaso-card':''}"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=22-appcheck" alt=""><div><h3>${esc(t.title)}</h3><div class="muted">${esc(t.description||t.subtitle||'Cuestionario de preparación')}</div></div></div><div class="pills"><span class="pill">${t.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-test="${esc(t.id)}">Realizar test</button></article>`;
+}
+function renderPracticalCard(p){
+  const hay=((p.title||'')+' '+(p.description||'')+' '+(p.id||'')).toLowerCase();
+  const esRepaso=hay.includes('repaso');
+  return `<article class="practical-card ${esRepaso?'repaso-card':''}"><div class="test-head"><img class="test-logo" src="logo-oposmurcia360.png?v=22-appcheck" alt=""><div><h3>${esc(p.title)}</h3><div class="muted">${esc(p.description||p.subtitle||'Supuesto práctico para Auxiliares Administrativos')}</div></div></div><span class="practical-tag">📖 Enunciado + cuestionario</span><div class="pills"><span class="pill">${p.questions.length} preguntas</span><span class="pill">Acceso protegido</span></div><button class="primary" data-practical="${esc(p.id)}">Realizar supuesto práctico</button></article>`;
+}
+function renderHome(){
+  const totalQuestions=TESTS.reduce((n,t)=>n+(t.questions?.length||0),0)+PRACTICALS.reduce((n,p)=>n+(p.questions?.length||0),0);
+  $('#heroCount').textContent=`${TESTS.length} ${TESTS.length===1?'test':'tests'} · ${PRACTICALS.length} ${PRACTICALS.length===1?'supuesto':'supuestos'}`;
+  $('#qCount').textContent=totalQuestions;
+  $('#testCountBadge').textContent=`${TESTS.length} ${TESTS.length===1?'test':'tests'}`;
+  $('#practicalCountBadge').textContent=`${PRACTICALS.length} ${PRACTICALS.length===1?'supuesto':'supuestos'}`;
+  $('#quickTestsCount').textContent=`${TESTS.length} ${TESTS.length===1?'test disponible':'tests disponibles'}`;
+  $('#quickPracticalsCount').textContent=`${PRACTICALS.length} ${PRACTICALS.length===1?'supuesto disponible':'supuestos disponibles'}`;
+  renderStats();
+
+  const grid=$('#testGrid');
+  if(!TESTS.length){
+    grid.innerHTML='<div class="empty">No hay tests disponibles todavía en Firestore.</div>';
+  }else{
+    const groups=new Map();
+    TESTS.forEach(t=>{
+      const info=topicInfo(t);
+      if(!groups.has(info.key)) groups.set(info.key,{...info,tests:[]});
+      groups.get(info.key).tests.push(t);
+    });
+    const ordered=[...groups.values()].sort((a,b)=>{
+      if(a.key==='repaso-tests' && b.key!=='repaso-tests') return 1;
+      if(b.key==='repaso-tests' && a.key!=='repaso-tests') return -1;
+      return a.order-b.order||a.label.localeCompare(b.label,'es');
+    });
+    grid.innerHTML=ordered.map(g=>{
+      if(g.key==='repaso-tests'){
+        g.tests.sort((a,b)=>repasoOrdinal(a)-repasoOrdinal(b) || (a.title||'').localeCompare(b.title||'','es'));
+      }
+      return `
+      <section class="topic-section">
+        <div class="topic-heading">
+          <h2>${esc(g.label)}</h2>
+          <span class="topic-count">${g.tests.length} ${g.tests.length===1?'test':'tests'}</span>
+        </div>
+        <div class="topic-grid">${g.tests.map(renderTestCard).join('')}</div>
+      </section>`;
+    }).join('');
+  }
+
+  const pgrid=$('#practicalGrid');
+  if(!PRACTICALS.length){
+    pgrid.innerHTML='<div class="empty">No hay supuestos prácticos disponibles todavía.</div>';
+  }else{
+    const groups=new Map();
+    PRACTICALS.forEach(p=>{
+      const label=(p.topic||p.tema||p.subject||'Otros supuestos').toString().trim()||'Otros supuestos';
+      const key=label.toLowerCase();
+      if(!groups.has(key)) groups.set(key,{label,items:[]});
+      groups.get(key).items.push(p);
+    });
+    const ordered=[...groups.values()].sort((a,b)=>a.label.localeCompare(b.label,'es'));
+    pgrid.innerHTML=ordered.map(g=>`
+      <section class="topic-section">
+        <div class="topic-heading">
+          <h2>${esc(g.label)}</h2>
+          <span class="topic-count">${g.items.length} ${g.items.length===1?'supuesto':'supuestos'}</span>
+        </div>
+        <div class="topic-grid">${g.items.map(renderPracticalCard).join('')}</div>
+      </section>`).join('');
+  }
+
+  document.querySelectorAll('[data-test]').forEach(b=>b.onclick=()=>openSetup(b.dataset.test));
+  document.querySelectorAll('[data-practical]').forEach(b=>b.onclick=()=>openPracticalSetup(b.dataset.practical));
+}
+window.goToLibrarySection=(id)=>{if(id==='testsSection')openTestsLibrary();else if(id==='practicalsSection')openPracticalsLibrary();};
+function show(id){['home','testsLibrary','practicalsLibrary','myProgress','adminManagement','survival','setup','quiz','results','practicalSetup','practicalWork','practicalResults','practicalResultStatement'].forEach(x=>$('#'+x).classList.toggle('hidden',x!==id));window.scrollTo({top:0,behavior:'smooth'})}
+window.openTestsLibrary=()=>{renderHome();show('testsLibrary')};
+window.openPracticalsLibrary=()=>{renderHome();show('practicalsLibrary')};
+window.goHome=()=>{clearInterval(interval);interval=null;clearInterval(practicalInterval);practicalInterval=null;show('home');renderHome()};function openSetup(id){currentTest=TESTS.find(t=>t.id===id);if(!currentTest)return;$('#setupTitle').textContent=currentTest.title;$('#setupDesc').textContent=currentTest.description||currentTest.subtitle||'';show('setup')}
+window.startQuiz=()=>{if(!currentTest||!Array.isArray(currentTest.questions)||!currentTest.questions.length){alert('Este test no contiene preguntas válidas.');return;}finishingQuiz=false;answers=Array(currentTest.questions.length).fill(null);current=0;penalty=$('#penalty').checked;timed=document.querySelector('input[name="timeMode"]:checked').value==='timed';timeLimit=Math.max(1,parseInt($('#minutes').value||30))*60;elapsed=0;startedAt=Date.now();show('quiz');renderQuestion();tick();clearInterval(interval);interval=setInterval(()=>{elapsed=Math.floor((Date.now()-startedAt)/1000);tick();if(timed&&elapsed>=timeLimit)finishQuiz(true)},1000)};
+function fmt(s){s=Math.max(0,Math.floor(s));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}function tick(){$('#timer').textContent=timed?fmt(Math.max(0,timeLimit-elapsed)):fmt(elapsed)}
+function renderQuestion(){const q=currentTest.questions[current];$('#qnum').textContent=`Pregunta ${current+1} de ${currentTest.questions.length}`;$('#question').textContent=q[0];$('#progress').style.width=((current+1)/currentTest.questions.length*100)+'%';$('#options').innerHTML=q[1].map((o,i)=>`<button class="option ${answers[current]===i?'selected':''}" data-choice="${i}"><strong>${String.fromCharCode(65+i)})</strong> ${esc(o)}</button>`).join('');document.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>{answers[current]=Number(b.dataset.choice);renderQuestion()})}
+window.prevQ=()=>{if(current>0){current--;renderQuestion()}};window.nextQ=()=>{if(current<currentTest.questions.length-1){current++;renderQuestion()}};window.confirmExit=()=>{if(confirm('¿Salir del test? Se perderán las respuestas de este intento.'))goHome()};
+window.finishQuiz=async(auto=false)=>{if(finishingQuiz)return;finishingQuiz=true;clearInterval(interval);interval=null;elapsed=Math.floor((Date.now()-startedAt)/1000);let ok=0,bad=0,blank=0;currentTest.questions.forEach((q,i)=>{if(answers[i]===null)blank++;else if(answers[i]===q[2])ok++;else bad++});const raw=ok-(penalty?bad/3:0),score=Math.max(0,(raw/currentTest.questions.length)*10),usedTime=timed?Math.min(elapsed,timeLimit):elapsed;$('#resultTitle').textContent=currentTest.title;$('#score').textContent=score.toFixed(2).replace('.',',')+'/10';$('#ok').textContent=ok;$('#bad').textContent=bad;$('#blank').textContent=blank;$('#resultInfo').textContent=(auto?'Tiempo agotado. · ':'')+'Tiempo empleado: '+fmt(usedTime)+' · '+(penalty?'Penalización 1/3 aplicada.':'Sin penalización.');$('#review').classList.add('hidden');$('#review').innerHTML='';const s=stats();s.done=(s.done||0)+1;s.best=s.best==null?score:Math.max(Number(s.best),score);saveStats(s);show('results');try{await registrarProgreso({tipo:'test',ejercicioId:currentTest.id,titulo:currentTest.title,categoria:topicInfo(currentTest).label,totalPreguntas:currentTest.questions.length,aciertos:ok,errores:bad,blancos:blank,nota:score,penalizacion:penalty,tiempoEmpleado:usedTime});await refreshGame();}catch(e){console.error('No se pudo registrar el progreso del test:',e);alert('El resultado se muestra correctamente, pero no se ha podido guardar el progreso en tu historial. Comprueba la conexión e inténtalo de nuevo más tarde.');finishingQuiz=false;}};
+window.toggleReview=()=>{const box=$('#review');if(!box.innerHTML)box.innerHTML=currentTest.questions.map((q,i)=>{const a=answers[i],state=a===null?'blank':(a===q[2]?'ok':'bad'),y=a===null?'Sin contestar':String.fromCharCode(65+a)+') '+q[1][a],r=String.fromCharCode(65+q[2])+') '+q[1][q[2]],fundamento=String(q[3]??'').trim();return `<div class="review-item ${state}"><strong>${i+1}. ${esc(q[0])}</strong><br>Tu respuesta: ${esc(y)}<br>Correcta: ${esc(r)}${fundamento?` · ${esc(fundamento)}`:''}</div>`}).join('');box.classList.toggle('hidden')};window.repeatQuiz=()=>openSetup(currentTest.id);window.shareResult=()=>location.href='https://wa.me/?text='+encodeURIComponent('OposMurcia 360 · '+currentTest.title+' · Resultado: '+$('#score').textContent+' · '+PUBLIC_URL);
+
+function openPracticalSetup(id){
+  currentPractical=PRACTICALS.find(p=>p.id===id);
+  if(!currentPractical)return;
+  $('#practicalSetupTitle').textContent=currentPractical.title;
+  $('#practicalSetupDesc').textContent=currentPractical.description||currentPractical.subtitle||'Lee el enunciado completo antes de iniciar el cuestionario.';
+  show('practicalSetup');
+}
+window.startPractical=()=>{
+  if(!currentPractical||!currentPractical.questions.length||!currentPractical.statement){alert('Este supuesto práctico no contiene todos los datos necesarios.');return}
+  finishingPractical=false;
+  practicalAnswers=Array(currentPractical.questions.length).fill(null);
+  practicalCurrent=0;
+  practicalPenalty=$('#practicalPenalty').checked;
+  practicalTimed=document.querySelector('input[name="practicalTimeMode"]:checked').value==='timed';
+  practicalTimeLimit=Math.max(1,parseInt($('#practicalMinutes').value||30))*60;
+  practicalElapsed=0; practicalStartedAt=Date.now(); practicalQuizStarted=false; practicalStatementY=0;
+  $('#practicalStatementTitle').textContent=currentPractical.title;
+  $('#practicalStatement').textContent=currentPractical.statement;
+  $('#statementQuizButton').textContent='Comenzar supuesto práctico →';
+  $('#practicalQuizTab').className='secondary hidden';
+  show('practicalWork');
+  showPracticalStatement(true);
+  practicalTick();
+  clearInterval(practicalInterval);
+  practicalInterval=setInterval(()=>{
+    practicalElapsed=Math.floor((Date.now()-practicalStartedAt)/1000);
+    practicalTick();
+    if(practicalTimed&&practicalElapsed>=practicalTimeLimit)finishPractical(true);
+  },1000);
+};
+function practicalTick(){
+  $('#practicalTimer').textContent=practicalTimed?fmt(Math.max(0,practicalTimeLimit-practicalElapsed)):fmt(practicalElapsed);
+}
+window.showPracticalStatement=(initial=false)=>{
+  if(!currentPractical)return;
+  if(!initial && !$('#practicalStatementView').classList.contains('hidden')) practicalStatementY=window.scrollY;
+  $('#practicalQuizView').classList.add('hidden');
+  $('#practicalStatementView').classList.remove('hidden');
+  $('#practicalStatementTab').className='primary';
+  if(practicalQuizStarted){
+    $('#practicalQuizTab').className='secondary';
+    $('#statementQuizButton').textContent='Volver al cuestionario →';
+  }else{
+    $('#practicalQuizTab').className='secondary hidden';
+    $('#statementQuizButton').textContent='Comenzar supuesto práctico →';
+  }
+  setTimeout(()=>window.scrollTo(0,practicalStatementY||0),0);
+};
+window.showPracticalQuiz=()=>{
+  if(!currentPractical)return;
+  practicalStatementY=window.scrollY;
+  practicalQuizStarted=true;
+  $('#practicalQuizTab').className='primary';
+  $('#practicalStatementTab').className='secondary';
+  $('#statementQuizButton').textContent='Volver al cuestionario →';
+  $('#practicalStatementView').classList.add('hidden');
+  $('#practicalQuizView').classList.remove('hidden');
+  renderPracticalQuestion();
+  setTimeout(()=>$('#practicalQuizView').scrollIntoView({block:'start'}),0);
+};
+function renderPracticalQuestion(){
+  const q=currentPractical.questions[practicalCurrent];
+  $('#practicalQnum').textContent=`Pregunta ${practicalCurrent+1} de ${currentPractical.questions.length}`;
+  $('#practicalQuestion').textContent=q[0];
+  $('#practicalProgress').style.width=((practicalCurrent+1)/currentPractical.questions.length*100)+'%';
+  $('#practicalOptions').innerHTML=q[1].map((o,i)=>`<button class="option ${practicalAnswers[practicalCurrent]===i?'selected':''}" data-pchoice="${i}"><strong>${String.fromCharCode(65+i)})</strong> ${esc(o)}</button>`).join('');
+  document.querySelectorAll('[data-pchoice]').forEach(b=>b.onclick=()=>{practicalAnswers[practicalCurrent]=Number(b.dataset.pchoice);renderPracticalQuestion()});
+}
+window.prevPracticalQ=()=>{if(practicalCurrent>0){practicalCurrent--;renderPracticalQuestion()}};
+window.nextPracticalQ=()=>{if(practicalCurrent<currentPractical.questions.length-1){practicalCurrent++;renderPracticalQuestion()}};
+window.confirmPracticalExit=()=>{if(confirm('¿Salir del supuesto práctico? Se perderán las respuestas de este intento.'))goHome()};
+window.finishPractical=async(auto=false)=>{
+  if(finishingPractical)return;
+  finishingPractical=true;
+  clearInterval(practicalInterval); practicalInterval=null;
+  practicalElapsed=Math.floor((Date.now()-practicalStartedAt)/1000);
+  let ok=0,bad=0,blank=0;
+  currentPractical.questions.forEach((q,i)=>{if(practicalAnswers[i]===null)blank++;else if(practicalAnswers[i]===q[2])ok++;else bad++});
+  const raw=ok-(practicalPenalty?bad/3:0),score=Math.max(0,(raw/currentPractical.questions.length)*10),usedTime=practicalTimed?Math.min(practicalElapsed,practicalTimeLimit):practicalElapsed;
+  $('#practicalResultTitle').textContent=currentPractical.title;
+  $('#practicalScore').textContent=score.toFixed(2).replace('.',',')+'/10';
+  $('#practicalOk').textContent=ok; $('#practicalBad').textContent=bad; $('#practicalBlank').textContent=blank;
+  $('#practicalResultInfo').textContent=(auto?'Tiempo agotado. · ':'')+'Tiempo empleado: '+fmt(usedTime)+' · '+(practicalPenalty?'Penalización 1/3 aplicada.':'Sin penalización.');
+  $('#practicalReview').classList.add('hidden'); $('#practicalReview').innerHTML='';
+  const s=stats(); s.done=(s.done||0)+1; s.best=s.best==null?score:Math.max(Number(s.best),score); saveStats(s);
+  show('practicalResults');
+  try{
+    await registrarProgreso({tipo:'supuesto',ejercicioId:currentPractical.id,titulo:currentPractical.title,categoria:(currentPractical.topic||currentPractical.tema||currentPractical.subject||'Otros supuestos').toString().trim()||'Otros supuestos',totalPreguntas:currentPractical.questions.length,aciertos:ok,errores:bad,blancos:blank,nota:score,penalizacion:practicalPenalty,tiempoEmpleado:usedTime});
+    await refreshGame();
+  }catch(e){
+    console.error('No se pudo registrar el progreso del supuesto:',e);
+    alert('El resultado se muestra correctamente, pero no se ha podido guardar el progreso en tu historial. Comprueba la conexión e inténtalo de nuevo más tarde.');
+    finishingPractical=false;
+  }
+};
+window.togglePracticalReview=()=>{
+  const box=$('#practicalReview');
+  if(!box.innerHTML)box.innerHTML=currentPractical.questions.map((q,i)=>{
+    const a=practicalAnswers[i],state=a===null?'blank':(a===q[2]?'ok':'bad');
+    const y=a===null?'Sin contestar':String.fromCharCode(65+a)+') '+q[1][a];
+    const r=String.fromCharCode(65+q[2])+') '+q[1][q[2]];
+    const fundamento=String(q[3]??'').trim();
+    return `<div class="review-item ${state}"><strong>${i+1}. ${esc(q[0])}</strong><br>Tu respuesta: ${esc(y)}<br>Correcta: ${esc(r)}${fundamento?` · ${esc(fundamento)}`:''}</div>`;
+  }).join('');
+  box.classList.toggle('hidden');
+};
+window.showPracticalStatementFromResults=()=>{
+  $('#practicalResultStatementTitle').textContent=currentPractical.title;
+  $('#practicalResultStatementText').textContent=currentPractical.statement;
+  show('practicalResultStatement');
+};
+window.returnPracticalResults=()=>show('practicalResults');
+window.repeatPractical=()=>openPracticalSetup(currentPractical.id);
+window.sharePracticalResult=()=>location.href='https://wa.me/?text='+encodeURIComponent('OposMurcia 360 · Supuesto práctico · '+currentPractical.title+' · Resultado: '+$('#practicalScore').textContent+' · '+PUBLIC_URL);
+
+window.openHelp=()=>$('#help').classList.remove('hidden');window.closeHelp=()=>$('#help').classList.add('hidden');window.backdropClose=e=>{if(e.target.id==='help')closeHelp()};
+
+
+
+
+let deferredInstallPrompt=null;
+function isStandalone(){
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true;
+}
+function updateInstallUI(){
+  const installed=isStandalone();
+  const buttons=[$('#installBtn'),$('#loginInstallBtn')].filter(Boolean);
+  buttons.forEach(btn=>{
+    if(installed){
+      btn.textContent='✓ App instalada';
+      btn.disabled=true;
+      btn.style.opacity='.82';
+      btn.style.cursor='default';
+    }
+  });
+  const status=$('#installStatus');
+  if(status)status.textContent=installed?'Abierta como aplicación':'';
+}
+function showInstallInfo(){
+  const c=$('#installHelpContent');
+  if(!c)return;
+  if(isStandalone()){
+    c.innerHTML='<p><strong>OposMurcia 360 ya está instalada</strong> en este dispositivo. Puedes abrirla desde su icono como cualquier otra aplicación.</p>';
+  }else if(/android/i.test(navigator.userAgent)){
+    c.innerHTML='<p>Para instalarla en <strong>Android</strong>, abre OposMurcia 360 en <strong>Google Chrome</strong>.</p><ol class="install-steps"><li>Si has llegado desde WhatsApp u otro navegador interno, usa su menú para <strong>abrir en Chrome</strong>.</li><li>En Chrome, pulsa el menú <strong>⋮</strong>.</li><li>Selecciona <strong>“Instalar aplicación”</strong> o <strong>“Añadir a pantalla de inicio”</strong>.</li><li>Confirma <strong>Instalar</strong>.</li></ol><p>Después aparecerá el icono de OposMurcia 360 entre tus aplicaciones.</p>';
+  }else{
+    c.innerHTML='<p>Este botón está preparado principalmente para <strong>Android con Google Chrome</strong>. En otros dispositivos, utiliza la opción de instalación o “Añadir a pantalla de inicio” del navegador.</p>';
+  }
+  $('#installHelp').classList.remove('hidden');
+}
+window.closeInstallHelp=()=>$('#installHelp').classList.add('hidden');
+window.installBackdropClose=e=>{if(e.target.id==='installHelp')closeInstallHelp()};
+async function requestInstall(){
+  if(isStandalone()){showInstallInfo();return}
+  if(deferredInstallPrompt){
+    const promptEvent=deferredInstallPrompt;
+    deferredInstallPrompt=null;
+    promptEvent.prompt();
+    try{
+      const choice=await promptEvent.userChoice;
+      if(!choice || choice.outcome!=='accepted')showInstallInfo();
+    }catch(e){
+      showInstallInfo();
+    }
+    return;
+  }
+  showInstallInfo();
+}
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  deferredInstallPrompt=e;
+  updateInstallUI();
+});
+window.addEventListener('appinstalled',()=>{
+  deferredInstallPrompt=null;
+  updateInstallUI();
+});
+const installButton=$('#installBtn');
+const loginInstallButton=$('#loginInstallBtn');
+if(installButton)installButton.addEventListener('click',requestInstall);
+if(loginInstallButton)loginInstallButton.addEventListener('click',requestInstall);
+updateInstallUI();
+
+
+const ADMIN_EMAIL='oposmurcia360@gmail.com';
+
+function deviceStorageKey(uid){
+  return `opos360_device_secret_${uid}`;
+}
+function bytesToHex(bytes){
+  return Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');
+}
+function getOrCreateDeviceSecret(uid){
+  const key=deviceStorageKey(uid);
+  let secret=localStorage.getItem(key);
+  if(secret)return secret;
+  const bytes=new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  secret=bytesToHex(bytes);
+  localStorage.setItem(key,secret);
+  return secret;
+}
+async function sha256Hex(value){
+  const data=new TextEncoder().encode(value);
+  const digest=await crypto.subtle.digest('SHA-256',data);
+  return bytesToHex(new Uint8Array(digest));
+}
+async function obtenerMaxDispositivos(user){
+  // El límite se configura por alumno en /autorizados/{email}.
+  // Si el campo no existe, se mantiene el comportamiento histórico: 1 dispositivo.
+  const email=(user.email||'').toLowerCase();
+  if(email===ADMIN_EMAIL)return 99;
+  const ref=doc(db,'autorizados',email);
+  const snap=await getDoc(ref);
+  if(!snap.exists() || snap.data().activo!==true)throw Object.assign(new Error('Usuario no autorizado'),{code:'permission-denied'});
+  const n=Number(snap.data().maxDispositivos||1);
+  return Math.max(1,Math.min(2,Number.isFinite(n)?Math.trunc(n):1));
+}
+
+async function registrarSlotDispositivo(user,slot,hash){
+  const ref=doc(db,'dispositivos',user.uid,'equipos',slot);
+  await setDoc(ref,{
+    uid:user.uid,
+    email:user.email||'',
+    huellaHash:hash,
+    activo:true,
+    creadoEn:serverTimestamp(),
+    ultimoAcceso:serverTimestamp(),
+    version:2
+  });
+}
+
+async function comprobarDispositivo(user){
+  // El administrador continúa exento para trabajar desde varios equipos.
+  if((user.email||'').toLowerCase()===ADMIN_EMAIL)return true;
+
+  const maxDispositivos=await obtenerMaxDispositivos(user);
+  const storageKey=deviceStorageKey(user.uid);
+  let localSecret=localStorage.getItem(storageKey);
+  let hash=localSecret ? await sha256Hex(localSecret) : null;
+
+  // V23: cada alumno dispone de uno o dos slots según maxDispositivos.
+  const slots=[];
+  for(let i=1;i<=maxDispositivos;i++){
+    const slot=`slot${i}`;
+    const ref=doc(db,'dispositivos',user.uid,'equipos',slot);
+    const snap=await getDoc(ref);
+    slots.push({slot,ref,snap});
+  }
+
+  // Si este navegador ya está registrado en uno de sus slots, acceso permitido.
+  if(hash){
+    for(const item of slots){
+      if(item.snap.exists()){
+        const data=item.snap.data();
+        if(data.activo===true && data.huellaHash===hash){
+          await updateDoc(item.ref,{ultimoAcceso:serverTimestamp()});
+          return true;
+        }
+      }
+    }
+  }
+
+  // Migración transparente desde V22: si este era el dispositivo ya autorizado,
+  // lo trasladamos a slot1 sin invalidar la copia estable anterior.
+  const legacyRef=doc(db,'dispositivos',user.uid);
+  const legacySnap=await getDoc(legacyRef);
+  if(legacySnap.exists() && hash){
+    const legacy=legacySnap.data();
+    if(legacy.activo===true && legacy.huellaHash===hash && !slots[0].snap.exists()){
+      await registrarSlotDispositivo(user,'slot1',hash);
+      return true;
+    }
+  }
+
+  // Nuevo dispositivo: solo se registra si queda un slot libre.
+  const libre=slots.find(item=>!item.snap.exists());
+  if(!libre)return false;
+
+  if(!localSecret){
+    localSecret=getOrCreateDeviceSecret(user.uid);
+    hash=await sha256Hex(localSecret);
+  }
+  await registrarSlotDispositivo(user,libre.slot,hash);
+  return true;
+}
+
+onAuthStateChanged(auth,async user=>{
+  $('#loadingScreen').classList.add('hidden');
+  if(!user){
+    TESTS=[];
+    $('#appShell').classList.add('hidden');
+    $('#loginScreen').classList.remove('hidden');
+    return;
+  }
+  $('#loginScreen').classList.add('hidden');
+  $('#appShell').classList.remove('hidden');
+  $('#userEmail').textContent=user.email||'Usuario';
+  const adminAccess=$('#adminAccess');
+  if(adminAccess)adminAccess.classList.toggle('hidden',((user.email||'').toLowerCase()!==ADMIN_EMAIL));
+  try{
+    const dispositivoPermitido=await comprobarDispositivo(user);
+    if(!dispositivoPermitido){
+      await signOut(auth);
+      $('#appShell').classList.add('hidden');
+      $('#loginScreen').classList.remove('hidden');
+      msg('Dispositivo no autorizado. Esta cuenta ya está vinculada a otro dispositivo. Contacta con el administrador.');
+      return;
+    }
+    await Promise.all([loadTests(),loadPracticals()]);
+    renderHome();
+    bindGameHelp();
+  }catch(e){
+    console.error(e);
+    if(e?.code==='permission-denied' || e?.code==='firestore/permission-denied'){
+      await signOut(auth);
+      $('#appShell').classList.add('hidden');
+      $('#loginScreen').classList.remove('hidden');
+      msg('Usuario no autorizado. Solicita acceso al administrador antes de entrar en OposMurcia 360.');
+      return;
+    }
+    $('#testGrid').innerHTML='<div class="data-error"><strong>No se han podido cargar las preguntas.</strong><br>La sesión funciona, pero los datos de Firestore no tienen el formato esperado o el navegador conserva una versión antigua. Recarga esta versión de la app.</div>';
+  }
+});
+if('caches' in window){caches.keys().then(keys=>Promise.all(keys.filter(k=>k!=='oposmurcia360-v22-appcheck').map(k=>caches.delete(k)))).catch(()=>{})}
+if('serviceWorker' in navigator)window.addEventListener('load',async()=>{try{const r=await navigator.serviceWorker.register('sw.js?v=22-appcheck',{updateViaCache:'none'});await r.update()}catch(e){console.error(e)}});
+</script>
+</body></html>
