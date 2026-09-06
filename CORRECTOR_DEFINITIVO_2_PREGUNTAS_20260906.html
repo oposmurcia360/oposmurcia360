@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OposMurcia 360 · Corrector definitivo 2 preguntas</title>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f4f7f9;color:#173042;margin:0}
+main{max-width:900px;margin:34px auto;padding:0 18px}
+.card{background:#fff;border:1px solid #dbe5ea;border-radius:18px;padding:24px;box-shadow:0 8px 25px #0000000b}
+h1{margin:0 0 8px}.tag{display:inline-block;background:#eef6fb;color:#075985;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:700}
+.muted{color:#607482}.ok{color:#087443}.bad{color:#b42318}
+button{border:0;border-radius:12px;padding:13px 18px;font-weight:700;cursor:pointer;background:#0071ba;color:white}
+button:disabled{opacity:.45;cursor:not-allowed}
+pre{white-space:pre-wrap;background:#f7fafb;border:1px solid #e2eaee;border-radius:12px;padding:14px;line-height:1.45;max-height:560px;overflow:auto}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.warn{background:#fff7e6;border:1px solid #f4d08a;border-radius:12px;padding:12px;margin:12px 0}
+</style>
+</head>
+<body>
+<main><div class="card">
+<span class="tag">BUILD DEFINITIVO 2026-09-06</span>
+<h1>Corrector definitivo · 2 preguntas</h1>
+<p class="muted">Solo corrige dos campos <b>text</b>. No modifica opciones, respuesta correcta, orden ni ninguna otra pregunta.</p>
+<div class="warn"><b>Importante:</b> si arriba no ves “BUILD DEFINITIVO 2026-09-06”, no continúes.</div>
+
+<div class="row">
+<button id="login">Entrar con Google</button>
+<button id="scan" disabled>1. Localizar y comprobar</button>
+<button id="fix" disabled>2. Aplicar las 2 correcciones</button>
+<button id="verify" disabled>3. Verificar resultado</button>
+</div>
+
+<div id="who" class="muted"></div>
+<pre id="log">Esperando inicio de sesión del administrador…</pre>
+</div></main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+const firebaseConfig={
+ apiKey:"AIzaSyDA_79FRQq90gVJgD17dRr_pUHKe4S8XBg",
+ authDomain:"oposmurcia360-5a389.firebaseapp.com",
+ projectId:"oposmurcia360-5a389",
+ storageBucket:"oposmurcia360-5a389.firebasestorage.app",
+ messagingSenderId:"730198455785",
+ appId:"1:730198455785:web:1f3e3d4f8edf8774780778",
+ measurementId:"G-T8QHKNDX5T"
+};
+
+const ADMIN="oposmurcia360@gmail.com";
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+
+const $=s=>document.querySelector(s);
+const log=t=>$("#log").textContent=t;
+
+function norm(s){
+ return (s??"").toString()
+   .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+   .replace(/\s+/g," ").trim().toLowerCase();
+}
+function opts(q){ return Array.isArray(q?.options) ? q.options.map(x=>(x??"").toString()) : []; }
+
+$("#login").onclick=()=>signInWithPopup(auth,new GoogleAuthProvider());
+
+onAuthStateChanged(auth,u=>{
+ const admin=!!u && norm(u.email)===ADMIN;
+ $("#who").textContent=u?`Sesión: ${u.email}${admin?" · Administrador":" · SIN PERMISO"}`:"";
+ $("#scan").disabled=!admin;
+ $("#verify").disabled=!admin;
+ $("#fix").disabled=true;
+ if(admin) log("Archivo correcto cargado: BUILD DEFINITIVO 2026-09-06.\nPulsa «1. Localizar y comprobar».");
+});
+
+async function scanAll(){
+ if(!auth.currentUser || norm(auth.currentUser.email)!==ADMIN) throw new Error("Solo el administrador puede ejecutar esta herramienta.");
+
+ const snap=await getDocs(collection(db,"tests"));
+ let c1=[], c2=[], lbrlCandidates=[];
+
+ snap.forEach(ds=>{
+   const d=ds.data();
+   const qs=d.questions;
+
+   // Estructura real esperada: questions = MAPA/OBJETO con q001, q002...
+   if(!qs || Array.isArray(qs) || typeof qs!=="object") return;
+
+   Object.entries(qs).forEach(([key,q])=>{
+     const t=norm(q?.text);
+     const o=opts(q);
+     const on=o.map(norm);
+
+     // 1) Constitución: texto defectuoso exacto + opción distintiva.
+     if(t==="el ejercicio de estos derechos:" &&
+        on.some(x=>x.includes("censura previa"))){
+       c1.push({id:ds.id,title:d.title||d.nombre||"",key,q});
+     }
+
+     // Registro de cualquier candidato LBRL para diagnóstico visible.
+     if(t.includes("lbrl")){
+       lbrlCandidates.push({id:ds.id,title:d.title||d.nombre||"",key,q});
+     }
+
+     // 2) Régimen Local: prioriza texto defectuoso exacto.
+     const byBrokenText = (t==="2 lbrl");
+
+     // Respaldo: opciones distintivas, sin exigir literalidad completa.
+     const byOptions =
+       on.some(x=>x.includes("solo en castellano")) &&
+       on.some(x=>x.includes("castellano") && x.includes("lengua espanola")) &&
+       on.some(x=>x.includes("lengua cooficial"));
+
+     if(byBrokenText || byOptions){
+       c2.push({id:ds.id,title:d.title||d.nombre||"",key,q,why:byBrokenText?"texto «2 LBRL»":"opciones distintivas"});
+     }
+   });
+ });
+
+ // Deduplicar por documento+clave.
+ c2=[...new Map(c2.map(x=>[x.id+"::"+x.key,x])).values()];
+
+ return {c1,c2,lbrlCandidates};
+}
+
+function describe(x){
+ return `Documento: ${x.id}
+Título: ${x.title || "(sin título almacenado)"}
+Clave: ${x.key}
+Enunciado actual: ${x.q?.text}
+Opciones:
+${opts(x.q).map((v,i)=>`${String.fromCharCode(65+i)}) ${v}`).join("\n")}
+correct: ${x.q?.correct}
+order: ${x.q?.order}${x.why?`\nLocalizada por: ${x.why}`:""}`;
+}
+
+let located=null;
+
+$("#scan").onclick=async()=>{
+ try{
+   log("Leyendo colección tests y comprobando la estructura real…");
+   const r=await scanAll();
+
+   let extra="";
+   if(r.c1.length!==1 || r.c2.length!==1){
+     extra="\n\nCANDIDATOS QUE CONTIENEN «LBRL» EN EL TEXTO:\n";
+     extra += r.lbrlCandidates.length
+       ? r.lbrlCandidates.map((x,i)=>`\n--- candidato ${i+1} ---\n${describe(x)}`).join("\n")
+       : "(ninguno)";
+   }
+
+   if(r.c1.length!==1){
+     located=null; $("#fix").disabled=true;
+     throw new Error(`Seguridad: Constitución debe tener exactamente 1 coincidencia y hay ${r.c1.length}.${extra}`);
+   }
+   if(r.c2.length!==1){
+     located=null; $("#fix").disabled=true;
+     throw new Error(`Seguridad: Régimen Local debe tener exactamente 1 coincidencia y hay ${r.c2.length}.${extra}`);
+   }
+
+   located={ce:r.c1[0],rl:r.c2[0]};
+
+   log(`LOCALIZACIÓN EXACTA — TODAVÍA NO SE HA MODIFICADO NADA
+
+[1] CONSTITUCIÓN
+${describe(located.ce)}
+
+[2] RÉGIMEN LOCAL
+${describe(located.rl)}
+
+CAMBIOS QUE SE HARÁN:
+• questions.${located.ce.key}.text → «El ejercicio de los derechos reconocidos en el artículo 20 CE:»
+• questions.${located.rl.key}.text → «La denominación de los Municipios podrá ser, a todos los efectos, según el artículo 14.2 LBRL:»
+
+NO SE TOCARÁ:
+• options
+• correct
+• order
+• ninguna otra pregunta
+
+Si estos dos registros son los correctos, ya puedes pulsar «2. Aplicar las 2 correcciones».`);
+   $("#fix").disabled=false;
+
+ }catch(e){
+   const current=$("#log").textContent;
+   if(!current.startsWith("ERROR")) log("ERROR / CORRECCIÓN BLOQUEADA:\n"+e.message);
+ }
+};
+
+async function locateAgainOrFail(){
+ const r=await scanAll();
+ if(r.c1.length!==1 || r.c2.length!==1){
+   throw new Error(`La comprobación previa ya no coincide (Constitución=${r.c1.length}, Régimen Local=${r.c2.length}). No se escribe nada.`);
+ }
+ return {ce:r.c1[0],rl:r.c2[0]};
+}
+
+$("#fix").onclick=async()=>{
+ try{
+   const x=await locateAgainOrFail();
+
+   const ceNew="El ejercicio de los derechos reconocidos en el artículo 20 CE:";
+   const rlNew="La denominación de los Municipios podrá ser, a todos los efectos, según el artículo 14.2 LBRL:";
+
+   // Solo dos actualizaciones de campo text, usando rutas de mapa.
+   await updateDoc(doc(db,"tests",x.ce.id), {[`questions.${x.ce.key}.text`]:ceNew});
+   await updateDoc(doc(db,"tests",x.rl.id), {[`questions.${x.rl.key}.text`]:rlNew});
+
+   $("#fix").disabled=true;
+   await verifyNow();
+ }catch(e){
+   log("ERROR AL CORREGIR:\n"+e.message+"\n\nNo pulses nada más hasta revisar este mensaje.");
+ }
+};
+
+async function verifyNow(){
+ const snap=await getDocs(collection(db,"tests"));
+ let a=[],b=[];
+ snap.forEach(ds=>{
+   const d=ds.data(), qs=d.questions;
+   if(!qs || Array.isArray(qs) || typeof qs!=="object") return;
+   Object.entries(qs).forEach(([key,q])=>{
+     const t=norm(q?.text);
+     if(t===norm("El ejercicio de los derechos reconocidos en el artículo 20 CE:"))
+       a.push({id:ds.id,key,q});
+     if(t===norm("La denominación de los Municipios podrá ser, a todos los efectos, según el artículo 14.2 LBRL:"))
+       b.push({id:ds.id,key,q});
+   });
+ });
+
+ const ok=a.length===1 && b.length===1;
+ log(`${ok?"VERIFICACIÓN OK ✓":"VERIFICACIÓN NO CONCLUYENTE"}
+
+Constitución: ${a.length===1?`OK · ${a[0].id} / ${a[0].key}`:`encontradas ${a.length}`}
+Régimen Local: ${b.length===1?`OK · ${b[0].id} / ${b[0].key}`:`encontradas ${b.length}`}
+
+La herramienta solo ha programado cambios en los dos campos text.`);
+}
+
+$("#verify").onclick=async()=>{try{await verifyNow()}catch(e){log("ERROR DE VERIFICACIÓN:\n"+e.message)}};
+</script>
+</body>
+</html>
