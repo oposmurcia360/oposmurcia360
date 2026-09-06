@@ -218,6 +218,42 @@ button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important
 .progress-topic-best{font-weight:900;color:var(--blue-dark);white-space:nowrap}
 .progress-topic-meta{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:7px;color:var(--muted);font-size:12px;font-weight:650}
 
+/* =========================
+   V23 · ADMINISTRACIÓN DE ALUMNOS
+   ========================= */
+.admin-users-panel{margin-top:16px}
+.admin-users-form{display:grid;grid-template-columns:minmax(0,2fr) minmax(150px,1fr) auto;gap:10px;align-items:end;margin:14px 0}
+.admin-users-form .field{margin:0}.admin-users-form select{width:100%;height:46px;border:1.5px solid var(--line);border-radius:12px;padding:0 10px;background:#fff;color:var(--text)}
+.admin-users-list{display:grid;gap:12px;margin-top:14px}.admin-user-card{border:1px solid #DCE8F5;border-radius:16px;padding:14px;background:#FBFDFF}.admin-user-card.blocked{border-color:#E8CACA;background:#FFF8F8}
+.admin-user-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.admin-user-email{font-weight:900;color:var(--text);word-break:break-word}.admin-user-state{white-space:nowrap;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:900;background:#EAF7F1;color:#207A54}.admin-user-state.blocked{background:#FCECEC;color:#A33838}
+.admin-user-meta{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:8px;color:var(--muted);font-size:12px;font-weight:650}.admin-user-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.admin-user-actions button{min-height:40px}.admin-device-list{margin-top:10px;display:grid;gap:7px}.admin-device{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid #E1E9F2;background:#fff;border-radius:12px;padding:9px 10px;font-size:12px}.admin-device strong{color:var(--blue-dark)}
+@media(max-width:699px){.admin-users-form{grid-template-columns:1fr}.admin-user-head{flex-direction:column}.admin-user-actions{display:grid;grid-template-columns:1fr 1fr}.admin-device{align-items:flex-start;flex-direction:column}}
+@media(max-width:390px){.admin-user-actions{grid-template-columns:1fr}}
+
+/* =========================
+   V23 · ADMINISTRACIÓN SEPARADA
+   ========================= */
+.admin-access{margin:10px 0 22px}
+.admin-access-btn{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;border:1.5px solid #B8CFEA;background:linear-gradient(180deg,#F1F7FF 0%,#FFFFFF 100%);padding:15px 16px;border-radius:16px;box-shadow:var(--shadow);cursor:pointer;text-align:left}
+.admin-access-btn:hover{border-color:var(--blue);transform:translateY(-1px)}
+.admin-access-btn strong{display:block;color:var(--blue-dark);font-size:16px}
+.admin-access-btn small{display:block;color:var(--muted);font-size:12px;font-weight:650;margin-top:3px}
+.admin-access-icon{display:grid;place-items:center;flex:0 0 44px;width:44px;height:44px;border-radius:13px;background:var(--blue);color:#fff;font-size:20px;font-weight:900}
+.admin-shell{max-width:980px;margin:0 auto}
+.admin-head{margin-bottom:18px}
+.admin-head h2{margin:3px 0 6px;color:var(--blue-dark);font-size:27px;letter-spacing:-.025em}
+.admin-head p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+.admin-section-grid{display:grid;gap:16px}
+.admin-section-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.admin-section-card h3{margin:0 0 7px;color:var(--blue-dark);font-size:19px}
+.admin-section-title-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.admin-section-title-row h3{margin:0}.admin-danger{border-color:#D9A1A1!important;background:#FFF7F7!important;color:#A32626!important}.admin-danger:hover{background:#FDECEC!important}
+.admin-section-note{margin:0 0 14px;color:var(--muted);font-size:12px;line-height:1.5}
+.admin-section-toggle{margin:2px 0 14px}
+.admin-device-limit-control{display:inline-flex;align-items:center;gap:6px;min-height:40px}
+.admin-device-limit-control>span{font-size:12px;font-weight:800;color:var(--muted);margin-right:2px}
+.admin-limit-btn{min-width:42px!important;padding-left:12px!important;padding-right:12px!important;font-weight:900}
+.admin-limit-btn.selected,.admin-limit-btn:disabled{background:#EAF3FC!important;border-color:#8FB5D9!important;color:var(--blue-dark)!important;opacity:1;cursor:default}
+
 </style>
 </head>
 <body>
@@ -236,6 +272,13 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
    <div class="install-row"><button id="installBtn" class="install" type="button">📲 Instalar app</button><span id="installStatus" class="install-status"></span></div>
   </div>
  </header>
+ <div id="adminAccess" class="admin-access hidden">
+  <button class="admin-access-btn" type="button" onclick="openAdminManagement()">
+   <span class="admin-access-icon">⚙</span>
+   <span style="flex:1"><strong>Administración de alumnos</strong><small>Altas, accesos, dispositivos, seguimiento y estadísticas.</small></span>
+   <span aria-hidden="true">›</span>
+  </button>
+ </div>
  <div class="home-intro">
   <h2>Tu espacio privado de preparación</h2>
   <p>Practica con tests y supuestos prácticos, controla tu tiempo y revisa tus respuestas. En los supuestos podrás consultar el enunciado durante todo el ejercicio sin perder la pregunta ni tus respuestas.</p>
@@ -304,22 +347,47 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
    <div id="progressTopicList" class="progress-topic-list"></div>
   </div>
 
-  <div id="adminResetStatsPanel" class="progress-panel hidden">
-   <h3>Administración · Resetear estadísticas</h3>
-   <div class="progress-status" style="margin-top:-5px">
-    Solo el administrador puede borrar el historial estadístico de un usuario.
-    No se eliminan tests, supuestos, usuarios autorizados ni dispositivos.
-   </div>
-   <button class="secondary" type="button" onclick="resetStatsAsAdmin()">Resetear estadísticas de un usuario</button>
-  </div>
+ </div>
+</section>
 
-  <div id="adminAllProgressPanel" class="progress-panel hidden">
-   <h3>Administración · Seguimiento de alumnos</h3>
-   <div class="progress-status" style="margin-top:-5px">
-    Vista exclusiva del administrador. El preparador no tiene acceso al seguimiento de otros usuarios.
+
+<section id="adminManagement" class="hidden">
+ <div class="view-top"><button class="back" onclick="goHome()">← Biblioteca</button><button class="secondary" type="button" onclick="refreshAdminManagement()">Actualizar</button></div>
+ <div class="admin-shell">
+  <div class="admin-head">
+   <div class="section-kicker">Administración · Solo administrador</div>
+   <h2>Gestión de alumnos</h2>
+   <p>Zona independiente para administrar altas, accesos, dispositivos, seguimiento y estadísticas de los alumnos. No modifica tu progreso personal.</p>
+  </div>
+  <div class="admin-section-grid">
+   <div id="adminUsersPanel" class="admin-section-card admin-users-panel">
+    <h3>Altas, accesos y dispositivos</h3>
+    <button id="adminUsersToggleBtn" class="secondary admin-section-toggle" type="button" onclick="toggleAdminUsersPanel()" aria-expanded="true">Ocultar altas, accesos y dispositivos ▲</button>
+    <div id="adminUsersBody">
+     <p class="admin-section-note">Da de alta alumnos, bloquea o reactiva su acceso, cambia el número de dispositivos permitidos, libera dispositivos registrados y tramita bajas.</p>
+     <div class="admin-users-form">
+      <div class="field"><label for="adminNewEmail">Correo del alumno</label><input id="adminNewEmail" type="email" placeholder="alumno@correo.com"></div>
+      <div class="field"><label for="adminNewMaxDevices">Dispositivos permitidos</label><select id="adminNewMaxDevices"><option value="1">1 dispositivo</option><option value="2" selected>2 dispositivos</option></select></div>
+      <button class="primary" type="button" onclick="adminAddStudent()">Dar de alta</button>
+     </div>
+     <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="secondary" type="button" onclick="loadAdminStudents()">Actualizar listado</button></div>
+     <div id="adminUsersStatus" class="progress-status"></div>
+     <div id="adminUsersList" class="admin-users-list"></div>
+    </div>
    </div>
-   <button class="secondary" type="button" onclick="loadAllProgressAsAdmin()">Ver seguimiento de alumnos</button>
-   <div id="adminAllProgressList" style="margin-top:14px"></div>
+
+   <div id="adminAllProgressPanel" class="admin-section-card">
+    <h3>Seguimiento de alumnos</h3>
+    <p class="admin-section-note">Consulta el historial y rendimiento de los alumnos. Esta vista sigue siendo exclusiva del administrador.</p>
+    <button id="adminProgressToggleBtn" class="secondary" type="button" onclick="toggleAllProgressAsAdmin()" aria-expanded="false">Ver seguimiento de alumnos ▼</button>
+    <div id="adminAllProgressList" class="hidden" style="margin-top:14px"></div>
+   </div>
+
+   <div id="adminResetStatsPanel" class="admin-section-card">
+    <h3>Resetear estadísticas</h3>
+    <p class="admin-section-note">Borra únicamente el historial estadístico del usuario indicado. No elimina tests, supuestos, autorización ni dispositivos.</p>
+    <button class="secondary" type="button" onclick="resetStatsAsAdmin()">Resetear estadísticas de un usuario</button>
+   </div>
   </div>
  </div>
 </section>
@@ -478,7 +546,7 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app-check.js";
 import { getAuth,onAuthStateChanged,signInWithEmailAndPassword,signInWithPopup,GoogleAuthProvider,signOut,sendPasswordResetEmail,setPersistence,browserLocalPersistence } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-import { getFirestore,collection,getDocs,doc,getDoc,setDoc,updateDoc,addDoc,deleteDoc,serverTimestamp,query,where } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+import { getFirestore,collection,collectionGroup,getDocs,doc,getDoc,setDoc,updateDoc,addDoc,deleteDoc,serverTimestamp,query,where } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 const firebaseConfig={"apiKey":"AIzaSyDA_79FRQq90gVJgD17dRr_pUHKe4S8XBg","authDomain":"oposmurcia360-5a389.firebaseapp.com","projectId":"oposmurcia360-5a389","storageBucket":"oposmurcia360-5a389.firebasestorage.app","messagingSenderId":"730198455785","appId":"1:730198455785:web:1f3e3d4f8edf8774780778","measurementId":"G-T8QHKNDX5T"};
 const app=initializeApp(firebaseConfig);
 const appCheck=initializeAppCheck(app,{
@@ -711,6 +779,166 @@ async function loadAllProgressAsAdmin(){
 }
 window.loadAllProgressAsAdmin=loadAllProgressAsAdmin;
 
+window.toggleAllProgressAsAdmin=async()=>{
+  if(!adminOnly()){alert('Esta función está reservada al administrador.');return;}
+  const box=$('#adminAllProgressList');
+  const btn=$('#adminProgressToggleBtn');
+  if(!box||!btn)return;
+  const isOpen=!box.classList.contains('hidden');
+  if(isOpen){
+    box.classList.add('hidden');
+    btn.textContent='Ver seguimiento de alumnos ▼';
+    btn.setAttribute('aria-expanded','false');
+    return;
+  }
+  box.classList.remove('hidden');
+  btn.textContent='Ocultar seguimiento de alumnos ▲';
+  btn.setAttribute('aria-expanded','true');
+  await loadAllProgressAsAdmin();
+};
+
+/* =========================
+   V23 · PANEL ADMINISTRACIÓN DE ALUMNOS
+   ========================= */
+function adminOnly(){
+  return ((auth.currentUser?.email||'').toLowerCase()===ADMIN_EMAIL);
+}
+function normalizeStudentEmail(value){
+  return String(value||'').trim().toLowerCase();
+}
+window.toggleAdminUsersPanel=()=>{
+  if(!adminOnly())return;
+  const body=$('#adminUsersBody'),btn=$('#adminUsersToggleBtn');
+  if(!body||!btn)return;
+  const isHidden=body.classList.contains('hidden');
+  body.classList.toggle('hidden',!isHidden);
+  btn.setAttribute('aria-expanded',isHidden?'true':'false');
+  btn.textContent=isHidden?'Ocultar altas, accesos y dispositivos ▲':'Mostrar altas, accesos y dispositivos ▼';
+};
+
+async function adminDeviceMap(){
+  const map={};
+  const snap=await getDocs(collectionGroup(db,'equipos'));
+  snap.docs.forEach(d=>{
+    const x=d.data()||{};
+    const email=normalizeStudentEmail(x.email);
+    if(!email)return;
+    (map[email]??=[]).push({
+      id:d.id,
+      path:d.ref.path,
+      ref:d.ref,
+      uid:String(x.uid||''),
+      activo:x.activo===true,
+      ultimoAcceso:x.ultimoAcceso||null,
+      creadoEn:x.creadoEn||null
+    });
+  });
+  Object.values(map).forEach(arr=>arr.sort((a,b)=>a.id.localeCompare(b.id,'es')));
+  return map;
+}
+window.loadAdminStudents=async()=>{
+  if(!adminOnly()){alert('Esta función está reservada al administrador.');return;}
+  const status=$('#adminUsersStatus'),box=$('#adminUsersList');
+  status.textContent='Cargando alumnos y dispositivos…'; box.innerHTML='';
+  try{
+    // Cargamos primero el listado de autorizados. La lectura de dispositivos se
+    // hace aparte para que un problema puntual en collectionGroup('equipos')
+    // no impida ver y gestionar los alumnos autorizados.
+    const authSnap=await getDocs(collection(db,'autorizados'));
+    let devices={};
+    let deviceWarning='';
+    try{
+      devices=await adminDeviceMap();
+    }catch(deviceError){
+      console.error('Panel alumnos · dispositivos:',deviceError);
+      deviceWarning=' · No se han podido leer los dispositivos';
+    }
+    const rows=authSnap.docs.map(d=>({id:d.id,...d.data()}))
+      .filter(x=>normalizeStudentEmail(x.id)!==ADMIN_EMAIL)
+      .sort((a,b)=>normalizeStudentEmail(a.id).localeCompare(normalizeStudentEmail(b.id),'es'));
+    if(!rows.length){box.innerHTML='<div class="progress-empty">No hay alumnos autorizados.</div>';status.textContent='';return;}
+    box.innerHTML=rows.map(x=>{
+      const email=normalizeStudentEmail(x.id),active=x.activo===true,max=Number(x.maxDispositivos)===2?2:1,devs=devices[email]||[];
+      const devHtml=devs.length?devs.map(d=>`<div class="admin-device"><span><strong>${esc(d.id)}</strong> · ${d.uid?esc(d.uid.slice(0,10))+'…':'UID no disponible'}${d.ultimoAcceso?' · Último acceso: '+esc(formatProgressDate(d.ultimoAcceso)):''}</span><button class="secondary" type="button" onclick="adminReleaseDevice('${encodeURIComponent(email)}','${encodeURIComponent(d.path)}')">Liberar</button></div>`).join(''):'<div class="muted">Sin dispositivos registrados.</div>';
+      return `<div class="admin-user-card ${active?'':'blocked'}"><div class="admin-user-head"><div><div class="admin-user-email">${esc(email)}</div><div class="admin-user-meta"><span>${max} ${max===1?'dispositivo permitido':'dispositivos permitidos'}</span><span>${devs.length} ${devs.length===1?'slot ocupado':'slots ocupados'}</span></div></div><span class="admin-user-state ${active?'':'blocked'}">${active?'ACTIVO':'BLOQUEADO'}</span></div><div class="admin-user-actions"><button class="secondary" type="button" onclick="adminToggleStudent('${encodeURIComponent(email)}',${active?'false':'true'})">${active?'Bloquear acceso':'Reactivar acceso'}</button><div class="admin-device-limit-control" aria-label="Dispositivos permitidos"><span>Permitir:</span><button class="secondary admin-limit-btn ${max===1?'selected':''}" type="button" onclick="adminSetMaxDevices('${encodeURIComponent(email)}',1)" ${max===1?'disabled aria-current="true"':''}>1</button><button class="secondary admin-limit-btn ${max===2?'selected':''}" type="button" onclick="adminSetMaxDevices('${encodeURIComponent(email)}',2)" ${max===2?'disabled aria-current="true"':''}>2</button></div>${devs.length>1?`<button class="secondary" type="button" onclick="adminReleaseAllDevices('${encodeURIComponent(email)}')">Liberar todos</button>`:''}<button class="secondary admin-danger" type="button" onclick="adminDeleteStudent('${encodeURIComponent(email)}')">Dar de baja</button></div><div class="admin-device-list">${devHtml}</div></div>`;
+    }).join('');
+    status.textContent=`${rows.length} ${rows.length===1?'alumno':'alumnos'} en autorizados.${deviceWarning}`;
+  }catch(e){
+    console.error('Panel alumnos:',e);
+    status.textContent='No se ha podido cargar el listado de alumnos autorizados. Comprueba las reglas del panel.';
+  }
+};
+window.adminAddStudent=async()=>{
+  if(!adminOnly())return;
+  const email=normalizeStudentEmail($('#adminNewEmail').value),max=Number($('#adminNewMaxDevices').value)===2?2:1;
+  if(!email || !email.includes('@')){alert('Introduce un correo electrónico válido.');return;}
+  if(email===ADMIN_EMAIL){alert('El administrador no se gestiona desde este panel.');return;}
+  try{
+    const ref=doc(db,'autorizados',email),snap=await getDoc(ref);
+    if(snap.exists() && !confirm('Este correo ya existe en autorizados. ¿Quieres reactivarlo y establecer '+max+' dispositivo(s)?'))return;
+    await setDoc(ref,{activo:true,maxDispositivos:max,rol:'alumno',email}, {merge:true});
+    $('#adminNewEmail').value='';
+    alert('Alumno autorizado correctamente.\n\n'+email+'\nDispositivos permitidos: '+max);
+    await loadAdminStudents();
+  }catch(e){console.error(e);alert('No se ha podido dar de alta al alumno.\n\n'+(e?.message||e));}
+};
+window.adminToggleStudent=async(encodedEmail,active)=>{
+  if(!adminOnly())return;
+  const email=decodeURIComponent(encodedEmail);
+  const action=active?'reactivar':'bloquear';
+  if(!confirm(`¿Quieres ${action} el acceso de ${email}?\n\nNo se borrará su progreso ni sus dispositivos.`))return;
+  try{await updateDoc(doc(db,'autorizados',email),{activo:Boolean(active)});await loadAdminStudents();}
+  catch(e){console.error(e);alert('No se ha podido modificar el acceso.\n\n'+(e?.message||e));}
+};
+window.adminSetMaxDevices=async(encodedEmail,max)=>{
+  if(!adminOnly())return;
+  const email=decodeURIComponent(encodedEmail),n=Number(max)===2?2:1;
+  if(!confirm(`Cambiar el límite de ${email} a ${n} dispositivo(s)?\n\nSi reduces a 1 y actualmente existen dos slots, libera después el dispositivo que no quieras conservar.`))return;
+  try{await updateDoc(doc(db,'autorizados',email),{maxDispositivos:n});await loadAdminStudents();}
+  catch(e){console.error(e);alert('No se ha podido cambiar el límite.\n\n'+(e?.message||e));}
+};
+window.adminReleaseDevice=async(encodedEmail,encodedPath)=>{
+  if(!adminOnly())return;
+  const email=decodeURIComponent(encodedEmail),path=decodeURIComponent(encodedPath);
+  if(!confirm(`Liberar este dispositivo de ${email}?\n\nEl alumno podrá ocupar de nuevo un slot desde otro navegador o dispositivo.`))return;
+  try{const parts=path.split('/');await deleteDoc(doc(db,...parts));await loadAdminStudents();}
+  catch(e){console.error(e);alert('No se ha podido liberar el dispositivo.\n\n'+(e?.message||e));}
+};
+window.adminReleaseAllDevices=async(encodedEmail)=>{
+  if(!adminOnly())return;
+  const email=decodeURIComponent(encodedEmail);
+  if(!confirm(`¿Liberar TODOS los dispositivos de ${email}?\n\nNo se borrará el alumno ni su progreso.`))return;
+  try{
+    const snap=await getDocs(collectionGroup(db,'equipos'));
+    const refs=snap.docs.filter(d=>normalizeStudentEmail(d.data()?.email)===email).map(d=>d.ref);
+    await Promise.all(refs.map(ref=>deleteDoc(ref)));
+    await loadAdminStudents();
+  }catch(e){console.error(e);alert('No se han podido liberar todos los dispositivos.\n\n'+(e?.message||e));}
+};
+
+window.adminDeleteStudent=async(encodedEmail)=>{
+  if(!adminOnly())return;
+  const email=decodeURIComponent(encodedEmail);
+  if(email===ADMIN_EMAIL){alert('El administrador no puede darse de baja desde este panel.');return;}
+  const ok=confirm(`¿DAR DE BAJA a ${email}?\n\nSe eliminará su autorización de acceso y se liberarán todos sus dispositivos registrados.\n\nSu historial de progreso se conservará para que no se pierdan las estadísticas. Esta acción impedirá que vuelva a entrar hasta que lo des de alta de nuevo.`);
+  if(!ok)return;
+  const finalOk=confirm(`Confirmación final: eliminar a ${email} de la lista de alumnos autorizados?`);
+  if(!finalOk)return;
+  try{
+    const snap=await getDocs(collectionGroup(db,'equipos'));
+    const refs=snap.docs.filter(d=>normalizeStudentEmail(d.data()?.email)===email).map(d=>d.ref);
+    await Promise.all(refs.map(ref=>deleteDoc(ref)));
+    await deleteDoc(doc(db,'autorizados',email));
+    alert('Baja realizada correctamente.\n\n'+email+' ya no está autorizado para acceder.');
+    await loadAdminStudents();
+  }catch(e){
+    console.error(e);
+    alert('No se ha podido completar la baja.\n\n'+(e?.message||e));
+    await loadAdminStudents();
+  }
+};
+
+
 async function loadMyProgress(){
   const user=auth.currentUser;
   if(!user)return;
@@ -765,14 +993,21 @@ async function loadMyProgress(){
 }
 window.loadMyProgress=loadMyProgress;
 window.openMyProgress=async()=>{
-  const user=auth.currentUser;
-  const isAdmin=((user?.email||'').toLowerCase()===ADMIN_EMAIL);
-  const resetPanel=$('#adminResetStatsPanel');
-  const allProgressPanel=$('#adminAllProgressPanel');
-  if(resetPanel)resetPanel.classList.toggle('hidden',!isAdmin);
-  if(allProgressPanel)allProgressPanel.classList.toggle('hidden',!isAdmin);
   show('myProgress');
   await loadMyProgress();
+};
+window.openAdminManagement=async()=>{
+  if(!adminOnly()){alert('Esta zona está reservada al administrador.');return;}
+  show('adminManagement');
+  const progressBox=$('#adminAllProgressList');
+  const progressBtn=$('#adminProgressToggleBtn');
+  if(progressBox)progressBox.classList.add('hidden');
+  if(progressBtn){progressBtn.textContent='Ver seguimiento de alumnos ▼';progressBtn.setAttribute('aria-expanded','false');}
+  await loadAdminStudents();
+};
+window.refreshAdminManagement=async()=>{
+  if(!adminOnly())return;
+  await loadAdminStudents();
 };
 
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
@@ -987,7 +1222,7 @@ window.goToLibrarySection=(id)=>{
   const el=document.getElementById(id);
   if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
 };
-function show(id){['home','myProgress','setup','quiz','results','practicalSetup','practicalWork','practicalResults','practicalResultStatement'].forEach(x=>$('#'+x).classList.toggle('hidden',x!==id));window.scrollTo({top:0,behavior:'smooth'})}
+function show(id){['home','myProgress','adminManagement','setup','quiz','results','practicalSetup','practicalWork','practicalResults','practicalResultStatement'].forEach(x=>$('#'+x).classList.toggle('hidden',x!==id));window.scrollTo({top:0,behavior:'smooth'})}
 window.goHome=()=>{clearInterval(interval);interval=null;clearInterval(practicalInterval);practicalInterval=null;show('home');renderHome()};function openSetup(id){currentTest=TESTS.find(t=>t.id===id);if(!currentTest)return;$('#setupTitle').textContent=currentTest.title;$('#setupDesc').textContent=currentTest.description||currentTest.subtitle||'';show('setup')}
 window.startQuiz=()=>{if(!currentTest||!Array.isArray(currentTest.questions)||!currentTest.questions.length){alert('Este test no contiene preguntas válidas.');return;}finishingQuiz=false;answers=Array(currentTest.questions.length).fill(null);current=0;penalty=$('#penalty').checked;timed=document.querySelector('input[name="timeMode"]:checked').value==='timed';timeLimit=Math.max(1,parseInt($('#minutes').value||30))*60;elapsed=0;startedAt=Date.now();show('quiz');renderQuestion();tick();clearInterval(interval);interval=setInterval(()=>{elapsed=Math.floor((Date.now()-startedAt)/1000);tick();if(timed&&elapsed>=timeLimit)finishQuiz(true)},1000)};
 function fmt(s){s=Math.max(0,Math.floor(s));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}function tick(){$('#timer').textContent=timed?fmt(Math.max(0,timeLimit-elapsed)):fmt(elapsed)}
@@ -1292,6 +1527,8 @@ onAuthStateChanged(auth,async user=>{
   $('#loginScreen').classList.add('hidden');
   $('#appShell').classList.remove('hidden');
   $('#userEmail').textContent=user.email||'Usuario';
+  const adminAccess=$('#adminAccess');
+  if(adminAccess)adminAccess.classList.toggle('hidden',((user.email||'').toLowerCase()!==ADMIN_EMAIL));
   try{
     const dispositivoPermitido=await comprobarDispositivo(user);
     if(!dispositivoPermitido){
