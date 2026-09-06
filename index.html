@@ -828,6 +828,59 @@ button,input{font:inherit} button{cursor:pointer} .hidden{display:none!important
 .help-ok{width:100%;margin-top:12px}
 @media(max-width:620px){.help-grid{grid-template-columns:1fr}.help-modern{max-height:88vh;overflow:auto}}
 
+
+/* PRODUCCIÓN V15 · Zona de reto Supervivencia */
+#survival{--surv:#0b3654;--surv2:#102f45}
+#survival .survival-shell{max-width:900px;margin:0 auto}
+.survival-intro,.survival-panel{
+ border-radius:22px!important;border:1px solid rgba(30,91,124,.22)!important;
+ box-shadow:0 16px 40px rgba(15,53,76,.12)!important
+}
+.survival-intro{text-align:center;padding:28px;background:linear-gradient(145deg,#f8fcfe,#eef7fb)}
+.survival-hero-icon{width:54px;height:54px;margin:0 auto 10px;border-radius:17px;background:#0d486e;color:#fff;display:grid;place-items:center;font-size:26px;box-shadow:0 9px 20px rgba(13,72,110,.18)}
+.survival-intro h2{font-size:1.8rem;margin:4px 0 6px;color:#103d59}
+.survival-intro>p{margin:0 auto 18px;color:#5c707c}
+.survival-mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left}
+.survival-mode-card{border:1px solid #d5e5ed;background:#fff;border-radius:18px;padding:18px;cursor:pointer;text-align:left;transition:.15s;box-shadow:0 5px 14px rgba(15,53,76,.05)}
+.survival-mode-card:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(15,53,76,.10);border-color:#8bb7cc}
+.survival-mode-card .survival-mode-icon{font-size:26px;display:block;margin-bottom:7px}
+.survival-mode-card strong{display:block;font-size:1.05rem;color:#143e55;margin-bottom:4px}
+.survival-mode-card small{display:block;color:#647680;line-height:1.4;min-height:38px}
+.survival-mode-card b{display:block;margin-top:12px;color:#0d658f;font-size:.82rem}
+.survival-intro-note{font-size:.78rem;color:#617680;margin-top:14px}
+#survival .survival-panel{padding:18px;background:linear-gradient(160deg,#f9fcfd,#edf6fa)}
+.survival-challenge-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:11px}
+.survival-challenge-head>div{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.survival-mode-badge{font-size:.75rem;font-weight:800;padding:6px 9px;border-radius:999px;background:#0d486e;color:#fff}
+.survival-finish-btn{width:auto!important;background:#fff!important;color:#6d4141!important;border:1px solid #dfcaca!important;border-radius:10px!important;padding:7px 10px!important;font-size:.76rem!important}
+.survival-dashboard{display:grid;grid-template-columns:1.4fr repeat(4,1fr);gap:8px;margin-bottom:11px}
+.survival-stat{background:#fff;border:1px solid #dce8ed;border-radius:13px;padding:9px 10px;text-align:center}
+.survival-stat span{display:block;font-size:.62rem;letter-spacing:.08em;color:#70818a;font-weight:800;margin-bottom:3px}
+.survival-stat strong{font-size:1rem;color:#173e54;white-space:nowrap}
+.survival-stat.lives strong{letter-spacing:2px}
+.survival-pressure{background:#fff;border:1px solid #dce8ed;border-radius:13px;padding:9px 11px;margin-bottom:11px}
+.survival-pressure>div:first-child{display:flex;justify-content:space-between;font-size:.75rem;color:#61747e;margin-bottom:6px}
+.survival-pressure strong{font-variant-numeric:tabular-nums;color:#0d486e}
+.survival-time-track{height:7px;border-radius:999px;background:#e7eef2;overflow:hidden}
+.survival-time-track span{display:block;height:100%;background:#1680a8;border-radius:999px;transition:width .2s linear}
+.survival-pressure.urgent strong{font-weight:900}
+.survival-pressure.urgent .survival-time-track span{filter:saturate(1.5);animation:survivalPulse .65s infinite alternate}
+@keyframes survivalPulse{from{opacity:1}to{opacity:.48}}
+#survival .survival-question{background:#fff;border:1px solid #dce8ed;border-radius:16px;padding:17px;margin-bottom:10px}
+#survival .survival-options .option{border-radius:13px}
+#survival .survival-end{text-align:center}
+#survival .survival-end #survivalFinalScore{font-size:2rem;color:#0d486e}
+@media(max-width:699px){
+ .survival-intro{padding:20px 14px}
+ .survival-mode-grid{grid-template-columns:1fr}
+ .survival-mode-card small{min-height:0}
+ .survival-dashboard{grid-template-columns:1fr 1fr}
+ .survival-stat.lives{grid-column:1/-1}
+ .survival-challenge-head{align-items:flex-start}
+ .survival-finish-btn{white-space:nowrap}
+ #survival .survival-panel{padding:14px!important}
+}
+
 </style>
 </head>
 <body>
@@ -911,7 +964,7 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
   <button class="pro-main-card practical" type="button" onclick="openPracticalsLibrary()">
    <span class="pro-main-icon">📖</span><span><strong>Supuestos prácticos</strong><small id="quickPracticalsCount">Supuestos disponibles</small></span><b>›</b>
   </button>
-  <button class="pro-main-card survival" type="button" onclick="startSurvival()">
+  <button class="pro-main-card survival" type="button" onclick="openSurvival()">
    <span class="pro-main-icon">❤️</span><span><strong>Supervivencia</strong><small>Entrena con 3 vidas y supera tu récord</small></span><b>›</b>
   </button>
   <button class="pro-main-card progress" type="button" onclick="openMyProgress()">
@@ -1046,23 +1099,61 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
 </section>
 
 <section id="survival" class="hidden">
- <div class="view-top"><button class="back" onclick="exitSurvival()">← Inicio</button><div class="timer">Modo Supervivencia</div></div>
- <div class="survival-shell"><div class="survival-panel">
-  <div class="survival-top"><div id="survivalLives" class="survival-lives">❤️ ❤️ ❤️</div><div><span id="survivalQuestionNo" class="type-badge">Pregunta 1</span> <span id="survivalScore" class="survival-score">0 aciertos</span> · <span id="survivalPoints" class="survival-score">0 puntos</span></div></div>
-  <div id="survivalGame">
-   <div id="survivalQuestion" class="survival-question"></div>
-   <div id="survivalOptions" class="survival-options"></div>
-   <div id="survivalFeedback" class="survival-feedback hidden"></div><button id="survivalNext" class="primary hidden" type="button" style="width:100%;margin-top:14px">Siguiente pregunta</button>
+ <div class="view-top survival-view-top"><button class="back" onclick="exitSurvival()">← Inicio</button><div class="timer">Zona de reto</div></div>
+ <div class="survival-shell">
+  <div id="survivalIntro" class="survival-intro">
+   <div class="survival-hero-icon">⚡</div>
+   <div class="section-kicker">Modo Supervivencia</div>
+   <h2>¿Hasta dónde llegas?</h2>
+   <p>3 vidas. Una pregunta cada vez. Elige cómo quieres entrenar.</p>
+   <div class="survival-mode-grid">
+    <button class="survival-mode-card classic" type="button" onclick="startSurvival('classic')">
+     <span class="survival-mode-icon">🔥</span><strong>Clásica</strong>
+     <small>Sin límite por pregunta. Piensa, responde y protege tus 3 vidas.</small>
+     <b>10 puntos y 10 XP de récord por acierto · Jugar →</b>
+    </button>
+    <button class="survival-mode-card pressure" type="button" onclick="startSurvival('pressure')">
+     <span class="survival-mode-icon">⚡</span><strong>Modo presión</strong>
+     <small>60 segundos por pregunta. Entrena concentración y decisión bajo tiempo.</small>
+     <b>15 puntos y 15 XP de récord por acierto · Jugar →</b>
+    </button>
+   </div>
+   <div class="survival-intro-note">🏆 Solo mejorar tu récord personal añade nuevos XP de Supervivencia.</div>
   </div>
-  <div id="survivalEnd" class="survival-end hidden">
-   <div class="section-kicker">Partida terminada</div><h2>❤️ Modo Supervivencia</h2>
+
+  <div id="survivalPanel" class="survival-panel hidden">
+   <div class="survival-challenge-head">
+    <div><span id="survivalModeBadge" class="survival-mode-badge">🔥 Clásica</span><span id="survivalQuestionNo" class="type-badge">Pregunta 1</span></div>
+    <button class="survival-finish-btn" type="button" onclick="requestFinishSurvival()">Finalizar partida</button>
+   </div>
+   <div class="survival-dashboard">
+    <div class="survival-stat lives"><span>VIDAS</span><strong id="survivalLives">❤️ ❤️ ❤️</strong></div>
+    <div class="survival-stat"><span>ACIERTOS</span><strong id="survivalScore">0</strong></div>
+    <div class="survival-stat"><span>PUNTOS</span><strong id="survivalPoints">0</strong></div>
+    <div class="survival-stat"><span>RACHA</span><strong id="survivalStreak">🔥 0</strong></div>
+    <div class="survival-stat"><span>RÉCORD</span><strong id="survivalRecordLive">🏆 0</strong></div>
+   </div>
+   <div id="survivalPressureClock" class="survival-pressure hidden">
+    <div><span>Tiempo para responder</span><strong id="survivalClockText">01:00</strong></div>
+    <div class="survival-time-track"><span id="survivalTimeBar" style="width:100%"></span></div>
+   </div>
+   <div id="survivalGame">
+    <div id="survivalQuestion" class="survival-question"></div>
+    <div id="survivalOptions" class="survival-options"></div>
+    <div id="survivalFeedback" class="survival-feedback hidden"></div>
+    <button id="survivalNext" class="primary hidden" type="button" style="width:100%;margin-top:14px">Siguiente pregunta</button>
+   </div>
+  </div>
+
+  <div id="survivalEnd" class="survival-panel survival-end hidden">
+   <div class="survival-hero-icon">🏁</div>
+   <div class="section-kicker">Partida terminada</div><h2>Modo Supervivencia</h2>
    <strong id="survivalFinalScore">0</strong><p id="survivalFinalText"></p>
-   <button class="primary" type="button" onclick="startSurvival()">Jugar otra vez</button>
+   <button class="primary" type="button" onclick="openSurvival()">Nueva partida</button>
    <button class="secondary" type="button" onclick="goHome()">Volver al inicio</button>
   </div>
- </div></div>
+ </div>
 </section>
-
 
 <section id="setup" class="hidden">
  <div class="view-top"><button class="back" onclick="goHome()">← Volver</button><button class="secondary" onclick="openHelp()">Cómo funciona</button></div>
@@ -1213,7 +1304,7 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
    <div class="help-card"><span>🧠</span><div><strong>Repaso inteligente</strong><small>La app prioriza qué conviene repasar según tus resultados y el tiempo desde la última práctica.</small></div></div>
    <div class="help-card"><span>⭐</span><div><strong>XP, niveles y logros</strong><small>Tu actividad suma XP, permite avanzar de nivel y desbloquear logros. Las “i” explican cada indicador.</small></div></div>
    <div class="help-card"><span>🎯</span><div><strong>Objetivo diario</strong><small>Responde 20 preguntas al día para completar el objetivo. Solo cuentan las preguntas realmente contestadas.</small></div></div>
-   <div class="help-card"><span>❤️</span><div><strong>Supervivencia</strong><small>Entrena con 3 vidas, intenta superar tu récord y suma XP cuando lo mejoras.</small></div></div>
+   <div class="help-card"><span>❤️</span><div><strong>Supervivencia</strong><small>Elige Clásica (10 puntos/acierto) o Modo presión de 60 s (15 puntos/acierto). Cada modalidad tiene récord propio y mejorar ese récord suma XP en la misma proporción.</small></div></div>
    <div class="help-card"><span>✓</span><div><strong>Resultados</strong><small>Finaliza cuando quieras y revisa nota, aciertos, errores, blancos, tiempo y respuestas.</small></div></div>
   </div>
   <button class="primary help-ok" onclick="closeHelp()">Entendido</button>
@@ -1237,8 +1328,8 @@ const $=s=>document.querySelector(s),PUBLIC_URL="https://oposmurcia360.github.io
 let TESTS=[],PRACTICALS=[],currentTest=null,answers=[],current=0,penalty=false,timed=false,timeLimit=0,elapsed=0,interval=null,startedAt=0,deferredPrompt=null;
 let currentPractical=null,practicalAnswers=[],practicalCurrent=0,practicalPenalty=false,practicalTimed=false,practicalTimeLimit=0,practicalElapsed=0,practicalInterval=null,practicalStartedAt=0,practicalQuizStarted=false,practicalStatementY=0;
 let finishingQuiz=false,finishingPractical=false;
-let survivalPool=[],survivalIndex=0,survivalLives=3,survivalCorrect=0,survivalWrong=0,survivalStartedAt=0,survivalLocked=false,survivalPreviousRecord=0;
-async function registrarProgreso({tipo,ejercicioId,titulo,categoria,totalPreguntas,aciertos,errores,blancos,nota,penalizacion,tiempoEmpleado}){
+let survivalPool=[],survivalIndex=0,survivalLives=3,survivalCorrect=0,survivalWrong=0,survivalStartedAt=0,survivalLocked=false,survivalPreviousRecord=0,survivalMode='classic',survivalQuestionDeadline=0,survivalQuestionTimer=null,survivalCurrentStreak=0,survivalFinished=false;
+async function registrarProgreso({tipo,ejercicioId,titulo,categoria,totalPreguntas,aciertos,errores,blancos,nota,penalizacion,tiempoEmpleado,modalidadSupervivencia=null}){
   const user=auth.currentUser;
   if(!user) throw new Error('No hay un usuario autenticado.');
   await addDoc(collection(db,'progreso'),{
@@ -1255,7 +1346,8 @@ async function registrarProgreso({tipo,ejercicioId,titulo,categoria,totalPregunt
     blancos:Number(blancos),
     nota:Number(nota),
     penalizacion:Boolean(penalizacion),
-    tiempoEmpleado:Math.max(0,Math.floor(Number(tiempoEmpleado)||0))
+    tiempoEmpleado:Math.max(0,Math.floor(Number(tiempoEmpleado)||0)),
+    ...(modalidadSupervivencia?{modalidadSupervivencia:String(modalidadSupervivencia)}:{})
   });
 }
 
@@ -1837,9 +1929,16 @@ function computeGame(items){
  });
  const dailyGoals=[...questionsByDay.values()].filter(n=>n>=20).length;
  xp+=dailyGoals*50;
- const survival=items.filter(x=>x.tipo==='supervivencia'||x.ejercicioId==='modo-supervivencia'||String(x.categoria||'').toLowerCase().includes('supervivencia'));
- const survivalRecord=survival.length?Math.max(...survival.map(x=>Number(x.aciertos)||0)):0;
- xp+=survivalRecord*10;
+ const survival=items.filter(x=>x.tipo==='supervivencia'||String(x.ejercicioId||'').startsWith('modo-supervivencia')||String(x.categoria||'').toLowerCase().includes('supervivencia'));
+ const survivalClassic=survival.filter(x=>{
+   const m=String(x.modalidadSupervivencia||'').toLowerCase();
+   return m==='classic'||(!m && x.ejercicioId!=='modo-supervivencia-presion');
+ });
+ const survivalPressure=survival.filter(x=>String(x.modalidadSupervivencia||'').toLowerCase()==='pressure'||x.ejercicioId==='modo-supervivencia-presion');
+ const survivalClassicRecord=survivalClassic.length?Math.max(...survivalClassic.map(x=>Number(x.aciertos)||0)):0;
+ const survivalPressureRecord=survivalPressure.length?Math.max(...survivalPressure.map(x=>Number(x.aciertos)||0)):0;
+ const survivalRecord=Math.max(survivalClassicRecord,survivalPressureRecord);
+ xp+=survivalClassicRecord*10+survivalPressureRecord*15;
  let streak=0,bestStreak=0;
  if(activeDays.length){
    const set=new Set(activeDays); let d=new Date(); d.setHours(0,0,0,0);
@@ -1864,7 +1963,7 @@ function computeGame(items){
   ['🧠 Centenario',totalCorrect>=100],['🔥 Constante',bestStreak>=7],['🔥 Imparable',bestStreak>=30],
   ['📚 Repaso activo',repaso>=3],['🏆 Especialista práctico',practicals>=10]
  ];
- return {xp,streak,bestStreak,survivalRecord,mastery,global,todayQuestions,medals,tests,practicals,dailyGoals,evaluatedExercises:bestByExercise.size};
+ return {xp,streak,bestStreak,survivalRecord,survivalClassicRecord,survivalPressureRecord,mastery,global,todayQuestions,medals,tests,practicals,dailyGoals,evaluatedExercises:bestByExercise.size};
 }
 
 const HELP_TEXT={
@@ -2101,56 +2200,118 @@ async function refreshGame(){
  renderSmartReview();
 }
 function shuffled(a){const x=a.slice();for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x}
-window.startSurvival=async()=>{
+window.openSurvival=()=>{
+ clearSurvivalTimer();
+ $('#survivalIntro').classList.remove('hidden');
+ $('#survivalPanel').classList.add('hidden');
+ $('#survivalEnd').classList.add('hidden');
+ show('survival');
+};
+window.startSurvival=async(mode='classic')=>{
  const pool=[];TESTS.forEach(t=>(t.questions||[]).forEach((q,i)=>pool.push({q,source:t.title,id:`${t.id}:${i}`})));
  if(!pool.length){alert('No hay preguntas disponibles para el Modo Supervivencia.');return}
  survivalPreviousRecord=0;
- try{const u=auth.currentUser;if(u){const qs=await getDocs(query(collection(db,'progreso'),where('uid','==',u.uid)));survivalPreviousRecord=Math.max(0,...qs.docs.map(d=>d.data()).filter(x=>x.tipo==='supervivencia'||x.ejercicioId==='modo-supervivencia').map(x=>Number(x.aciertos)||0))}}catch(e){console.error('No se pudo cargar el récord previo:',e)}
- survivalPool=shuffled(pool);survivalIndex=0;survivalLives=3;survivalCorrect=0;survivalWrong=0;survivalStartedAt=Date.now();survivalLocked=false;
- $('#survivalEnd').classList.add('hidden');$('#survivalGame').classList.remove('hidden');show('survival');renderSurvival();
+ try{const u=auth.currentUser;if(u){const qs=await getDocs(query(collection(db,'progreso'),where('uid','==',u.uid)));survivalPreviousRecord=Math.max(0,...qs.docs.map(d=>d.data()).filter(x=>{
+ const isSurvival=x.tipo==='supervivencia'||String(x.ejercicioId||'').startsWith('modo-supervivencia');
+ if(!isSurvival)return false;
+ const savedMode=String(x.modalidadSupervivencia||'').toLowerCase();
+ if(savedMode)return savedMode===survivalMode;
+ // Intentos históricos anteriores a las dos modalidades se consideran Clásica.
+ return survivalMode==='classic' && (x.ejercicioId==='modo-supervivencia'||!x.ejercicioId);
+}).map(x=>Number(x.aciertos)||0))}}catch(e){console.error('No se pudo cargar el récord previo:',e)}
+ survivalMode=mode==='pressure'?'pressure':'classic';
+ survivalPool=shuffled(pool);survivalIndex=0;survivalLives=3;survivalCorrect=0;survivalWrong=0;survivalStartedAt=Date.now();survivalLocked=false;survivalCurrentStreak=0;survivalFinished=false;
+ $('#survivalIntro').classList.add('hidden');$('#survivalEnd').classList.add('hidden');$('#survivalPanel').classList.remove('hidden');show('survival');renderSurvival();
 };
-function renderSurvival(){
- if(survivalLives<=0||survivalIndex>=survivalPool.length){finishSurvival();return}
- const item=survivalPool[survivalIndex],q=item.q;survivalLocked=false;
+function clearSurvivalTimer(){if(survivalQuestionTimer){clearInterval(survivalQuestionTimer);survivalQuestionTimer=null}}
+function survivalRewardPerCorrect(){return survivalMode==='pressure'?15:10}
+function updateSurvivalDashboard(){
  $('#survivalLives').textContent='❤️ '.repeat(survivalLives)+'🖤 '.repeat(3-survivalLives);
- $('#survivalScore').textContent=`${survivalCorrect} aciertos`;
- $('#survivalPoints').textContent=`${survivalCorrect*10} puntos`;
+ $('#survivalScore').textContent=String(survivalCorrect);
+ $('#survivalPoints').textContent=String(survivalCorrect*survivalRewardPerCorrect());
+ $('#survivalStreak').textContent=`🔥 ${survivalCurrentStreak}`;
+ $('#survivalRecordLive').textContent=`🏆 ${Math.max(survivalPreviousRecord,survivalCorrect)}`;
+}
+function startSurvivalQuestionTimer(){
+ clearSurvivalTimer();
+ const box=$('#survivalPressureClock');
+ if(survivalMode!=='pressure'){box.classList.add('hidden');return}
+ box.classList.remove('hidden');
+ survivalQuestionDeadline=Date.now()+60000;
+ const tick=()=>{
+   const left=Math.max(0,survivalQuestionDeadline-Date.now());
+   const sec=Math.ceil(left/1000);
+   $('#survivalClockText').textContent=`00:${String(sec).padStart(2,'0')}`;
+   $('#survivalTimeBar').style.width=`${Math.max(0,Math.min(100,left/600))}%`;
+   box.classList.toggle('urgent',left<=10000);
+   if(left<=0){clearSurvivalTimer();timeoutSurvival()}
+ };
+ tick();survivalQuestionTimer=setInterval(tick,200);
+}
+function renderSurvival(){
+ clearSurvivalTimer();
+ if(survivalFinished)return;
+ if(survivalLives<=0||survivalIndex>=survivalPool.length){finishSurvival(false);return}
+ const item=survivalPool[survivalIndex],q=item.q;survivalLocked=false;
+ updateSurvivalDashboard();
+ $('#survivalModeBadge').textContent=survivalMode==='pressure'?'⚡ Modo presión · 60 s':'🔥 Clásica';
  $('#survivalQuestionNo').textContent=`Pregunta ${survivalIndex+1}`;
  $('#survivalQuestion').textContent=q[0];
  $('#survivalOptions').innerHTML=q[1].map((o,i)=>`<button class="option" data-schoice="${i}"><strong>${String.fromCharCode(65+i)})</strong> ${esc(o)}</button>`).join('');
  $('#survivalFeedback').className='survival-feedback hidden';$('#survivalFeedback').textContent='';$('#survivalNext').classList.add('hidden');$('#survivalNext').onclick=null;
  document.querySelectorAll('[data-schoice]').forEach(b=>b.onclick=()=>answerSurvival(Number(b.dataset.schoice)));
+ startSurvivalQuestionTimer();
 }
 function answerSurvival(choice){
- if(survivalLocked)return;survivalLocked=true;
+ if(survivalLocked||survivalFinished)return;survivalLocked=true;clearSurvivalTimer();
  const selectedBtn=document.querySelector(`[data-schoice="${choice}"]`);
  if(selectedBtn) selectedBtn.classList.add('selected');
  const q=survivalPool[survivalIndex].q,ok=choice===q[2],fb=$('#survivalFeedback');
- if(ok){survivalCorrect++;fb.textContent='✓ Correcto · sigues con 3 vidas'.replace('3',String(survivalLives));fb.className='survival-feedback ok'}
- else{survivalWrong++;survivalLives--;fb.textContent=`✕ Incorrecto · correcta: ${String.fromCharCode(65+q[2])}) ${q[1][q[2]]}`;fb.className='survival-feedback bad'}
- $('#survivalLives').textContent='❤️ '.repeat(survivalLives)+'🖤 '.repeat(3-survivalLives);
- $('#survivalScore').textContent=`${survivalCorrect} aciertos`;
- $('#survivalPoints').textContent=`${survivalCorrect*10} puntos`;
+ if(ok){survivalCorrect++;survivalCurrentStreak++;fb.textContent=`✓ Correcto · racha ${survivalCurrentStreak}`;fb.className='survival-feedback ok'}
+ else{survivalWrong++;survivalLives--;survivalCurrentStreak=0;fb.textContent=`✕ Incorrecto · correcta: ${String.fromCharCode(65+q[2])}) ${q[1][q[2]]}`;fb.className='survival-feedback bad'}
+ updateSurvivalDashboard();
  document.querySelectorAll('[data-schoice]').forEach(b=>b.disabled=true);
- const nextBtn=$('#survivalNext');
- nextBtn.classList.remove('hidden');
+ const nextBtn=$('#survivalNext');nextBtn.classList.remove('hidden');
  nextBtn.textContent=survivalLives<=0?'Ver resultado':'Siguiente pregunta';
  nextBtn.onclick=()=>{survivalIndex++;renderSurvival()};
 }
-async function finishSurvival(){
- $('#survivalGame').classList.add('hidden');$('#survivalEnd').classList.remove('hidden');
+function timeoutSurvival(){
+ if(survivalLocked||survivalFinished)return;survivalLocked=true;
+ survivalWrong++;survivalLives--;survivalCurrentStreak=0;
+ const q=survivalPool[survivalIndex].q,fb=$('#survivalFeedback');
+ fb.textContent=`⏱ Tiempo agotado · correcta: ${String.fromCharCode(65+q[2])}) ${q[1][q[2]]}`;fb.className='survival-feedback bad';
+ document.querySelectorAll('[data-schoice]').forEach(b=>b.disabled=true);
+ updateSurvivalDashboard();
+ const nextBtn=$('#survivalNext');nextBtn.classList.remove('hidden');
+ nextBtn.textContent=survivalLives<=0?'Ver resultado':'Siguiente pregunta';
+ nextBtn.onclick=()=>{survivalIndex++;renderSurvival()};
+}
+window.requestFinishSurvival=()=>{
+ if(survivalFinished)return;
+ if(confirm('¿Finalizar la partida ahora? Se guardará el resultado conseguido hasta este momento.'))finishSurvival(true);
+};
+async function finishSurvival(manual=false){
+ if(survivalFinished)return;survivalFinished=true;clearSurvivalTimer();
+ $('#survivalPanel').classList.add('hidden');$('#survivalIntro').classList.add('hidden');$('#survivalEnd').classList.remove('hidden');
  $('#survivalFinalScore').textContent=`${survivalCorrect} aciertos`;
- const total=survivalCorrect+survivalWrong,pct=total?Math.round(survivalCorrect/total*100):0,gamePoints=survivalCorrect*10;
- const improvement=Math.max(0,survivalCorrect-survivalPreviousRecord),xpEarned=improvement*10;
+ const total=survivalCorrect+survivalWrong,pct=total?Math.round(survivalCorrect/total*100):0,rewardPerCorrect=survivalRewardPerCorrect(),gamePoints=survivalCorrect*rewardPerCorrect;
+ const improvement=Math.max(0,survivalCorrect-survivalPreviousRecord),xpEarned=improvement*rewardPerCorrect;
  const recordMsg=survivalCorrect>survivalPreviousRecord?` <span class="trophy-pop">🏆</span> ¡Nuevo récord personal!`:'';
  const xpMsg=xpEarned>0?`⭐ <strong>+${xpEarned} XP acumulados</strong> por mejorar tu récord.`:`⭐ <strong>0 XP nuevos</strong> · para ganar XP de Supervivencia debes superar tu récord de ${survivalPreviousRecord}.`;
- $('#survivalFinalText').innerHTML=`${survivalCorrect} aciertos · ${survivalWrong} errores · ${pct}%<br>Has respondido ${total} preguntas antes de perder las 3 vidas.<br><br>🎮 <strong>${gamePoints} puntos de partida</strong>${recordMsg}<br>${xpMsg}`;
+ const modeMsg=survivalMode==='pressure'?'⚡ Modo presión · 15 puntos/acierto':'🔥 Clásica · 10 puntos/acierto';
+ const endMsg=manual?'Partida finalizada por ti.':'Partida completada.';
+ $('#survivalFinalText').innerHTML=`${modeMsg} · ${survivalCorrect} aciertos · ${survivalWrong} errores · ${pct}%<br>${endMsg}<br><br>🎮 <strong>${gamePoints} puntos de partida</strong>${recordMsg}<br>${xpMsg}`;
  const used=Math.floor((Date.now()-survivalStartedAt)/1000),nota=total?survivalCorrect/total*10:0;
- try{await registrarProgreso({tipo:'supervivencia',ejercicioId:'modo-supervivencia',titulo:'Modo Supervivencia',categoria:'Modo Supervivencia',totalPreguntas:total,aciertos:survivalCorrect,errores:survivalWrong,blancos:0,nota,penalizacion:false,tiempoEmpleado:used});await refreshGame()}
- catch(e){console.error('No se pudo guardar el récord de supervivencia:',e)}
+ if(total>0){
+  try{await registrarProgreso({tipo:'supervivencia',ejercicioId:survivalMode==='pressure'?'modo-supervivencia-presion':'modo-supervivencia-clasica',titulo:`Modo Supervivencia · ${survivalMode==='pressure'?'Presión':'Clásica'}`,categoria:'Modo Supervivencia',totalPreguntas:total,aciertos:survivalCorrect,errores:survivalWrong,blancos:0,nota,penalizacion:false,tiempoEmpleado:used,modalidadSupervivencia:survivalMode});await refreshGame()}
+  catch(e){console.error('No se pudo guardar el récord de supervivencia:',e)}
+ }
 }
-window.exitSurvival=()=>{if(survivalLives>0&&survivalStartedAt&&confirm('¿Salir del Modo Supervivencia? Esta partida no se guardará.'))goHome();else if(survivalLives<=0)goHome()};
-
+window.exitSurvival=()=>{
+ if(!$('#survivalPanel').classList.contains('hidden')&&!survivalFinished){
+   if(confirm('¿Salir del Modo Supervivencia? La partida actual no se guardará.')){clearSurvivalTimer();survivalFinished=true;goHome()}
+ }else{clearSurvivalTimer();goHome()}
+};
 
 /* =========================
    PRO · REPASO INTELIGENTE V1
