@@ -1794,6 +1794,13 @@ window.refreshAdminManagement=async()=>{
 };
 
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function formatLegalReference(value){
+  return String(value??'').trim()
+    .replace(/\bArte\.?\s*/gi,'Art. ')
+    .replace(/\bArtes\.?\s*/gi,'Arts. ')
+    .replace(/\bArtículo\s+/gi,'Art. ')
+    .replace(/\bArtículos\s+/gi,'Arts. ');
+}
 function msg(t,type='error'){const e=$('#authMsg');e.textContent=t;e.className='authmsg '+type} function clearMsg(){const e=$('#authMsg');e.textContent='';e.className='hidden'}
 function ferr(c){return ({'auth/invalid-credential':'Correo o contraseña incorrectos.','auth/user-disabled':'Esta cuenta está desactivada.','auth/too-many-requests':'Demasiados intentos. Inténtalo más tarde.','auth/invalid-email':'El correo electrónico no es válido.','auth/network-request-failed':'No se ha podido conectar. Comprueba tu conexión.'}[c]||'No se ha podido iniciar sesión.')}
 $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();clearMsg();const b=$('#loginBtn');b.disabled=true;b.textContent='Accediendo…';try{await signInWithEmailAndPassword(auth,$('#email').value.trim(),$('#password').value)}catch(x){msg(ferr(x.code))}finally{b.disabled=false;b.textContent='Iniciar sesión'}});
@@ -1827,13 +1834,23 @@ async function loadTests(){
     if(Array.isArray(raw)){
       questions=raw.map(q=>{
         if(Array.isArray(q)) return q;
-        if(q && typeof q==='object') return [q.text??q.question??'', q.options??q.answers??[], Number(q.correct??q.correctIndex??0)];
+        if(q && typeof q==='object') return [
+          q.text??q.question??'',
+          q.options??q.answers??[],
+          Number(q.correct??q.correctIndex??0),
+          String(q.fundamento??q.legalRef??q.reference??'').trim()
+        ];
         return null;
       }).filter(Boolean);
     } else if(raw && typeof raw==='object'){
       questions=Object.values(raw)
         .sort((a,b)=>(Number(a?.order)||999)-(Number(b?.order)||999))
-        .map(q=>[q?.text??q?.question??'', Array.isArray(q?.options)?q.options:(q?.answers??[]), Number(q?.correct??q?.correctIndex??0)]);
+        .map(q=>[
+          q?.text??q?.question??'',
+          Array.isArray(q?.options)?q.options:(q?.answers??[]),
+          Number(q?.correct??q?.correctIndex??0),
+          String(q?.fundamento??q?.legalRef??q?.reference??'').trim()
+        ]);
     }
     questions=questions.filter(q=>Array.isArray(q) && typeof q[0]==='string' && Array.isArray(q[1]) && q[1].length>=2 && Number.isInteger(q[2]));
     return {id:d.id,...data,questions};
@@ -1855,13 +1872,23 @@ async function loadPracticals(){
       if(Array.isArray(raw)){
         questions=raw.map(q=>{
           if(Array.isArray(q)) return q;
-          if(q && typeof q==='object') return [q.text??q.question??'', q.options??q.answers??[], Number(q.correct??q.correctIndex??0)];
+          if(q && typeof q==='object') return [
+            q.text??q.question??'',
+            q.options??q.answers??[],
+            Number(q.correct??q.correctIndex??0),
+            String(q.fundamento??q.legalRef??q.reference??'').trim()
+          ];
           return null;
         }).filter(Boolean);
       }else if(raw && typeof raw==='object'){
         questions=Object.values(raw)
           .sort((a,b)=>(Number(a?.order)||999)-(Number(b?.order)||999))
-          .map(q=>[q?.text??q?.question??'', Array.isArray(q?.options)?q.options:(q?.answers??[]), Number(q?.correct??q?.correctIndex??0)]);
+          .map(q=>[
+            q?.text??q?.question??'',
+            Array.isArray(q?.options)?q.options:(q?.answers??[]),
+            Number(q?.correct??q?.correctIndex??0),
+            String(q?.fundamento??q?.legalRef??q?.reference??'').trim()
+          ]);
       }
       questions=questions.filter(q=>Array.isArray(q) && typeof q[0]==='string' && Array.isArray(q[1]) && q[1].length>=2 && Number.isInteger(q[2]));
       return {id:d.id,...data,statement:String(data.statement??data.enunciado??''),questions};
@@ -2624,7 +2651,7 @@ function fmt(s){s=Math.max(0,Math.floor(s));return String(Math.floor(s/60)).padS
 function renderQuestion(){const q=currentTest.questions[current];$('#qnum').textContent=`Pregunta ${current+1} de ${currentTest.questions.length}`;$('#question').textContent=q[0];$('#progress').style.width=((current+1)/currentTest.questions.length*100)+'%';$('#options').innerHTML=q[1].map((o,i)=>`<button class="option ${answers[current]===i?'selected':''}" data-choice="${i}"><strong>${String.fromCharCode(65+i)})</strong> ${esc(o)}</button>`).join('');document.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>{answers[current]=Number(b.dataset.choice);renderQuestion()})}
 window.prevQ=()=>{if(current>0){current--;renderQuestion()}};window.nextQ=()=>{if(current<currentTest.questions.length-1){current++;renderQuestion()}};window.confirmExit=()=>{if(confirm('¿Salir del test? Se perderán las respuestas de este intento.'))goHome()};
 window.finishQuiz=async(auto=false)=>{if(finishingQuiz)return;finishingQuiz=true;clearInterval(interval);interval=null;elapsed=Math.floor((Date.now()-startedAt)/1000);let ok=0,bad=0,blank=0;currentTest.questions.forEach((q,i)=>{if(answers[i]===null)blank++;else if(answers[i]===q[2])ok++;else bad++});const raw=ok-(penalty?bad/3:0),score=Math.max(0,(raw/currentTest.questions.length)*10),usedTime=timed?Math.min(elapsed,timeLimit):elapsed;$('#resultTitle').textContent=currentTest.title;$('#score').textContent=score.toFixed(2).replace('.',',')+'/10';$('#ok').textContent=ok;$('#bad').textContent=bad;$('#blank').textContent=blank;$('#resultInfo').textContent=(auto?'Tiempo agotado. · ':'')+'Tiempo empleado: '+fmt(usedTime)+' · '+(penalty?'Penalización 1/3 aplicada.':'Sin penalización.');$('#review').classList.add('hidden');$('#review').innerHTML='';const s=stats();s.done=(s.done||0)+1;s.best=s.best==null?score:Math.max(Number(s.best),score);saveStats(s);show('results');try{await registrarProgreso({tipo:'test',ejercicioId:currentTest.id,titulo:currentTest.title,categoria:topicInfo(currentTest).label,totalPreguntas:currentTest.questions.length,aciertos:ok,errores:bad,blancos:blank,nota:score,penalizacion:penalty,tiempoEmpleado:usedTime});await refreshGame();}catch(e){console.error('No se pudo registrar el progreso del test:',e);alert('El resultado se muestra correctamente, pero no se ha podido guardar el progreso en tu historial. Comprueba la conexión e inténtalo de nuevo más tarde.');finishingQuiz=false;}};
-window.toggleReview=()=>{const box=$('#review');if(!box.innerHTML)box.innerHTML=currentTest.questions.map((q,i)=>{const a=answers[i],state=a===null?'blank':(a===q[2]?'ok':'bad'),y=a===null?'Sin contestar':String.fromCharCode(65+a)+') '+q[1][a],r=String.fromCharCode(65+q[2])+') '+q[1][q[2]];return `<div class="review-item ${state}"><strong>${i+1}. ${esc(q[0])}</strong><br>Tu respuesta: ${esc(y)}<br>Correcta: ${esc(r)}</div>`}).join('');box.classList.toggle('hidden')};window.repeatQuiz=()=>openSetup(currentTest.id);window.shareResult=()=>location.href='https://wa.me/?text='+encodeURIComponent('OposMurcia 360 · '+currentTest.title+' · Resultado: '+$('#score').textContent+' · '+PUBLIC_URL);
+window.toggleReview=()=>{const box=$('#review');if(!box.innerHTML)box.innerHTML=currentTest.questions.map((q,i)=>{const a=answers[i],state=a===null?'blank':(a===q[2]?'ok':'bad'),y=a===null?'Sin contestar':String.fromCharCode(65+a)+') '+q[1][a],r=String.fromCharCode(65+q[2])+') '+q[1][q[2]],fundamento=formatLegalReference(q[3]);return `<div class="review-item ${state}"><strong>${i+1}. ${esc(q[0])}</strong><br>Tu respuesta: ${esc(y)}<br>Correcta: ${esc(r)}${fundamento?` · ${esc(fundamento)}`:''}</div>`}).join('');box.classList.toggle('hidden')};window.repeatQuiz=()=>openSetup(currentTest.id);window.shareResult=()=>location.href='https://wa.me/?text='+encodeURIComponent('OposMurcia 360 · '+currentTest.title+' · Resultado: '+$('#score').textContent+' · '+PUBLIC_URL);
 
 function openPracticalSetup(id){
   currentPractical=PRACTICALS.find(p=>p.id===id);
@@ -2727,7 +2754,8 @@ window.togglePracticalReview=()=>{
     const a=practicalAnswers[i],state=a===null?'blank':(a===q[2]?'ok':'bad');
     const y=a===null?'Sin contestar':String.fromCharCode(65+a)+') '+q[1][a];
     const r=String.fromCharCode(65+q[2])+') '+q[1][q[2]];
-    return `<div class="review-item ${state}"><strong>${i+1}. ${esc(q[0])}</strong><br>Tu respuesta: ${esc(y)}<br>Correcta: ${esc(r)}</div>`;
+    const fundamento=formatLegalReference(q[3]);
+    return `<div class="review-item ${state}"><strong>${i+1}. ${esc(q[0])}</strong><br>Tu respuesta: ${esc(y)}<br>Correcta: ${esc(r)}${fundamento?` · ${esc(fundamento)}`:''}</div>`;
   }).join('');
   box.classList.toggle('hidden');
 };
