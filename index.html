@@ -1126,7 +1126,9 @@ Accede a tus tests y supuestos prácticos, realiza simulacros con o sin tiempo, 
    <div class="survival-alias-box">
     <label for="survivalAliasInput">Alias para la clasificación</label>
     <input id="survivalAliasInput" type="text" maxlength="20" autocomplete="off" placeholder="Ej.: Murcia2026">
-    <span class="survival-alias-help">Será el nombre visible en la liguilla. No se mostrará tu correo electrónico.</span>
+    <span class="survival-alias-help">Queda vinculado a tu usuario autorizado. En la liguilla solo se mostrará el alias, nunca tu correo electrónico. Puedes cambiarlo cuando quieras.</span>
+    <button class="secondary" id="saveSurvivalAliasBtn" type="button" onclick="saveSurvivalAliasFromInput()" style="margin-top:10px;width:100%">Guardar / cambiar alias</button>
+    <div id="survivalAliasStatus" class="survival-alias-help" style="margin-top:7px"></div>
    </div>
    <div class="survival-mode-grid">
     <button class="survival-mode-card classic" type="button" onclick="startSurvival('classic')">
@@ -2287,6 +2289,72 @@ function validSurvivalAlias(value){
 function survivalRankingDocId(uid,mode){
   return `${uid}_${survivalModeDoc(mode)}`;
 }
+function survivalAliasProfileDocId(uid){
+  return String(uid||'');
+}
+async function loadSurvivalAliasProfile(){
+  const u=auth.currentUser;
+  if(!u)return null;
+  try{
+    const snap=await getDoc(doc(db,'supervivencia_aliases',survivalAliasProfileDocId(u.uid)));
+    return snap.exists()?snap.data():null;
+  }catch(e){
+    console.error('No se pudo cargar el alias vinculado al usuario:',e);
+    return null;
+  }
+}
+async function syncAliasToExistingRankings(alias){
+  const u=auth.currentUser;
+  if(!u)return;
+  const cleanAlias=normalizeSurvivalAlias(alias);
+  for(const mode of ['classic','pressure']){
+    try{
+      const ref=doc(db,'supervivencia_clasificacion',survivalRankingDocId(u.uid,mode));
+      await runTransaction(db,async tx=>{
+        const snap=await tx.get(ref);
+        if(!snap.exists())return;
+        tx.update(ref,{alias:cleanAlias,actualizadoEn:serverTimestamp()});
+      });
+    }catch(e){
+      console.error(`No se pudo actualizar el alias de ${mode}:`,e);
+    }
+  }
+}
+async function saveSurvivalAliasProfile(alias){
+  const u=auth.currentUser;
+  if(!u)throw new Error('No hay usuario autenticado.');
+  const cleanAlias=normalizeSurvivalAlias(alias);
+  if(!validSurvivalAlias(cleanAlias))throw new Error('Alias no válido.');
+  const ref=doc(db,'supervivencia_aliases',survivalAliasProfileDocId(u.uid));
+  await setDoc(ref,{
+    uid:u.uid,
+    email:u.email||'',
+    alias:cleanAlias,
+    actualizadoEn:serverTimestamp()
+  },{merge:true});
+  await syncAliasToExistingRankings(cleanAlias);
+  return cleanAlias;
+}
+window.saveSurvivalAliasFromInput=async()=>{
+  const input=$('#survivalAliasInput');
+  const alias=normalizeSurvivalAlias(input?.value||'');
+  const status=$('#survivalAliasStatus');
+  if(!validSurvivalAlias(alias)){
+    alert('Introduce un alias de entre 3 y 20 caracteres. Puedes usar letras, números, espacios, guion, punto o guion bajo.');
+    input?.focus();
+    return;
+  }
+  try{
+    const saved=await saveSurvivalAliasProfile(alias);
+    survivalAlias=saved;
+    if(input)input.value=saved;
+    if(status)status.textContent='✓ Alias guardado y vinculado a tu usuario.';
+  }catch(e){
+    console.error('No se pudo guardar el alias:',e);
+    if(status)status.textContent='No se ha podido guardar el alias.';
+    alert('No se ha podido guardar el alias. Revisa las reglas de Firestore.');
+  }
+};
 async function loadOwnSurvivalRanking(mode){
   const u=auth.currentUser;
   if(!u)return null;
@@ -2331,6 +2399,13 @@ async function loadSurvivalRankingPosition(mode,uid){
     console.error('No se pudo calcular la posición en la liguilla:',e);
     return {position:0,total:0,rows:[]};
   }
+}
+async function loadSurvivalCompetitionState(mode,uid){
+  const ranking=await loadSurvivalRankingPosition(mode,uid);
+  const own=(ranking.rows||[]).find(x=>String(x.uid||'')===String(uid||''))||null;
+  const personal=Math.max(0,Number(own?.aciertos)||0);
+  const global=Math.max(0,...(ranking.rows||[]).map(x=>Number(x.aciertos)||0));
+  return {ranking,own,personal,global};
 }
 function renderSurvivalLeague(rows,currentUid){
   const list=(Array.isArray(rows)?rows:[]).slice();
@@ -2397,9 +2472,23 @@ window.openSurvival=async()=>{
  $('#survivalEnd').classList.add('hidden');
  show('survival');
  const input=$('#survivalAliasInput');
- if(input && !input.value){
-   const prev=await loadOwnSurvivalRanking('classic');
-   if(prev?.alias)input.value=String(prev.alias);
+ const status=$('#survivalAliasStatus');
+ if(status)status.textContent='';
+ if(input){
+   const profile=await loadSurvivalAliasProfile();
+   if(profile?.alias){
+     input.value=String(profile.alias);
+     if(status)status.textContent='Alias vinculado a tu usuario. Puedes modificarlo antes de jugar.';
+   }else if(!input.value){
+     // Compatibilidad con usuarios que ya tenían alias en la liguilla antes de V26.
+     const prevClassic=await loadOwnSurvivalRanking('classic');
+     const prevPressure=prevClassic?.alias?null:await loadOwnSurvivalRanking('pressure');
+     const previousAlias=prevClassic?.alias||prevPressure?.alias||'';
+     if(previousAlias){
+       input.value=String(previousAlias);
+       try{await saveSurvivalAliasProfile(previousAlias)}catch(e){console.error('No se pudo migrar el alias previo:',e)}
+     }
+   }
  }
 };
 window.startSurvival=async(mode='classic')=>{
@@ -2409,15 +2498,31 @@ window.startSurvival=async(mode='classic')=>{
    $('#survivalAliasInput')?.focus();
    return;
  }
- survivalAlias=alias;
+ try{
+   survivalAlias=await saveSurvivalAliasProfile(alias);
+   const status=$('#survivalAliasStatus');
+   if(status)status.textContent='✓ Alias guardado y vinculado a tu usuario.';
+ }catch(e){
+   console.error('No se pudo vincular el alias al usuario:',e);
+   alert('No se ha podido guardar el alias. Revisa las reglas de Firestore antes de iniciar la partida.');
+   return;
+ }
  const pool=[];TESTS.forEach(t=>(t.questions||[]).forEach((q,i)=>pool.push({q,source:t.title,id:`${t.id}:${i}`})));
  if(!pool.length){alert('No hay preguntas disponibles para el Modo Supervivencia.');return}
  survivalMode=mode==='pressure'?'pressure':'classic';
- // V21: reinicio solicitado de los marcadores históricos.
- // Desde esta versión, los récords personal y global comienzan de cero
- // y solo cuentan las partidas realizadas con el nuevo sistema de clasificación.
+
+ // V25: récord personal y global persistentes.
+ // La fuente de verdad es la clasificación compartida de Firebase.
  survivalPreviousRecord=0;
  survivalGlobalRecord=0;
+ try{
+   const state=await loadSurvivalCompetitionState(survivalMode,auth.currentUser?.uid||'');
+   survivalPreviousRecord=state.personal;
+   survivalGlobalRecord=Math.max(state.global,state.personal);
+ }catch(e){
+   console.error('No se pudieron cargar los récords persistentes de Supervivencia:',e);
+ }
+
  survivalPool=shuffled(pool);survivalIndex=0;survivalLives=3;survivalCorrect=0;survivalWrong=0;survivalStartedAt=Date.now();survivalLocked=false;survivalCurrentStreak=0;survivalBestStreak=0;survivalFinished=false;
  $('#survivalIntro').classList.add('hidden');$('#survivalEnd').classList.add('hidden');$('#survivalPanel').classList.remove('hidden');show('survival');renderSurvival();
 };
@@ -2493,30 +2598,107 @@ window.requestFinishSurvival=()=>{
  if(confirm('¿Finalizar la partida ahora? Se guardará el resultado conseguido hasta este momento.'))finishSurvival(true);
 };
 async function finishSurvival(manual=false){
- if(survivalFinished)return;survivalFinished=true;clearSurvivalTimer();
- $('#survivalPanel').classList.add('hidden');$('#survivalIntro').classList.add('hidden');$('#survivalEnd').classList.remove('hidden');
+ if(survivalFinished)return;
+ survivalFinished=true;
+ clearSurvivalTimer();
+
+ $('#survivalPanel').classList.add('hidden');
+ $('#survivalIntro').classList.add('hidden');
+ $('#survivalEnd').classList.remove('hidden');
  $('#survivalFinalScore').textContent=`${survivalCorrect} aciertos`;
- const total=survivalCorrect+survivalWrong,rewardPerCorrect=survivalRewardPerCorrect(),gamePoints=survivalCorrect*rewardPerCorrect;
- const personalRecord=Math.max(survivalPreviousRecord,survivalCorrect);
- const improvement=Math.max(0,survivalCorrect-survivalPreviousRecord),xpEarned=improvement*rewardPerCorrect;
- const globalData=total>0?await updateGlobalSurvivalRecord(survivalMode,survivalCorrect,gamePoints,survivalBestStreak):{aciertos:0,puntos:0,racha:0};
- survivalGlobalRecord=Math.max(0,Number(globalData.aciertos)||0,survivalCorrect);
- const globalRecord=Math.max(survivalGlobalRecord,personalRecord);
+
+ const total=survivalCorrect+survivalWrong;
+ const rewardPerCorrect=survivalRewardPerCorrect();
+ const gamePoints=survivalCorrect*rewardPerCorrect;
+ const recordBeforeGame=Math.max(0,survivalPreviousRecord);
+ const improvement=Math.max(0,survivalCorrect-recordBeforeGame);
+ const xpEarned=improvement*rewardPerCorrect;
+
+ // Guardamos la mejor marca del opositor. Una partida peor no puede sustituirla.
  if(total>0){
-   try{await saveSurvivalRanking(survivalMode,survivalAlias,survivalCorrect,gamePoints,survivalBestStreak)}
-   catch(e){console.error('No se pudo guardar la clasificación:',e)}
+   try{
+     await saveSurvivalRanking(
+       survivalMode,
+       survivalAlias,
+       survivalCorrect,
+       gamePoints,
+       survivalBestStreak
+     );
+   }catch(e){
+     console.error('No se pudo guardar la clasificación:',e);
+   }
  }
- const ranking=await loadSurvivalRankingPosition(survivalMode,auth.currentUser?.uid||'');
- survivalRank=ranking.position;survivalParticipants=ranking.total;
- const recordMsg=survivalCorrect>survivalPreviousRecord?` <span class="trophy-pop">🏆</span> ¡Nuevo récord personal!`:'';
- const leagueMsg=survivalCorrect>=globalRecord && survivalCorrect>0?' <span class="trophy-pop">🌐</span> Récord global igualado o superado.':'';
- const xpMsg=xpEarned>0?`⭐ <strong>+${xpEarned} XP acumulados</strong> por mejorar tu récord personal.`:`⭐ <strong>0 XP nuevos</strong> · para ganar XP de Supervivencia debes superar tu récord personal de ${survivalPreviousRecord}.`;
- const modeMsg=survivalMode==='pressure'?'⚡ Modo presión · 15 puntos/acierto':'🔥 Clásica · 10 puntos/acierto';
+
+ // Releemos la liguilla después del guardado. Así el récord personal
+ // y el global siempre salen de los datos realmente persistidos en Firebase.
+ let ranking={position:0,total:0,rows:[]};
+ let personalRecord=Math.max(recordBeforeGame,survivalCorrect);
+ let globalRecord=Math.max(survivalGlobalRecord,personalRecord);
+
+ try{
+   const state=await loadSurvivalCompetitionState(survivalMode,auth.currentUser?.uid||'');
+   ranking=state.ranking;
+   personalRecord=Math.max(recordBeforeGame,state.personal,survivalCorrect);
+   globalRecord=Math.max(state.global,personalRecord);
+ }catch(e){
+   console.error('No se pudo releer la liguilla después de la partida:',e);
+ }
+
+ survivalPreviousRecord=personalRecord;
+ survivalGlobalRecord=globalRecord;
+ survivalRank=ranking.position;
+ survivalParticipants=ranking.total;
+
+ // Sincronización secundaria del documento resumen global.
+ // Si este documento fallase, la liguilla sigue conservando el récord correcto.
+ if(total>0){
+   try{
+     const holder=(ranking.rows||[]).find(x=>(Number(x.aciertos)||0)===globalRecord);
+     await updateGlobalSurvivalRecord(
+       survivalMode,
+       globalRecord,
+       globalRecord*rewardPerCorrect,
+       Number(holder?.racha)||0
+     );
+   }catch(e){
+     console.error('No se pudo sincronizar el resumen global:',e);
+   }
+ }
+
+ const recordMsg=survivalCorrect>recordBeforeGame
+   ?` <span class="trophy-pop">🏆</span> ¡Nuevo récord personal!`
+   :'';
+
+ const leagueMsg=survivalCorrect>=globalRecord && survivalCorrect>0
+   ?' <span class="trophy-pop">🌐</span> Récord global igualado o superado.'
+   :'';
+
+ const xpMsg=xpEarned>0
+   ?`⭐ <strong>+${xpEarned} XP acumulados</strong> por mejorar tu récord personal.`
+   :`⭐ <strong>0 XP nuevos</strong> · para ganar XP de Supervivencia debes superar tu récord personal de ${recordBeforeGame}.`;
+
+ const modeMsg=survivalMode==='pressure'
+   ?'⚡ Modo presión · 15 puntos/acierto'
+   :'🔥 Clásica · 10 puntos/acierto';
+
  const endMsg=manual?'Partida finalizada por ti.':'Partida completada.';
- const rankMsg=survivalRank?`<br><span class="survival-rank-badge">📊 ${esc(survivalAlias)} · ${survivalRank}º de ${survivalParticipants}</span>`:'';
+ const rankMsg=survivalRank
+   ?`<br><span class="survival-rank-badge">📊 ${esc(survivalAlias)} · ${survivalRank}º de ${survivalParticipants}</span>`
+   :'';
+
  const leagueTable=renderSurvivalLeague(ranking.rows,auth.currentUser?.uid||'');
- $('#survivalFinalText').innerHTML=`${modeMsg}<br>${endMsg}<br><br>✅ <strong>${survivalCorrect} aciertos</strong> · 🎮 <strong>${gamePoints} puntos</strong> · 🎯 <strong>aciertos seguidos ${survivalBestStreak}</strong><br>🏆 <strong>Récord personal: ${personalRecord} aciertos · ${personalRecord*rewardPerCorrect} pt</strong>${recordMsg}<br>🌐 <strong>Récord global: ${globalRecord} aciertos · ${globalRecord*rewardPerCorrect} pt</strong>${leagueMsg}${rankMsg}${leagueTable}<br>${xpMsg}`;
+
+ $('#survivalFinalText').innerHTML=
+   `${modeMsg}<br>${endMsg}<br><br>`+
+   `✅ <strong>${survivalCorrect} aciertos</strong> · `+
+   `🎮 <strong>${gamePoints} puntos</strong> · `+
+   `🎯 <strong>aciertos seguidos ${survivalBestStreak}</strong><br>`+
+   `🏆 <strong>Récord personal: ${personalRecord} aciertos · ${personalRecord*rewardPerCorrect} pt</strong>${recordMsg}<br>`+
+   `🌐 <strong>Récord global: ${globalRecord} aciertos · ${globalRecord*rewardPerCorrect} pt</strong>${leagueMsg}`+
+   `${rankMsg}${leagueTable}<br>${xpMsg}`;
+
  const used=Math.floor((Date.now()-survivalStartedAt)/1000);
+
  if(total>0){
   try{
    await registrarProgreso({
