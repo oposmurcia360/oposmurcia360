@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reinicio seguro · Supervivencia</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f8fb;color:#20323d;margin:0}.wrap{max-width:850px;margin:35px auto;padding:18px}
+.card{background:#fff;border:1px solid #d8e6ed;border-radius:18px;padding:24px;box-shadow:0 10px 28px rgba(0,0,0,.06)}
+h1,h2{color:#075b8f}.box{background:#eef7fc;border-left:5px solid #0071ba;padding:14px;border-radius:10px;margin:16px 0}
+.warn{background:#fff3f2;border-left-color:#b42318}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.metric{background:#f7fafc;border:1px solid #d8e6ed;border-radius:12px;padding:14px;text-align:center}.metric b{display:block;font-size:24px;color:#075b8f}
+button{border:0;border-radius:10px;padding:12px 16px;font-weight:700;cursor:pointer;margin:6px 8px 6px 0}.primary{background:#0071ba;color:#fff}.secondary{background:#e9f2f7;color:#075b8f}.danger{background:#b42318;color:#fff}
+button:disabled{opacity:.45;cursor:not-allowed}input{width:100%;padding:11px;border:1px solid #d8e6ed;border-radius:9px;font-size:15px;box-sizing:border-box}
+pre{white-space:pre-wrap;background:#101820;color:#dfe8ed;padding:14px;border-radius:10px;max-height:320px;overflow:auto}
+.ok{color:#157347;font-weight:700}.bad{color:#b42318;font-weight:700}.muted{color:#607784}
+@media(max-width:650px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body><div class="wrap"><div class="card">
+<h1>Reinicio TOTAL de Supervivencia</h1>
+<p class="muted">Herramienta de un solo uso. Reinicia exclusivamente Supervivencia, incluida la liguilla y sus alias. No modifica tests, supuestos, usuarios, autorizaciones ni dispositivos.</p>
+
+<div class="box"><b>Se eliminará únicamente:</b>
+<ul>
+<li>Intentos de Supervivencia guardados en <code>/progreso</code>.</li>
+<li>Clasificación en <code>/supervivencia_clasificacion</code>.</li>
+<li>Récords globales Clásica y Presión en <code>/supervivencia_records</code>.</li>
+<li>Todos los alias de la liguilla en <code>/supervivencia_aliases</code>.</li>
+</ul>
+<b>No se toca:</b> tests, supuestos, progreso normal, usuarios, autorizaciones, dispositivos .
+</div>
+
+<div class="box warn"><b>Importante:</b> las reglas actuales impiden borrar clasificación y récords globales. Antes de ejecutar debes aplicar SOLO los dos cambios temporales indicados en el archivo de instrucciones y restaurarlos al terminar.</div>
+
+<h2>1. Acceso de administrador</h2>
+<p id="authState" class="muted">No autenticado.</p>
+<button id="loginBtn" class="primary">Continuar con Google</button>
+<button id="logoutBtn" class="secondary" disabled>Cerrar sesión</button>
+
+<h2>2. Comprobación previa</h2>
+<button id="previewBtn" class="secondary" disabled>Comprobar qué se borrará</button>
+<div class="grid">
+<div class="metric"><b id="mProg">—</b><span>Intentos Supervivencia</span></div>
+<div class="metric"><b id="mRank">—</b><span>Entradas clasificación</span></div>
+<div class="metric"><b id="mRec">—</b><span>Récords globales</span></div>
+<div class="metric"><b id="mAlias">—</b><span>Alias</span></div>
+</div>
+
+<h2>3. Confirmación</h2>
+<p>Escribe exactamente <b>REINICIO TOTAL SUPERVIVENCIA</b>:</p>
+<input id="confirmText" placeholder="REINICIO TOTAL SUPERVIVENCIA">
+<button id="resetBtn" class="danger" disabled>Ejecutar reinicio TOTAL</button>
+
+<h2>Registro</h2><pre id="log">Esperando…</pre>
+</div></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { getFirestore, collection, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+const firebaseConfig={
+apiKey:"AIzaSyDA_79FRQq90gVJgD17dRr_pUHKe4S8XBg",
+authDomain:"oposmurcia360-5a389.firebaseapp.com",
+projectId:"oposmurcia360-5a389",
+storageBucket:"oposmurcia360-5a389.firebasestorage.app",
+messagingSenderId:"730198455785",
+appId:"1:730198455785:web:1f3e3d4f8edf8774780778",
+measurementId:"G-T8QHKNDX5T"};
+const ADMIN_EMAIL="oposmurcia360@gmail.com";
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),provider=new GoogleAuthProvider();
+const $=s=>document.querySelector(s),logEl=$("#log");
+function log(t){logEl.textContent+="\n"+t;logEl.scrollTop=logEl.scrollHeight}
+function isAdmin(){return (auth.currentUser?.email||"").toLowerCase()===ADMIN_EMAIL}
+function isSurvival(x){return String(x.tipo||"").toLowerCase()==="supervivencia"||String(x.ejercicioId||"").toLowerCase().startsWith("modo-supervivencia")||String(x.categoria||"").toLowerCase().includes("supervivencia")}
+function updateEnabled(){$("#resetBtn").disabled=!(isAdmin()&&$("#confirmText").value.trim()==="REINICIO TOTAL SUPERVIVENCIA")}
+$("#confirmText").addEventListener("input",updateEnabled);
+$("#loginBtn").onclick=async()=>{try{await signInWithPopup(auth,provider)}catch(e){log("ERROR acceso: "+e.message)}};
+$("#logoutBtn").onclick=()=>signOut(auth);
+
+onAuthStateChanged(auth,u=>{
+ const admin=u&&isAdmin();
+ $("#authState").textContent=u?`Sesión: ${u.email}${admin?" · ADMINISTRADOR":" · NO AUTORIZADO PARA REINICIO"}`:"No autenticado.";
+ $("#authState").className=admin?"ok":(u?"bad":"muted");
+ $("#previewBtn").disabled=!admin;$("#logoutBtn").disabled=!u;updateEnabled();
+});
+
+async function targets(){
+ if(!isAdmin())throw new Error("Solo puede continuar el administrador.");
+ const [p,r,g,a]=await Promise.all([
+  getDocs(collection(db,"progreso")),
+  getDocs(collection(db,"supervivencia_clasificacion")),
+  getDocs(collection(db,"supervivencia_records")),
+  getDocs(collection(db,"supervivencia_aliases"))
+ ]);
+ return {
+  prog:p.docs.filter(d=>isSurvival(d.data())),
+  rank:r.docs,
+  rec:g.docs.filter(d=>["classic","pressure"].includes(d.id)),
+  alias:a.docs
+ };
+}
+
+$("#previewBtn").onclick=async()=>{
+ try{
+  logEl.textContent="Comprobando…";
+  const t=await targets();
+  $("#mProg").textContent=t.prog.length;$("#mRank").textContent=t.rank.length;$("#mRec").textContent=t.rec.length;$("#mAlias").textContent=t.alias.length;
+  log("Comprobación terminada. No se ha modificado ningún dato.");
+ }catch(e){log("ERROR comprobación: "+e.message)}
+};
+
+async function deleteDocs(docs,label){
+ let done=0;
+ for(let i=0;i<docs.length;i+=400){
+  const b=writeBatch(db);docs.slice(i,i+400).forEach(x=>b.delete(x.ref));await b.commit();
+  done+=Math.min(400,docs.length-i);log(`${label}: ${done}/${docs.length}`);
+ }
+}
+
+$("#resetBtn").onclick=async()=>{
+ if(!isAdmin()||$("#confirmText").value.trim()!=="REINICIO TOTAL SUPERVIVENCIA")return;
+ if(!confirm("CONFIRMACIÓN FINAL\n\nSe eliminarán SOLO los datos de Supervivencia: historial, liguilla, récords y alias.\n\n¿Continuar?"))return;
+ $("#resetBtn").disabled=true;$("#previewBtn").disabled=true;
+ try{
+  log("Iniciando reinicio seguro…");const t=await targets();
+  await deleteDocs(t.prog,"Historial Supervivencia");
+  await deleteDocs(t.rank,"Clasificación");
+  await deleteDocs(t.rec,"Récords globales");
+  await deleteDocs(t.alias,"Alias");
+  $("#mProg").textContent="0";$("#mRank").textContent="0";$("#mRec").textContent="0";$("#mAlias").textContent="0";
+  log("OK · Supervivencia ha quedado totalmente a cero, incluidos los alias.");
+  log("IMPORTANTE · Restaura ahora las reglas normales de Firestore.");
+  alert("Reinicio completado. Supervivencia está a cero. Restaura ahora las reglas normales.");
+ }catch(e){log("ERROR: "+e.message);alert("No se ha completado el reinicio. Revisa el registro.");}
+ finally{$("#previewBtn").disabled=!isAdmin();updateEnabled()}
+};
+</script>
+</body></html>
