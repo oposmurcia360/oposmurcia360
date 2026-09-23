@@ -3133,7 +3133,18 @@ window.goToLibrarySection=(id)=>{if(id==='testsSection')openTestsLibrary();else 
 function show(id){['home','testsLibrary','practicalsLibrary','myProgress','adminManagement','survival','setup','quiz','results','practicalSetup','practicalWork','practicalResults','practicalResultStatement'].forEach(x=>$('#'+x).classList.toggle('hidden',x!==id));window.scrollTo({top:0,behavior:'smooth'})}
 window.openTestsLibrary=()=>{renderHome();show('testsLibrary')};
 window.openPracticalsLibrary=()=>{renderHome();show('practicalsLibrary')};
-window.goHome=()=>{clearInterval(interval);interval=null;clearInterval(practicalInterval);practicalInterval=null;show('home');renderHome()};function openSetup(id){currentTest=TESTS.find(t=>t.id===id);if(!currentTest)return;$('#setupTitle').textContent=currentTest.title;$('#setupDesc').textContent=currentTest.description||currentTest.subtitle||'';show('setup')}
+window.goHome=()=>{clearInterval(interval);interval=null;clearInterval(practicalInterval);practicalInterval=null;show('home');renderHome()};
+function resetTestSetupOptions(){
+  document.querySelectorAll('input[name="timeMode"]').forEach(input=>{input.checked=input.defaultChecked});
+  $('#minutes').value=$('#minutes').defaultValue||'30';
+  $('#penalty').checked=$('#penalty').defaultChecked;
+}
+function resetPracticalSetupOptions(){
+  document.querySelectorAll('input[name="practicalTimeMode"]').forEach(input=>{input.checked=input.defaultChecked});
+  $('#practicalMinutes').value=$('#practicalMinutes').defaultValue||'30';
+  $('#practicalPenalty').checked=$('#practicalPenalty').defaultChecked;
+}
+function openSetup(id){currentTest=TESTS.find(t=>t.id===id);if(!currentTest)return;resetTestSetupOptions();$('#setupTitle').textContent=currentTest.title;$('#setupDesc').textContent=currentTest.description||currentTest.subtitle||'';show('setup')}
 window.startQuiz=()=>{if(!currentTest||!Array.isArray(currentTest.questions)||!currentTest.questions.length){alert('Este test no contiene preguntas válidas.');return;}finishingQuiz=false;answers=Array(currentTest.questions.length).fill(null);current=0;penalty=$('#penalty').checked;timed=document.querySelector('input[name="timeMode"]:checked').value==='timed';timeLimit=Math.max(1,parseInt($('#minutes').value||30))*60;elapsed=0;startedAt=Date.now();show('quiz');renderQuestion();tick();clearInterval(interval);interval=setInterval(()=>{elapsed=Math.floor((Date.now()-startedAt)/1000);tick();if(timed&&elapsed>=timeLimit)finishQuiz(true)},1000)};
 function fmt(s){s=Math.max(0,Math.floor(s));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}function tick(){$('#timer').textContent=timed?fmt(Math.max(0,timeLimit-elapsed)):fmt(elapsed)}
 function renderQuestion(){const q=currentTest.questions[current];$('#qnum').textContent=`Pregunta ${current+1} de ${currentTest.questions.length}`;$('#question').textContent=q[0];$('#progress').style.width=((current+1)/currentTest.questions.length*100)+'%';$('#options').innerHTML=q[1].map((o,i)=>`<button class="option ${answers[current]===i?'selected':''}" data-choice="${i}"><strong>${String.fromCharCode(65+i)})</strong> ${esc(o)}</button>`).join('');document.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>{answers[current]=Number(b.dataset.choice);renderQuestion()})}
@@ -3144,6 +3155,7 @@ window.toggleReview=()=>{const box=$('#review');if(!box.innerHTML)box.innerHTML=
 function openPracticalSetup(id){
   currentPractical=PRACTICALS.find(p=>p.id===id);
   if(!currentPractical)return;
+  resetPracticalSetupOptions();
   $('#practicalSetupTitle').textContent=currentPractical.title;
   $('#practicalSetupDesc').textContent=currentPractical.description||currentPractical.subtitle||'Lee el enunciado completo antes de iniciar el cuestionario.';
   show('practicalSetup');
