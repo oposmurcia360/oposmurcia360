@@ -3110,6 +3110,11 @@ function renderHome(){
       if(!groups.has(key)) groups.set(key,{label,items:[]});
       groups.get(key).items.push(p);
     });
+    const contratacion=groups.get('contratación administrativa');
+    if(contratacion){
+      const ordinal=p=>Number((String(p.title||'').match(/\((\d{1,3})\)/)||[])[1]||999);
+      contratacion.items.sort((a,b)=>ordinal(a)-ordinal(b));
+    }
     const ordered=[...groups.values()].sort((a,b)=>a.label.localeCompare(b.label,'es'));
     pgrid.innerHTML=ordered.map(g=>`
       <section class="topic-section">
